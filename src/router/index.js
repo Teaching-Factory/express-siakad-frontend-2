@@ -16,18 +16,109 @@ const router = createRouter({
                 {
                     path: '/import-mahasiswa',
                     name: 'importmahasiswa',
-                    component: () => import('../views/mahasiswa/importMahasiswa/Index.vue')
+                    component: () => import('../views/mahasiswa/importMahasiswa/index.vue')
                 },
                 {
                     path: '/daftar-mahasiswa',
                     name: 'daftarmahasiswa',
-                    component: () => import('../views/mahasiswa/daftarMahasiswa/Index.vue')
+                    component: () => import('../views/mahasiswa/daftarMahasiswa/index.vue')
                 },
                 {
                     path: '/set-status-mahasiswa',
                     name: 'setstatusmahasiswa',
-                    component: () => import('../views/mahasiswa/statusMahasiswa/Index.vue')
+                    component: () => import('../views/mahasiswa/statusMahasiswa/index.vue')
                 },
+
+                {
+                    path: '/set-sistem-kuliah-mahasiswa',
+                    name: 'setsistemkuliahmahasiswa',
+                    component: () => import('../views/mahasiswa/sistemKuliah/index.vue')
+                },
+
+                {
+                    path: '/validasi-krs-mahasiswa',
+                    name: 'validasikrsmahasiswa',
+                    component: () => import('../views/mahasiswa/validasiKrsMahasiswa/index.vue')
+                },
+
+                {
+                    path: '/import-aktivitas-mahasiswa',
+                    name: 'importaktivitasmahasiswa',
+                    component: () => import('../views/mahasiswa/importAktivitasMahasiswa/index.vue')
+                },
+
+                {
+                    path: '/mahasiswa-belum-krs',
+                    name: 'mahasiswabelumkrs',
+                    component: () => import('../views/mahasiswa/mahasiswaBelumKrs/index.vue')
+                },
+
+                {
+                    path: '/perhitungan-transkrip',
+                    name: 'perhitungantranskrip',
+                    component: () => import('../views/mahasiswa/perhitunganTranskrip/index.vue')
+                },
+
+                {
+                    path: '/set-aktif-akm',
+                    name: 'setaktifakm',
+                    component: () => import('../views/mahasiswa/setAktifAkm/index.vue')
+                },
+                
+                {
+                    path: '/belum-set-sk',
+                    name: 'belumsetsk',
+                    component: () => import('../views/mahasiswa/mahasiswaBelumSetSK/index.vue')
+                },
+
+                {
+                    path: '/kelas-jadwal-perkuliahan',
+                    name: 'kelasjadwalperkuliahan',
+                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/index.vue')
+                },
+
+                {
+                    path: '/nilai-perkuliahan',
+                    name: 'nilaiperkuliahan',
+                    component: () => import('../views/perkuliahan/nilaiPerkuliahan/index.vue')
+                },
+
+                {
+                    path: '/presensi-perkuliahan',
+                    name: 'presensiperkuliahan',
+                    component: () => import('../views/perkuliahan/presensiPerkuliahan/index.vue')
+                },
+
+                {
+                    path: '/aktivitas-mahasiswa',
+                    name: 'aktivitasmahasiswa',
+                    component: () => import('../views/perkuliahan/aktivitasMahasiswa/index.vue')
+                },
+
+                {
+                    path: '/kelas-aktif',
+                    name: 'kelasaktif',
+                    component: () => import('../views/perkuliahan/kelasAktif/index.vue')
+                },
+
+                {
+                    path: '/daftar-dosen-wali',
+                    name: 'daftardosenwali',
+                    component: () => import('../views/dosenWali/daftarDosenWali/index.vue')
+                },
+
+                {
+                    path: '/manajemen-mahasiswa-wali',
+                    name: 'manajemenmahasiswawali',
+                    component: () => import('../views/dosenWali/manajemenMahasiswaWali/index.vue')
+                },
+
+                {
+                    path: '/set-kolektif-dosenwali',
+                    name: 'setkolektifdosenwali',
+                    component: () => import('../views/dosenWali/setKolektifDosenWali/index.vue')
+                },
+
 
                 {
                     path: '/uikit/formlayout',

@@ -135,7 +135,7 @@ const formatDate = (value) => {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>SET STATUS MAHASISWA - PERIODE 2022/2023 GANJIL</h5>
+            <h5>VALIDASI KRS MAHASISWA - 2021/2022 GENAP</h5>
             <hr />
 
             <div class="card card-theme">
@@ -144,9 +144,11 @@ const formatDate = (value) => {
                         <div class="col-12 col-md-6 col-lg-12">
                             <h6 class="text-dark">Keterangan :</h6>
                             <p class="lh-1 text-small">
-                                1. Data dibawah menunjukkan jumlah mahasiswa yang belum terdaftar sebagai mahasiswa Lulus / Drop Out
-                                <br />2. Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada Feeder <br />3. Fitur ini membantu admin untuk meminimalisasi adanya mahasiswa yang tidak memiliki status di periode
-                                berlaku <br />4. Status mahasiswa akan berubah menjadi aktif ketika melakukan validasi pembayaran / KRS <br />5. Fitur ini hanya di gunakan di setiap awal periode semester
+                                1. Fitur ini menampilkan seluruh daftar mahasiswa yang telah melakukan KRS
+                                <br />2. Disarankan Mahasiswa sudah di set Dosen Wali terlebih dahulu <br />3. Untuk melakukan validasi KRS Online, centang pada mahasiswa yang akan divalidasi KRS Online tanpa melalui dosen wali terlebih dahulu.
+                                kemudian klik tombol "PROSES VALIDASI" <br />4. Untuk membatalkan validasi KRS Online, klik tombol hapus pada mahasiswa yang diinginkan. <br />5. Fitur ini hanya digunakan untuk membantu proses validasi oleh admin,
+                                proses validasi sebenarnya terdapat pada login dosen wali <br />6. KRS Mahasiswa yang dapat divalidasi ialah Mahasiswa yang memiliki status aktivitas perkuliahan AKTIF <br />7. Fitur pencarian bisa di lakukan
+                                berdasarkan NIM atau Nama Mahasiswa <br />8. Tidak Ada Jenis Tagihan yang menjadi syarat KRS, bila ingin meng-set tagihan yang menjadi flag KRS hubungi admin keuangan
                             </p>
                         </div>
                     </div>

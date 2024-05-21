@@ -135,7 +135,7 @@ const formatDate = (value) => {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>SET STATUS MAHASISWA - PERIODE 2022/2023 GANJIL</h5>
+            <h5>PERHITUNGAN TRANSKRIP</h5>
             <hr />
 
             <div class="card card-theme">
@@ -144,11 +144,33 @@ const formatDate = (value) => {
                         <div class="col-12 col-md-6 col-lg-12">
                             <h6 class="text-dark">Keterangan :</h6>
                             <p class="lh-1 text-small">
-                                1. Data dibawah menunjukkan jumlah mahasiswa yang belum terdaftar sebagai mahasiswa Lulus / Drop Out
-                                <br />2. Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada Feeder <br />3. Fitur ini membantu admin untuk meminimalisasi adanya mahasiswa yang tidak memiliki status di periode
-                                berlaku <br />4. Status mahasiswa akan berubah menjadi aktif ketika melakukan validasi pembayaran / KRS <br />5. Fitur ini hanya di gunakan di setiap awal periode semester
+                                1. Data ini menunjukkan jumlah mahasiswa yang terdaftar setiap angkatan, baik yang sudah lulus/DO ataupun belum
+                                <br />2. Fitur ini di gunakan untuk menghitung nilai mahasiswa dan akan di simpan menjadi transkrip mahasiswa <br />3. Mahasiswa yang telah mengulang matakuliah, akan di hitungkan menjadi 1 matakuliah terbaik yang akan
+                                masuk ke dalam transkrip <br />4. Nilai yang dihitung pada halaman ini akan otomatis masuk kedalam perhitungan transkrip Feeder <br />5. Setting nilai terbaru atau tertinggi di Feeder dimenu Pengaturan -> Pengaturan
+                                Transkrip (NEW UPDATE!!)
                             </p>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-theme">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 xl:col-2">
+                            <span>Angkatan</span>
+                        </div>
+                        <div class="col-12 xl:col-10">
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>---Pilih Angkatan---</option>
+                                    <option>2023</option>
+                                    <option>O2022</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-primary my-4">Tampilkan</button>
                     </div>
                 </div>
             </div>

@@ -135,20 +135,57 @@ const formatDate = (value) => {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>SET STATUS MAHASISWA - PERIODE 2022/2023 GANJIL</h5>
+            <h5>SET KOLEKTIF DOSEN WALI</h5>
             <hr />
 
             <div class="card card-theme">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-md-6 col-lg-12">
-                            <h6 class="text-dark">Keterangan :</h6>
-                            <p class="lh-1 text-small">
-                                1. Data dibawah menunjukkan jumlah mahasiswa yang belum terdaftar sebagai mahasiswa Lulus / Drop Out
-                                <br />2. Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada Feeder <br />3. Fitur ini membantu admin untuk meminimalisasi adanya mahasiswa yang tidak memiliki status di periode
-                                berlaku <br />4. Status mahasiswa akan berubah menjadi aktif ketika melakukan validasi pembayaran / KRS <br />5. Fitur ini hanya di gunakan di setiap awal periode semester
-                            </p>
+                            <p class="text-dark">Pastikan mencentang mahasiswa pada kolom paling kiri sebelum disimpan.</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-theme">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-12">
+                            <h6 class="text-dark">072563791037 - LUKMAN HAKIM | | SEMESTER : 2021/2022 GENAP</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-theme">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 xl:col-2">
+                            <span>Program Studi</span>
+                        </div>
+                        <div class="col-6 xl:col-4">
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>---Pilih Program Studi---</option>
+                                    <option>S1 Teknik Informatika</option>
+                                    <option>S1 Pendidikan Fisika</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-6 xl:col-2">
+                            <span>Angkatan</span>
+                        </div>
+                        <div class="col-6 xl:col-4">
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>---Pilih Angkatan---</option>
+                                    <option>2023</option>
+                                    <option>O2022</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-primary my-4">Tampilkan</button>
                     </div>
                 </div>
             </div>

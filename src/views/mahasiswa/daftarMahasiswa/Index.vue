@@ -134,60 +134,94 @@ const formatDate = (value) => {
 
 <template>
     <div class="card">
-        <h5>Daftar Mahasiswa</h5>
-        <hr />
-        <div class="container">
-            <div class="card card-theme">
-                <div class="container">
+        <div class="card-body">
+            <h5>DAFTAR MAHASISWA</h5>
+            <hr />
+
+            <div class="card">
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-12 xl:col-2">
-                            <span>Program Studi</span>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                            </div>
                         </div>
-                        <div class="col-12 xl:col-10">
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                            </div>
+                        </div>
+                        <!-- <div class="mb-3">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" />
+                            </div>
+                            <span>Program Studi</span>
                             <div class="form-group">
                                 <select class="form-control">
                                     <option>---Pilih Program Studi---</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                    <option>S1 Teknik Informatika</option>
+                                    <option>S1 Pendidikan Fisika</option>
+                                </select>
+                            </div> -->
+                        <!-- </div> -->
+                       
+                        <!-- <div class="col-12 xl:col-9">
+                            <span>Angkatan</span>
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>---Pilih Angkatan---</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12 xl:col-2">
+                        </div> -->
+                        <!-- <div class="col-12 xl:col-3">
                             <span>Angkatan</span>
                         </div>
-                        <div class="col-12 xl:col-10">
+                        <div class="col-12 xl:col-9">
                             <div class="form-group">
                                 <select class="form-control">
-                                    <option>2020</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
+                                    <option>---Pilih Angkatan---</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
+                        <!-- </div>
+                    <div class="col-12 xl:col-3">
+                        <span>Status Mahasiswa</span>
                     </div>
-                    <div class="row">
-                        <div class="col-12 xl:col-2">
-                            <span>Sistem Kuliah</span>
+                    <div class="col-12 xl:col-9">
+                        <div class="form-group">
+                            <select class="form-control">
+                                <option>---Pilih Sistem Kuliah---</option>
+                                <option>Aktif</option>
+                                <option>Non-Aktif</option>
+                            </select>
                         </div>
-                        <div class="col-12 xl:col-10">
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option>---Pilih Sistem Kuliah---</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
-                                </select>
-                            </div>
+                    </div> -->
+
+                        <div class="row">
+                            <button class="btn btn-primary my-4">Tampilkan</button>
                         </div>
-                    </div>
-                    <div class="row">
-                        <Button label="Submit" class="mr-2 mb-2"></Button>
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <DataTable
                     :value="customer1"
@@ -211,8 +245,8 @@ const formatDate = (value) => {
                         </div>
                     </template>
 
-                    <template #empty> No customers found. </template>
-                    <template #loading> Loading customers data. Please wait. </template>
+                    <template #empty> Tidak ada data.</template>
+                    <template #loading> Loading data. Please wait. </template>
                     <Column field="no" header="No" style="min-width: 5rem">
                         <template #body="{ data }">
                             {{ data.name }}

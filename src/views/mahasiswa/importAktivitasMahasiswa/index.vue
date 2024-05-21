@@ -1,9 +1,9 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>IMPORT DATA MAHASISWA</h5>
+            <h5>IMPORT DATA AKTIVITAS MAHASISWA</h5>
             <hr />
-            <div class="card">
+            <div class="card card-theme">
                 <div class="card-body">
                     <div class="row mb-2">
                         <div class="col-6 col-md-6 col-lg-6">
@@ -12,7 +12,7 @@
                         <div class="col-6 col-md-6 col-lg-6">
                             <div class="text-info">
                                 <router-link to="">
-                                    <span>template_mahasiswa.xls</span>
+                                    <span>template_aktivitas_mhs.xls</span>
                                 </router-link>
                             </div>
                         </div>
@@ -32,22 +32,16 @@
                         <div class="col-12 col-md-6 col-lg-12">
                             <h6 class="text-dark">Langkah-Langkah :</h6>
                             <p class="lh-1 text-small">
-                                1. Download Template data mahasiswa terlebih dahulu<br />2. Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada Feeder<br />3. Pastikan data yang anda inputkan sudah benar, dan semua
-                                terisi. (kecuali SKS diakui,Kode PT Asal,Kode Prodi Asal hanya di isi ketika jenis pendaftaran ialah pindahan)<br />
-                                4. ila terjadi kesalahan import data, silahkan download error hasil import .
-                                <br />
-                                5. Lakukan perbaikan lalu import lagi data tersebut
+                                1. Download Template data aktivitas Mahasiswa terlebih dahulu
+                                <br />2. Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada feeeder <br />3. Pastikan data yang anda inputkan sudah benar, Data Mahasiswa sudah terdaftar <br />4. Bila terjadi
+                                kesalahan import data, silahkan download error hasil import <br />5. Lakukan perbaikan lalu import lagi data tersebut
                             </p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-6 col-lg-12">
                             <h6 class="text-dark">Catatan :</h6>
-                            <p class="lh-1 text-small">
-                                1. Bila ada kesalahan pada NIM, silahkan merubah pada aplikasi Feeder atau Pengajuan Pada Forlap<br />
-                                2. Maksimum pengiriman data ialah 50 data<br />
-                                3. File yang boleh diupload hanya file dengan ekstensi .xls
-                            </p>
+                            <p class="lh-1 text-small">1. Halaman import aktivitas mahasiswa hanya digunakan untuk menambah aktivitas baru mahasiswa dan tidak digunakan untuk update aktivitas mahasiswa.</p>
                         </div>
                     </div>
                 </div>

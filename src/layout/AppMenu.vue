@@ -29,31 +29,31 @@ const model = ref([
                     },
                     {
                         label: 'Set Sistem Kuliah Mahasiswa',
-                        to: '/'
+                        to: '/set-sistem-kuliah-mahasiswa'
                     },
                     {
                         label: 'Validasi KRS Mahasiswa',
-                        to: '/'
+                        to: '/validasi-krs-mahasiswa'
                     },
                     {
                         label: 'Import Aktivitas Mahasiswa',
-                        to: '/'
+                        to: '/import-aktivitas-mahasiswa'
                     },
                     {
                         label: 'Data Mahasiswa Belum KRS',
-                        to: '/'
+                        to: '/mahasiswa-belum-krs'
                     },
                     {
                         label: 'Hitung Transkrip',
-                        to: '/'
+                        to: '/perhitungan-transkrip'
                     },
                     {
-                        label: 'Set Aktif Mahasiswa',
-                        to: '/'
+                        label: 'Set Aktif Aktivitas Kuliah Mahasiswa',
+                        to: '/set-aktif-akm'
                     },
                     {
                         label: 'Cek Mahasiswa Belum Set Sistem Kuliah',
-                        to: '/'
+                        to: '/belum-set-sk'
                     }
                 ]
             },
@@ -63,23 +63,23 @@ const model = ref([
                 items: [
                     {
                         label: 'Kelas dan Jadwal',
-                        to: '/'
+                        to: '/kelas-jadwal-perkuliahan'
                     },
                     {
                         label: 'Nilai Perkuliahan',
-                        to: '/'
+                        to: '/nilai-perkuliahan'
                     },
                     {
                         label: 'Presensi Perkuliahan',
-                        to: '/'
+                        to: '/presensi-perkuliahan'
                     },
                     {
                         label: 'Aktivitas Mahasiswa',
-                        to: '/'
+                        to: '/aktivitas-mahasiswa'
                     },
                     {
                         label: 'Daftar Kelas Aktif',
-                        to: '/'
+                        to: '/kelas-aktif'
                     }
                 ]
             },
@@ -89,15 +89,15 @@ const model = ref([
                 items: [
                     {
                         label: 'Daftar Dosen Wali',
-                        to: '/'
+                        to: '/daftar-dosen-wali'
                     },
                     {
-                        label: 'Mahasiswa Wali',
-                        to: '/'
+                        label: 'Manajemen Mahasiswa Wali',
+                        to: '/manajemen-mahasiswa-wali'
                     },
                     {
                         label: 'Mahasiswa Wali (Kolektif)',
-                        to: '/'
+                        to: '/set-kolektif-dosenwali'
                     }
                 ]
             }
@@ -111,12 +111,32 @@ const model = ref([
                 icon: 'pi pi-fw pi-user',
                 items: [
                     {
-                        label: 'Ruang Perkuliahan',
+                        label: 'Sistem Kuliah',
                         to: '/'
                     },
                     {
-                        label: 'Unsur Penilaian',
+                        label: 'Ruang Perkuliahan',
                         to: '/import-mahasiswa'
+                    },
+                    {
+                        label: 'Unsur Penilaian',
+                        to: '/'
+                    },
+                    {
+                        label: 'Bobot Penilaian',
+                        to: '/'
+                    },
+                    {
+                        label: 'Jabatan',
+                        to: '/'
+                    },
+                    {
+                        label: 'Unit Jabatan',
+                        to: '/'
+                    },
+                    {
+                        label: 'Wilayah',
+                        to: '/'
                     }
                 ]
             },
@@ -125,8 +145,12 @@ const model = ref([
                 icon: 'pi pi-fw pi-user',
                 items: [
                     {
-                        label: 'Import Data Mahasiswa',
+                        label: 'Daftar Tagihan',
                         to: '/import-mahasiswa'
+                    },
+                    {
+                        label: 'Daftar Pembayaran',
+                        to: '/'
                     }
                 ]
             },
@@ -135,8 +159,8 @@ const model = ref([
                 icon: 'pi pi-fw pi-user',
                 items: [
                     {
-                        label: 'Import Data Mahasiswa',
-                        to: '/import-mahasiswa'
+                        label: 'Membuat Berita',
+                        to: '/'
                     }
                 ]
             }
@@ -156,6 +180,10 @@ const model = ref([
                     {
                         label: 'KHS Mahasiswa',
                         to: '/'
+                    },
+                    {
+                        label: 'Transkrip Mahasiswa',
+                        to: '/'
                     }
                 ]
             },
@@ -164,11 +192,15 @@ const model = ref([
                 icon: '',
                 items: [
                     {
-                        label: 'KRS Mahasiswa',
+                        label: 'Rekap Nilai Kelas',
                         to: '/'
                     },
                     {
-                        label: 'KHS Mahasiswa',
+                        label: 'Rekap Presensi Kelas',
+                        to: '/'
+                    },
+                    {
+                        label: 'Jadwal Kuliah',
                         to: '/'
                     }
                 ]
@@ -178,11 +210,7 @@ const model = ref([
                 icon: '',
                 items: [
                     {
-                        label: 'KRS Mahasiswa',
-                        to: '/'
-                    },
-                    {
-                        label: 'KHS Mahasiswa',
+                        label: 'Daftar Mahasiswa Belum KRS',
                         to: '/'
                     }
                 ]
@@ -197,17 +225,37 @@ const model = ref([
                 icon: '',
                 items: [
                     {
-                        label: 'Test',
+                        label: 'Manajemen Role',
+                        to: '/'
+                    },
+                    {
+                        label: 'Manajemen User',
+                        to: '/'
+                    },
+                    {
+                        label: 'Generate User Mahasiswa',
+                        to: '/'
+                    },
+                    {
+                        label: 'Generate User Dosen',
                         to: '/'
                     }
                 ]
             },
             {
-                label: 'Setting Global',
+                label: 'Setting',
                 icon: '',
                 items: [
                     {
-                        label: 'test',
+                        label: 'Setting Global',
+                        to: '/'
+                    },
+                    {
+                        label: 'Ubah Setting WS',
+                        to: '/'
+                    },
+                    {
+                        label: 'Ubah Identititas PT',
                         to: '/'
                     }
                 ]

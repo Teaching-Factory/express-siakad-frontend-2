@@ -135,20 +135,41 @@ const formatDate = (value) => {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>SET STATUS MAHASISWA - PERIODE 2022/2023 GANJIL</h5>
+            <h5>DAFTAR MAHASISWA YANG BELUM KRS</h5>
             <hr />
-
             <div class="card card-theme">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-md-6 col-lg-12">
-                            <h6 class="text-dark">Keterangan :</h6>
-                            <p class="lh-1 text-small">
-                                1. Data dibawah menunjukkan jumlah mahasiswa yang belum terdaftar sebagai mahasiswa Lulus / Drop Out
-                                <br />2. Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada Feeder <br />3. Fitur ini membantu admin untuk meminimalisasi adanya mahasiswa yang tidak memiliki status di periode
-                                berlaku <br />4. Status mahasiswa akan berubah menjadi aktif ketika melakukan validasi pembayaran / KRS <br />5. Fitur ini hanya di gunakan di setiap awal periode semester
-                            </p>
+                        <div class="col-12 xl:col-3">
+                            <span>Program Studi</span>
                         </div>
+                        <div class="col-12 xl:col-9">
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>---Pilih Program Studi---</option>
+                                    <option>S1 Teknik Informatika</option>
+                                    <option>S1 Pendidikan Fisika</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 xl:col-3">
+                            <span>Angkatan</span>
+                        </div>
+                        <div class="col-12 xl:col-9">
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>---Pilih Angkatan---</option>
+                                    <option>2023</option>
+                                    <option>2022</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-primary my-4">Tampilkan</button>
                     </div>
                 </div>
             </div>
@@ -176,8 +197,8 @@ const formatDate = (value) => {
                         </div>
                     </template>
 
-                    <template #empty> No customers found. </template>
-                    <template #loading> Loading customers data. Please wait. </template>
+                    <template #empty> Tidak ada data.</template>
+                    <template #loading> Loading data. Please wait. </template>
                     <Column field="no" header="No" style="min-width: 5rem">
                         <template #body="{ data }">
                             {{ data.name }}
