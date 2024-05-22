@@ -178,13 +178,10 @@ const formatDate = (value) => {
                         </div>
                     </template>
 
-                    <template #empty> No customers found. </template>
+                    <template #empty> <div class="text-center">Tidak ada data.</div></template>
                     <template #loading> Loading customers data. Please wait. </template>
-                    <Column field="no" header="No" style="min-width: 5rem">
-                        <template #body="{ data }">
-                            {{ data.name }}
-                        </template>
-                    </Column>
+
+                    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
                     <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">

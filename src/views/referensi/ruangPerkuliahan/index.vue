@@ -116,26 +116,19 @@ const initFilters1 = () => {
 // const clearFilter1 = () => {
 //     initFilters1();
 // };
-const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    });
-};
-
-const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-};
 </script>
 
 <template>
     <div class="card">
-        <div class="card-body">
-            <h5>DAFTAR DOSEN WALI PERIODE 2022/2023 GENAP</h5>
+        <div class="body">
+            <div class="row">
+                <div class="col-12 xl:col-8">
+                    <h5>DAFTAR RUANG PERKULIAHAN</h5>
+                </div>
+                <div class="col-12 xl:col-4 d-flex justify-content-end">
+                    <Button label="Tambah" icon="pi pi-plus" />
+                </div>
+            </div>
             <hr />
             <div class="card">
                 <div class="card-body">
@@ -162,13 +155,13 @@ const formatDate = (value) => {
                         </template>
 
                         <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                        <template #loading> Loading data. Please wait. </template>
+                        <template #loading> Loading customers data. Please wait. </template>
                         <Column field="no" header="No" style="min-width: 5rem">
                             <template #body="{ data }">
                                 {{ data.name }}
                             </template>
                         </Column>
-                        <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
+                        <Column header="Kode Ruang" filterField="kodesk.name" style="min-width: 12rem">
                             <template #body="{ data }">
                                 <div class="flex align-items-center gap-2">
                                     <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
@@ -176,24 +169,19 @@ const formatDate = (value) => {
                                 </div>
                             </template>
                         </Column>
-                        <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                        <Column header="Nama Ruang Perkuliahan" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
                             <template #body="{ data }">
                                 <div class="flex align-items-center gap-2">
                                     <span>{{ data.representative.name }}</span>
                                 </div>
                             </template>
                         </Column>
-                        <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 15rem">
+                        <Column field="angkatan" header="Lokasi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                             <template #body="{ data }">
-                                {{ formatDate(data.date) }}
+                                <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                             </template>
                         </Column>
-                        <Column header="Dosen Wali" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
-                            <template #body="{ data }">
-                                {{ formatCurrency(data.balance) }}
-                            </template>
-                        </Column>
-                        <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                        <Column field="angkatan" header="aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                             <template #body="{ data }">
                                 <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                             </template>

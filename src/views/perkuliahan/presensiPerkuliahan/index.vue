@@ -209,7 +209,7 @@ const formatDate = (value) => {
                         </div>
                     </template>
 
-                    <template #empty> Tidak ada data.</template>
+                    <template #empty> <div class="text-center">Tidak ada data.</div></template>
                     <template #loading> Loading data. Please wait. </template>
                     <Column field="no" header="No" style="min-width: 5rem">
                         <template #body="{ data }">

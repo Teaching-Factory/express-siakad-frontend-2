@@ -119,7 +119,42 @@ const router = createRouter({
                     component: () => import('../views/dosenWali/setKolektifDosenWali/index.vue')
                 },
 
-
+                //referensi
+                {
+                    path:'/sistemkuliah',
+                    name:'sistemkuliah',
+                    component: () => import('../views/referensi/sistemKuliah/index.vue')
+                },
+                {
+                    path:'/ruangperkuliahan',
+                    name:'ruangperkuliahan',
+                    component: () => import('../views/referensi/ruangPerkuliahan/index.vue')
+                },
+                {
+                    path:'/unsurpenilaian',
+                    name:'unsurpenilaian',
+                    component: () => import('../views/referensi/unsurPenilaian/index.vue')
+                },
+                {
+                    path:'/bobotpenilaian',
+                    name:'bobotpenilaian',
+                    component: () => import('../views/referensi/bobotPenilaian/index.vue')
+                },
+                {
+                    path:'/daftarjabatan',
+                    name:'daftarjabatan',
+                    component: () => import('../views/referensi/daftarJabatan/index.vue')
+                },
+                {
+                    path:'/unitjabatan',
+                    name:'unitjabatan',
+                    component: () => import('../views/referensi/unitJabatan/index.vue')
+                },
+                {
+                    path:'/datawilayah',
+                    name:'datawilayah',
+                    component: () => import('../views/referensi/dataWilayah/index.vue')
+                },
                 {
                     path: '/uikit/formlayout',
                     name: 'formlayout',

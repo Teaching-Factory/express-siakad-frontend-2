@@ -112,31 +112,31 @@ const model = ref([
                 items: [
                     {
                         label: 'Sistem Kuliah',
-                        to: '/'
+                        to: '/sistemkuliah'
                     },
                     {
                         label: 'Ruang Perkuliahan',
-                        to: '/import-mahasiswa'
+                        to: '/ruangperkuliahan'
                     },
                     {
                         label: 'Unsur Penilaian',
-                        to: '/'
+                        to: '/unsurpenilaian'
                     },
                     {
                         label: 'Bobot Penilaian',
-                        to: '/'
+                        to: '/bobotpenilaian'
                     },
                     {
                         label: 'Jabatan',
-                        to: '/'
+                        to: '/daftarjabatan'
                     },
                     {
                         label: 'Unit Jabatan',
-                        to: '/'
+                        to: '/unitjabatan'
                     },
                     {
                         label: 'Wilayah',
-                        to: '/'
+                        to: '/datawilayah'
                     }
                 ]
             },
