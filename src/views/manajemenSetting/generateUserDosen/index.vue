@@ -116,20 +116,51 @@ const initFilters1 = () => {
 // const clearFilter1 = () => {
 //     initFilters1();
 // };
+const formatCurrency = (value) => {
+    return value.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
+};
+
+const formatDate = (value) => {
+    return value.toLocaleDateString('en-US', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
+};
 </script>
 
 <template>
     <div class="card">
-        <div class="body">
+        <div class="card-body">
             <div class="row">
-                <div class="col-12 xl:col-10">
-                    <h5>DAFTAR RUANG PERKULIAHAN</h5>
+                <div class="col-10 xl:col-10">
+                    <h5>GENERATE USERNAME DAN PASSWORD DOSEN</h5>
                 </div>
                 <div class="col-12 xl:col-2 d-flex justify-content-end">
-                    <button class="btn btn-primary"> <i class="pi pi-plus mr-2"></i> Tambah</button>
+                    <button class="btn btn-primary">Generate</button>
                 </div>
             </div>
-        
+            <hr />
+
+            <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <h6 class="text-dark">Keterangan :</h6>
+                        <p class="lh-1 text-small">
+                            <ol>
+                                <li>Fitur ini digunakan untuk melakukan generate Username & Password Dosen di Go Feeder.</li>
+                                <li>Default user yang di-generate untuk username : NIDN & password : tanggal lahir dengan format yyyy-mm-dd (tanda '-' dihilangkan). Contoh : 1997-02-03 = 19970203.</li>
+                                <li>Daftar mahasiswa yang sudah terdaftar di Forlap & berstatus AKTIF.</li>
+                                <li>Untuk melihat daftar user klik disini.</li>
+                            </ol>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <DataTable
                 :value="customer1"
                 :paginator="true"
@@ -147,19 +178,26 @@ const initFilters1 = () => {
                     <div class="flex justify-content-between flex-column sm:flex-row">
                         <IconField iconPosition="left">
                             <InputIcon class="pi pi-search" />
-                            <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
+                            <InputText v-model="filters1['global'].value" placeholder="Cari disini" style="width: 100%" />
                         </IconField>
                     </div>
                 </template>
 
                 <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                <template #loading> Loading customers data. Please wait. </template>
+                <template #loading> Loading data. Please wait. </template>
                 <Column field="no" header="No" style="min-width: 5rem">
                     <template #body="{ data }">
                         {{ data.name }}
                     </template>
                 </Column>
-                <Column header="Kode Ruang" filterField="kodesk.name" style="min-width: 12rem">
+                <Column header="Nama" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 20rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.representative.name }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="NIDN / NUP / NIDK" filterField="nim.name" style="min-width: 20rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
@@ -167,25 +205,19 @@ const initFilters1 = () => {
                         </div>
                     </template>
                 </Column>
-                <Column header="Nama Ruang Perkuliahan" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                <Column header="Status" filterField="angkatan" dataType="numeric" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.representative.name }}</span>
-                        </div>
+                        {{ formatCurrency(data.balance) }}
                     </template>
                 </Column>
-                <Column field="angkatan" header="Lokasi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
-                    <template #body="{ data }">
-                        <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
-                    </template>
-                </Column>
-                <Column field="angkatan" header="aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                
+                <!-- <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                     <template #body="{ data }">
                         <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                     </template>
-                </Column>
+                </Column> -->
             </DataTable>
-               
+            
         </div>
     </div>
 </template>

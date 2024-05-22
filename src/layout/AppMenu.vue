@@ -112,31 +112,31 @@ const model = ref([
                 items: [
                     {
                         label: 'Sistem Kuliah',
-                        to: '/sistemkuliah'
+                        to: '/sistem-kuliah'
                     },
                     {
                         label: 'Ruang Perkuliahan',
-                        to: '/ruangperkuliahan'
+                        to: '/ruang-perkuliahan'
                     },
                     {
                         label: 'Unsur Penilaian',
-                        to: '/unsurpenilaian'
+                        to: '/unsur-penilaian'
                     },
                     {
                         label: 'Bobot Penilaian',
-                        to: '/bobotpenilaian'
+                        to: '/bobot-penilaian'
                     },
                     {
                         label: 'Jabatan',
-                        to: '/daftarjabatan'
+                        to: '/daftar-jabatan'
                     },
                     {
                         label: 'Unit Jabatan',
-                        to: '/unitjabatan'
+                        to: '/unit-jabatan'
                     },
                     {
                         label: 'Wilayah',
-                        to: '/datawilayah'
+                        to: '/data-wilayah'
                     }
                 ]
             },
@@ -146,11 +146,11 @@ const model = ref([
                 items: [
                     {
                         label: 'Daftar Tagihan',
-                        to: '/import-mahasiswa'
+                        to: '/daftar-tagihan'
                     },
                     {
                         label: 'Daftar Pembayaran',
-                        to: '/'
+                        to: '/daftar-pembayaran'
                     }
                 ]
             },
@@ -160,7 +160,7 @@ const model = ref([
                 items: [
                     {
                         label: 'Membuat Berita',
-                        to: '/'
+                        to: '/daftar-berita'
                     }
                 ]
             }
@@ -175,15 +175,15 @@ const model = ref([
                 items: [
                     {
                         label: 'KRS Mahasiswa',
-                        to: '/'
+                        to: '/krs-mahasiswa'
                     },
                     {
                         label: 'KHS Mahasiswa',
-                        to: '/'
+                        to: '/khs-mahasiswa'
                     },
                     {
                         label: 'Transkrip Mahasiswa',
-                        to: '/'
+                        to: '/transkrip-mahasiswa'
                     }
                 ]
             },
@@ -193,15 +193,15 @@ const model = ref([
                 items: [
                     {
                         label: 'Rekap Nilai Kelas',
-                        to: '/'
+                        to: '/rekap-nilai-kelas'
                     },
                     {
                         label: 'Rekap Presensi Kelas',
-                        to: '/'
+                        to: '/rekap-presensi-kelas'
                     },
                     {
                         label: 'Jadwal Kuliah',
-                        to: '/'
+                        to: '/jadwal-kuliah'
                     }
                 ]
             },
@@ -211,7 +211,7 @@ const model = ref([
                 items: [
                     {
                         label: 'Daftar Mahasiswa Belum KRS',
-                        to: '/'
+                        to: '/daftar-belum-krs'
                     }
                 ]
             }
@@ -226,19 +226,19 @@ const model = ref([
                 items: [
                     {
                         label: 'Manajemen Role',
-                        to: '/'
+                        to: '/manajemen-role'
                     },
                     {
                         label: 'Manajemen User',
-                        to: '/'
+                        to: '/manajemen-user'
                     },
                     {
                         label: 'Generate User Mahasiswa',
-                        to: '/'
+                        to: '/generate-user-mahasiswa'
                     },
                     {
                         label: 'Generate User Dosen',
-                        to: '/'
+                        to: '/generate-user-dosen'
                     }
                 ]
             },

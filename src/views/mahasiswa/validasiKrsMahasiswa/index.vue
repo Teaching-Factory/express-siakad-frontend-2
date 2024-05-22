@@ -138,17 +138,22 @@ const formatDate = (value) => {
             <h5>VALIDASI KRS MAHASISWA - 2021/2022 GENAP</h5>
             <hr />
 
-            <div class="card card-theme">
+            <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-md-6 col-lg-12">
                             <h6 class="text-dark">Keterangan :</h6>
                             <p class="lh-1 text-small">
-                                1. Fitur ini menampilkan seluruh daftar mahasiswa yang telah melakukan KRS
-                                <br />2. Disarankan Mahasiswa sudah di set Dosen Wali terlebih dahulu <br />3. Untuk melakukan validasi KRS Online, centang pada mahasiswa yang akan divalidasi KRS Online tanpa melalui dosen wali terlebih dahulu.
-                                kemudian klik tombol "PROSES VALIDASI" <br />4. Untuk membatalkan validasi KRS Online, klik tombol hapus pada mahasiswa yang diinginkan. <br />5. Fitur ini hanya digunakan untuk membantu proses validasi oleh admin,
-                                proses validasi sebenarnya terdapat pada login dosen wali <br />6. KRS Mahasiswa yang dapat divalidasi ialah Mahasiswa yang memiliki status aktivitas perkuliahan AKTIF <br />7. Fitur pencarian bisa di lakukan
-                                berdasarkan NIM atau Nama Mahasiswa <br />8. Tidak Ada Jenis Tagihan yang menjadi syarat KRS, bila ingin meng-set tagihan yang menjadi flag KRS hubungi admin keuangan
+                                <ol>
+                                <li>Fitur ini menampilkan seluruh daftar mahasiswa yang telah melakukan KRS. </li>
+                                <li>Disarankan Mahasiswa sudah di set Dosen Wali terlebih dahulu.</li>
+                                <li>Untuk melakukan validasi KRS Online, centang pada mahasiswa yang akan divalidasi KRS Online tanpa melalui dosen wali terlebih dahulu. kemudian klik tombol "PROSES VALIDASI"</li>
+                                <li>Untuk membatalkan validasi KRS Online, klik tombol hapus pada mahasiswa yang diinginkan.</li>
+                                <li>Fitur ini hanya digunakan untuk membantu proses validasi oleh admin, proses validasi sebenarnya terdapat pada login dosen wali.</li>
+                                <li>KRS Mahasiswa yang dapat divalidasi ialah Mahasiswa yang memiliki status aktivitas perkuliahan AKTIF.</li>
+                                <li>Fitur pencarian bisa di lakukan berdasarkan NIM atau Nama Mahasiswa.</li>
+                                <li>Tidak Ada Jenis Tagihan yang menjadi syarat KRS, bila ingin meng-set tagihan yang menjadi flag KRS hubungi admin keuangan.</li>
+                            </ol>
                             </p>
                         </div>
                     </div>
@@ -179,9 +184,12 @@ const formatDate = (value) => {
                     </template>
 
                     <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                    <template #loading> Loading customers data. Please wait. </template>
-
-                    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+                    <template #loading> Loading data. Please wait. </template>
+                    <Column field="no" header="No" style="min-width: 5rem">
+                        <template #body="{ data }">
+                            {{ data.name }}
+                        </template>
+                    </Column>
                     <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
@@ -202,16 +210,36 @@ const formatDate = (value) => {
                             {{ formatDate(data.date) }}
                         </template>
                     </Column>
-                    <Column header="Dosen Wali" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
+                    <Column header="Jumlah SKS" filterField="jumlahSks" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                    <Column header="Detail KRS" filterField="detailkrs" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <Column header="Status Mahasiswa" filterField="statusmahasiswa" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <Column header="Status Validasi" filterField="statusvalidasi" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <Column header="Aksi" filterField="aksi" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <!-- <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                         <template #body="{ data }">
                             <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                         </template>
-                    </Column>
+                    </Column> -->
                 </DataTable>
             </div>
         </div>

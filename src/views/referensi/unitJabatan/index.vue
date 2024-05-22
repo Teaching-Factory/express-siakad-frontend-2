@@ -119,76 +119,97 @@ const formatDate = (value) => {
         <div class="card-body">
             <h5>DAFTAR UNIT JABATAN</h5>
             <hr />
-            <div class="card card-theme">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 xl:col-3">
-                            <span>Program Studi</span>
-                        </div>
-                        <div class="col-12 xl:col-9">
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option>---Pilih Program Studi---</option>
-                                    <option>S1 Teknik Informatika</option>
-                                    <option>S1 Pendidikan Fisika</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row d-flex justify-content-end">
-                        <Button label="Tampilkan" />
-                    </div>
-                </div>
-            </div>
 
             <div class="card">
-                <DataTable
-                    :value="customer1"
-                    :paginator="true"
-                    :rows="10"
-                    dataKey="id"
-                    :rowHover="true"
-                    v-model:filters="filters1"
-                    filterDisplay="menu"
-                    :loading="loading1"
-                    :filters="filters1"
-                    :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
-                    showGridlines
-                >
-                    <template #header>
-                        <div class="flex justify-content-between flex-column sm:flex-row">
-                            <IconField iconPosition="left">
-                                <InputIcon class="pi pi-search" />
-                                <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
-                            </IconField>
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-sm-6">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected disabled hidden>Program Studi</option>
+                                <option value="1">Teknologi Ternak</option>
+                                <option value="2">Teknologi Basis Data</option>
+                                <option value="3">Perikanan</option>
+                            </select>
                         </div>
-                    </template>
-
-                    <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                    <template #loading> Loading data. Please wait. </template>
-                    <Column field="no" header="No" style="min-width: 5rem">
-                        <template #body="{ data }">
-                            {{ data.name }}
-                        </template>
-                    </Column>
-                    <Column header="Nama Jabatan" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
-                        <template #body="{ data }">
-                            <div class="flex align-items-center gap-2">
-                                <span>{{ data.representative.name }}</span>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected disabled hidden>Angkatan</option>
+                                <option value="1">2020</option>
+                                <option value="2">2021</option>
+                                <option value="3">2022</option>
+                                <option value="4">2023</option>
+                                <option value="5">2024</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="">
+                            <label for="exampleFormControlInput1" class="form-label">Status Mahasiswa</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected disabled hidden>Status Mahasiswa</option>
+                                <option value="1">Aktif</option>
+                                <option value="2">Cuti</option>
+                                <option value="3">DO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
+                        <button class="btn btn-primary btn-block" style="width: 100%;">Filter</button>
+                    </div>
+                    </div>
+                    
+                    <DataTable
+                        :value="customer1"
+                        :paginator="true"
+                        :rows="10"
+                        dataKey="id"
+                        :rowHover="true"
+                        v-model:filters="filters1"
+                        filterDisplay="menu"
+                        :loading="loading1"
+                        :filters="filters1"
+                        :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
+                        showGridlines
+                    >
+                        <template #header>
+                            <div class="flex justify-content-between flex-column sm:flex-row">
+                                <IconField iconPosition="left">
+                                    <InputIcon class="pi pi-search" />
+                                    <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
+                                </IconField>
                             </div>
                         </template>
-                    </Column>
-                    <Column header="Nama Penandatanganan" filterField="prodi" dataType="date" style="min-width: 15rem">
-                        <template #body="{ data }">
-                            {{ formatDate(data.date) }}
-                        </template>
-                    </Column>
-                    <Column header="NIP" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
-                        <template #body="{ data }">
-                            {{ formatCurrency(data.balance) }}
-                        </template>
-                    </Column>
-                </DataTable>
+
+                        <template #empty> <div class="text-center">Tidak ada data.</div></template>
+                        <template #loading> Loading data. Please wait. </template>
+                        <Column field="no" header="No" style="min-width: 5rem">
+                            <template #body="{ data }">
+                                {{ data.name }}
+                            </template>
+                        </Column>
+                        <Column header="Nama Jabatan" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                            <template #body="{ data }">
+                                <div class="flex align-items-center gap-2">
+                                    <span>{{ data.representative.name }}</span>
+                                </div>
+                            </template>
+                        </Column>
+                        <Column header="Nama Penandatanganan" filterField="prodi" dataType="date" style="min-width: 15rem">
+                            <template #body="{ data }">
+                                {{ formatDate(data.date) }}
+                            </template>
+                        </Column>
+                        <Column header="NIP" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
+                            <template #body="{ data }">
+                                {{ formatCurrency(data.balance) }}
+                            </template>
+                        </Column>
+                    </DataTable>
+
             </div>
         </div>
     </div>
@@ -199,3 +220,5 @@ const formatDate = (value) => {
     background-color: rgba(154, 160, 172, 0.5);
 }
 </style>
+
+            

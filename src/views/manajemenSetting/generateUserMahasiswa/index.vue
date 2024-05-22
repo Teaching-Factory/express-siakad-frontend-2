@@ -135,7 +135,14 @@ const formatDate = (value) => {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>PERHITUNGAN TRANSKRIP</h5>
+            <div class="row">
+                <div class="col-10 xl:col-10">
+                    <h5>GENERATE USERNAME DAN PASSWORD MAHASISWA AKTIF</h5>
+                </div>
+                <div class="col-12 xl:col-2 d-flex justify-content-end">
+                    <button class="btn btn-primary">Generate</button>
+                </div>
+            </div>
             <hr />
 
             <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
@@ -143,39 +150,47 @@ const formatDate = (value) => {
                     <div class="col-12 col-md-6 col-lg-12">
                         <h6 class="text-dark">Keterangan :</h6>
                         <p class="lh-1 text-small">
-                            <ul>
-                                <li>Data ini menunjukkan jumlah mahasiswa yang terdaftar setiap angkatan, baik yang sudah lulus/DO ataupun belum</li>
-                                <li>Fitur ini di gunakan untuk menghitung nilai mahasiswa dan akan di simpan menjadi transkrip mahasiswa</li>
-                                <li>Mahasiswa yang telah mengulang matakuliah, akan di hitungkan menjadi 1 matakuliah terbaik yang akan masuk ke dalam transkrip</li>
-                                <li>Nilai yang dihitung pada halaman ini akan otomatis masuk kedalam perhitungan transkrip Feeder</li>
-                                <li>Setting nilai terbaru atau tertinggi di Feeder dimenu Pengaturan -> Pengaturan Transkrip (NEW UPDATE!!)</li>
-                            </ul>
+                            <ol>
+                                <li>Fitur ini digunakan untuk melakukan generate Username & Password Mahasiswa di Go Feeder.</li>
+                                <li>Default user yang di-generate untuk username : NIM & password : tanggal lahir dengan format yyyy-mm-dd (tanda '-' dihilangkan). Contoh : 1997-02-03 = 19970203.</li>
+                                <li>Daftar mahasiswa yang sudah terdaftar di Forlap & berstatus AKTIF.</li>
+                                <li>Untuk melihat daftar user klik disini.</li>
+                            </ol>
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
+            
                 <div class="row">
-                    <div class="col-lg-10 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Angkatan</option>
-                                <option value="1">2020</option>
-                                <option value="2">2021</option>
-                                <option value="3">2022</option>
-                                <option value="4">2023</option>
-                                <option value="5">2024</option>
-                            </select>
+                        <div class="col-lg-5 col-md-6 col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled hidden>Program Studi</option>
+                                    <option value="1">Teknologi Ternak</option>
+                                    <option value="2">Teknologi Basis Data</option>
+                                    <option value="3">Perikanan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled hidden>Angkatan</option>
+                                    <option value="1">2020</option>
+                                    <option value="2">2021</option>
+                                    <option value="3">2022</option>
+                                    <option value="4">2023</option>
+                                    <option value="5">2024</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
+                            <button class="btn btn-primary btn-block" style="width: 100%;">Filter</button>
                         </div>
                     </div>
-                    
-                    <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                        <button class="btn btn-primary btn-block" style="width: 100%;">Filter</button>
-                    </div>
-                    </div>
-                    <hr/>
 
                 <DataTable
                     :value="customer1"
@@ -206,33 +221,44 @@ const formatDate = (value) => {
                             {{ data.name }}
                         </template>
                     </Column>
-                    <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 15rem">
+                    <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 20rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.representative.name }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="NIM" filterField="nim.name" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
+                                <span>{{ data.country.name }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatDate(data.date) }}
                         </template>
                     </Column>
-                    <Column header="Jumlah Mahasiswa" filterField="jumlahmahasiswa" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Status" filterField="angkatan" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column header="Perubahan Terakhir" filterField="perubahanterakhir" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Angkatan" filterField="angkatan" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column header="Aksi" filterField="aksi" dataType="numeric" style="min-width: 15rem">
-                        <template #body="{ data }">
-                            {{ formatCurrency(data.balance) }}
-                        </template>
-                    </Column>
+                    
                     <!-- <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                         <template #body="{ data }">
                             <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                         </template>
                     </Column> -->
                 </DataTable>
-            </div>
+            
         </div>
     </div>
 </template>
