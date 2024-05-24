@@ -9,7 +9,7 @@ const router = createRouter({
             component: AppLayout,
             children: [
                 {
-                    path: '/',
+                    path: '/dashboard',
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
                 },
@@ -64,7 +64,7 @@ const router = createRouter({
                     name: 'setaktifakm',
                     component: () => import('../views/mahasiswa/setAktifAkm/index.vue')
                 },
-                
+
                 {
                     path: '/belum-set-sk',
                     name: 'belumsetsk',
@@ -121,38 +121,38 @@ const router = createRouter({
 
                 //referensi
                 {
-                    path:'/sistemkuliah',
-                    name:'sistemkuliah',
+                    path: '/sistemkuliah',
+                    name: 'sistemkuliah',
                     component: () => import('../views/referensi/sistemKuliah/index.vue')
                 },
                 {
-                    path:'/ruangperkuliahan',
-                    name:'ruangperkuliahan',
+                    path: '/ruangperkuliahan',
+                    name: 'ruangperkuliahan',
                     component: () => import('../views/referensi/ruangPerkuliahan/index.vue')
                 },
                 {
-                    path:'/unsurpenilaian',
-                    name:'unsurpenilaian',
+                    path: '/unsurpenilaian',
+                    name: 'unsurpenilaian',
                     component: () => import('../views/referensi/unsurPenilaian/index.vue')
                 },
                 {
-                    path:'/bobotpenilaian',
-                    name:'bobotpenilaian',
+                    path: '/bobotpenilaian',
+                    name: 'bobotpenilaian',
                     component: () => import('../views/referensi/bobotPenilaian/index.vue')
                 },
                 {
-                    path:'/daftarjabatan',
-                    name:'daftarjabatan',
+                    path: '/daftarjabatan',
+                    name: 'daftarjabatan',
                     component: () => import('../views/referensi/daftarJabatan/index.vue')
                 },
                 {
-                    path:'/unitjabatan',
-                    name:'unitjabatan',
+                    path: '/unitjabatan',
+                    name: 'unitjabatan',
                     component: () => import('../views/referensi/unitJabatan/index.vue')
                 },
                 {
-                    path:'/datawilayah',
-                    name:'datawilayah',
+                    path: '/datawilayah',
+                    name: 'datawilayah',
                     component: () => import('../views/referensi/dataWilayah/index.vue')
                 },
                 {
@@ -314,4 +314,16 @@ const router = createRouter({
     ]
 });
 
+// Navigation Guard untuk memeriksa otentikasi
+router.beforeEach((to, from, next) => {
+    const publicPages = ['/auth/login', '/auth/access', '/auth/error', '/landing'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.getItem('user');
+
+    if (authRequired && !loggedIn) {
+        return next('/auth/login');
+    }
+
+    next();
+});
 export default router;
