@@ -3,3 +3,15 @@
 body{
     font-family: "Poppins", sans-serif !important;
 }
+
+.p-datatable-header {
+    border-radius: 10px !important;
+}
+
+.p-datatable.p-datatable-gridlines .p-datatable-header {
+    border-width: none !important;
+}
+
+.p-datatable.p-datatable-gridlines .p-datatable-header {
+    border-width: none !important;
+}

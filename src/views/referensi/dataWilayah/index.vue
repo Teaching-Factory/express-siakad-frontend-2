@@ -1,181 +1,125 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import { CustomerService } from '@/service/CustomerService';
-import { ProductService } from '@/service/ProductService';
+const customer1 = ref([]);
+const loading1 = ref(false);
+const getSeverity = (status) => {
+    switch (status) {
+        case 'unqualified':
+            return 'danger';
 
-const customer1 = ref(null);
-const customer2 = ref(null);
-const customer3 = ref(null);
-const filters1 = ref(null);
-const loading1 = ref(null);
-const loading2 = ref(null);
-const products = ref(null);
+        case 'qualified':
+            return 'success';
+            
+        case 'new':
+            return 'info';
 
-const customerService = new CustomerService();
-const productService = new ProductService();
+        case 'negotiation':
+            return 'warning';
+
+        case 'renewal':
+            return null;
+    }
+};
 
 onBeforeMount(() => {
-    productService.getProductsWithOrdersSmall().then((data) => (products.value = data));
-    customerService.getCustomersLarge().then((data) => {
-        customer1.value = data;
-        loading1.value = false;
-        customer1.value.forEach((customer) => (customer.date = new Date(customer.date)));
-    });
-    customerService.getCustomersLarge().then((data) => (customer2.value = data));
-    customerService.getCustomersMedium().then((data) => (customer3.value = data));
-    loading2.value = false;
-
-    initFilters1();
-});
-
-const initFilters1 = () => {
-    filters1.value = {
-        global: {
-            value: null,
-            matchMode: FilterMatchMode.CONTAINS
-        },
-        name: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        'country.name': {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        representative: {
-            value: null,
-            matchMode: FilterMatchMode.IN
-        },
-        date: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.DATE_IS
-                }
-            ]
-        },
-        balance: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        status: {
-            operator: FilterOperator.OR,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        activity: {
-            value: [0, 100],
-            matchMode: FilterMatchMode.BETWEEN
-        },
-        verified: {
-            value: null,
-            matchMode: FilterMatchMode.EQUALS
+    customer1.value = [
+        {
+            no: '1',
+            idwilayah: '260123',
+            kecamatan: 'Air PadangAir Padang',
+            kota: 'Kab. Bengkulu Utara',
+            provinsi: 'Prov. Bengkulu',
+        
+        },{
+            no: '2',
+            idwilayah: '260123',
+            kecamatan: 'Air PadangAir Padang',
+            kota: 'Kab. Bengkulu Utara',
+            provinsi: 'Prov. Bengkulu',
         }
-    };
-};
-
-// const clearFilter1 = () => {
-//     initFilters1();
-// };
-const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    });
-};
-
-const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-};
+        // Add more dummy data here
+    ];
+})
 </script>
 
 <template>
     <div class="card">
-        <div class="card-body">
-            <h5>DAFTAR WILAYAH</h5>
-            
-            <DataTable
+        <h5><i class="pi pi-user me-2"></i>DAFTAR WILAYAH</h5>
+            <div class="card">
+                <DataTable
                 :value="customer1"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
-                v-model:filters="filters1"
-                filterDisplay="menu"
                 :loading="loading1"
-                :filters="filters1"
-                :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
                 showGridlines
             >
                 <template #header>
-                    <div class="flex justify-content-between flex-column sm:flex-row">
-                        <IconField iconPosition="left">
-                            <InputIcon class="pi pi-search" />
-                            <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
-                        </IconField>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex justify-content-start">
+                            <IconField iconPosition="left">
+                                <InputIcon class="pi pi-search" />
+                                <InputText placeholder="Cari disini" style="width: 100%" />
+                            </IconField>
+                        </div>
+                        <div class="col-lg-6 d-flex justify-content-end">
+                            <div class="flex justify-content-end gap-2">
+                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
+                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
+                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
+                                <!-- <button class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
+                            </div>
+                        </div>
                     </div>
                 </template>
 
-                <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                <template #loading> Loading data. Please wait. </template>
+                <template #empty>
+                    <div class="text-center">Tidak ada data.</div>
+                </template>
+                <template #loading>
+                    Loading customers data. Please wait.
+                </template>
                 <Column field="no" header="No" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.name }}
+                        {{ data.no }}
                     </template>
                 </Column>
-                <Column header="ID Wilayah" filterField="nim.name" style="min-width: 12rem">
+                <Column header="ID Wilayah" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
-                            <span>{{ data.country.name }}</span>
+                            <span>{{ data.idwilayah }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Kecamatan" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                <Column header="Kecamatan" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.representative.name }}</span>
+                            <span>{{ data.kecamatan }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Kota" filterField="prodi" dataType="date" style="min-width: 15rem">
+                <Column header="Kota" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ formatDate(data.date) }}
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.kota }}</span>
+                        </div>
                     </template>
                 </Column>
-                <Column header="Provinsi" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
+                <Column header="Provinsi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ formatCurrency(data.balance) }}
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.provinsi }}</span>
+                        </div>
                     </template>
                 </Column>
             </DataTable>
-            
         </div>
     </div>
 </template>
 
+<style scoped>
+.card-theme {
+    background-color: rgba(154, 160, 172, 0.5);
+}
+</style>

@@ -4258,7 +4258,7 @@
     background: #ffffff;
     color: #334155;
     border: 1px solid #e2e8f0;
-    border-width: 0 0 1px 0;
+    /* border-width: 0 0 1px 0; */
     padding: 0.75rem 1rem;
     font-weight: 600;
   }
@@ -4411,7 +4411,7 @@
     height: 2rem;
   }
   .p-datatable.p-datatable-gridlines .p-datatable-header {
-    border-width: 1px 1px 0 1px;
+    /* border-width: 1px 1px 0 1px; */
   }
   .p-datatable.p-datatable-gridlines .p-datatable-footer {
     border-width: 0 1px 1px 1px;

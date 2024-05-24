@@ -1,19 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import { CustomerService } from '@/service/CustomerService';
-import { ProductService } from '@/service/ProductService';
-
-const customer1 = ref(null);
-const customer2 = ref(null);
-const customer3 = ref(null);
-const filters1 = ref(null);
-const loading1 = ref(null);
-const loading2 = ref(null);
-const products = ref(null);
-
-const customerService = new CustomerService();
-const productService = new ProductService();
+const customer1 = ref([]);
+const loading1 = ref(false);
 const getSeverity = (status) => {
     switch (status) {
         case 'unqualified':
@@ -21,7 +9,7 @@ const getSeverity = (status) => {
 
         case 'qualified':
             return 'success';
-
+            
         case 'new':
             return 'info';
 
@@ -34,174 +22,115 @@ const getSeverity = (status) => {
 };
 
 onBeforeMount(() => {
-    productService.getProductsWithOrdersSmall().then((data) => (products.value = data));
-    customerService.getCustomersLarge().then((data) => {
-        customer1.value = data;
-        loading1.value = false;
-        customer1.value.forEach((customer) => (customer.date = new Date(customer.date)));
-    });
-    customerService.getCustomersLarge().then((data) => (customer2.value = data));
-    customerService.getCustomersMedium().then((data) => (customer3.value = data));
-    loading2.value = false;
-
-    initFilters1();
-});
-
-const initFilters1 = () => {
-    filters1.value = {
-        global: {
-            value: null,
-            matchMode: FilterMatchMode.CONTAINS
-        },
-        name: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        'country.name': {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        representative: {
-            value: null,
-            matchMode: FilterMatchMode.IN
-        },
-        date: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.DATE_IS
-                }
-            ]
-        },
-        balance: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        status: {
-            operator: FilterOperator.OR,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        activity: {
-            value: [0, 100],
-            matchMode: FilterMatchMode.BETWEEN
-        },
-        verified: {
-            value: null,
-            matchMode: FilterMatchMode.EQUALS
+    customer1.value = [
+        {
+            no: '1',
+            prodi: 'S1 Teknik Informatika',
+            angkatan: '2009',
+            nim: '12345678',
+            name: 'John Doe',
+            sistemkuliah: `
+            <div class="actions gap-2">
+                <select class="form-select" id="sistemkuliahDropdown">
+                    <option value="option1">--Pilih Sistem Kuliah</option>
+                    <option value="option2">Karyawan</option>
+                    <option value="option3">Reguler</option>
+                </select>
+            </div>`,
+        },{
+            no: '2',
+            prodi: 'S1 Teknik Informatika',
+            angkatan: '2009',
+            nim: '12345678',
+            name: 'John Doe',
+            sistemkuliah: `
+            <div class="actions gap-2">
+                <select class="form-select" id="sistemkuliahDropdown">
+                    <option value="option1">--Pilih Sistem Kuliah</option>
+                    <option value="option2">Karyawan</option>
+                    <option value="option3">Reguler</option>
+                </select>
+            </div>`,
         }
-    };
-};
-
-// const clearFilter1 = () => {
-//     initFilters1();
-// };
-const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    });
-};
-
-const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-};
+        // Add more dummy data here
+    ];
+})
 </script>
 
 <template>
     <div class="card">
-        <div class="body">
-            <h5>MAHASISWA YANG BELUM SET SISTEM KULIAH</h5>
-            <hr />
+        <h5><i class="pi pi-user me-2"></i>MAHASISWA YANG BELUM SET SISTEM KULIAH</h5>
             <div class="card">
-                <div class="card-body">
-                    <DataTable
-                        :value="customer1"
-                        :paginator="true"
-                        :rows="10"
-                        dataKey="id"
-                        :rowHover="true"
-                        v-model:filters="filters1"
-                        filterDisplay="menu"
-                        :loading="loading1"
-                        :filters="filters1"
-                        :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
-                        showGridlines
-                    >
-                        <template #header>
-                            <div class="flex justify-content-between flex-column sm:flex-row">
-                                <IconField iconPosition="left">
-                                    <InputIcon class="pi pi-search" />
-                                    <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
-                                </IconField>
+                <DataTable
+                :value="customer1"
+                :paginator="true"
+                :rows="10"
+                dataKey="id"
+                :rowHover="true"
+                :loading="loading1"
+                showGridlines
+            >
+                <template #header>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex justify-content-start">
+                            <IconField iconPosition="left">
+                                <InputIcon class="pi pi-search" />
+                                <InputText placeholder="Cari disini" style="width: 100%" />
+                            </IconField>
+                        </div>
+                        <div class="col-lg-6 d-flex justify-content-end">
+                            <div class="flex justify-content-end gap-2">
+                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
+                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
+                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
+                                <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Set Sistem Kuliah</button>
                             </div>
-                        </template>
+                        </div>
+                    </div>
+                </template>
 
-                        <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                        <template #loading> Loading customers data. Please wait. </template>
-                        <Column field="no" header="No" style="min-width: 5rem">
-                            <template #body="{ data }">
-                                {{ data.name }}
-                            </template>
-                        </Column>
-                        <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
-                            <template #body="{ data }">
-                                <div class="flex align-items-center gap-2">
-                                    <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
-                                    <span>{{ data.country.name }}</span>
-                                </div>
-                            </template>
-                        </Column>
-                        <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
-                            <template #body="{ data }">
-                                <div class="flex align-items-center gap-2">
-                                    <span>{{ data.representative.name }}</span>
-                                </div>
-                            </template>
-                        </Column>
-                        <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 15rem">
-                            <template #body="{ data }">
-                                {{ formatDate(data.date) }}
-                            </template>
-                        </Column>
-                        <Column header="Dosen Wali" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
-                            <template #body="{ data }">
-                                {{ formatCurrency(data.balance) }}
-                            </template>
-                        </Column>
-                        <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
-                            <template #body="{ data }">
-                                <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
-                            </template>
-                        </Column>
-                    </DataTable>
-                </div>
+                <template #empty>
+                    <div class="text-center">Tidak ada data.</div>
+                </template>
+                <template #loading>
+                    Loading customers data. Please wait.
+                </template>
+                <Column field="no" header="No" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        {{ data.no }}
+                    </template>
+                </Column>
+                <Column header="Program Studi" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        {{ data.prodi }}
+                    </template>
+                </Column>
+                <Column header="Angkatan" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ data.angkatan }}
+                    </template>
+                </Column>
+                <Column header="NIM" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.nim }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Nama Mahasiswa" style="min-width: 14rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.name }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Sistem Kuliah" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div v-html="data.sistemkuliah"></div>
+                    </template>
+                </Column>
+            </DataTable>
             </div>
-        </div>
     </div>
 </template>
 
