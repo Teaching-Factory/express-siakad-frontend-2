@@ -138,17 +138,19 @@ const formatDate = (value) => {
             <h5>SET STATUS MAHASISWA - PERIODE 2022/2023 GANJIL</h5>
             <hr />
 
-            <div class="card card-theme">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-lg-12">
-                            <h6 class="text-dark">Keterangan :</h6>
-                            <p class="lh-1 text-small">
-                                1. Data dibawah menunjukkan jumlah mahasiswa yang belum terdaftar sebagai mahasiswa Lulus / Drop Out
-                                <br />2. Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada Feeder <br />3. Fitur ini membantu admin untuk meminimalisasi adanya mahasiswa yang tidak memiliki status di periode
-                                berlaku <br />4. Status mahasiswa akan berubah menjadi aktif ketika melakukan validasi pembayaran / KRS <br />5. Fitur ini hanya di gunakan di setiap awal periode semester
-                            </p>
-                        </div>
+            <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <h6 class="text-dark">Keterangan :</h6>
+                        <p class="lh-1 text-small">
+                            <ol>
+                                <li>Data dibawah menunjukkan jumlah mahasiswa yang belum terdaftar sebagai mahasiswa Lulus / Drop Out</li>
+                                <li>Pastikan kodeprodi yang anda inputkan sesuai dengan daftar referensi program studi pada Feeder</li>
+                                <li>Fitur ini membantu admin untuk meminimalisasi adanya mahasiswa yang tidak memiliki status di periode berlaku</li>
+                                <li>Status mahasiswa akan berubah menjadi aktif ketika melakukan validasi pembayaran / KRS</li>
+                                <li>Fitur ini hanya di gunakan di setiap awal periode semester</li>
+                            </ol>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -171,7 +173,7 @@ const formatDate = (value) => {
                         <div class="flex justify-content-between flex-column sm:flex-row">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
+                                <InputText v-model="filters1['global'].value" placeholder="Cari disini" style="width: 100%" />
                             </IconField>
                         </div>
                     </template>
@@ -183,18 +185,11 @@ const formatDate = (value) => {
                             {{ data.name }}
                         </template>
                     </Column>
-                    <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
+                    <Column header="NIM" filterField="nim.name" style="min-width: 10rem">
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
                                 <span>{{ data.country.name }}</span>
-                            </div>
-                        </template>
-                    </Column>
-                    <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
-                        <template #body="{ data }">
-                            <div class="flex align-items-center gap-2">
-                                <span>{{ data.representative.name }}</span>
                             </div>
                         </template>
                     </Column>
@@ -203,16 +198,26 @@ const formatDate = (value) => {
                             {{ formatDate(data.date) }}
                         </template>
                     </Column>
-                    <Column header="Dosen Wali" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
+                    <Column header="Status Prodi" filterField="statusProdi" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                    <Column header="Total Mahasiswa yang Belum di SET" filterField="mahasiswaBelumSet" dataType="numeric" style="min-width: 20rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <Column header="Aksi" filterField="aksi" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <!-- <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                         <template #body="{ data }">
                             <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                         </template>
-                    </Column>
+                    </Column> -->
                 </DataTable>
             </div>
         </div>

@@ -137,44 +137,38 @@ const formatDate = (value) => {
         <div class="card-body">
             <h5>DAFTAR MAHASISWA YANG BELUM KRS</h5>
             <hr />
-            <div class="card card-theme">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 xl:col-3">
-                            <span>Program Studi</span>
-                        </div>
-                        <div class="col-12 xl:col-9">
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option>---Pilih Program Studi---</option>
-                                    <option>S1 Teknik Informatika</option>
-                                    <option>S1 Pendidikan Fisika</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12 xl:col-3">
-                            <span>Angkatan</span>
-                        </div>
-                        <div class="col-12 xl:col-9">
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option>---Pilih Angkatan---</option>
-                                    <option>2023</option>
-                                    <option>2022</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <button class="btn btn-primary my-4">Tampilkan</button>
-                    </div>
-                </div>
-            </div>
-
             <div class="card">
+                <div class="row">
+                        <div class="col-lg-5 col-md-6 col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled hidden>Program Studi</option>
+                                    <option value="1">Teknologi Ternak</option>
+                                    <option value="2">Teknologi Basis Data</option>
+                                    <option value="3">Perikanan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled hidden>Angkatan</option>
+                                    <option value="1">2020</option>
+                                    <option value="2">2021</option>
+                                    <option value="3">2022</option>
+                                    <option value="4">2023</option>
+                                    <option value="5">2024</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
+                            <button class="btn btn-primary btn-block" style="width: 100%;">Filter</button>
+                        </div>
+                    </div>
+                    <hr/>
+
                 <DataTable
                     :value="customer1"
                     :paginator="true"
@@ -204,7 +198,7 @@ const formatDate = (value) => {
                             {{ data.name }}
                         </template>
                     </Column>
-                    <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
+                    <Column header="NIM" filterField="nim.name" style="min-width: 10rem">
                         <template #body="{ data }">
                             <div class="flex align-items-center gap-2">
                                 <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
@@ -224,7 +218,7 @@ const formatDate = (value) => {
                             {{ formatDate(data.date) }}
                         </template>
                     </Column>
-                    <Column header="Dosen Wali" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
+                    <Column header="Dosen Wali" filterField="dosenwali" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>

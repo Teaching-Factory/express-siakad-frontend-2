@@ -138,73 +138,65 @@ const formatDate = (value) => {
             <h5>SET SISTEM KULIAH MAHASISWA</h5>
             <hr />
 
-            <div class="card card-theme">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 col-md-6 col-lg-12">
-                            <h6 class="text-dark">Keterangan :</h6>
-                            <p class="lh-1 text-small">
-                                1. Pada pilihan sistem kuliah pilihan kosong akan keluar jika mahasiswa belum pernah di setting sistem kuliah.
-                                <br />2. Jika anda sudah melakukan setting sistem kuliah anda tidak dapat menghilangkan sistem kuliah mahasiswa. <br />
-                                3. Data yang akan diproses (ketika anda melakukan proses simpan) sesuai dengan data yang ditampilkan. <br />4. Jika anda ingin melakukan simpan banyak data sekaligus silahkan tampilkan lebih banyak data <br />
-                                5. Sistem kuliah berfungsi untuk mengelompokkan mahasiswa sesuai dengan status mahasiswa di perguruan tinggi dan untuk menentukan nominal tagihan perkuliahan mahasiswa pada role admin keuangan
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card card-theme">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12 xl:col-2">
-                            <span>Program Studi</span>
-                        </div>
-                        <div class="col-12 xl:col-10">
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option>---Pilih Program Studi---</option>
-                                    <option>S1 Teknik Informatika</option>
-                                    <option>S1 Pendidikan Fisika</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12 xl:col-2">
-                            <span>Angkatan</span>
-                        </div>
-                        <div class="col-12 xl:col-10">
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option>---Pilih Angkatan---</option>
-                                    <option>2023</option>
-                                    <option>O2022</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 xl:col-2">
-                            <span>Sistem Kuliah</span>
-                        </div>
-                        <div class="col-12 xl:col-10">
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option>---Pilih Sistem Kuliah---</option>
-                                    <option>Reguler</option>
-                                    <option>Karyawan</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <button class="btn btn-primary my-4">Tampilkan</button>
+            <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <h6 class="text-dark">Keterangan :</h6>
+                        <p class="lh-1 text-small">
+                            <ol>
+                                <li>Pada pilihan sistem kuliah pilihan kosong akan keluar jika mahasiswa belum pernah di setting sistem kuliah.</li>
+                                <li>Jika anda sudah melakukan setting sistem kuliah anda tidak dapat menghilangkan sistem kuliah mahasiswa.</li>
+                                <li>Data yang akan diproses (ketika anda melakukan proses simpan) sesuai dengan data yang ditampilkan.</li>
+                                <li>Jika anda ingin melakukan simpan banyak data sekaligus silahkan tampilkan lebih banyak data.</li>
+                                <li>Sistem kuliah berfungsi untuk mengelompokkan mahasiswa sesuai dengan status mahasiswa di perguruan tinggi dan untuk menentukan nominal tagihan perkuliahan mahasiswa pada role admin keuangan</li>
+                            </ol>
+                        </p>
                     </div>
                 </div>
             </div>
 
             <div class="card">
+                <div class="row">
+                        <div class="col-lg-5 col-md-6 col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled hidden>Program Studi</option>
+                                    <option value="1">Teknologi Ternak</option>
+                                    <option value="2">Teknologi Basis Data</option>
+                                    <option value="3">Perikanan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled hidden>Angkatan</option>
+                                    <option value="1">2020</option>
+                                    <option value="2">2021</option>
+                                    <option value="3">2022</option>
+                                    <option value="4">2023</option>
+                                    <option value="5">2024</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="">
+                                <label for="exampleFormControlInput1" class="form-label">Sistem Kuliah</label>
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected disabled hidden>Sistem Kuliah</option>
+                                    <option value="1">Reguler</option>
+                                    <option value="2">Karyawan</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
+                            <button class="btn btn-primary btn-block" style="width: 100%;">Filter</button>
+                        </div>
+                    </div>
+                    <hr/>
+
                 <DataTable
                     :value="customer1"
                     :paginator="true"
@@ -222,24 +214,16 @@ const formatDate = (value) => {
                         <div class="flex justify-content-between flex-column sm:flex-row">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
+                                <InputText v-model="filters1['global'].value" placeholder="Cari disini" style="width: 100%" />
                             </IconField>
                         </div>
                     </template>
 
                     <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                    <template #loading> Loading customers data. Please wait. </template>
+                    <template #loading> Loading data. Please wait. </template>
                     <Column field="no" header="No" style="min-width: 5rem">
                         <template #body="{ data }">
                             {{ data.name }}
-                        </template>
-                    </Column>
-                    <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
-                        <template #body="{ data }">
-                            <div class="flex align-items-center gap-2">
-                                <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
-                                <span>{{ data.country.name }}</span>
-                            </div>
                         </template>
                     </Column>
                     <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
@@ -249,21 +233,49 @@ const formatDate = (value) => {
                             </div>
                         </template>
                     </Column>
-                    <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 15rem">
+                    <Column header="NIM" filterField="nim.name" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
+                                <span>{{ data.country.name }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Email" filterField="email" dataType="date" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatDate(data.date) }}
                         </template>
                     </Column>
-                    <Column header="Dosen Wali" filterField="dosenWali" dataType="numeric" style="min-width: 10rem">
+                    <Column header="Angkatan" filterField="angkatan" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                    <Column header="Jenis Kelamin" filterField="angkatan" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <Column header="Tanggal Lahir" filterField="tanggallahir" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <Column header="Nama Ibu" filterField="namaibu" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <Column header="Sistem Kuliah" filterField="sistemkuliah" dataType="numeric" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            {{ formatCurrency(data.balance) }}
+                        </template>
+                    </Column>
+                    <!-- <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                         <template #body="{ data }">
                             <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                         </template>
-                    </Column>
+                    </Column> -->
                 </DataTable>
             </div>
         </div>

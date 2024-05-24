@@ -135,48 +135,14 @@ const formatDate = (value) => {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>PERHITUNGAN TRANSKRIP</h5>
-            <hr />
-
-            <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-12">
-                        <h6 class="text-dark">Keterangan :</h6>
-                        <p class="lh-1 text-small">
-                            <ul>
-                                <li>Data ini menunjukkan jumlah mahasiswa yang terdaftar setiap angkatan, baik yang sudah lulus/DO ataupun belum</li>
-                                <li>Fitur ini di gunakan untuk menghitung nilai mahasiswa dan akan di simpan menjadi transkrip mahasiswa</li>
-                                <li>Mahasiswa yang telah mengulang matakuliah, akan di hitungkan menjadi 1 matakuliah terbaik yang akan masuk ke dalam transkrip</li>
-                                <li>Nilai yang dihitung pada halaman ini akan otomatis masuk kedalam perhitungan transkrip Feeder</li>
-                                <li>Setting nilai terbaru atau tertinggi di Feeder dimenu Pengaturan -> Pengaturan Transkrip (NEW UPDATE!!)</li>
-                            </ul>
-                        </p>
-                    </div>
+            <div class="row">
+                <div class="col-10 xl:col-10">
+                    <h5>DAFTAR BERITA</h5>
+                </div>
+                <div class="col-12 xl:col-2 d-flex justify-content-end">
+                    <button class="btn btn-primary"> <i class="pi pi-plus mr-2"></i> Tambah</button>
                 </div>
             </div>
-
-            <div class="card">
-                <div class="row">
-                    <div class="col-lg-10 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Angkatan</option>
-                                <option value="1">2020</option>
-                                <option value="2">2021</option>
-                                <option value="3">2022</option>
-                                <option value="4">2023</option>
-                                <option value="5">2024</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                        <button class="btn btn-primary btn-block" style="width: 100%;">Filter</button>
-                    </div>
-                    </div>
-                    <hr/>
-
                 <DataTable
                     :value="customer1"
                     :paginator="true"
@@ -194,7 +160,7 @@ const formatDate = (value) => {
                         <div class="flex justify-content-between flex-column sm:flex-row">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText v-model="filters1['global'].value" placeholder="Cari disini" style="width: 100%" />
+                                <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
                             </IconField>
                         </div>
                     </template>
@@ -206,22 +172,37 @@ const formatDate = (value) => {
                             {{ data.name }}
                         </template>
                     </Column>
-                    <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 15rem">
+                    <Column header="Judul" filterField="judul.name" style="min-width: 15rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
+                                <span>{{ data.country.name }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Deskripsi Pendek" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 20rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.representative.name }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Penulis" filterField="jenistagihan" dataType="date" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatDate(data.date) }}
                         </template>
                     </Column>
-                    <Column header="Jumlah Mahasiswa" filterField="jumlahmahasiswa" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Tanggal Pembuatan" filterField="jumlahtagihan" dataType="numeric" style="min-width: 15rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column header="Perubahan Terakhir" filterField="perubahanterakhir" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Kategori" filterField="nominal" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column header="Aksi" filterField="aksi" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Aksi" filterField="statustagihan" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
@@ -232,7 +213,6 @@ const formatDate = (value) => {
                         </template>
                     </Column> -->
                 </DataTable>
-            </div>
         </div>
     </div>
 </template>

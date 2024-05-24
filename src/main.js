@@ -4,7 +4,7 @@ import router from './router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'primeicons/primeicons.css';
-
+import './assets/custom.css'; 
 import pace from 'pace-js';
 import 'pace-js/themes/blue/pace-theme-minimal.css';
 

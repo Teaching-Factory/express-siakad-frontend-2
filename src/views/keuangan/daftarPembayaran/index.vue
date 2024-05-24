@@ -122,14 +122,14 @@ const initFilters1 = () => {
     <div class="card">
         <div class="body">
             <div class="row">
-                <div class="col-12 xl:col-10">
-                    <h5>DAFTAR RUANG PERKULIAHAN</h5>
+                <div class="col-10 xl:col-10">
+                    <h5>DAFTAR PEMBAYARAN</h5>
                 </div>
                 <div class="col-12 xl:col-2 d-flex justify-content-end">
-                    <button class="btn btn-primary"> <i class="pi pi-plus mr-2"></i> Tambah</button>
+                    <button class="btn btn-primary"> <i class="pi pi-print mr-2"></i> Cetak</button>
                 </div>
             </div>
-        
+            
             <DataTable
                 :value="customer1"
                 :paginator="true"
@@ -154,12 +154,12 @@ const initFilters1 = () => {
 
                 <template #empty> <div class="text-center">Tidak ada data.</div></template>
                 <template #loading> Loading customers data. Please wait. </template>
-                <Column field="no" header="No" style="min-width: 5rem">
+                <Column field="no" header="No" style="min-width: rem">
                     <template #body="{ data }">
                         {{ data.name }}
                     </template>
                 </Column>
-                <Column header="Kode Ruang" filterField="kodesk.name" style="min-width: 12rem">
+                <Column header="NIM" filterField="nim.name" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
@@ -167,25 +167,48 @@ const initFilters1 = () => {
                         </div>
                     </template>
                 </Column>
-                <Column header="Nama Ruang Perkuliahan" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 20rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.representative.name }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column field="angkatan" header="Lokasi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                <Column header="Periode Bayar" filterField="periodebayar" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.representative.name }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Metode Pembayaran" filterField="metodepembayaran" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.representative.name }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Nominal" filterField="nominal" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.representative.name }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Tanggal Bayar" filterField="tanggalbayar" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.representative.name }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <!-- <Column field="angkatan" header="Aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                     <template #body="{ data }">
                         <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
                     </template>
-                </Column>
-                <Column field="angkatan" header="aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
-                    <template #body="{ data }">
-                        <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
-                    </template>
-                </Column>
+                </Column> -->
             </DataTable>
-               
+                
         </div>
     </div>
 </template>

@@ -18,7 +18,7 @@ onBeforeUnmount(() => {
 });
 
 const logoUrl = computed(() => {
-    return `/layout/images/ubi.jpg`;
+    return `/public/ubi.png`;
 });
 
 const onTopBarMenuButton = () => {

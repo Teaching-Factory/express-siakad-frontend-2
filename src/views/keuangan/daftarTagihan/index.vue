@@ -135,47 +135,68 @@ const formatDate = (value) => {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>PERHITUNGAN TRANSKRIP</h5>
-            <hr />
-
-            <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-12">
-                        <h6 class="text-dark">Keterangan :</h6>
-                        <p class="lh-1 text-small">
-                            <ul>
-                                <li>Data ini menunjukkan jumlah mahasiswa yang terdaftar setiap angkatan, baik yang sudah lulus/DO ataupun belum</li>
-                                <li>Fitur ini di gunakan untuk menghitung nilai mahasiswa dan akan di simpan menjadi transkrip mahasiswa</li>
-                                <li>Mahasiswa yang telah mengulang matakuliah, akan di hitungkan menjadi 1 matakuliah terbaik yang akan masuk ke dalam transkrip</li>
-                                <li>Nilai yang dihitung pada halaman ini akan otomatis masuk kedalam perhitungan transkrip Feeder</li>
-                                <li>Setting nilai terbaru atau tertinggi di Feeder dimenu Pengaturan -> Pengaturan Transkrip (NEW UPDATE!!)</li>
-                            </ul>
-                        </p>
-                    </div>
+            <div class="row">
+                <div class="col-10 xl:col-10">
+                    <h5>DAFTAR TAGIHAN</h5>
+                </div>
+                <div class="col-12 xl:col-2 d-flex justify-content-end">
+                    <button class="btn btn-primary"> <i class="pi pi-plus mr-2"></i> Tambah</button>
                 </div>
             </div>
 
             <div class="card">
                 <div class="row">
-                    <div class="col-lg-10 col-md-6 col-sm-6">
+                    <div class="col-lg-2 col-md-6 col-sm-6">
                         <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
+                            <label for="exampleFormControlInput1" class="form-label">Periode Tagihan</label>
                             <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Angkatan</option>
-                                <option value="1">2020</option>
-                                <option value="2">2021</option>
-                                <option value="3">2022</option>
-                                <option value="4">2023</option>
-                                <option value="5">2024</option>
+                                <option selected disabled hidden>Periode Tagihan</option>
+                                <option value="1">2020/2021 Genap</option>
+                                <option value="2">2020/2021 Ganjil</option>
+                                <option value="3">2021/2022 Genap</option>
                             </select>
                         </div>
                     </div>
-                    
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected disabled hidden>Program Studi</option>
+                                <option value="1">Teknologi Ternak</option>
+                                <option value="2">Teknologi Basis Data</option>
+                                <option value="3">Perikanan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-6">
+                        <div class="mb-3">
+                            <label for="exampleFormControlInput1" class="form-label">Jenis Tagihan</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected disabled hidden>Jenis Tagihan</option>
+                                <option value="1">UKT</option>
+                                <option value="2">Wisuda</option>
+                                <option value="3">KKN</option>
+                                <option value="4">Buku</option>
+                                <option value="5">MKI</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="">
+                            <label for="exampleFormControlInput1" class="form-label">Status Pembayaran</label>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected disabled hidden>Status</option>
+                                <option value="1">Belum Lunas</option>
+                                <option value="2">Lunas</option>
+                                <option value="3">Belum Bayar</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
                         <button class="btn btn-primary btn-block" style="width: 100%;">Filter</button>
                     </div>
-                    </div>
-                    <hr/>
+                </div>
+                <hr/>
 
                 <DataTable
                     :value="customer1"
@@ -194,7 +215,7 @@ const formatDate = (value) => {
                         <div class="flex justify-content-between flex-column sm:flex-row">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText v-model="filters1['global'].value" placeholder="Cari disini" style="width: 100%" />
+                                <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
                             </IconField>
                         </div>
                     </template>
@@ -206,22 +227,37 @@ const formatDate = (value) => {
                             {{ data.name }}
                         </template>
                     </Column>
-                    <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 15rem">
+                    <Column header="NIM" filterField="nim.name" style="min-width: 12rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
+                                <span>{{ data.country.name }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.representative.name }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Jenis Tagihan" filterField="jenistagihan" dataType="date" style="min-width: 15rem">
                         <template #body="{ data }">
                             {{ formatDate(data.date) }}
                         </template>
                     </Column>
-                    <Column header="Jumlah Mahasiswa" filterField="jumlahmahasiswa" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Jumlah Tagihan" filterField="jumlahtagihan" dataType="numeric" style="min-width: 15rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column header="Perubahan Terakhir" filterField="perubahanterakhir" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Nominal" filterField="nominal" dataType="numeric" style="min-width: 15rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
                     </Column>
-                    <Column header="Aksi" filterField="aksi" dataType="numeric" style="min-width: 15rem">
+                    <Column header="Status Tagihan" filterField="statustagihan" dataType="numeric" style="min-width: 10rem">
                         <template #body="{ data }">
                             {{ formatCurrency(data.balance) }}
                         </template>
