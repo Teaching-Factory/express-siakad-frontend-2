@@ -68,43 +68,43 @@ onBeforeMount(() => {
         </div>
         <div class="card">
             <div class="row">
-                    <div class="col-lg-5 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Program Studi</option>
-                                <option value="1">Teknologi Ternak</option>
-                                <option value="2">Teknologi Basis Data</option>
-                                <option value="3">Perikanan</option>
-                            </select>
-                        </div>
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Program Studi</option>
+                            <option value="1">Teknologi Ternak</option>
+                            <option value="2">Teknologi Basis Data</option>
+                            <option value="3">Perikanan</option>
+                        </select>
                     </div>
-                    <div class="col-lg-2 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Angkatan</option>
-                                <option value="1">2020</option>
-                                <option value="2">2021</option>
-                                <option value="3">2022</option>
-                                <option value="4">2023</option>
-                                <option value="5">2024</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Angkatan</option>
+                            <option value="1">2020</option>
+                            <option value="2">2021</option>
+                            <option value="3">2022</option>
+                            <option value="4">2023</option>
+                            <option value="5">2024</option>
+                        </select>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="">
-                            <label for="exampleFormControlInput1" class="form-label">Sistem Kuliah</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Sistem Kuliah</option>
-                                <option value="1">Reguler</option>
-                                <option value="2">Karyawan</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="">
+                        <label for="exampleFormControlInput1" class="form-label">Sistem Kuliah</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Sistem Kuliah</option>
+                            <option value="1">Reguler</option>
+                            <option value="2">Karyawan</option>
+                        </select>
                     </div>
-                    <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                        <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
-                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
+                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                </div>
                 </div>
                 <hr/>
             <DataTable

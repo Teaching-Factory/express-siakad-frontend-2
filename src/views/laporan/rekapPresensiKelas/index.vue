@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>REKAP PRESENSI PER KELAS</h5>
+            <h5><i class="pi pi-user me-2"></i>REKAP PRESENSI PER KELAS</h5>
             <hr />
             <hr>
             

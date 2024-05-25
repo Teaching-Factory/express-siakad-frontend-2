@@ -3,13 +3,20 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-10 xl:col-6">
-                    <h5>TAMBAH BERITA</h5>
+                    <h5><i class="pi pi-user me-2"></i>TAMBAH BERITA</h5>
                 </div>
                 <div class="col-12 xl:col-6 d-flex justify-content-end">
+                    <div class="flex justify-content-end gap-2">
+                        <button class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Daftar</button>
+                        <button class="btn btn-primary me-2"> <i class="pi pi-save mr-2"></i> Simpan</button>
+                        <button class="btn btn-danger"> <i class="pi pi-times mr-2"></i> Batal</button>
+                    </div>
+                </div>
+                <!-- <div class="col-12 xl:col-6 d-flex justify-content-end">
                     <button class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Daftar</button>
                     <button class="btn btn-primary me-2"> <i class="pi pi-save mr-2"></i> Simpan</button>
                     <button class="btn btn-danger"> <i class="pi pi-times mr-2"></i> Batal</button>
-                </div>
+                </div> -->
 
             </div>
             <hr>

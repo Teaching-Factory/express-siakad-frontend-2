@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>REKAP NILAI KELAS PERKULIAHAN</h5>
+            <h5><i class="pi pi-user me-2"></i>REKAP NILAI KELAS PERKULIAHAN</h5>
             <hr />
             <hr>
             
