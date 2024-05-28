@@ -3,6 +3,7 @@ import { ref, onBeforeMount } from 'vue';
 
 const customer1 = ref([]);
 const loading1 = ref(false);
+const selectedMhs = ref([]);
 
 const getSeverity = (status) => {
     switch (status) {
@@ -22,7 +23,6 @@ const getSeverity = (status) => {
 onBeforeMount(() => {
     customer1.value = [
         {
-            no: "checkbox",
             name: 'John Doe',
             nim: '12345678',
             email: 'coba@gmail.com',
@@ -33,7 +33,6 @@ onBeforeMount(() => {
             
         },
         {
-            no: "checkbox",
             name: 'John Doe',
             nim: '12345678',
             email: 'coba@gmail.com',
@@ -109,6 +108,7 @@ onBeforeMount(() => {
                 <hr/>
             <DataTable
                 :value="customer1"
+                v-model:selection="selectedMhs"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
@@ -131,11 +131,7 @@ onBeforeMount(() => {
                 <template #loading>
                     Loading customers data. Please wait.
                 </template>
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
-                    </template>
-                </Column>
+                <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
                 <Column header="Nama Mahasiswa" style="min-width: 14rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">

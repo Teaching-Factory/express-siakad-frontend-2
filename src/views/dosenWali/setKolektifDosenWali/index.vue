@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+
 const customer1 = ref([]);
 const loading1 = ref(false);
+const selectedMhs = ref([]);
+
 const getSeverity = (status) => {
     switch (status) {
         case 'unqualified':
@@ -47,12 +50,14 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>SET KOLEKTIF DOSEN WALI</h5>
             <div class="card">
-                <div class="card card-theme">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-6">
-                        <h5 class="text-dark text-center">072563791037 - LUKMAN HAKIM | | SEMESTER : 2021/2022 GENAP</h5>
+                
+                <div class="row mb-3">
+                    <div class="col-lg-12 col-md-6 col-lg-6">
+                        <div class="alert alert-secondary text-center" role="alert">
+                            <h5 class="text-dark text-center">072563791037 - LUKMAN HAKIM | | SEMESTER : 2021/2022 GENAP</h5>
                     </div>
                 </div>
+                
             </div>
                 <div class="row">
                     <div class="col-lg-5 col-md-6 col-sm-6">
@@ -115,11 +120,7 @@ onBeforeMount(() => {
                 <template #loading>
                     Loading customers data. Please wait.
                 </template>
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
-                    </template>
-                </Column>
+                <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
                 <Column header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">

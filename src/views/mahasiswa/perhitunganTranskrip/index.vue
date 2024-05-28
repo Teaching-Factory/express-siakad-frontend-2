@@ -110,7 +110,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Hitung Transkrip Mahasiswa</button>
+                                <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Hitung Transkrip Mahasiswa</button>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@ onBeforeMount(() => {
                         {{ data.perubahanterakhir }}
                     </template>
                 </Column>
-                <Column header="Aksi" style="min-width: 10rem">
+                <Column header="Aksi" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div v-html="data.aksi"></div>
                     </template>

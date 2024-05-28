@@ -80,13 +80,13 @@ onBeforeMount(() => {
                         </div>
                     </div>
                 
-            <div class="card card-theme">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-6">
-                        <h5 class="text-dark text-center">072563791037 - LUKMAN HAKIM | | SEMESTER : 2021/2022 GENAP</h5>
+                <div class="row mt-3 mb-3">
+                    <div class="col-lg-12 col-md-6 col-lg-6">
+                        <div class="alert alert-secondary text-center" role="alert">
+                            <h5 class="text-dark text-center">072563791037 - LUKMAN HAKIM | | SEMESTER : 2021/2022 GENAP</h5>
+                        </div>
                     </div>
                 </div>
-            </div>
 
                 <DataTable
                 :value="customer1"

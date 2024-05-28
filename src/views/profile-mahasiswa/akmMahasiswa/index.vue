@@ -25,32 +25,21 @@ onBeforeMount(() => {
     customer1.value = [
         {
             no: '1',
-            prodi: 'S1 Teknik Informatika',
-            angkatan: '2009',
-            nim: '12345678',
-            name: 'John Doe',
-            sistemkuliah: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Sistem Kuliah</option>
-                    <option value="option2">Karyawan</option>
-                    <option value="option3">Reguler</option>
-                </select>
-            </div>`,
+            semester: '2020',
+            status: 'Aktif',
+            ips: '23',
+            ipk: '23',
+            skssemester: '23',
+            skstotal: 'J56',
+        
         },{
             no: '2',
-            prodi: 'S1 Teknik Informatika',
-            angkatan: '2009',
-            nim: '12345678',
-            name: 'John Doe',
-            sistemkuliah: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Sistem Kuliah</option>
-                    <option value="option2">Karyawan</option>
-                    <option value="option3">Reguler</option>
-                </select>
-            </div>`,
+            semester: '2020',
+            status: 'Aktif',
+            ips: '23',
+            ipk: '23',
+            skssemester: '23',
+            skstotal: 'J56',
         }
         // Add more dummy data here
     ];
@@ -59,7 +48,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>MAHASISWA YANG BELUM SET SISTEM KULIAH</h5>
+        <h5><i class="pi pi-user me-2"></i>AKTIVITAS KULIAH MAHASISWA</h5>
             <div class="card">
                 <DataTable
                 :value="customer1"
@@ -83,7 +72,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Set Sistem Kuliah</button>
+                                <!-- <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Set Sistem Kuliah</button> -->
                             </div>
                         </div>
                     </div>
@@ -100,33 +89,38 @@ onBeforeMount(() => {
                         {{ data.no }}
                     </template>
                 </Column>
-                <Column header="Program Studi" style="min-width: 15rem">
+                <Column header="Semester" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.prodi }}
+                        {{ data.semester }}
                     </template>
                 </Column>
-                <Column header="Angkatan" style="min-width: 10rem">
+                <Column header="status" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.angkatan }}
+                        {{ data.status }}
                     </template>
                 </Column>
-                <Column header="NIM" style="min-width: 10rem">
+                <Column header="IPS" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nim }}</span>
+                            <span>{{ data.ips }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Nama Mahasiswa" style="min-width: 14rem">
+                <Column header="IPK" style="min-width: 14rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.name }}</span>
+                            <span>{{ data.ipk }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Sistem Kuliah" style="min-width: 15rem">
+                <Column header="SKS Semester" style="min-width: 15rem">
                     <template #body="{ data }">
-                        <div v-html="data.sistemkuliah"></div>
+                        <div v-html="data.skssemester"></div>
+                    </template>
+                </Column>
+                <Column header="SKS Total" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div v-html="data.skstotal"></div>
                     </template>
                 </Column>
             </DataTable>

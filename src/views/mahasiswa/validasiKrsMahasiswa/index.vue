@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+
 const customer1 = ref([]);
 const loading1 = ref(false);
+const selectedMhs = ref([]);
+
 const getSeverity = (status) => {
     switch (status) {
         case 'unqualified':
@@ -24,7 +27,6 @@ const getSeverity = (status) => {
 onBeforeMount(() => {
     customer1.value = [
         {
-            no: 'checkbox',
             nim: '12345678',
             name: 'John Doe',
             prodi: 'coba@gmail.com',
@@ -38,7 +40,6 @@ onBeforeMount(() => {
                 <button type="button" class="btn btn-outline-danger"> <i class="pi pi-times"></i></button>
             </div>`,
         },{
-            no: 'checkbox',
             nim: '12345678',
             name: 'John Doe',
             prodi: 'coba@gmail.com',
@@ -113,11 +114,7 @@ onBeforeMount(() => {
                 <template #loading>
                     Loading customers data. Please wait.
                 </template>
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
-                    </template>
-                </Column>
+                <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
                 <Column header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">

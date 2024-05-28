@@ -106,7 +106,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-primary"> <i class="pi pi-import me-2"></i> Import Aktivitas</button>
+                                <button class="btn btn-secondary"> <i class="pi pi-download me-2"></i> Import Aktivitas</button>
                             </div>
                         </div>
                     </div>

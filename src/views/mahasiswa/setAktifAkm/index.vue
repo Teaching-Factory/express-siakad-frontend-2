@@ -1,7 +1,10 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+
 const customer1 = ref([]);
 const loading1 = ref(false);
+const selectedMhs = ref([]);
+
 const getSeverity = (status) => {
     switch (status) {
         case 'unqualified':
@@ -113,7 +116,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Set Aktif</button>
+                                <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Set Aktif</button>
                             </div>
                         </div>
                     </div>
@@ -125,11 +128,7 @@ onBeforeMount(() => {
                 <template #loading>
                     Loading customers data. Please wait.
                 </template>
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
-                    </template>
-                </Column>
+                <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
                 <Column header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
