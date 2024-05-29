@@ -12,9 +12,9 @@ const logoUrl = computed(() => {
 </script>
 
 <script>
-import axios from 'axios';
 import { API_URL } from '../../../config/config';
 import { setToken } from '../../../service/auth';
+import axios from 'axios';
 
 export default {
     data() {
@@ -26,16 +26,32 @@ export default {
     methods: {
         async login() {
             try {
-                const response = await axios.post(`${API_URL}/auth/do-login`, {
-                    username: this.username,
-                    password: this.password
+                const response = await axios.post(
+                    `${API_URL}/auth/do-login`,
+                    {
+                        username: this.username,
+                        password: this.password
+                    },
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                if (response.status !== 200) {
+                    throw new Error('Login gagal');
+                }
+
+                const data = response.data;
+                console.log('Login sukses, data:', data);
+
+                setToken(data.token);
+
+                this.$router.push('/dashboard').catch((err) => {
+                    console.error('Redirect error:', err);
                 });
-
-                // Simpan token atau informasi pengguna di localStorage
-                setToken(response.data.token);
-
-                // Redirect ke halaman dashboard
-                this.$router.push('/dashboard');
             } catch (error) {
                 console.error('Login gagal:', error);
             }
@@ -43,8 +59,6 @@ export default {
     }
 };
 </script>
-
-
 
 <template>
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">

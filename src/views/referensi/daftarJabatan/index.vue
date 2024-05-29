@@ -1,121 +1,60 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import { CustomerService } from '@/service/CustomerService';
-import { ProductService } from '@/service/ProductService';
+import { get } from '../../../utiils/request'; // Sesuaikan path impor sesuai struktur proyek Anda
 
-const customer1 = ref(null);
-const customer2 = ref(null);
-const customer3 = ref(null);
+// State untuk menyimpan data jabatan
+const jabatans = ref([]);
 const filters1 = ref(null);
-const loading1 = ref(null);
-const loading2 = ref(null);
-const products = ref(null);
+const loading1 = ref(true);
 
-const customerService = new CustomerService();
-const productService = new ProductService();
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
+// Fungsi untuk mengambil data jabatan dari API
+const jabatan = async () => {
+    try {
+        const response = await get('jabatan'); // Memanggil fungsi get dengan endpoint 'jabatan'
+        console.log(response.data.data);
+        jabatans.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data jabatan:', error);
     }
 };
 
+// Panggil jabatan sebelum komponen dipasang
 onBeforeMount(() => {
-    productService.getProductsWithOrdersSmall().then((data) => (products.value = data));
-    customerService.getCustomersLarge().then((data) => {
-        customer1.value = data;
-        loading1.value = false;
-        customer1.value.forEach((customer) => (customer.date = new Date(customer.date)));
-    });
-    customerService.getCustomersLarge().then((data) => (customer2.value = data));
-    customerService.getCustomersMedium().then((data) => (customer3.value = data));
-    loading2.value = false;
-
+    jabatan();
     initFilters1();
 });
 
+// Inisialisasi filter untuk DataTable
 const initFilters1 = () => {
     filters1.value = {
         global: {
             value: null,
-            matchMode: FilterMatchMode.CONTAINS
+            matchMode: 'contains'
         },
-        name: {
-            operator: FilterOperator.AND,
+        jabatan: {
+            operator: 'and',
             constraints: [
                 {
                     value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
+                    matchMode: 'startsWith'
                 }
             ]
-        },
-        'country.name': {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        representative: {
-            value: null,
-            matchMode: FilterMatchMode.IN
-        },
-        date: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.DATE_IS
-                }
-            ]
-        },
-        balance: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        status: {
-            operator: FilterOperator.OR,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        activity: {
-            value: [0, 100],
-            matchMode: FilterMatchMode.BETWEEN
-        },
-        verified: {
-            value: null,
-            matchMode: FilterMatchMode.EQUALS
         }
     };
 };
 
-// const clearFilter1 = () => {
-//     initFilters1();
-// };
+// Fungsi untuk mendapatkan tingkat keparahan
+const getSeverity = (status) => {
+    switch (status) {
+        case 'active':
+            return 'success';
+        case 'inactive':
+            return 'danger';
+        default:
+            return 'warning';
+    }
+};
 </script>
 
 <template>
@@ -126,23 +65,11 @@ const initFilters1 = () => {
                     <h5>DAFTAR JABATAN</h5>
                 </div>
                 <div class="col-12 xl:col-2 d-flex justify-content-end">
-                    <button class="btn btn-primary"> <i class="pi pi-plus mr-2"></i> Tambah</button>
+                    <button class="btn btn-primary"><i class="pi pi-plus mr-2"></i> Tambah</button>
                 </div>
             </div>
-            
-            <DataTable
-                :value="customer1"
-                :paginator="true"
-                :rows="10"
-                dataKey="id"
-                :rowHover="true"
-                v-model:filters="filters1"
-                filterDisplay="menu"
-                :loading="loading1"
-                :filters="filters1"
-                :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
-                showGridlines
-            >
+
+            <DataTable :value="jabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" v-model:filters="filters1" filterDisplay="menu" :loading="loading1" :filters="filters1" :globalFilterFields="['name', 'jabatan']" showGridlines>
                 <template #header>
                     <div class="flex justify-content-between flex-column sm:flex-row">
                         <IconField iconPosition="left">
@@ -152,27 +79,29 @@ const initFilters1 = () => {
                     </div>
                 </template>
 
-                <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                <template #loading> Loading customers data. Please wait. </template>
+                <template #empty>
+                    <div class="text-center">Tidak ada data.</div>
+                </template>
+                <template #loading> Loading data. Please wait. </template>
+
                 <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.name }}
+                    <template #body="{ rowIndex }">
+                        {{ rowIndex + 1 }}
                     </template>
                 </Column>
-                <Column header="Nama Jabatan" filterField="jabatan.name" style="min-width: 12rem">
-                    <template #body="{ data }">
+                <Column field="name" header="Nama Jabatan" filterField="jabatan.name" style="min-width: 12rem">
+                    <template #body="{ jabatans }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.jabatan.name }}</span>
+                            <span>{{ jabatans.nama_jabatan }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column field="angkatan" header="Aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                <Column field="status" header="Aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
                     <template #body="{ data }">
-                        <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
+                        <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }}</Tag>
                     </template>
                 </Column>
             </DataTable>
-                
         </div>
     </div>
 </template>

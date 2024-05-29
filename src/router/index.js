@@ -387,7 +387,7 @@ const router = createRouter({
         {
             path: '/auth/login',
             name: 'login',
-            component: () => import('@/views/pages/auth/Login.vue')
+            component: () => import('../views/pages/auth/Login.vue')
         },
         {
             path: '/auth/access',
@@ -404,14 +404,20 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/auth/login', '/auth/access', '/auth/error', '/landing'];
+    const publicPages = ['/auth/login'];
     const authRequired = !publicPages.includes(to.path);
-    const loggedIn = localStorage.getItem('user');
+    const loggedIn = localStorage.getItem('token');
 
     if (authRequired && !loggedIn) {
         return next('/auth/login');
     }
 
+    // Jika pengguna mencoba mengakses halaman login saat sudah login, arahkan mereka ke halaman beranda
+    if (to.path === '/auth/login' && loggedIn) {
+        return next('/dashboard');
+    }
+
     next();
 });
+
 export default router;
