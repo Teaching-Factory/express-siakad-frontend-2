@@ -1,25 +1,9 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import Swal from 'sweetalert2';
 const customer1 = ref([]);
 const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
 
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
@@ -27,22 +11,49 @@ onBeforeMount(() => {
             no: '1',
             kode: 'presensi',
             nama: 'Presensi',
-            aksi: `<div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
-                <router-link to="/import-mahasiswa" class="btn btn-outline-danger"> <i class="pi pi-trash"></i></router-link>
-            </div>`,
+            aksi: '',
         },{
             no: '2',
             kode: 'UAS',
             nama: 'Ujian Akhir Semester',
-            aksi: `<div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
-                <router-link to="/import-mahasiswa" class="btn btn-outline-danger"> <i class="pi pi-trash"></i></router-link>
-            </div>`,
+            aksi: '',
         }
         // Add more dummy data here
     ];
 })
+
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire(
+                'BERHASIL!',
+                'Data berhasil dihapus.',
+                'success'
+            );
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            Swal.fire(
+                'BATAL',
+                'Data Anda Tidak Jadi Dihapus',
+                'error'
+            );
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    customer1.value = customer1.value.filter(item => item.no !== no);
+};
 </script>
 
 <template>
@@ -71,7 +82,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</button>
+                                <router-link to="/unsur-penilaian/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                             </div>
                         </div>
                     </div>
@@ -104,7 +115,10 @@ onBeforeMount(() => {
                 </Column>
                 <Column header="Aksi" style="min-width: 5rem">
                     <template #body="{ data }">
-                        <div v-html="data.aksi"></div>
+                        <router-link to="/unsur-penilaian/create" class="btn btn-outline-primary me-2"> <i class="pi pi-pencil"></i></router-link>
+                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                            <i class="pi pi-trash"></i>
+                        </button>
                     </template>
                 </Column>
             </DataTable>

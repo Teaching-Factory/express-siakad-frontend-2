@@ -77,11 +77,32 @@ const router = createRouter({
                     name: 'kelasjadwalperkuliahan',
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/index.vue')
                 },
+                {
+                    path: '/kelas-jadwal-perkuliahan/create-kelas',
+                    name: 'kelasjadwalperkuliahan-createkelas',
+                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formKelas.vue')
+                },
+                {
+                    path: '/kelas-jadwal-perkuliahan/create-pesertakelas',
+                    name: 'kelasjadwalperkuliahan-createpesertakelas',
+                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formPesertaKelas.vue')
+                },
+                {
+                    path: '/kelas-jadwal-perkuliahan/create-dosen',
+                    name: 'kelasjadwalperkuliahan-createdosen',
+                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formDosen.vue')
+                },
 
                 {
                     path: '/nilai-perkuliahan',
                     name: 'nilaiperkuliahan',
                     component: () => import('../views/perkuliahan/nilaiPerkuliahan/index.vue')
+                },
+
+                {
+                    path: '/nilai-perkuliahan/create',
+                    name: 'nilaiperkuliahan-create',
+                    component: () => import('../views/perkuliahan/nilaiPerkuliahan/form.vue')
                 },
 
                 {
@@ -127,9 +148,19 @@ const router = createRouter({
                     component: () => import('../views/referensi/sistemKuliah/index.vue')
                 },
                 {
+                    path:'/sistem-kuliah/create',
+                    name:'sistemkuliah-create',
+                    component: () => import('../views/referensi/sistemKuliah/form.vue')
+                },
+                {
                     path:'/ruang-perkuliahan',
                     name:'ruangperkuliahan',
                     component: () => import('../views/referensi/ruangPerkuliahan/index.vue')
+                },
+                {
+                    path:'/ruang-perkuliahan/create',
+                    name:'ruangperkuliahan-create',
+                    component: () => import('../views/referensi/ruangPerkuliahan/form.vue')
                 },
                 {
                     path:'/unsur-penilaian',
@@ -137,9 +168,19 @@ const router = createRouter({
                     component: () => import('../views/referensi/unsurPenilaian/index.vue')
                 },
                 {
+                    path:'/unsur-penilaian/create',
+                    name:'unsurpenilaian-create',
+                    component: () => import('../views/referensi/unsurPenilaian/form.vue')
+                },
+                {
                     path:'/bobot-penilaian',
                     name:'bobotpenilaian',
                     component: () => import('../views/referensi/bobotPenilaian/index.vue')
+                },
+                {
+                    path:'/bobot-penilaian/create',
+                    name:'bobotpenilaian-create',
+                    component: () => import('../views/referensi/bobotPenilaian/form.vue')
                 },
                 {
                     path:'/daftar-jabatan',
@@ -147,9 +188,19 @@ const router = createRouter({
                     component: () => import('../views/referensi/daftarJabatan/index.vue')
                 },
                 {
+                    path:'/daftar-jabatan/create',
+                    name:'daftarjabatan-create',
+                    component: () => import('../views/referensi/daftarJabatan/form.vue')
+                },
+                {
                     path:'/unit-jabatan',
                     name:'unitjabatan',
                     component: () => import('../views/referensi/unitJabatan/index.vue')
+                },
+                {
+                    path:'/unit-jabatan/create',
+                    name:'unitjabatan-create',
+                    component: () => import('../views/referensi/unitJabatan/form.vue')
                 },
                 {
                     path:'/data-wilayah',
@@ -177,9 +228,9 @@ const router = createRouter({
                     component: () => import('../views/berita/index.vue')
                 }, 
                 {
-                    path:'/tambah-berita',
-                    name:'tambahberita',
-                    component: () => import('../views/berita/tambahBerita.vue')
+                    path:'/daftar-berita/create',
+                    name:'daftarberita-create',
+                    component: () => import('../views/berita/form.vue')
                 }, 
 
                   //laporan

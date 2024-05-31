@@ -30,10 +30,7 @@ onBeforeMount(() => {
             ruang: 'Ruang B.204',
             jumlahmhs: '26/40',
             dosen: 'LUKMAN HAKIM',
-            detail: `
-            <div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-eye"></i> Detail Peserta</router-link>
-            </div>`,
+            detail: '',
         }
         // Add more dummy data here
     ];
@@ -154,7 +151,9 @@ onBeforeMount(() => {
                 </Column>
                 <Column header="Detail Peserta" style="min-width: 15rem">
                     <template #body="{ data }">
-                        <div v-html="data.detail"></div>
+                        <div class="actions gap-2">
+                            <router-link to="#" class="btn btn-outline-primary"> <i class="pi pi-eye"></i> Detail Peserta</router-link>
+                        </div>
                     </template>
                 </Column>
             </DataTable>

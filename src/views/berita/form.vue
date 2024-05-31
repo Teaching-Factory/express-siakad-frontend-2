@@ -7,9 +7,9 @@
                 </div>
                 <div class="col-12 xl:col-6 d-flex justify-content-end">
                     <div class="flex justify-content-end gap-2">
-                        <button class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Daftar</button>
-                        <button class="btn btn-primary me-2"> <i class="pi pi-save mr-2"></i> Simpan</button>
-                        <button class="btn btn-danger"> <i class="pi pi-times mr-2"></i> Batal</button>
+                        <router-link to="/daftar-berita" class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Daftar</router-link>
+                        <router-link to="#" class="btn btn-primary me-2"> <i class="pi pi-save mr-2"></i> Simpan</router-link>
+                        <router-link to="#" class="btn btn-danger"> <i class="pi pi-times mr-2"></i> Batal</router-link>
                     </div>
                 </div>
                 <!-- <div class="col-12 xl:col-6 d-flex justify-content-end">

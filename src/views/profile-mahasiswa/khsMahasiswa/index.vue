@@ -21,7 +21,61 @@
                     <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
                 </div>
             </div>
-            <table class="table">
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark align-middle">
+                        <tr>
+                            <th rowspan="2">No</th>
+                            <th rowspan="2">Kode Mata Kuliah</th>
+                            <th rowspan="2">Nama Mata Kuliah</th>
+                            <th rowspan="2">SKS</th>
+                            <th colspan="3">Nilai</th>
+                            
+                        </tr>
+                        <tr>
+                            <th>Angka</th>
+                            <th>Huruf</th>
+                            <th>Index</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>325325</td>
+                            <td>Kapita Selekta</td>
+                            <td>2</td>
+                            <td>4</td>
+                            <td>A</td>
+                            <td>4.0</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>325325</td>
+                            <td>Kapita Selekta</td>
+                            <td>2</td>
+                            <td>4</td>
+                            <td>A</td>
+                            <td>4.0</td>
+                            
+                        </tr>
+                        <tr>
+                            <td colspan="3">Total SKS</td>
+                            <td colspan="1">0</td>
+                            <td colspan="3">0</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">IPS (Index Prestasi Semester) </td>
+                            <td colspan="3">00.00</td>
+                        </tr>
+                        <tr >
+                            <td colspan="4">IPK (Index Prestasi Kumulatif) </td>
+                            <td colspan="3">00.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- <table class="table">
                 <thead class="table-dark">
                     <tr>
                         <th>No</th>
@@ -66,7 +120,7 @@
                         <td>00.00</td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
         </div>
     </div>
 </template>

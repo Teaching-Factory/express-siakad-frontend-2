@@ -24,14 +24,14 @@ onBeforeMount(() => {
         {
             id: 1,
             no: 1,
-            daftarjabatan: 'Rektor',
+            daftarjabatan: 'Kepala Program Studi',
             nama: 'Sukadi',
             nip: '09876545678987',
         },
         {
             id: 2,
             no: 2,
-            daftarjabatan: 'Dosen',
+            daftarjabatan: 'Rektor',
             nama: 'Lukman Hakim',
             nip: '09876545678987',
         },
@@ -83,7 +83,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i> Edit</button>
+                                <router-link to="/unit-jabatan/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                             </div>
                         </div>
                     </div>

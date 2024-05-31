@@ -1,25 +1,8 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import Swal from 'sweetalert2';
 const customer1 = ref([]);
 const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
@@ -30,10 +13,7 @@ onBeforeMount(() => {
             semester: '2021/2022 Ganjil',
             jenis: 'Tugas Akhir',
             judul: 'MEMBANGUN APLIKASI EKSPEDISI PERINTAH KERJA DI PT.PLN (PERSERO) RAYON JAJAG MENGGUNAKAN DELPHI 7.0 DAN MICROSOFT ACCESS 2007',
-            opsi: `
-            <div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-eye"></i></router-link>
-            </div>`,
+            opsi: '',
         },{
             no: '2',
             nimnama: '362055401012/Aida Andinar',
@@ -41,14 +21,44 @@ onBeforeMount(() => {
             semester: '2021/2022 Ganjil',
             jenis: 'Tugas Akhir',
             judul: 'MEMBANGUN APLIKASI EKSPEDISI PERINTAH KERJA DI PT.PLN (PERSERO) RAYON JAJAG MENGGUNAKAN DELPHI 7.0 DAN MICROSOFT ACCESS 2007',
-            opsi: `
-            <div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-eye"></i></router-link>
-            </div>`,
+            opsi: '',
         }
         // Add more dummy data here
     ];
 })
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu yakin',
+        text: 'Ini Aida Andinar Maulidiana',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire(
+                'Berhasil!',
+                'Data berhasil dihapus.',
+                'success'
+            );
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            Swal.fire(
+                'Berhasil',
+                'Data Anda Tidak Jadi Dihapus',
+                'error'
+            );
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    customer1.value = customer1.value.filter(item => item.no !== no);
+};
+
 </script>
 
 <template>
@@ -162,9 +172,14 @@ onBeforeMount(() => {
                         {{ data.judul }}
                     </template>
                 </Column>
-                <Column header="Opsi" style="min-width: 10rem">
+                <Column header="Opsi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        <div v-html="data.opsi"></div>
+                        <router-link to="#" class="btn btn-outline-primary me-2">
+                            <i class="pi pi-eye"></i>
+                        </router-link>
+                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                            <i class="pi pi-trash"></i>
+                        </button>
                     </template>
                 </Column>
             </DataTable>

@@ -1,31 +1,14 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import Swal from 'sweetalert2';
 const customer1 = ref([]);
 const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
         {
             no: '1',
-            kodemk: '9876545678 bisa diklik menuju ke halaman detail nilai perkuliahan',
+            kodemk: '9876545678',
             namamk: 'Kapita Selekta',
             kelas: '2020',
             sks: '2',
@@ -33,9 +16,11 @@ onBeforeMount(() => {
             prodi: '3S1 Teknik Informatika',
             peserta: '30',
             kuncinilai: '-',
-        },{
+            aksi: '',
+        },
+        {
             no: '2',
-            kodemk: '9876545678 bisa diklik',
+            kodemk: '9876545678',
             namamk: 'Kapita Selekta',
             kelas: '2020',
             sks: '2',
@@ -43,10 +28,43 @@ onBeforeMount(() => {
             prodi: '3S1 Teknik Informatika',
             peserta: '30',
             kuncinilai: '-',
+            aksi: '',
         }
-        // Add more dummy data here
     ];
 })
+
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu yakin',
+        text: 'Ini Aida Andinar Maulidiana',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire(
+                'Berhasil!',
+                'Data berhasil dihapus.',
+                'success'
+            );
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            Swal.fire(
+                'Berhasil',
+                'Data Anda Tidak Jadi Dihapus',
+                'error'
+            );
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    customer1.value = customer1.value.filter(item => item.no !== no);
+};
 </script>
 
 <template>
@@ -163,6 +181,16 @@ onBeforeMount(() => {
                 <Column header="Kunci Nilai" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.kuncinilai }}
+                    </template>
+                </Column>
+                <Column header="Aksi" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <router-link to="/nilai-perkuliahan/create" class="btn btn-outline-primary me-2">
+                            <i class="pi pi-pencil"></i>
+                        </router-link>
+                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                            <i class="pi pi-trash"></i>
+                        </button>
                     </template>
                 </Column>
             </DataTable>
