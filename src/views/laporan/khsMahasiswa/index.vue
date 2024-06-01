@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>KARTU HASIL STUDI (KHS)</h5>
+            <h5><i class="pi pi-user me-2"></i>KARTU HASIL STUDI (KHS)</h5>
             <hr />
             <hr>
             <div class="row d-flex justify-content-center mb-3">

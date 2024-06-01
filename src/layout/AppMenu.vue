@@ -248,14 +248,96 @@ const model = ref([
                 items: [
                     {
                         label: 'Setting Global',
-                        to: '/'
+                        to: '/setting-global'
                     },
                     {
                         label: 'Ubah Setting WS',
-                        to: '/'
+                        to: '/setting-ws'
                     },
                     {
                         label: 'Ubah Identititas PT',
+                        to: '/setting-identitaspt'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        label: 'TENTANG SAYA',
+        items: [
+            {
+                label: 'Profile',
+                icon: '',
+                items: [
+                    {
+                        label: 'Data Mahasiswa',
+                        to: '/profile-data-mahasiswa'
+                    },
+                    {
+                        label: 'Kartu Rencana Studi',
+                        to: '/profile-krs-mahasiswa'
+                    },
+                    {
+                        label: 'Aktivitas Kuliah Mahasiswa',
+                        to: '/profile-akm-mahasiswa'
+                    },
+                    {
+                        label: 'Kartu Hasil Studi',
+                        to: '/profile-khs-mahasiswa'
+                    },
+                    {
+                        label: 'Tagihan dan Pembayaran',
+                        to: '/profile-tagihan-pembayaran-mahasiswa'
+                    }
+                ]
+            },
+        ]
+    },
+    {
+        label: 'KEGIATAN',
+        items: [
+            {
+                label: 'Perkuliahan',
+                icon: '',
+                items: [
+                    {
+                        label: 'Kartu Rencana Studi Online',
+                        to: '/perkuliahan-krs-mahasiswa'
+                    },
+                    {
+                        label: 'Kartu Hasil Studi',
+                        to: '/perkuliahan-khs-mahasiswa'
+                    },
+                    {
+                        label: 'Jadwal Perkuliahan',
+                        to: '/perkuliahan-jadwal-perkuliahan'
+                    }
+                ]
+            },
+            {
+                label: 'Laporan',
+                icon: '',
+                items: [
+                    {
+                        label: 'Kartu Rencana Studi',
+                        to: '/laporan-krs-mahasiswa'
+                    },
+                    {
+                        label: 'Kartu Hasil Studi',
+                        to: '/laporan-khs-mahasiswa'
+                    },
+                    {
+                        label: 'Transkrip Nilai',
+                        to: '/laporan-transkrip-mahasiswa'
+                    }
+                ]
+            },
+            {
+                label: 'Pembayaran',
+                icon: '',
+                items: [
+                    {
+                        label: 'Tagihan',
                         to: '/'
                     }
                 ]

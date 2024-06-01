@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-body">
-            <h5>LAPORAN JADWAL PERKULIAHAN</h5>
+            <h5><i class="pi pi-user me-2"></i>LAPORAN JADWAL PERKULIAHAN</h5>
             <hr />
             <hr>
             

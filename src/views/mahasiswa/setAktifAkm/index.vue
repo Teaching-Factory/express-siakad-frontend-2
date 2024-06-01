@@ -1,144 +1,44 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import { CustomerService } from '@/service/CustomerService';
-import { ProductService } from '@/service/ProductService';
+import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
 
-const customer1 = ref(null);
-const customer2 = ref(null);
-const customer3 = ref(null);
-const filters1 = ref(null);
-const loading1 = ref(null);
-const loading2 = ref(null);
-const products = ref(null);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_semester: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
-const customerService = new CustomerService();
-const productService = new ProductService();
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+const aktivitasKuliahMahasiswas = ref([]);
+const loading1 = ref(true);
+const selectedMhs = ref([]);
 
-        case 'qualified':
-            return 'success';
+const aktivitasKuliahMahasiswa = async () => {
+    try {
+        const response = await get('aktivitas-kuliah-mahasiswa');
+        aktivitasKuliahMahasiswas.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data Aktivitas Mahawiswa:', error);
 
-        case 'new':
-            return 'info';
+        loading1.value = false;
 
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
+        aktivitasKuliahMahasiswa.value = [];
     }
 };
 
 onBeforeMount(() => {
-    productService.getProductsWithOrdersSmall().then((data) => (products.value = data));
-    customerService.getCustomersLarge().then((data) => {
-        customer1.value = data;
-        loading1.value = false;
-        customer1.value.forEach((customer) => (customer.date = new Date(customer.date)));
-    });
-    customerService.getCustomersLarge().then((data) => (customer2.value = data));
-    customerService.getCustomersMedium().then((data) => (customer3.value = data));
-    loading2.value = false;
-
-    initFilters1();
+    aktivitasKuliahMahasiswa();
 });
-
-const initFilters1 = () => {
-    filters1.value = {
-        global: {
-            value: null,
-            matchMode: FilterMatchMode.CONTAINS
-        },
-        name: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        'country.name': {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        representative: {
-            value: null,
-            matchMode: FilterMatchMode.IN
-        },
-        date: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.DATE_IS
-                }
-            ]
-        },
-        balance: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        status: {
-            operator: FilterOperator.OR,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        activity: {
-            value: [0, 100],
-            matchMode: FilterMatchMode.BETWEEN
-        },
-        verified: {
-            value: null,
-            matchMode: FilterMatchMode.EQUALS
-        }
-    };
-};
-
-// const clearFilter1 = () => {
-//     initFilters1();
-// };
-const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    });
-};
-
-const formatDate = (value) => {
-    return value.toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-};
 </script>
 
 <template>
     <div class="card">
-        <div class="card-body">
-            <h5>SET AKTIF AKTIVITAS KULIAH MAHASISWA PERIODE 2021/2022 GENAP</h5>
-            <hr />
-
-            <div class="card card-theme" style="padding: 0rem 1rem 0rem 1rem">
+        <h5><i class="pi pi-user me-2"></i>SET AKTIF AKTIVITAS KULIAH MAHASISWA PERIODE 2021/2022 GENAP</h5>
+            <div class="card" style="padding: 0rem 1rem 0rem 1rem">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">
                         <h6 class="text-dark">Keterangan :</h6>
@@ -152,7 +52,6 @@ const formatDate = (value) => {
                     </div>
                 </div>
             </div>
-
             <div class="card">
                 <div class="row">
                         <div class="col-lg-5 col-md-6 col-sm-6">
@@ -184,75 +83,73 @@ const formatDate = (value) => {
                         </div>
                     </div>
                     <hr/>
-
-                <DataTable
-                    :value="customer1"
-                    :paginator="true"
-                    :rows="10"
-                    dataKey="id"
-                    :rowHover="true"
-                    v-model:filters="filters1"
-                    filterDisplay="menu"
-                    :loading="loading1"
-                    :filters="filters1"
-                    :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
-                    showGridlines
-                >
-                    <template #header>
-                        <div class="flex justify-content-between flex-column sm:flex-row">
+                    <DataTable v-model:filters="filters" :globalFilterFields="['Mahasiswa.nama_mahasiswa', 'Mahasiswa.nim', 'Prodi.nama_program_studi', 'Semester.nama_semester', 'StatusMahasiswa.nama_status_mahasiswa ']"
+                :value="aktivitasKuliahMahasiswas"
+                v-model:selection="selectedMhs"
+                :paginator="true"
+                :rows="10"
+                dataKey="id"
+                :rowHover="true"
+                :loading="loading1"
+                showGridlines
+            >
+                <template #header>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText v-model="filters1['global'].value" placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
-                    </template>
+                        <div class="col-lg-6 d-flex justify-content-end">
+                            <div class="flex justify-content-end gap-2">
+                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
+                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
+                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
+                                <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Set Aktif</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
 
-                    <template #empty> <div class="text-center">Tidak ada data.</div></template>
-                    <template #loading> Loading data. Please wait. </template>
-                    <Column field="no" header="No" style="min-width: 5rem">
-                        <template #body="{ data }">
-                            {{ data.name }}
-                        </template>
-                    </Column>
-                    <Column header="NIM" filterField="nim.name" style="min-width: 10rem">
-                        <template #body="{ data }">
-                            <div class="flex align-items-center gap-2">
-                                <img alt="flag" src="" :class="`flag flag-${data.country.code}`" style="width: 24px" />
-                                <span>{{ data.country.name }}</span>
-                            </div>
-                        </template>
-                    </Column>
-                    <Column header="Nama Mahasiswa" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 14rem">
-                        <template #body="{ data }">
-                            <div class="flex align-items-center gap-2">
-                                <span>{{ data.representative.name }}</span>
-                            </div>
-                        </template>
-                    </Column>
-                    <Column header="Program Studi" filterField="prodi" dataType="date" style="min-width: 10rem">
-                        <template #body="{ data }">
-                            {{ formatDate(data.date) }}
-                        </template>
-                    </Column>
-                    <Column header="Semester" filterField="semester" dataType="numeric" style="min-width: 10rem">
-                        <template #body="{ data }">
-                            {{ formatCurrency(data.balance) }}
-                        </template>
-                    </Column>
-                    <Column header="Status AKM" filterField="statusakm" dataType="numeric" style="min-width: 10rem">
-                        <template #body="{ data }">
-                            {{ formatCurrency(data.balance) }}
-                        </template>
-                    </Column>
-                    
-                    <!-- <Column field="angkatan" header="Angkatan" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
-                        <template #body="{ data }">
-                            <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
-                        </template>
-                    </Column> -->
-                </DataTable>
+                <template #empty>
+                    <div class="text-center">Tidak ada data.</div>
+                </template>
+                <template #loading>
+                    Loading customers data. Please wait.
+                </template>
+                <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
+                <Column filterField="nim" header="NIM" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.Mahasiswa.nim }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.Mahasiswa.nama_mahasiswa }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        {{ data.Prodi.nama_program_studi }}
+                    </template>
+                </Column>
+                <Column filterField="nama_semester" header="Semester" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ data.Semester.nama_semester }}
+                    </template>
+                </Column>
+                <Column filterField="nama_status_mahasiswa" header="Status AKM" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ data.StatusMahasiswa.nama_status_mahasiswa }}
+                    </template>
+                </Column>
+            </DataTable>
             </div>
-        </div>
     </div>
 </template>
 

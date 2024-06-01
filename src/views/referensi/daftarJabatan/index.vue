@@ -1,11 +1,14 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { get } from '../../../utiils/request'; // Sesuaikan path impor sesuai struktur proyek Anda
+import { FilterMatchMode } from 'primevue/api';
+import { get } from '../../../utiils/request';
 
-// State untuk menyimpan data jabatan
 const jabatans = ref([]);
-const filters1 = ref(null);
 const loading1 = ref(true);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nama_jabatan: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
 // Fungsi untuk mengambil data jabatan dari API
 const jabatan = async () => {
@@ -22,83 +25,56 @@ const jabatan = async () => {
 // Panggil jabatan sebelum komponen dipasang
 onBeforeMount(() => {
     jabatan();
-    initFilters1();
 });
-
-// Inisialisasi filter untuk DataTable
-const initFilters1 = () => {
-    filters1.value = {
-        global: {
-            value: null,
-            matchMode: 'contains'
-        },
-        jabatan: {
-            operator: 'and',
-            constraints: [
-                {
-                    value: null,
-                    matchMode: 'startsWith'
-                }
-            ]
-        }
-    };
-};
-
-// Fungsi untuk mendapatkan tingkat keparahan
-const getSeverity = (status) => {
-    switch (status) {
-        case 'active':
-            return 'success';
-        case 'inactive':
-            return 'danger';
-        default:
-            return 'warning';
-    }
-};
 </script>
 
 <template>
     <div class="card">
-        <div class="body">
-            <div class="row">
-                <div class="col-12 xl:col-10">
-                    <h5>DAFTAR JABATAN</h5>
-                </div>
-                <div class="col-12 xl:col-2 d-flex justify-content-end">
-                    <button class="btn btn-primary"><i class="pi pi-plus mr-2"></i> Tambah</button>
-                </div>
-            </div>
-
-            <DataTable :value="jabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" v-model:filters="filters1" filterDisplay="menu" :loading="loading1" :filters="filters1" :globalFilterFields="['name', 'jabatan']" showGridlines>
+        <h5><i class="pi pi-user me-2"></i>DAFTAR JABATAN</h5>
+        <div class="card">
+            <DataTable v-model:filters="filters" :value="jabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" :globalFilterFields="['nama_jabatan']" showGridlines>
                 <template #header>
-                    <div class="flex justify-content-between flex-column sm:flex-row">
-                        <IconField iconPosition="left">
-                            <InputIcon class="pi pi-search" />
-                            <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
-                        </IconField>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex justify-content-start">
+                            <IconField iconPosition="left">
+                                <InputIcon class="pi pi-search" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
+                            </IconField>
+                        </div>
+                        <div class="col-lg-6 d-flex justify-content-end">
+                            <div class="flex justify-content-end gap-2">
+                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                            </div>
+                        </div>
                     </div>
                 </template>
 
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading data. Please wait. </template>
-
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ rowIndex }">
-                        {{ rowIndex + 1 }}
+                <template #loading> Loading customers data. Please wait. </template>
+                <Column header="No" headerStyle="width:3rem">
+                    <template #body="slotProps">
+                        {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column field="name" header="Nama Jabatan" filterField="jabatan.name" style="min-width: 12rem">
-                    <template #body="{ jabatans }">
+                <Column filterField="nama_jabatan" header="Nama Jabatan" style="min-width: 30rem">
+                    <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ jabatans.nama_jabatan }}</span>
+                            <span>{{ data.nama_jabatan }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column field="status" header="Aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
+                <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }}</Tag>
+                        <div class="flex gap-2">
+                            <router-link :to="`/edit-ruang/${data.idruang}`" class="btn btn-outline-primary">
+                                <i class="pi pi-pencil"></i>
+                            </router-link>
+                            <button @click="deleteRuang(data.idruang)" class="btn btn-outline-danger">
+                                <i class="pi pi-trash"></i>
+                            </button>
+                        </div>
                     </template>
                 </Column>
             </DataTable>

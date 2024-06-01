@@ -7,6 +7,7 @@ const router = createRouter({
         {
             path: '/',
             component: AppLayout,
+            meta: { requiresAuth: true },
             children: [
                 {
                     path: '/dashboard',
@@ -242,6 +243,89 @@ const router = createRouter({
                 },
 
                 //setting global
+
+                {
+                    path: '/setting-global',
+                    name: 'settingglobal',
+                    component: () => import('../views/manajemenSetting/settingGlobal/index.vue')
+                },
+                {
+                    path: '/setting-ws',
+                    name: 'settingws',
+                    component: () => import('../views/manajemenSetting/settingWs/index.vue')
+                },
+                {
+                    path: '/setting-identitaspt',
+                    name: 'settingidentitaspt',
+                    component: () => import('../views/manajemenSetting/settingIdentitasPT/index.vue')
+                },
+
+                //role mahasiswa
+
+                //tentang saya
+
+                {
+                    path: '/profile-data-mahasiswa',
+                    name: 'profiledatamahasiswa',
+                    component: () => import('../views/profile-mahasiswa/dataMahasiswa/index.vue')
+                },
+                {
+                    path: '/profile-krs-mahasiswa',
+                    name: 'profilekrsmahasiswa',
+                    component: () => import('../views/profile-mahasiswa/krsMahasiswa/index.vue')
+                },
+                {
+                    path: '/profile-akm-mahasiswa',
+                    name: 'profileakmmahasiswa',
+                    component: () => import('../views/profile-mahasiswa/akmMahasiswa/index.vue')
+                },
+                {
+                    path: '/profile-khs-mahasiswa',
+                    name: 'profilekhsmahasiswa',
+                    component: () => import('../views/profile-mahasiswa/khsMahasiswa/index.vue')
+                },
+                {
+                    path: '/profile-tagihan-pembayaran-mahasiswa',
+                    name: 'profiletagihanpembayaranmahasiswa',
+                    component: () => import('../views/profile-mahasiswa/tagihanPembayaranMahasiswa/index.vue')
+                },
+
+                //kegiatan
+                //perkuliahan
+                {
+                    path: '/perkuliahan-krs-mahasiswa',
+                    name: 'perkuliahankrsmahasiswa',
+                    component: () => import('../views/perkuliahan-mahasiswa/krsMahasiswa/index.vue')
+                },
+                {
+                    path: '/perkuliahan-khs-mahasiswa',
+                    name: 'perkuliahankhsmahasiswa',
+                    component: () => import('../views/perkuliahan-mahasiswa/khsMahasiswa/index.vue')
+                },
+                {
+                    path: '/perkuliahan-jadwal-perkuliahan',
+                    name: 'perkuliahanjadwalperkuliahan',
+                    component: () => import('../views/perkuliahan-mahasiswa/jadwalPerkuliahan/index.vue')
+                },
+
+                //laporan
+                {
+                    path: '/laporan-krs-mahasiswa',
+                    name: 'laporankrsmahasiswa',
+                    component: () => import('../views/laporan-mahasiswa/krsMahasiswa/index.vue')
+                },
+                {
+                    path: '/laporan-khs-mahasiswa',
+                    name: 'laporankhsmahasiswa',
+                    component: () => import('../views/laporan-mahasiswa/khsMahasiswa/index.vue')
+                },
+                {
+                    path: '/laporan-transkrip-mahasiswa',
+                    name: 'laporantranskripmahasiswa',
+                    component: () => import('../views/laporan-mahasiswa/transkripMahasiswa/index.vue')
+                },
+
+                //batas pekerjaan hari ini 28/05/02
 
                 {
                     path: '/uikit/formlayout',

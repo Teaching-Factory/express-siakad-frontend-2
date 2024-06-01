@@ -1,185 +1,78 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
-import { CustomerService } from '@/service/CustomerService';
-import { ProductService } from '@/service/ProductService';
+import { get } from '../../../utiils/request';
 
-const customer1 = ref(null);
-const customer2 = ref(null);
-const customer3 = ref(null);
-const filters1 = ref(null);
-const loading1 = ref(null);
-const loading2 = ref(null);
-const products = ref(null);
+const roles = ref([]);
+const loading1 = ref(true);
 
-const customerService = new CustomerService();
-const productService = new ProductService();
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+const role = async () => {
+    try {
+        const response = await get('role');
+        roles.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data Unit Jabatan:', error);
 
-        case 'qualified':
-            return 'success';
+        loading1.value = false;
 
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
+        role.value = [];
     }
 };
 
 onBeforeMount(() => {
-    productService.getProductsWithOrdersSmall().then((data) => (products.value = data));
-    customerService.getCustomersLarge().then((data) => {
-        customer1.value = data;
-        loading1.value = false;
-        customer1.value.forEach((customer) => (customer.date = new Date(customer.date)));
-    });
-    customerService.getCustomersLarge().then((data) => (customer2.value = data));
-    customerService.getCustomersMedium().then((data) => (customer3.value = data));
-    loading2.value = false;
-
-    initFilters1();
+    role();
 });
-
-const initFilters1 = () => {
-    filters1.value = {
-        global: {
-            value: null,
-            matchMode: FilterMatchMode.CONTAINS
-        },
-        name: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        'country.name': {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.STARTS_WITH
-                }
-            ]
-        },
-        representative: {
-            value: null,
-            matchMode: FilterMatchMode.IN
-        },
-        date: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.DATE_IS
-                }
-            ]
-        },
-        balance: {
-            operator: FilterOperator.AND,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        status: {
-            operator: FilterOperator.OR,
-            constraints: [
-                {
-                    value: null,
-                    matchMode: FilterMatchMode.EQUALS
-                }
-            ]
-        },
-        activity: {
-            value: [0, 100],
-            matchMode: FilterMatchMode.BETWEEN
-        },
-        verified: {
-            value: null,
-            matchMode: FilterMatchMode.EQUALS
-        }
-    };
-};
-
-// const clearFilter1 = () => {
-//     initFilters1();
-// };
 </script>
 
 <template>
     <div class="card">
-        <div class="body">
-            <div class="row">
-                <div class="col-10 xl:col-10">
-                    <h5>MANAJEMEN ROLE</h5>
-                </div>
-                <div class="col-12 xl:col-2 d-flex justify-content-end">
-                    <button class="btn btn-primary"> <i class="pi pi-plus mr-2"></i> Tambah</button>
-                </div>
-            </div>
-            <DataTable
-                :value="customer1"
-                :paginator="true"
-                :rows="10"
-                dataKey="id"
-                :rowHover="true"
-                v-model:filters="filters1"
-                filterDisplay="menu"
-                :loading="loading1"
-                :filters="filters1"
-                :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']"
-                showGridlines
-            >
+        <h5><i class="pi pi-user me-2"></i>MANAJEMEN ROLE</h5>
+        <div class="card">
+            <DataTable :value="roles" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
                 <template #header>
-                    <div class="flex justify-content-between flex-column sm:flex-row">
-                        <IconField iconPosition="left">
-                            <InputIcon class="pi pi-search" />
-                            <InputText v-model="filters1['global'].value" placeholder="Keyword Search" style="width: 100%" />
-                        </IconField>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex justify-content-start">
+                            <IconField iconPosition="left">
+                                <InputIcon class="pi pi-search" />
+                                <InputText placeholder="Cari disini" style="width: 100%" />
+                            </IconField>
+                        </div>
+                        <div class="col-lg-6 d-flex justify-content-end">
+                            <div class="flex justify-content-end gap-2">
+                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
+                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
+                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
+                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                            </div>
+                        </div>
                     </div>
                 </template>
 
-                <template #empty> <div class="text-center">Tidak ada data.</div></template>
+                <template #empty>
+                    <div class="text-center">Tidak ada data.</div>
+                </template>
                 <template #loading> Loading customers data. Please wait. </template>
-                <Column field="no" header="No" style="min-width: rem">
-                    <template #body="{ data }">
-                        {{ data.name }}
+                <Column header="No" headerStyle="width:3rem">
+                    <template #body="slotProps">
+                        {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                
-                <Column header="Nama Role" filterField="representative" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 2rem">
+                <Column header="Nama Role" style="min-width: 20rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.representative.name }}</span>
+                            <span>{{ data.nama_role }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Aksi" filterField="aksi" :showFilterMatchModes="false" :filterMenuStyle="{ width: '14rem' }" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.representative.name }}</span>
+                <Column header="Aksi" style="min-width: 5rem">
+                    <template #body="{}">
+                        <div class="actions gap-2">
+                            <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
+                            <router-link to="/import-mahasiswa" class="btn btn-outline-danger"> <i class="pi pi-trash"></i></router-link>
                         </div>
                     </template>
                 </Column>
-                <!-- <Column field="angkatan" header="Aksi" :filterMenuStyle="{ width: '14rem' }" style="min-width: 12rem">
-                    <template #body="{ data }">
-                        <Tag :severity="getSeverity(data.status)">{{ data.status.toUpperCase() }} </Tag>
-                    </template>
-                </Column> -->
             </DataTable>
-                
         </div>
     </div>
 </template>
