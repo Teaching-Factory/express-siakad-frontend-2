@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { get } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -32,6 +33,49 @@ const deleteRuang = (id) => {
     // Tambahkan logika penghapusan ruang di sini, seperti memanggil API untuk menghapus ruang
     console.log(`Menghapus ruang dengan ID: ${id}`);
 };
+
+onBeforeMount(() => {
+    customer1.value = [
+        {
+            no: '1',
+            idruang: 'A101',
+            namaruang: 'Ruang A 101',
+            lokasi: 'Gedung A',
+            aksi: ''
+        },
+        {
+            no: '2',
+            idruang: 'A101',
+            namaruang: 'Ruang A 101',
+            lokasi: 'Gedung A',
+            aksi: ''
+        }
+        // Add more dummy data here
+    ];
+});
+
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    ruangPerkuliahans.value = ruangPerkuliahans.value.filter((item) => item.no !== no);
+};
 </script>
 
     <template>
@@ -49,7 +93,7 @@ const deleteRuang = (id) => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                                <router-link to="/ruang-perkuliahan/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                             </div>
                         </div>
                     </div>
@@ -91,7 +135,7 @@ const deleteRuang = (id) => {
                             <router-link :to="`/edit-ruang/${data.idruang}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
-                            <button @click="deleteRuang(data.idruang)" class="btn btn-outline-danger">
+                            <button @click="confirmDelete(data.idruang)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>

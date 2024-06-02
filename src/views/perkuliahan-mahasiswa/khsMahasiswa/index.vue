@@ -43,53 +43,59 @@
                     <div class="col-lg-4"> <span class="me-2">:</span> tidak diisi</div>
                 </div>
             </div>
-            <table class="table">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Kode Mata Kuliah</th>
-                        <th>Nama Mata Kuliah</th>
-                        <th>SKS</th>
-                        <th>Nilai Angka</th>
-                        <th>Nilai Huruf</th>
-                        <th>Nilai Index</th>
-                        <th>SKS*Index</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>325325</td>
-                        <td>Kapita Selekta</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>A</td>
-                        <td>4.0</td>
-                        <td>8.0</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>325325</td>
-                        <td>Kapita Selekta</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>A</td>
-                        <td>4.0</td>
-                        <td>8.0</td>
-                        
-                    </tr>
-                    <tr>
-                        <td  class="text-center" colspan="7">IPS (Index Prestasi Semester )</td>
-                        <td>0</td>
-                    </tr>
-                    <tr >
-                        <td class="text-center" colspan="7">IPK (Index Prestasi Kumulatif ) </td>
-                        <td>12</td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark align-middle">
+                        <tr>
+                            <th rowspan="2">No</th>
+                            <th rowspan="2">Kode Mata Kuliah</th>
+                            <th rowspan="2">Nama Mata Kuliah</th>
+                            <th rowspan="2">SKS</th>
+                            <th colspan="3">Nilai</th>
+                            <th rowspan="2">SKS*Index</th>
+                            
+                        </tr>
+                        <tr>
+                            <th>Angka</th>
+                            <th>Huruf</th>
+                            <th>Index</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>325325</td>
+                            <td>Kapita Selekta</td>
+                            <td>2</td>
+                            <td>4</td>
+                            <td>A</td>
+                            <td>4.0</td>
+                            <td>8.0</td>
+                            
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>325325</td>
+                            <td>Kapita Selekta</td>
+                            <td>2</td>
+                            <td>4</td>
+                            <td>A</td>
+                            <td>4.0</td>
+                            <td>8.0</td>
+                            
+                        </tr>
+                        <tr>
+                            <td  class="text-center" colspan="7">IPS (Index Prestasi Semester )</td>
+                            <td>0</td>
+                        </tr>
+                        <tr >
+                            <td class="text-center" colspan="7">IPK (Index Prestasi Kumulatif ) </td>
+                            <td>12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>

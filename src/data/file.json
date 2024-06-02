@@ -1,0 +1,50 @@
+[
+    {
+        "no": "1",
+        "kodemk": "9876545678",
+        "namamk": "Kapita Selekta",
+        "kelas": "2020",
+        "sks": "2",
+        "periode": "2023/2024 Genap",
+        "prodi": "3S1 Teknik Informatika",
+        "peserta": "30",
+        "kuncinilai": "-",
+        "aksi": ""
+    },
+    {
+        "no": "2",
+        "kodemk": "9876545678",
+        "namamk": "Kapita Selekta",
+        "kelas": "2020",
+        "sks": "2",
+        "periode": "2023/2024 Genap",
+        "prodi": "3S1 Teknik Informatika",
+        "peserta": "30",
+        "kuncinilai": "-",
+        "aksi": ""
+    },
+    {
+        "no": "3",
+        "kodemk": "1234567890",
+        "namamk": "Algoritma",
+        "kelas": "2019",
+        "sks": "3",
+        "periode": "2023/2024 Genap",
+        "prodi": "3S1 Teknik Informatika",
+        "peserta": "25",
+        "kuncinilai": "-",
+        "aksi": ""
+    },
+    {
+        "no": "4",
+        "kodemk": "2233445566",
+        "namamk": "Pemrograman Web",
+        "kelas": "2018",
+        "sks": "4",
+        "periode": "2023/2024 Genap",
+        "prodi": "3S1 Teknik Informatika",
+        "peserta": "20",
+        "kuncinilai": "-",
+        "aksi": ""
+    }
+]

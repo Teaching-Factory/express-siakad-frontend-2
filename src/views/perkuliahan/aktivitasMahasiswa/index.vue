@@ -1,5 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import Swal from 'sweetalert2';
+b;
 import { get } from '../../../utiils/request';
 
 const aktivitasMahasiswas = ref([]);
@@ -22,6 +24,28 @@ const aktivitasMahasiswa = async () => {
 onBeforeMount(() => {
     aktivitasMahasiswa();
 });
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu yakin',
+        text: 'Ini Aida Andinar Maulidiana',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('Berhasil', 'Data Anda Tidak Jadi Dihapus', 'error');
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    aktivitasMahasiswas.value = aktivitasMahasiswas.value.filter((item) => item.no !== no);
+};
 </script>
 
 <template>
@@ -125,9 +149,14 @@ onBeforeMount(() => {
                         {{ data.judul }}
                     </template>
                 </Column>
-                <Column header="Opsi" style="min-width: 10rem">
+                <Column header="Opsi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        <div v-html="data.opsi"></div>
+                        <router-link to="#" class="btn btn-outline-primary me-2">
+                            <i class="pi pi-eye"></i>
+                        </router-link>
+                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                            <i class="pi pi-trash"></i>
+                        </button>
                     </template>
                 </Column>
             </DataTable>

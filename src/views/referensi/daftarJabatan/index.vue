@@ -2,6 +2,8 @@
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { get } from '../../../utiils/request';
+import Swal from 'sweetalert2';
+8;
 
 const jabatans = ref([]);
 const loading1 = ref(true);
@@ -26,6 +28,28 @@ const jabatan = async () => {
 onBeforeMount(() => {
     jabatan();
 });
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    jabatans.value = jabatans.value.filter((item) => item.no !== no);
+};
 </script>
 
 <template>
@@ -43,7 +67,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                                <router-link to="/daftar-jabatan/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                             </div>
                         </div>
                     </div>
@@ -68,10 +92,10 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/edit-ruang/${data.idruang}`" class="btn btn-outline-primary">
+                            <router-link :to="`/edit-ruang/${data.id}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
-                            <button @click="deleteRuang(data.idruang)" class="btn btn-outline-danger">
+                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>

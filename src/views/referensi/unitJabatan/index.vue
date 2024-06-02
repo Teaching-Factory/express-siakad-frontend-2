@@ -65,7 +65,7 @@ onBeforeMount(() => {
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <button class="btn btn-secondary"><i class="pi pi-pencil me-2"></i> Edit</button>
+                            <router-link to="/unit-jabatan/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                         </div>
                     </div>
                 </div>

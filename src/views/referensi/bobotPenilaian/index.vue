@@ -29,6 +29,31 @@ const fetchBobotPenilaian = async () => {
 onBeforeMount(() => {
     fetchBobotPenilaian();
 });
+import Swal from 'sweetalert2';
+const customer1 = ref([]);
+
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    bobotPenilaians.value = bobotPenilaians.value.filter((item) => item.no !== no);
+};
 </script>
 
 <template>
@@ -59,7 +84,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                                <router-link to="/daftar-jabatan/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                             </div>
                         </div>
                     </div>

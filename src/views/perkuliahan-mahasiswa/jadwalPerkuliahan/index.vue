@@ -43,46 +43,51 @@
                     <div class="col-lg-4"> <span class="me-2">:</span> tidak diisi</div>
                 </div>
             </div>
-            <table class="table">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Kode Mata Kuliah</th>
-                        <th>Nama Mata Kuliah</th>
-                        <th>SKS</th>
-                        <th>Kelas</th>
-                        <th>Ruang</th>
-                        <th>Hari</th>
-                        <th>Waktu</th>                
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>325325</td>
-                        <td>Kapita Selekta</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>G8.98</td>
-                        <td>Selasa</td>
-                        <td>09.10-10.10</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>325325</td>
-                        <td>Kapita Selekta</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>G8.98</td>
-                        <td>Selasa</td>
-                        <td>09.10-10.10</td>
-                    </tr>
-                    <tr>
-                        <td  class="text-center" colspan="7">Total SKS</td>
-                        <td>0</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark align-middle">
+                        <tr>
+                            <th  rowspan="2">No</th>
+                            <th  rowspan="2">Kode Mata Kuliah</th>
+                            <th  rowspan="2">Nama Mata Kuliah</th>
+                            <th  rowspan="2">SKS</th>
+                            <th  rowspan="2">Kelas</th>              
+                            <th  colspan="3">Jadwal Perkuliahan</th>              
+                        </tr>
+                        <tr>
+                            <th>Ruang</th>
+                            <th>Hari</th>
+                            <th>Waktu</th>  
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>325325</td>
+                            <td>Kapita Selekta</td>
+                            <td>2</td>
+                            <td>4</td>
+                            <td>G8.98</td>
+                            <td>Selasa</td>
+                            <td>09.10-10.10</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>325325</td>
+                            <td>Kapita Selekta</td>
+                            <td>2</td>
+                            <td>4</td>
+                            <td>G8.98</td>
+                            <td>Selasa</td>
+                            <td>09.10-10.10</td>
+                        </tr>
+                        <tr>
+                            <td  class="text-center" colspan="7">Total SKS</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
