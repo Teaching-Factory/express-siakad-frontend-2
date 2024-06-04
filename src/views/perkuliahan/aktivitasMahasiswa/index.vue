@@ -1,31 +1,38 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import Swal from 'sweetalert2';
-const customer1 = ref([]);
-const loading1 = ref(false);
+import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_semester: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_jenis_aktivitas_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    judul: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
+
+const aktivitasMahasiswas = ref([]);
+const loading1 = ref(true);
+
+const aktivitasMahasiswa = async () => {
+    try {
+        const response = await get('aktivitas-mahasiswa');
+        aktivitasMahasiswas.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data Aktivitas Mahawiswa:', error);
+
+        loading1.value = false;
+
+        aktivitasMahasiswa.value = [];
+    }
+};
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            nimnama: '362055401012/Aida Andinar',
-            prodi: 'S1 Teknik Informatika',
-            semester: '2021/2022 Ganjil',
-            jenis: 'Tugas Akhir',
-            judul: 'MEMBANGUN APLIKASI EKSPEDISI PERINTAH KERJA DI PT.PLN (PERSERO) RAYON JAJAG MENGGUNAKAN DELPHI 7.0 DAN MICROSOFT ACCESS 2007',
-            opsi: '',
-        },{
-            no: '2',
-            nimnama: '362055401012/Aida Andinar',
-            prodi: 'S1 Teknik Informatika',
-            semester: '2021/2022 Ganjil',
-            jenis: 'Tugas Akhir',
-            judul: 'MEMBANGUN APLIKASI EKSPEDISI PERINTAH KERJA DI PT.PLN (PERSERO) RAYON JAJAG MENGGUNAKAN DELPHI 7.0 DAN MICROSOFT ACCESS 2007',
-            opsi: '',
-        }
-        // Add more dummy data here
-    ];
-})
+    aktivitasMahasiswa();
+});
 const confirmDelete = (no) => {
     Swal.fire({
         title: 'Apa Kamu yakin',
@@ -38,74 +45,65 @@ const confirmDelete = (no) => {
     }).then((result) => {
         if (result.isConfirmed) {
             deleteItem(no);
-            Swal.fire(
-                'Berhasil!',
-                'Data berhasil dihapus.',
-                'success'
-            );
-        } else if (
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            Swal.fire(
-                'Berhasil',
-                'Data Anda Tidak Jadi Dihapus',
-                'error'
-            );
+            Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('Berhasil', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
     });
 };
 
 const deleteItem = (no) => {
-    customer1.value = customer1.value.filter(item => item.no !== no);
+    aktivitasMahasiswas.value = aktivitasMahasiswas.value.filter((item) => item.no !== no);
 };
-
 </script>
 
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR AKTIVITAS MAHASISWA</h5>
-            <div class="card">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Semester</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Semester</option>
-                                <option value="1">2021/2022 Genap</option>
-                                <option value="2">2021/2022 Ganjil</option>
-                                <option value="3">2021/2022 Genap</option>
-                                <option value="4">2021/2022 Ganjil</option>
-                            </select>
-                        </div>
-                        </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Program Studi</option>
-                                <option value="1">Teknologi Ternak</option>
-                                <option value="2">Teknologi Basis Data</option>
-                                <option value="3">Perikanan</option>
-                            </select>
-                        </div>
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Semester</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Semester</option>
+                            <option value="1">2021/2022 Genap</option>
+                            <option value="2">2021/2022 Ganjil</option>
+                            <option value="3">2021/2022 Genap</option>
+                            <option value="4">2021/2022 Ganjil</option>
+                        </select>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Jenis Aktivitas</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Jenis Aktivitas</option>
-                                <option value="1">KKN</option>
-                                <option value="2">MKI</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Program Studi</option>
+                            <option value="1">Teknologi Ternak</option>
+                            <option value="2">Teknologi Basis Data</option>
+                            <option value="3">Perikanan</option>
+                        </select>
                     </div>
-                        <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                            <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
-                        </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Jenis Aktivitas</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Jenis Aktivitas</option>
+                            <option value="1">KKN</option>
+                            <option value="2">MKI</option>
+                        </select>
                     </div>
-                    <hr/>
-                    <DataTable
-                :value="customer1"
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                </div>
+            </div>
+            <hr />
+            <DataTable
+                v-model:filters="filters"
+                :globalFilterFields="['nim', 'Semester.nama_semester', 'JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa', 'Prodi.nama_program_studi', 'judul']"
+                :value="aktivitasMahasiswas"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
@@ -118,15 +116,12 @@ const deleteItem = (no) => {
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-secondary"> <i class="pi pi-download me-2"></i> Import Aktivitas</button>
+                                <button class="btn btn-secondary"><i class="pi pi-download me-2"></i> Import Aktivitas</button>
                             </div>
                         </div>
                     </div>
@@ -135,39 +130,37 @@ const deleteItem = (no) => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading>
-                    Loading customers data. Please wait.
-                </template>
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
+                <template #loading> Loading customers data. Please wait. </template>
+                <Column header="No" headerStyle="width:3rem">
+                    <template #body="slotProps">
+                        {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column header="NIM/Nama" style="min-width: 10rem">
+                <Column filterField="nim" header="NIM/Nama" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nimnama }}</span>
+                            <span>{{ data.nim }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Program Studi" style="min-width: 10rem">
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.prodi }}</span>
+                            <span>{{ data.Prodi.nama_program_studi }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Semester" style="min-width: 10rem">
+                <Column filterField="nama_semester" header="Semester" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.semester }}
+                        {{ data.Semester.nama_semester }}
                     </template>
                 </Column>
-                <Column header="Jenis" style="min-width: 10rem">
+                <Column filterField="nama_jenis_aktivitas_mahasiswa" header="Jenis" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis }}
+                        {{ data.JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa }}
                     </template>
                 </Column>
-                <Column header="Judul" style="min-width: 30rem">
+                <Column filterField="judul" header="Judul" style="min-width: 30rem">
                     <template #body="{ data }">
                         {{ data.judul }}
                     </template>
@@ -183,7 +176,7 @@ const deleteItem = (no) => {
                     </template>
                 </Column>
             </DataTable>
-            </div>
+        </div>
     </div>
 </template>
 

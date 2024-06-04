@@ -1,67 +1,34 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-const customer1 = ref([]);
-const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+import { get } from '../../../utiils/request';
 
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
+const users = ref([]);
+const loading1 = ref(true);
 
-        case 'negotiation':
-            return 'warning';
+const user = async () => {
+    try {
+        const response = await get('user');
+        users.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data Unit Jabatan:', error);
 
-        case 'renewal':
-            return null;
+        loading1.value = false;
+
+        user.value = [];
     }
 };
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            namauser: 'Aida Andinar',
-            email: 'coba@gmail.com',
-            username: '362055401012',
-            role: 'Admin Prodi',
-            aksi: `<div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
-                <router-link to="/import-mahasiswa" class="btn btn-outline-danger"> <i class="pi pi-trash"></i></router-link>
-            </div>`,
-        },{
-            no: '2',
-            namauser: 'Aida Andinar',
-            email: 'coba@gmail.com',
-            username: '362055401012',
-            role: 'Admin Prodi',
-            aksi: `<div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
-                <router-link to="/import-mahasiswa" class="btn btn-outline-danger"> <i class="pi pi-trash"></i></router-link>
-            </div>`,
-        }
-        // Add more dummy data here
-    ];
-})
+    user();
+});
 </script>
 
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>MANAJEMEN USER</h5>
-            <div class="card">
-                <DataTable
-                :value="customer1"
-                :paginator="true"
-                :rows="10"
-                dataKey="id"
-                :rowHover="true"
-                :loading="loading1"
-                showGridlines
-            >
+        <div class="card">
+            <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -72,10 +39,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</button>
+                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
                             </div>
                         </div>
                     </div>
@@ -84,18 +48,16 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading>
-                    Loading customers data. Please wait.
-                </template>
+                <template #loading> Loading customers data. Please wait. </template>
                 <Column field="no" header="No" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.no }}
+                        {{ data.id }}
                     </template>
                 </Column>
                 <Column header="Nama User" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.namauser }}</span>
+                            <span>{{ data.nama }}</span>
                         </div>
                     </template>
                 </Column>
@@ -119,8 +81,11 @@ onBeforeMount(() => {
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        <div v-html="data.aksi"></div>
+                    <template #body="{}">
+                        <div class="actions gap-2">
+                            <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
+                            <router-link to="/import-mahasiswa" class="btn btn-outline-danger"> <i class="pi pi-trash"></i></router-link>
+                        </div>
                     </template>
                 </Column>
             </DataTable>

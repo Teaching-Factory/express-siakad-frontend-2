@@ -1,24 +1,20 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    email: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jeniskelamin: { value: null, matchMode: FilterMatchMode.EQUALS },
+    tanggallahir: { value: null, matchMode: FilterMatchMode.EQUALS },
+    angkatan: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
 const customer1 = ref([]);
 const loading1 = ref(false);
 const selectedMhs = ref([]);
-
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-        case 'qualified':
-            return 'success';
-        case 'new':
-            return 'info';
-        case 'negotiation':
-            return 'warning';
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
@@ -28,18 +24,17 @@ onBeforeMount(() => {
             email: 'coba@gmail.com',
             angkatan: 2021,
             jeniskelamin: 'Perempuan',
-            tanggallahir: "18/05/2002",
-            namaibu: 'Supin',
-            
+            tanggallahir: '18/05/2002',
+            namaibu: 'Supin'
         },
         {
             name: 'John Doe',
-            nim: '12345678',
+            nim: '87654321',
             email: 'coba@gmail.com',
             angkatan: 2021,
             jeniskelamin: 'Perempuan',
-            tanggallahir: "18/05/2002",
-            namaibu: 'Supin',
+            tanggallahir: '18/05/2002',
+            namaibu: 'Supin'
         }
         // Add more dummy data here
     ];
@@ -106,7 +101,7 @@ onBeforeMount(() => {
                 </div>
                 </div>
                 <hr/>
-            <DataTable
+            <DataTable v-model:filters="filters" :globalFilterFields="['name', 'nim', 'email', 'jeniskelamin', 'tanggallahir', 'angkatan']"
                 :value="customer1"
                 v-model:selection="selectedMhs"
                 :paginator="true"
@@ -120,7 +115,7 @@ onBeforeMount(() => {
                     <div class="flex justify-content-between flex-column sm:flex-row">
                         <IconField iconPosition="left">
                             <InputIcon class="pi pi-search" />
-                            <InputText placeholder="Cari disini" style="width: 100%" />
+                            <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                         </IconField>
                     </div>
                 </template>
@@ -132,41 +127,41 @@ onBeforeMount(() => {
                     Loading customers data. Please wait.
                 </template>
                 <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-                <Column header="Nama Mahasiswa" style="min-width: 14rem">
+                <Column filterField="name" header="Nama Mahasiswa" style="min-width: 14rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.name }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="NIM" style="min-width: 10rem">
+                <Column filterField="nim" header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.nim }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Email" style="min-width: 15rem">
+                <Column filterField="email" header="Email" style="min-width: 15rem">
                     <template #body="{ data }">
                         {{ data.email }}
                     </template>
                 </Column>
-                <Column header="Angkatan" style="min-width: 10rem">
+                <Column filterField="angkatan" header="Angkatan" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.angkatan }}
                     </template>
                 </Column>
-                <Column header="Jenis Kelamin" style="min-width: 10rem">
+                <Column filterField="jeniskelamin" header="Jenis Kelamin" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.jeniskelamin }}
                     </template>
                 </Column>
-                <Column header="Tanggal Lahir" style="min-width: 10rem">
+                <Column filterField="tanggallahir" header="Tanggal Lahir" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.tanggallahir }}
                     </template>
                 </Column>
-                <Column header="Nama Ibu" style="min-width: 10rem">
+                <Column filterField="namaibu" header="Nama Ibu" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.namaibu }}
                     </template>

@@ -1,49 +1,38 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_semester: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
+
+const aktivitasKuliahMahasiswas = ref([]);
+const loading1 = ref(true);
 const selectedMhs = ref([]);
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+const aktivitasKuliahMahasiswa = async () => {
+    try {
+        const response = await get('aktivitas-kuliah-mahasiswa');
+        aktivitasKuliahMahasiswas.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data Aktivitas Mahawiswa:', error);
 
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
+        loading1.value = false;
 
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
+        aktivitasKuliahMahasiswa.value = [];
     }
 };
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: 'checkbox',
-            nim: '12345678',
-            name: 'John Doe',
-            prodi: 'S1 Teknik Informatika',
-            semester: '2023/2024 Genap',
-            statusakm: 'Aktif',
-        },{
-            no: 'checkbox',
-            nim: '12345678',
-            name: 'John Doe',
-            prodi: 'S1 Teknik Informatika',
-            semester: '2023/2024 Genap',
-            statusakm: 'Aktif',
-        }
-        // Add more dummy data here
-    ];
-})
+    aktivitasKuliahMahasiswa();
+});
 </script>
 
 <template>
@@ -94,8 +83,9 @@ onBeforeMount(() => {
                         </div>
                     </div>
                     <hr/>
-                    <DataTable
-                :value="customer1"
+                    <DataTable v-model:filters="filters" :globalFilterFields="['Mahasiswa.nama_mahasiswa', 'Mahasiswa.nim', 'Prodi.nama_program_studi', 'Semester.nama_semester', 'StatusMahasiswa.nama_status_mahasiswa ']"
+                :value="aktivitasKuliahMahasiswas"
+                v-model:selection="selectedMhs"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
@@ -108,7 +98,7 @@ onBeforeMount(() => {
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
@@ -129,33 +119,33 @@ onBeforeMount(() => {
                     Loading customers data. Please wait.
                 </template>
                 <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-                <Column header="NIM" style="min-width: 10rem">
+                <Column filterField="nim" header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nim }}</span>
+                            <span>{{ data.Mahasiswa.nim }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Nama Mahasiswa" style="min-width: 14rem">
+                <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.name }}</span>
+                            <span>{{ data.Mahasiswa.nama_mahasiswa }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Program Studi" style="min-width: 15rem">
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.prodi }}
+                        {{ data.Prodi.nama_program_studi }}
                     </template>
                 </Column>
-                <Column header="Semester" style="min-width: 10rem">
+                <Column filterField="nama_semester" header="Semester" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.semester }}
+                        {{ data.Semester.nama_semester }}
                     </template>
                 </Column>
-                <Column header="Status AKM" style="min-width: 10rem">
+                <Column filterField="nama_status_mahasiswa" header="Status AKM" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.statusakm }}
+                        {{ data.StatusMahasiswa.nama_status_mahasiswa }}
                     </template>
                 </Column>
             </DataTable>

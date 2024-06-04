@@ -1,75 +1,49 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-const customer1 = ref([]);
-const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
 
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    id_wilayah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_wilayah: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
-        case 'negotiation':
-            return 'warning';
+const wilayahs = ref([]);
+const loading1 = ref(true);
 
-        case 'renewal':
-            return null;
+// Fungsi untuk mengambil data wilayah dari API
+const wilayah = async () => {
+    try {
+        const response = await get('wilayah'); // Memanggil fungsi get dengan endpoint 'wilayah'
+        console.log(response.data.data);
+        wilayahs.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data wilayah:', error);
     }
 };
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            idwilayah: '260123',
-            kecamatan: 'Air PadangAir Padang',
-            kota: 'Kab. Bengkulu Utara',
-            provinsi: 'Prov. Bengkulu',
-        
-        },{
-            no: '2',
-            idwilayah: '260123',
-            kecamatan: 'Air PadangAir Padang',
-            kota: 'Kab. Bengkulu Utara',
-            provinsi: 'Prov. Bengkulu',
-        }
-        // Add more dummy data here
-    ];
-})
+    wilayah();
+});
 </script>
 
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR WILAYAH</h5>
-            <div class="card">
-                <DataTable
-                :value="customer1"
-                :paginator="true"
-                :rows="10"
-                dataKey="id"
-                :rowHover="true"
-                :loading="loading1"
-                showGridlines
-            >
+        <div class="card">
+            <DataTable v-model:filters="filters" :globalFilterFields="['id_wilayah', 'nama_wilayah']" :value="wilayahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
-                            <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <!-- <button class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                            </div>
+                            <div class="flex justify-content-end gap-2"></div>
                         </div>
                     </div>
                 </template>
@@ -77,39 +51,23 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading>
-                    Loading customers data. Please wait.
-                </template>
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
+                <template #loading> Loading customers data. Please wait. </template>
+                <Column header="No" headerStyle="width:15rem">
+                    <template #body="slotProps">
+                        {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column header="ID Wilayah" style="min-width: 5rem">
+                <Column filterField="" header="ID Wilayah" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.idwilayah }}</span>
+                            <span>{{ data.id_wilayah }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Kecamatan" style="min-width: 10rem">
+                <Column filterField="nama_wilayah" header="Nama Wilayah" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.kecamatan }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column header="Kota" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.kota }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column header="Provinsi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.provinsi }}</span>
+                            <span>{{ data.nama_wilayah }}</span>
                         </div>
                     </template>
                 </Column>

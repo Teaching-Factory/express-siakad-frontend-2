@@ -1,45 +1,31 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-        case 'qualified':
-            return 'success';
-        case 'new':
-            return 'info';
-        case 'negotiation':
-            return 'warning';
-        case 'renewal':
-            return null;
+const mahasiswas = ref([]);
+const loading1 = ref(true);
+
+const mahasiswa = async () => {
+    try {
+        const response = await get('mahasiswa'); // Memanggil fungsi get dengan endpoint 'mahasiswa'
+        console.log(response.data.data);
+        mahasiswas.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data mahasiswa:', error);
     }
 };
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            id: 1,
-            no: 1,
-            name: 'John Doe',
-            nim: '12345678',
-            prodi: 'Teknologi Basis Data',
-            status: 'Aktif',
-            angkatan: 2021,
-        },
-        {
-            id: 2,
-            no: 2,
-            name: 'Jane Smith',
-            nim: '87654321',
-            prodi: 'Perikanan',
-            status: 'Cuti',
-            angkatan: 2022,
-        },
-    ];
+    mahasiswa();
 });
 </script>
 
@@ -83,26 +69,18 @@ onBeforeMount(() => {
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
         </div>
 
-        <DataTable
-            :value="customer1"
-            :paginator="true"
-            :rows="10"
-            dataKey="id"
-            :rowHover="true"
-            :loading="loading1"
-            showGridlines
-        >
+        <DataTable v-model:filters="filters" :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa']" :value="mahasiswas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
             <template #header>
                 <div class="flex justify-content-between flex-column sm:flex-row">
                     <IconField iconPosition="left">
                         <InputIcon class="pi pi-search" />
-                        <InputText placeholder="Keyword Search" style="width: 100%" />
+                        <InputText placeholder="Keyword Search" v-model="filters['global'].value" style="width: 100%" />
                     </IconField>
                 </div>
             </template>
@@ -111,19 +89,19 @@ onBeforeMount(() => {
                 <div class="text-center">Tidak ada data.</div>
             </template>
             <template #loading>Loading data. Please wait.</template>
-            <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
+            <Column header="No" headerStyle="width:3rem">
+                <template #body="slotProps">
+                    {{ slotProps.index + 1 }}
                 </template>
             </Column>
-            <Column header="Nama Mahasiswa" style="min-width: 14rem">
+            <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.name }}</span>
+                        <span>{{ data.nama_mahasiswa }}</span>
                     </div>
                 </template>
             </Column>
-            <Column header="NIM" style="min-width: 12rem">
+            <Column filterField="nim" header="NIM" style="min-width: 12rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.nim }}</span>
@@ -132,12 +110,12 @@ onBeforeMount(() => {
             </Column>
             <Column header="Program Studi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.prodi }}
+                    {{ data.id_periode }}
                 </template>
             </Column>
-            <Column header="Status" style="min-width: 10rem">
+            <Column filterField="nama_status_mahasiswa" header="Status" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.status }}
+                    {{ data.nama_status_mahasiswa }}
                 </template>
             </Column>
             <Column field="angkatan" header="Angkatan" style="min-width: 12rem">

@@ -7,13 +7,14 @@ const router = createRouter({
         {
             path: '/',
             component: AppLayout,
+            meta: { requiresAuth: true },
             children: [
                 {
-                    path: '/',
+                    path: '/dashboard',
                     name: 'dashboard',
                     component: () => import('@/views/Dashboard.vue')
                 },
-                    //mahasiswa
+                //mahasiswa
                 {
                     path: '/import-mahasiswa',
                     name: 'importmahasiswa',
@@ -65,13 +66,13 @@ const router = createRouter({
                     name: 'setaktifakm',
                     component: () => import('../views/mahasiswa/setAktifAkm/index.vue')
                 },
-                
+
                 {
                     path: '/belum-set-sk',
                     name: 'belumsetsk',
                     component: () => import('../views/mahasiswa/mahasiswaBelumSetSK/index.vue')
                 },
-                    //perkuliahan
+                //perkuliahan
                 {
                     path: '/kelas-jadwal-perkuliahan',
                     name: 'kelasjadwalperkuliahan',
@@ -122,7 +123,7 @@ const router = createRouter({
                     name: 'kelasaktif',
                     component: () => import('../views/perkuliahan/kelasAktif/index.vue')
                 },
-                  //dosenwali
+                //dosenwali
                 {
                     path: '/daftar-dosen-wali',
                     name: 'daftardosenwali',
@@ -143,244 +144,272 @@ const router = createRouter({
 
                 //referensi
                 {
-                    path:'/sistem-kuliah',
-                    name:'sistemkuliah',
+                    path: '/sistem-kuliah',
+                    name: 'sistemkuliah',
                     component: () => import('../views/referensi/sistemKuliah/index.vue')
                 },
                 {
-                    path:'/sistem-kuliah/create',
-                    name:'sistemkuliah-create',
-                    component: () => import('../views/referensi/sistemKuliah/form.vue')
-                },
-                {
-                    path:'/ruang-perkuliahan',
-                    name:'ruangperkuliahan',
+                    path: '/ruang-perkuliahan',
+                    name: 'ruangperkuliahan',
                     component: () => import('../views/referensi/ruangPerkuliahan/index.vue')
                 },
                 {
-                    path:'/ruang-perkuliahan/create',
-                    name:'ruangperkuliahan-create',
-                    component: () => import('../views/referensi/ruangPerkuliahan/form.vue')
-                },
-                {
-                    path:'/unsur-penilaian',
-                    name:'unsurpenilaian',
+                    path: '/unsur-penilaian',
+                    name: 'unsurpenilaian',
                     component: () => import('../views/referensi/unsurPenilaian/index.vue')
                 },
                 {
-                    path:'/unsur-penilaian/create',
-                    name:'unsurpenilaian-create',
-                    component: () => import('../views/referensi/unsurPenilaian/form.vue')
-                },
-                {
-                    path:'/bobot-penilaian',
-                    name:'bobotpenilaian',
+                    path: '/bobot-penilaian',
+                    name: 'bobotpenilaian',
                     component: () => import('../views/referensi/bobotPenilaian/index.vue')
                 },
                 {
-                    path:'/bobot-penilaian/create',
-                    name:'bobotpenilaian-create',
-                    component: () => import('../views/referensi/bobotPenilaian/form.vue')
-                },
-                {
-                    path:'/daftar-jabatan',
-                    name:'daftarjabatan',
+                    path: '/daftar-jabatan',
+                    name: 'daftarjabatan',
                     component: () => import('../views/referensi/daftarJabatan/index.vue')
                 },
                 {
-                    path:'/daftar-jabatan/create',
-                    name:'daftarjabatan-create',
-                    component: () => import('../views/referensi/daftarJabatan/form.vue')
-                },
-                {
-                    path:'/unit-jabatan',
-                    name:'unitjabatan',
+                    path: '/unit-jabatan',
+                    name: 'unitjabatan',
                     component: () => import('../views/referensi/unitJabatan/index.vue')
                 },
                 {
-                    path:'/unit-jabatan/create',
-                    name:'unitjabatan-create',
+                    path: '/data-wilayah',
+                    name: 'datawilayah',
+                    component: () => import('../views/referensi/dataWilayah/index.vue')
+                },
+                {
+                    path: '/sistem-kuliah/create',
+                    name: 'sistemkuliah-create',
+                    component: () => import('../views/referensi/sistemKuliah/form.vue')
+                },
+                {
+                    path: '/ruang-perkuliahan',
+                    name: 'ruangperkuliahan',
+                    component: () => import('../views/referensi/ruangPerkuliahan/index.vue')
+                },
+                {
+                    path: '/ruang-perkuliahan/create',
+                    name: 'ruangperkuliahan-create',
+                    component: () => import('../views/referensi/ruangPerkuliahan/form.vue')
+                },
+                {
+                    path: '/unsur-penilaian',
+                    name: 'unsurpenilaian',
+                    component: () => import('../views/referensi/unsurPenilaian/index.vue')
+                },
+                {
+                    path: '/unsur-penilaian/create',
+                    name: 'unsurpenilaian-create',
+                    component: () => import('../views/referensi/unsurPenilaian/form.vue')
+                },
+                {
+                    path: '/bobot-penilaian',
+                    name: 'bobotpenilaian',
+                    component: () => import('../views/referensi/bobotPenilaian/index.vue')
+                },
+                {
+                    path: '/bobot-penilaian/create',
+                    name: 'bobotpenilaian-create',
+                    component: () => import('../views/referensi/bobotPenilaian/form.vue')
+                },
+                {
+                    path: '/daftar-jabatan',
+                    name: 'daftarjabatan',
+                    component: () => import('../views/referensi/daftarJabatan/index.vue')
+                },
+                {
+                    path: '/daftar-jabatan/create',
+                    name: 'daftarjabatan-create',
+                    component: () => import('../views/referensi/daftarJabatan/form.vue')
+                },
+                {
+                    path: '/unit-jabatan',
+                    name: 'unitjabatan',
+                    component: () => import('../views/referensi/unitJabatan/index.vue')
+                },
+                {
+                    path: '/unit-jabatan/create',
+                    name: 'unitjabatan-create',
                     component: () => import('../views/referensi/unitJabatan/form.vue')
                 },
                 {
-                    path:'/data-wilayah',
-                    name:'datawilayah',
+                    path: '/data-wilayah',
+                    name: 'datawilayah',
                     component: () => import('../views/referensi/dataWilayah/index.vue')
                 },
-                  //keuangan
+                //keuangan
 
                 {
-                    path:'/daftar-tagihan',
-                    name:'daftartagihan',
+                    path: '/daftar-tagihan',
+                    name: 'daftartagihan',
                     component: () => import('../views/keuangan/daftarTagihan/index.vue')
                 },
                 {
-                    path:'/daftar-tagihan/create',
-                    name:'daftartagihan-create',
+                    path: '/daftar-tagihan/create',
+                    name: 'daftartagihan-create',
                     component: () => import('../views/keuangan/daftarTagihan/form.vue')
                 },
                 {
-                    path:'/daftar-pembayaran',
-                    name:'daftarpembayaran',
+                    path: '/daftar-pembayaran',
+                    name: 'daftarpembayaran',
                     component: () => import('../views/keuangan/daftarPembayaran/index.vue')
                 },
-                
 
-                  //berita
+                //berita
                 {
-                    path:'/daftar-berita',
-                    name:'daftarberita',
+                    path: '/daftar-berita',
+                    name: 'daftarberita',
                     component: () => import('../views/berita/index.vue')
-                }, 
+                },
                 {
-                    path:'/daftar-berita/create',
-                    name:'daftarberita-create',
+                    path: '/daftar-berita/create',
+                    name: 'daftarberita-create',
                     component: () => import('../views/berita/form.vue')
-                }, 
+                },
 
-                  //laporan
+                //laporan
                 {
-                    path:'/krs-mahasiswa',
-                    name:'krsmahasiswa',
+                    path: '/krs-mahasiswa',
+                    name: 'krsmahasiswa',
                     component: () => import('../views/laporan/krsMahasiswa/index.vue')
                 },
                 {
-                    path:'/khs-mahasiswa',
-                    name:'khsmahasiswa',
+                    path: '/khs-mahasiswa',
+                    name: 'khsmahasiswa',
                     component: () => import('../views/laporan/khsMahasiswa/index.vue')
                 },
                 {
-                    path:'/transkrip-mahasiswa',
-                    name:'transkripmahasiswa',
+                    path: '/transkrip-mahasiswa',
+                    name: 'transkripmahasiswa',
                     component: () => import('../views/laporan/transkripMahasiswa/index.vue')
                 },
                 {
-                    path:'/rekap-nilai-kelas',
-                    name:'rekapnilaikelas',
+                    path: '/rekap-nilai-kelas',
+                    name: 'rekapnilaikelas',
                     component: () => import('../views/laporan/rekapNilaiKelas/index.vue')
                 },
                 {
-                    path:'/rekap-presensi-kelas',
-                    name:'rekappresensikelas',
+                    path: '/rekap-presensi-kelas',
+                    name: 'rekappresensikelas',
                     component: () => import('../views/laporan/rekapPresensiKelas/index.vue')
                 },
                 {
-                    path:'/jadwal-kuliah',
-                    name:'jadwalkuliah',
+                    path: '/jadwal-kuliah',
+                    name: 'jadwalkuliah',
                     component: () => import('../views/laporan/jadwalKuliah/index.vue')
                 },
                 {
-                    path:'/daftar-belum-krs',
-                    name:'daftarbelumkrs',
+                    path: '/daftar-belum-krs',
+                    name: 'daftarbelumkrs',
                     component: () => import('../views/laporan/daftarBelumKRS/index.vue')
                 },
 
-                  //setting
-                  //manajemen
+                //setting
+                //manajemen
                 {
-                    path:'/manajemen-role',
-                    name:'manajemenrole',
+                    path: '/manajemen-role',
+                    name: 'manajemenrole',
                     component: () => import('../views/manajemenSetting/manajemenRole/index.vue')
-                },  
+                },
                 {
-                    path:'/manajemen-user',
-                    name:'manajemenuser',
+                    path: '/manajemen-user',
+                    name: 'manajemenuser',
                     component: () => import('../views/manajemenSetting/manajemenUser/index.vue')
                 },
                 {
-                    path:'/generate-user-mahasiswa',
-                    name:'generateusermahasiswa',
+                    path: '/generate-user-mahasiswa',
+                    name: 'generateusermahasiswa',
                     component: () => import('../views/manajemenSetting/generateUserMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/generate-user-dosen',
-                    name:'generateuserdosen',
+                    path: '/generate-user-dosen',
+                    name: 'generateuserdosen',
                     component: () => import('../views/manajemenSetting/generateUserDosen/index.vue')
-                },                  
+                },
 
-                  //setting global
+                //setting global
 
                 {
-                    path:'/setting-global',
-                    name:'settingglobal',
+                    path: '/setting-global',
+                    name: 'settingglobal',
                     component: () => import('../views/manajemenSetting/settingGlobal/index.vue')
-                },  
+                },
                 {
-                    path:'/setting-ws',
-                    name:'settingws',
+                    path: '/setting-ws',
+                    name: 'settingws',
                     component: () => import('../views/manajemenSetting/settingWs/index.vue')
                 },
                 {
-                    path:'/setting-identitaspt',
-                    name:'settingidentitaspt',
+                    path: '/setting-identitaspt',
+                    name: 'settingidentitaspt',
                     component: () => import('../views/manajemenSetting/settingIdentitasPT/index.vue')
-                }, 
+                },
 
                 //role mahasiswa
 
                 //tentang saya
 
                 {
-                    path:'/profile-data-mahasiswa',
-                    name:'profiledatamahasiswa',
+                    path: '/profile-data-mahasiswa',
+                    name: 'profiledatamahasiswa',
                     component: () => import('../views/profile-mahasiswa/dataMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/profile-krs-mahasiswa',
-                    name:'profilekrsmahasiswa',
+                    path: '/profile-krs-mahasiswa',
+                    name: 'profilekrsmahasiswa',
                     component: () => import('../views/profile-mahasiswa/krsMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/profile-akm-mahasiswa',
-                    name:'profileakmmahasiswa',
+                    path: '/profile-akm-mahasiswa',
+                    name: 'profileakmmahasiswa',
                     component: () => import('../views/profile-mahasiswa/akmMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/profile-khs-mahasiswa',
-                    name:'profilekhsmahasiswa',
+                    path: '/profile-khs-mahasiswa',
+                    name: 'profilekhsmahasiswa',
                     component: () => import('../views/profile-mahasiswa/khsMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/profile-tagihan-pembayaran-mahasiswa',
-                    name:'profiletagihanpembayaranmahasiswa',
+                    path: '/profile-tagihan-pembayaran-mahasiswa',
+                    name: 'profiletagihanpembayaranmahasiswa',
                     component: () => import('../views/profile-mahasiswa/tagihanPembayaranMahasiswa/index.vue')
-                }, 
+                },
 
                 //kegiatan
                 //perkuliahan
                 {
-                    path:'/perkuliahan-krs-mahasiswa',
-                    name:'perkuliahankrsmahasiswa',
+                    path: '/perkuliahan-krs-mahasiswa',
+                    name: 'perkuliahankrsmahasiswa',
                     component: () => import('../views/perkuliahan-mahasiswa/krsMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/perkuliahan-khs-mahasiswa',
-                    name:'perkuliahankhsmahasiswa',
+                    path: '/perkuliahan-khs-mahasiswa',
+                    name: 'perkuliahankhsmahasiswa',
                     component: () => import('../views/perkuliahan-mahasiswa/khsMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/perkuliahan-jadwal-perkuliahan',
-                    name:'perkuliahanjadwalperkuliahan',
+                    path: '/perkuliahan-jadwal-perkuliahan',
+                    name: 'perkuliahanjadwalperkuliahan',
                     component: () => import('../views/perkuliahan-mahasiswa/jadwalPerkuliahan/index.vue')
-                }, 
-
+                },
 
                 //laporan
                 {
-                    path:'/laporan-krs-mahasiswa',
-                    name:'laporankrsmahasiswa',
+                    path: '/laporan-krs-mahasiswa',
+                    name: 'laporankrsmahasiswa',
                     component: () => import('../views/laporan-mahasiswa/krsMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/laporan-khs-mahasiswa',
-                    name:'laporankhsmahasiswa',
+                    path: '/laporan-khs-mahasiswa',
+                    name: 'laporankhsmahasiswa',
                     component: () => import('../views/laporan-mahasiswa/khsMahasiswa/index.vue')
-                }, 
+                },
                 {
-                    path:'/laporan-transkrip-mahasiswa',
-                    name:'laporantranskripmahasiswa',
+                    path: '/laporan-transkrip-mahasiswa',
+                    name: 'laporantranskripmahasiswa',
                     component: () => import('../views/laporan-mahasiswa/transkripMahasiswa/index.vue')
-                }, 
+                },
 
                 //batas pekerjaan hari ini 28/05/02
 
@@ -528,7 +557,7 @@ const router = createRouter({
         {
             path: '/auth/login',
             name: 'login',
-            component: () => import('@/views/pages/auth/Login.vue')
+            component: () => import('../views/pages/auth/Login.vue')
         },
         {
             path: '/auth/access',
@@ -541,6 +570,24 @@ const router = createRouter({
             component: () => import('@/views/pages/auth/Error.vue')
         }
     ]
+});
+
+// Navigation Guard untuk memeriksa otentikasi
+router.beforeEach((to, from, next) => {
+    const publicPages = ['/auth/login'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.getItem('token');
+
+    if (authRequired && !loggedIn) {
+        return next('/auth/login');
+    }
+
+    // Jika pengguna mencoba mengakses halaman login saat sudah login, arahkan mereka ke halaman beranda
+    if (to.path === '/auth/login' && loggedIn) {
+        return next('/dashboard');
+    }
+
+    next();
 });
 
 export default router;

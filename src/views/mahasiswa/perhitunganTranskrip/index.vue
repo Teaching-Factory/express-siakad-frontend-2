@@ -1,25 +1,16 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlahmhs: { value: null, matchMode: FilterMatchMode.EQUALS },
+    perubahanterakhir: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
+
 const customer1 = ref([]);
 const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
@@ -31,20 +22,21 @@ onBeforeMount(() => {
             aksi: `
             <div class="actions gap-2">
                 <input type="checkbox" id="actionCheckbox" name="actionCheckbox" class="form-check-input">
-            </div>`,
-        },{
+            </div>`
+        },
+        {
             no: '2',
-            prodi: 'S1 Teknik Informatika',
+            prodi: 'S1 Teknik Mesin',
             jumlahmhs: '24',
             perubahanterakhir: '2024-05-20 14:08:11',
             aksi: `
             <div class="actions gap-2">
                 <input type="checkbox" id="actionCheckbox" name="actionCheckbox" class="form-check-input">
-            </div>`,
+            </div>`
         }
         // Add more dummy data here
     ];
-})
+});
 </script>
 
 <template>
@@ -88,7 +80,7 @@ onBeforeMount(() => {
                     </div>
                     <hr>
 
-                    <DataTable
+                    <DataTable v-model:filters="filters" :globalFilterFields="[ 'prodi', 'jumlahmhs', 'perubahanterakhir  ']"
                 :value="customer1"
                 :paginator="true"
                 :rows="10"
@@ -102,14 +94,11 @@ onBeforeMount(() => {
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
                                 <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Hitung Transkrip Mahasiswa</button>
                             </div>
                         </div>
@@ -127,17 +116,17 @@ onBeforeMount(() => {
                         {{ data.no }}
                     </template>
                 </Column>
-                <Column header="Program Studi" style="min-width: 15rem">
+                <Column filterField="prodi" header="Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
                         {{ data.prodi }}
                     </template>
                 </Column>
-                <Column header="Jumlah Mahasiswa" style="min-width: 10rem">
+                <Column filterField="jumlahmhs" header="Jumlah Mahasiswa" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.jumlahmhs }}
                     </template>
                 </Column>
-                <Column header="Perubahan Terakhir" style="min-width: 10rem">
+                <Column filterField="perubahanterakhir" header="Perubahan Terakhir" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.perubahanterakhir }}
                     </template>

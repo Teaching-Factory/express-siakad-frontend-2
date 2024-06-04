@@ -1,41 +1,34 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nama_habatan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_dosen: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nip: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-        case 'qualified':
-            return 'success';
-        case 'new':
-            return 'info';
-        case 'negotiation':
-            return 'warning';
-        case 'renewal':
-            return null;
+const unitJabatans = ref([]);
+const loading1 = ref(true);
+
+const unitJabatan = async () => {
+    try {
+        const response = await get('unit-jabatan');
+        unitJabatans.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data Unit Jabatan:', error);
+
+        loading1.value = false;
+
+        unitJabatan.value = [];
     }
 };
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            id: 1,
-            no: 1,
-            daftarjabatan: 'Kepala Program Studi',
-            nama: 'Sukadi',
-            nip: '09876545678987',
-        },
-        {
-            id: 2,
-            no: 2,
-            daftarjabatan: 'Rektor',
-            nama: 'Lukman Hakim',
-            nip: '09876545678987',
-        },
-    ];
+    unitJabatan();
 });
 </script>
 
@@ -55,67 +48,55 @@ onBeforeMount(() => {
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
         </div>
 
-        <DataTable
-            :value="customer1"
-            :paginator="true"
-            :rows="10"
-            dataKey="id"
-            :rowHover="true"
-            :loading="loading1"
-            showGridlines
-        >
-        <template #header>
-                    <div class="row">
-                        <div class="col-lg-6 d-flex justify-content-start">
-                            <IconField iconPosition="left">
-                                <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
-                            </IconField>
-                        </div>
-                        <div class="col-lg-6 d-flex justify-content-end">
-                            <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <router-link to="/unit-jabatan/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
-                            </div>
+        <DataTable v-model:filters="filters" :globalFilterFields="['Jabatan.nama_habatan', 'Dosen.nama_dosen', 'Dosen.nip']" :value="unitJabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+            <template #header>
+                <div class="row">
+                    <div class="col-lg-6 d-flex justify-content-start">
+                        <IconField iconPosition="left">
+                            <InputIcon class="pi pi-search" />
+                            <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
+                        </IconField>
+                    </div>
+                    <div class="col-lg-6 d-flex justify-content-end">
+                        <div class="flex justify-content-end gap-2">
+                            <router-link to="/unit-jabatan/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                         </div>
                     </div>
-                </template>
-
+                </div>
+            </template>
 
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
             <template #loading>Loading data. Please wait.</template>
-            <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
+            <Column header="No" headerStyle="width:3rem">
+                <template #body="slotProps">
+                    {{ slotProps.index + 1 }}
                 </template>
             </Column>
-            <Column header="Daftar Jabatan" style="min-width: 15rem">
+            <Column filterField="nama_jabatan" header="Daftar Jabatan" style="min-width: 15rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.daftarjabatan }}</span>
+                        <span>{{ data.Jabatan.nama_jabatan }}</span>
                     </div>
                 </template>
             </Column>
-            <Column header="Nama Penandatangan" style="min-width: 20rem">
+            <Column filterField="nama_dosen" header="Nama Penandatangan" style="min-width: 20rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.nama}}</span>
+                        <span>{{ data.Dosen.nama_dosen }}</span>
                     </div>
                 </template>
             </Column>
-            <Column header="NIP" style="min-width: 10rem">
+            <Column filterField="nip" header="NIP" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.nip }}
+                    {{ data.Dosen.nip }}
                 </template>
             </Column>
         </DataTable>
