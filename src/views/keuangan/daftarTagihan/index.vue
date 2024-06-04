@@ -10,6 +10,7 @@ const filters = ref({
     nominal: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
+import Swal from 'sweetalert2';
 const customer1 = ref([]);
 const loading1 = ref(false);
 
@@ -17,17 +18,10 @@ onBeforeMount(() => {
     customer1.value = [
         {
             no: '1',
+            id: '098765456789876',
             nim: '12345678',
             name: 'John Doe',
-            jenistagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Jenis Tagihan</option>
-                    <option value="option2">KKN</option>
-                    <option value="option3">MKI</option>
-                    <option value="option3">UKT</option>
-                </select>
-            </div>`,
+            jenistagihan: 'SPP',
             periode: '2020/2021 Genap',
             nominal: 'Rp. 2.400.000,-',
             statustagihan: `
@@ -68,6 +62,29 @@ onBeforeMount(() => {
         // Add more dummy data here
     ];
 });
+
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    customer1.value = customer1.value.filter((item) => item.no !== no);
+};
 </script>
 
 <template>

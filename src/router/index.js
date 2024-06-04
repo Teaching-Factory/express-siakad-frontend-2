@@ -246,6 +246,11 @@ const router = createRouter({
                     component: () => import('../views/keuangan/daftarTagihan/index.vue')
                 },
                 {
+                    path: '/daftar-tagihan/create',
+                    name: 'daftartagihan-create',
+                    component: () => import('../views/keuangan/daftarTagihan/form.vue')
+                },
+                {
                     path: '/daftar-pembayaran',
                     name: 'daftarpembayaran',
                     component: () => import('../views/keuangan/daftarPembayaran/index.vue')
