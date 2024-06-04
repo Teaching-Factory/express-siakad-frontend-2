@@ -209,10 +209,15 @@ const router = createRouter({
                 },
                   //keuangan
 
-                  {
+                {
                     path:'/daftar-tagihan',
                     name:'daftartagihan',
                     component: () => import('../views/keuangan/daftarTagihan/index.vue')
+                },
+                {
+                    path:'/daftar-tagihan/create',
+                    name:'daftartagihan-create',
+                    component: () => import('../views/keuangan/daftarTagihan/form.vue')
                 },
                 {
                     path:'/daftar-pembayaran',

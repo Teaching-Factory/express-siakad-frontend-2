@@ -27,8 +27,17 @@ export default {
 <template>
     <div class="card">
         <div class="card-body">
-            <h5><i class="pi pi-user me-2"></i>DOSEN PENGAJAR KELAS KULIAH</h5>
-            <hr>
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5><i class="pi pi-user me-2"></i>DOSEN PENGAJAR KELAS KULIAH</h5>
+                </div>
+            <div class="col-lg-8 d-flex justify-content-end">
+                <router-link to="/kelas-jadwal-perkuliahan" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
+            </div>
+        </div>
+        <hr>
+            <!-- <h5><i class="pi pi-user me-2"></i>DOSEN PENGAJAR KELAS KULIAH</h5>
+            <hr> -->
 
             <div class="card" style="border-radius: none !important">
                 <div class="row">

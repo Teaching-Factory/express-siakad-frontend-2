@@ -1,80 +1,57 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import Swal from 'sweetalert2';
 const customer1 = ref([]);
 const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
         {
             no: '1',
+            id: '098765456789876',
             nim: '12345678',
             name: 'John Doe',
-            jenistagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Jenis Tagihan</option>
-                    <option value="option2">KKN</option>
-                    <option value="option3">MKI</option>
-                    <option value="option3">UKT</option>
-                </select>
-            </div>`,
+            jenistagihan: 'SPP',
             periode: '2020/2021 Genap',
             nominal: 'Rp. 2.400.000,-',
-            statustagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Status Tagihan</option>
-                    <option value="option2">Lunas</option>
-                    <option value="option3">Belum Lunas</option>
-                    <option value="option3">Belum Bayar</option>
-                </select>
-            </div>`,
-        },{
-            no: '2',
-            nim: '12345678',
-            name: 'John Doe',
-            jenistagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Jenis Tagihan</option>
-                    <option value="option2">KKN</option>
-                    <option value="option3">MKI</option>
-                    <option value="option3">UKT</option>
-                </select>
-            </div>`,
-            periode: '2020/2021 Genap',
-            nominal: 'Rp. 2.400.000,-',
-            statustagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Status Tagihan</option>
-                    <option value="option2">Lunas</option>
-                    <option value="option3">Belum Lunas</option>
-                    <option value="option3">Belum Bayar</option>
-                </select>
-            </div>`,
+            statustagihan: '',
+            aksi: '',
         }
         // Add more dummy data here
     ];
 })
+const confirmDelete = (no) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(no);
+            Swal.fire(
+                'BERHASIL!',
+                'Data berhasil dihapus.',
+                'success'
+            );
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            Swal.fire(
+                'BATAL',
+                'Data Anda Tidak Jadi Dihapus',
+                'error'
+            );
+        }
+    });
+};
+
+const deleteItem = (no) => {
+    customer1.value = customer1.value.filter(item => item.no !== no);
+};
 </script>
 
 <template>
@@ -152,7 +129,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-secondary"> <i class="pi pi-plus me-2"></i> Tambah</button>
+                                <router-link to="/daftar-tagihan/create" class="btn btn-secondary"> <i class="pi pi-plus me-2"></i> Tambah </router-link>
                             </div>
                         </div>
                     </div>
@@ -169,6 +146,11 @@ onBeforeMount(() => {
                         {{ data.no }}
                     </template>
                 </Column>
+                <Column field="no" header="ID Tagihan" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ data.id }}
+                    </template>
+                </Column>
                 <Column header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
@@ -176,7 +158,7 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                <Column header="Nama" style="min-width: 14rem">
+                <Column header="Nama" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.name }}</span>
@@ -200,7 +182,17 @@ onBeforeMount(() => {
                 </Column>
                 <Column header="Status Tagihan" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <div v-html="data.statustagihan"></div>
+                        <div class="actions gap-2">
+                            <button class="btn btn-primary">Belum Lunas</button>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Aksi" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <router-link to="/daftar-tagihan/create" class="btn btn-outline-primary me-2"> <i class="pi pi-pencil"></i></router-link>
+                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                            <i class="pi pi-trash"></i>
+                        </button>
                     </template>
                 </Column>
             </DataTable>
