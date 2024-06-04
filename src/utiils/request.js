@@ -38,3 +38,48 @@ export const get = async (url, props = {}) => {
         }
     }
 };
+export const postData = async (url, body, props = {}) => {
+    try {
+        const token = getToken(); // Pastikan Anda mendapatkan token dari suatu sumber yang sesuai
+
+        if (!token) {
+            throw new Error('No token found');
+        }
+
+        const res = await axios.post(`${API_URL}/${url}`, body, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+            }
+        });
+
+        if (res.status !== 201) {
+            throw new Error(`Failed to add data to server with status ${res.status}`);
+        }
+
+        return { status: res.status, data: res.data };
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const del = async (url, props = {}) => {
+    try {
+        const token = getToken();
+
+        if (!token) {
+            throw new Error('No token found');
+        }
+        const res = await axios.delete(`${API_URL}/${url}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: token
+            },
+            mode: 'cors'
+        });
+
+        return { status: res.status, data: data };
+    } catch (err) {
+        throw err;
+    }
+};

@@ -1,8 +1,17 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import Swal from 'sweetalert2';
-b;
 import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_semester: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_jenis_aktivitas_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    judul: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
 const aktivitasMahasiswas = ref([]);
 const loading1 = ref(true);
@@ -91,20 +100,27 @@ const deleteItem = (no) => {
                 </div>
             </div>
             <hr />
-            <DataTable :value="aktivitasMahasiswas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+            <DataTable
+                v-model:filters="filters"
+                :globalFilterFields="['nim', 'Semester.nama_semester', 'JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa', 'Prodi.nama_program_studi', 'judul']"
+                :value="aktivitasMahasiswas"
+                :paginator="true"
+                :rows="10"
+                dataKey="id"
+                :rowHover="true"
+                :loading="loading1"
+                showGridlines
+            >
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
                                 <button class="btn btn-secondary"><i class="pi pi-download me-2"></i> Import Aktivitas</button>
                             </div>
                         </div>
@@ -120,31 +136,31 @@ const deleteItem = (no) => {
                         {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column header="NIM/Nama" style="min-width: 10rem">
+                <Column filterField="nim" header="NIM/Nama" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.nim }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Program Studi" style="min-width: 10rem">
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.Prodi.nama_program_studi }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Semester" style="min-width: 10rem">
+                <Column filterField="nama_semester" header="Semester" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.Semester.nama_semester }}
                     </template>
                 </Column>
-                <Column header="Jenis" style="min-width: 10rem">
+                <Column filterField="nama_jenis_aktivitas_mahasiswa" header="Jenis" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa }}
                     </template>
                 </Column>
-                <Column header="Judul" style="min-width: 30rem">
+                <Column filterField="judul" header="Judul" style="min-width: 30rem">
                     <template #body="{ data }">
                         {{ data.judul }}
                     </template>

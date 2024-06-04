@@ -1,25 +1,21 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    pertemuan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    tanggal: { value: null, matchMode: FilterMatchMode.EQUALS },
+    waktu: { value: null, matchMode: FilterMatchMode.EQUALS },
+    ruang: { value: null, matchMode: FilterMatchMode.EQUALS },
+    dosen: { value: null, matchMode: FilterMatchMode.EQUALS },
+    materi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlahmhs: { value: null, matchMode: FilterMatchMode.EQUALS },
+    statuspresensi: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
+
 const customer1 = ref([]);
 const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
@@ -32,8 +28,9 @@ onBeforeMount(() => {
             materi: 'Sitasi Ilmiah',
             jumlahmhs: '30',
             statuspresensi: 'Aktif',
-            aksi: '-',
-        },{
+            aksi: '-'
+        },
+        {
             pertemuan: '2',
             tanggal: '18/05/2024',
             waktu: '09.10 - 10.10',
@@ -42,57 +39,59 @@ onBeforeMount(() => {
             materi: 'Sitasi Ilmiah',
             jumlahmhs: '30',
             statuspresensi: 'Aktif',
-            aksi: '-',
+            aksi: '-'
         }
         // Add more dummy data here
     ];
-})
+});
 </script>
 
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>PRESENSI KELAS PERKULIAHAN</h5>
-            <div class="card">
-                <div class="row">
-                    <div class="col-lg-2 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Periode</option>
-                                <option value="1">2021/2022 Genap</option>
-                                <option value="2">2021/2022 Ganjil</option>
-                                <option value="3">2021/2022 Genap</option>
-                                <option value="4">2021/2022 Ganjil</option>
-                            </select>
-                        </div>
-                        </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Program Studi</option>
-                                <option value="1">Teknologi Ternak</option>
-                                <option value="2">Teknologi Basis Data</option>
-                                <option value="3">Perikanan</option>
-                            </select>
-                        </div>
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-2 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Periode</option>
+                            <option value="1">2021/2022 Genap</option>
+                            <option value="2">2021/2022 Ganjil</option>
+                            <option value="3">2021/2022 Genap</option>
+                            <option value="4">2021/2022 Ganjil</option>
+                        </select>
                     </div>
-                    <div class="col-lg-5 col-md-6 col-sm-6">
-                        <div class="mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Kelas</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Ketikkan Nama Kelas / Mata Kuliah / Kode Mata Kuliah disini</option>
-                                <option value="1">Merdeka Belajar</option>
-                                <option value="2">K13</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Program Studi</option>
+                            <option value="1">Teknologi Ternak</option>
+                            <option value="2">Teknologi Basis Data</option>
+                            <option value="3">Perikanan</option>
+                        </select>
                     </div>
-                        <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                            <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
-                        </div>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Kelas</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected disabled hidden>Ketikkan Nama Kelas / Mata Kuliah / Kode Mata Kuliah disini</option>
+                            <option value="1">Merdeka Belajar</option>
+                            <option value="2">K13</option>
+                        </select>
                     </div>
-                    <hr/>
-                    <DataTable
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                </div>
+            </div>
+            <hr />
+            <DataTable
+                v-model:filters="filters"
+                :globalFilterFields="['pertemuan', 'tanggal', 'waktu', 'ruang', 'dosen', 'materi', 'jumlahmhs', 'statuspresensi']"
                 :value="customer1"
                 :paginator="true"
                 :rows="10"
@@ -106,16 +105,11 @@ onBeforeMount(() => {
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
-                            <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <!-- <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Set Aktif</button> -->
-                            </div>
+                            <div class="flex justify-content-end gap-2"></div>
                         </div>
                     </div>
                 </template>
@@ -123,49 +117,47 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading>
-                    Loading customers data. Please wait.
-                </template>
-                <Column field="no" header="Pertemuan" style="min-width: 10rem">
+                <template #loading> Loading customers data. Please wait. </template>
+                <Column filterField="pertemuan" field="no" header="Pertemuan" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.pertemuan }}
                     </template>
                 </Column>
-                <Column header="Tanggal Pertemuan" style="min-width: 10rem">
+                <Column filterField="tanggal" header="Tanggal Pertemuan" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.tanggal }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Waktu" style="min-width: 10rem">
+                <Column filterField="waktu" header="Waktu" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.waktu }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Ruang" style="min-width: 10rem">
+                <Column filterField="ruang" header="Ruang" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.ruang }}
                     </template>
                 </Column>
-                <Column header="Dosen" style="min-width: 10rem">
+                <Column filterField="dosen" header="Dosen" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.dosen }}
                     </template>
                 </Column>
-                <Column header="Materi" style="min-width: 10rem">
+                <Column filterField="materi" header="Materi" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.materi }}
                     </template>
                 </Column>
-                <Column header="Jumlah Mahasiswa" style="min-width: 10rem">
+                <Column filterField="jumlahmhs" header="Jumlah Mahasiswa" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.jumlahmhs }}
                     </template>
                 </Column>
-                <Column header="Status Presensi" style="min-width: 10rem">
+                <Column filterField="statuspresensi" header="Status Presensi" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.statuspresensi }}
                     </template>
@@ -176,7 +168,7 @@ onBeforeMount(() => {
                     </template>
                 </Column>
             </DataTable>
-            </div>
+        </div>
     </div>
 </template>
 

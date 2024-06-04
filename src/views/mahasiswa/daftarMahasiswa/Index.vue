@@ -110,7 +110,7 @@ onBeforeMount(() => {
             </Column>
             <Column header="Program Studi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.id_prodi }}
+                    {{ data.id_periode }}
                 </template>
             </Column>
             <Column filterField="nama_status_mahasiswa" header="Status" style="min-width: 10rem">

@@ -1,25 +1,19 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    kelas: { value: null, matchMode: FilterMatchMode.EQUALS },
+    hari: { value: null, matchMode: FilterMatchMode.EQUALS },
+    waktu: { value: null, matchMode: FilterMatchMode.EQUALS },
+    ruang: { value: null, matchMode: FilterMatchMode.EQUALS },
+    dosen: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlahmhs: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
+
 const customer1 = ref([]);
 const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
 
 onBeforeMount(() => {
     customer1.value = [
@@ -30,11 +24,11 @@ onBeforeMount(() => {
             ruang: 'Ruang B.204',
             jumlahmhs: '26/40',
             dosen: 'LUKMAN HAKIM',
-            detail: '',
+            detail: ''
         }
         // Add more dummy data here
     ];
-})
+});
 </script>
 
 <template>
@@ -81,7 +75,8 @@ onBeforeMount(() => {
                         </div>
                     </div>
                     <hr/>
-                    <DataTable
+                    <DataTable  v-model:filters="filters"
+                :globalFilterFields="['kelas', 'hari', 'waktu', 'ruang', 'dosen', 'jumlahmhs', ]"
                 :value="customer1"
                 :paginator="true"
                 :rows="10"
@@ -95,14 +90,11 @@ onBeforeMount(() => {
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
                                 <button class="btn btn-secondary"> <i class="pi pi-download me-2"></i> Import Aktivitas</button>
                             </div>
                         </div>
@@ -115,42 +107,42 @@ onBeforeMount(() => {
                 <template #loading>
                     Loading customers data. Please wait.
                 </template>
-                <Column header="Kelas" style="min-width: 5rem">
+                <Column filterField="kelas" header="Kelas" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.kelas }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Hari" style="min-width: 5rem">
+                <Column filterField="hari" header="Hari" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.hari }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Waktu" style="min-width: 10rem">
+                <Column filterField="waktu" header="Waktu" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.waktu }}
                     </template>
                 </Column>
-                <Column header="Ruang" style="min-width: 5rem">
+                <Column filterField="ruang" header="Ruang" style="min-width: 5rem">
                     <template #body="{ data }">
                         {{ data.ruang }}
                     </template>
                 </Column>
-                <Column header="Jumlah Mahasiswa" style="min-width: 15rem">
+                <Column filterField="jumlahmhs" header="Jumlah Mahasiswa" style="min-width: 15rem">
                     <template #body="{ data }">
                         {{ data.jumlahmhs }}
                     </template>
                 </Column>
-                <Column header="Dosen Pengampu" style="min-width: 15rem">
+                <Column filterField="dosen" header="Dosen Pengampu" style="min-width: 15rem">
                     <template #body="{ data }">
                         {{ data.dosen }}
                     </template>
                 </Column>
                 <Column header="Detail Peserta" style="min-width: 15rem">
-                    <template #body="{ data }">
+                    <template #body="{  }">
                         <div class="actions gap-2">
                             <router-link to="#" class="btn btn-outline-primary"> <i class="pi pi-eye"></i> Detail Peserta</router-link>
                         </div>

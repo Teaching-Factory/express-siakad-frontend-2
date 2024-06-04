@@ -34,26 +34,6 @@ const deleteRuang = (id) => {
     console.log(`Menghapus ruang dengan ID: ${id}`);
 };
 
-onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            idruang: 'A101',
-            namaruang: 'Ruang A 101',
-            lokasi: 'Gedung A',
-            aksi: ''
-        },
-        {
-            no: '2',
-            idruang: 'A101',
-            namaruang: 'Ruang A 101',
-            lokasi: 'Gedung A',
-            aksi: ''
-        }
-        // Add more dummy data here
-    ];
-});
-
 const confirmDelete = (no) => {
     Swal.fire({
         title: 'Apa Kamu Yakin?',
