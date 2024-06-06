@@ -172,11 +172,11 @@ const deleteItem = (no) => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link to="/import-mahasiswa" class="btn btn-outline-primary me-2"> 
+                        <router-link to="/import-mahasiswa" class="btn btn-outline-primary me-2 py-1 px-2"> 
                             <i class="pi pi-pencil"></i>
                         </router-link>
                         
-                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                        <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.no)">
                             <i class="pi pi-trash"></i>
                         </button>
                     </template>

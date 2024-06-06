@@ -2,6 +2,9 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
+import { API_URL } from '../config/config';
+import { clearToken } from '../service/auth';
 
 const {onMenuToggle } = useLayout();
 
@@ -20,6 +23,20 @@ onBeforeUnmount(() => {
 const logoUrl = computed(() => {
     return `/public/ubi.png`;
 });
+
+const handleLogout = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/auth/do-logout`)
+        console.log(response)
+
+        if(response.status == 200 && response.statusText === 'OK') {
+            clearToken()
+            router.push('/auth/login')
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
@@ -64,30 +81,31 @@ const isOutsideClicked = (event) => {
     <div class="layout-topbar">
         <router-link to="/" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
-            <span>SIAKAD</span>
+            <span class="text-white">SIAKAD</span>
         </router-link>
 
         <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()">
-            <i class="pi pi-bars"></i>
+            <i class="pi pi-bars text-white"></i>
         </button>
 
         <button class="p-link layout-topbar-menu-button layout-topbar-button" @click="onTopBarMenuButton()">
-            <i class="pi pi-ellipsis-v"></i>
+            <i class="pi pi-ellipsis-v text-white"></i>
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-calendar"></i>
-                <span>Calendar</span>
-            </button>
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-user"></i>
-                <span>Profile</span>
-            </button>
-            <button @click="onSettingsClick()" class="p-link layout-topbar-button">
-                <i class="pi pi-cog"></i>
-                <span>Settings</span>
-            </button>
+            <div class="dropdown">
+                <button class="dropdown-toggle border-0" style="background:none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="pi pi-user text-white me-3 fs-4"></i>
+                    <span class="text-white">HI, MAHASISWA</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#" @click="handleLogout ">Logout</a></li>
+                </ul>
+            </div>
+            <!-- <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
+                <i class="pi pi-user text-white"></i>
+                <span class="text-white">Profile</span>
+            </button> -->
         </div>
     </div>
 </template>
