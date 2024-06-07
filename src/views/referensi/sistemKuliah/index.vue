@@ -1,4 +1,4 @@
-    <script setup>
+<script setup>
 import Swal from 'sweetalert2';
 import { ref, onBeforeMount } from 'vue';
 import { get, del } from '../../../utiils/request';
@@ -25,7 +25,7 @@ const message = ref('');
 
 const sistemKuliah = async () => {
     try {
-        const response = await get('sistem-kuliah'); // Memanggil fungsi get dengan endpoint 'sistemKuliah'
+        const response = await get('sistem-kuliah');
         console.log(response.data.data);
         sistemKuliahs.value = response.data.data;
         loading1.value = false;
@@ -40,7 +40,8 @@ const deleteItem = async (id) => {
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
             // Menghapus item dari array sistemKuliahs yang memiliki id yang sesuai
-            sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id !== id);
+            // sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id !== id);
+            window.location.href = '/sistem-kuliah';
         } else {
             message.value = 'Terjadi kesalahan: ' + response.statusText;
         }

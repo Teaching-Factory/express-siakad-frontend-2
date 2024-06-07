@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { get } from '../../../utiils/request';
+import { get, del } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 
@@ -12,6 +12,7 @@ const filters = ref({
 
 const unsurPenilaians = ref([]);
 const loading1 = ref(true);
+const message = ref('');
 
 const unsurPenilaian = async () => {
     try {
@@ -24,11 +25,21 @@ const unsurPenilaian = async () => {
     }
 };
 
-onBeforeMount(() => {
-    unsurPenilaian();
-});
+const deleteItem = async (id_unsur_penilaian) => {
+    try {
+        const response = await del(`unsur-penilaian/${id_unsur_penilaian}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+            unsurPenilaians.value = unsurPenilaians.value.filter((data) => data.id_unsur_penilaian !== id_unsur_penilaian);
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
 
-const confirmDelete = (no) => {
+const confirmDelete = (id_unsur_penilaian) => {
     Swal.fire({
         title: 'Apa Kamu Yakin?',
         text: 'Data ini akan dihapus',
@@ -39,27 +50,17 @@ const confirmDelete = (no) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteItem(no);
-            Swal.fire(
-                'BERHASIL!',
-                'Data berhasil dihapus.',
-                'success'
-            );
-        } else if (
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            Swal.fire(
-                'BATAL',
-                'Data Anda Tidak Jadi Dihapus',
-                'error'
-            );
+            deleteItem(id_unsur_penilaian);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
     });
 };
 
-const deleteItem = (no) => {
-    unsurPenilaians.value = unsurPenilaians.value.filter(item => item.no !== no);
-};
+onBeforeMount(() => {
+    unsurPenilaian();
+});
 </script>
 
 <template>
@@ -112,7 +113,7 @@ const deleteItem = (no) => {
                             <router-link :to="`/edit-ruang/${data.id}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
+                            <button @click="confirmDelete(data.id_unsur_penilaian)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>

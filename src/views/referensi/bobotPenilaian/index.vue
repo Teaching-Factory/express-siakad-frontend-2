@@ -1,12 +1,14 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { get } from '../../../utiils/request';
+import { get, del } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
 
 const bobotPenilaians = ref([]);
 const loading1 = ref(true);
 const currentPage = ref(0);
-const rowsPerPage = ref(10);
+const rowsPerPage = ref(100);
+const message = ref('');
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nama_program_studi: { value: null, matchMode: FilterMatchMode.IN },
@@ -26,13 +28,21 @@ const fetchBobotPenilaian = async () => {
     }
 };
 
-onBeforeMount(() => {
-    fetchBobotPenilaian();
-});
-import Swal from 'sweetalert2';
-const customer1 = ref([]);
+const deleteItem = async (id_bobot_penilaian) => {
+    try {
+        const response = await del(`bobot-penilaian/${id_bobot_penilaian}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+            bobotPenilaians.value = bobotPenilaians.value.filter((data) => data.id_bobot_penilaian !== id_bobot_penilaian);
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
 
-const confirmDelete = (no) => {
+const confirmDelete = (id_bobot_penilaian) => {
     Swal.fire({
         title: 'Apa Kamu Yakin?',
         text: 'Data ini akan dihapus',
@@ -43,7 +53,7 @@ const confirmDelete = (no) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteItem(no);
+            deleteItem(id_bobot_penilaian);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
@@ -51,9 +61,9 @@ const confirmDelete = (no) => {
     });
 };
 
-const deleteItem = (no) => {
-    bobotPenilaians.value = bobotPenilaians.value.filter((item) => item.no !== no);
-};
+onBeforeMount(() => {
+    fetchBobotPenilaian();
+});
 </script>
 
 <template>
@@ -93,9 +103,8 @@ const deleteItem = (no) => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading data...</template>
+                <!-- <template #loading> Loading data...</template> -->
 
-                <!-- Column for numbering rows -->
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">
                         {{ currentPage * rowsPerPage + slotProps.index + 1 }}
@@ -119,7 +128,7 @@ const deleteItem = (no) => {
                 <Column filterField="bobot_penilaian" header="Bobot Penilaian" style="min-width: 10rem">
                     <template #body="slotProps">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ slotProps.data.bobot_penilaian }}</span>
+                            <span>{{ slotProps.data.bobot_penilaian }} %</span>
                         </div>
                     </template>
                 </Column>
@@ -129,7 +138,7 @@ const deleteItem = (no) => {
                             <router-link :to="`/edit-ruang/${slotProps.data.idruang}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
-                            <button @click="deleteRuang(slotProps.data.idruang)" class="btn btn-outline-danger">
+                            <button @click="confirmDelete(slotProps.data.id_bobot_penilaian)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>

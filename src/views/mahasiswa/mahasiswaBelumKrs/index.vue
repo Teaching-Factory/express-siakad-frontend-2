@@ -1,39 +1,36 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { get } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
-    prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
     dosenwali: { value: null, matchMode: FilterMatchMode.EQUALS },
-    angkatan: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const belumKrs = ref([]);
+const loading1 = ref(true);
+const currentPage = ref(0);
+const rowsPerPage = ref(10);
+
+const fetchBelumKrs = async () => {
+    try {
+        const response = await get('krs-mahasiswa/mahasiswa-belum-krs');
+        belumKrs.value = response.data.data;
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+        loading1.value = false;
+        belumKrs.value = [];
+    }
+};
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            nim: '12345678',
-            name: 'John Doe',
-            prodi: 'S1 Teknik Informatika',
-            dosenwali: 'Lukman Hakim',
-            angkatan: '2022'
-        },
-        {
-            no: '2',
-            nim: '87654321',
-            name: 'John Doe',
-            prodi: 'S1 Teknik Informatika',
-            dosenwali: 'Lukman Hakim',
-            angkatan: '2022'
-        }
-        // Add more dummy data here
-    ];
+    fetchBelumKrs();
 });
 </script>
 
@@ -71,7 +68,17 @@ onBeforeMount(() => {
                 </div>
             </div>
         </div>
-        <DataTable v-model:filters="filters" :globalFilterFields="['name', 'nim', 'prodi', 'dosenwali', 'angkatan ']" :value="customer1" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+        <DataTable
+            v-model:filters="filters"
+            :globalFilterFields="['nama_mahasiswa', 'nim', 'Periode.Prodi.nama_program_studi', 'dosenwali', 'angkatan ']"
+            :value="belumKrs"
+            :paginator="true"
+            :rows="10"
+            dataKey="id"
+            :rowHover="true"
+            :loading="loading1"
+            showGridlines
+        >
             <template #header>
                 <div class="row">
                     <div class="col-lg-6 d-flex justify-content-start">
@@ -89,10 +96,10 @@ onBeforeMount(() => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            <template #loading> Loading customers data. Please wait. </template>
-            <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
+            <!-- <template #loading> Loading customers data. Please wait. </template> -->
+            <Column header="No" headerStyle="width:3rem">
+                <template #body="slotProps">
+                    {{ currentPage * rowsPerPage + slotProps.index + 1 }}
                 </template>
             </Column>
             <Column filterField="nim" header="NIM" style="min-width: 10rem">
@@ -105,15 +112,16 @@ onBeforeMount(() => {
             <Column filterField="name" header="Nama Mahasiswa" style="min-width: 14rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.name }}</span>
+                        <span>{{ data.nama_mahasiswa }}</span>
                     </div>
                 </template>
             </Column>
-            <Column filterField="prodi" header="Program Studi" style="min-width: 15rem">
+            <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.prodi }}
+                    {{ data.Periode?.Prodi?.nama_program_studi || '-' }}
                 </template>
             </Column>
+
             <Column filterField="dosenwali" header="Dosen Wali" style="min-width: 10rem">
                 <template #body="{ data }">
                     {{ data.dosenwali }}
@@ -121,7 +129,7 @@ onBeforeMount(() => {
             </Column>
             <Column filterField="angkatan" header="Angkatan" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.angkatan }}
+                    {{ data.nama_periode_masuk }}
                 </template>
             </Column>
         </DataTable>

@@ -38,6 +38,7 @@ export const get = async (url, props = {}) => {
         }
     }
 };
+
 export const postData = async (url, body, props = {}) => {
     try {
         const token = getToken(); // Pastikan Anda mendapatkan token dari suatu sumber yang sesuai
@@ -46,14 +47,21 @@ export const postData = async (url, body, props = {}) => {
             throw new Error('No token found');
         }
 
+        const headers = {
+            Authorization: token
+        };
+
+        if (body instanceof FormData) {
+            headers['Content-Type'] = 'multipart/form-data';
+        } else {
+            headers['Content-Type'] = 'application/json';
+        }
+
         const res = await axios.post(`${API_URL}/${url}`, body, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: token
-            }
+            headers: headers
         });
 
-        if (res.status !== 201) {
+        if (res.status < 200 || res.status >= 300) {
             throw new Error(`Failed to add data to server with status ${res.status}`);
         }
 

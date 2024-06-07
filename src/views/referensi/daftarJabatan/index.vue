@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
-import { get } from '../../../utiils/request';
+import { del, get } from '../../../utiils/request';
 import Swal from 'sweetalert2';
-8;
 
 const jabatans = ref([]);
 const loading1 = ref(true);
+const message = ref('');
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nama_jabatan: { value: null, matchMode: FilterMatchMode.EQUALS }
@@ -24,11 +24,21 @@ const jabatan = async () => {
     }
 };
 
-// Panggil jabatan sebelum komponen dipasang
-onBeforeMount(() => {
-    jabatan();
-});
-const confirmDelete = (no) => {
+const deleteItem = async (id) => {
+    try {
+        const response = await del(`jabatan/${id}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+            jabatans.value = jabatans.value.filter((data) => data.id !== id);
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
+
+const confirmDelete = (id) => {
     Swal.fire({
         title: 'Apa Kamu Yakin?',
         text: 'Data ini akan dihapus',
@@ -39,7 +49,7 @@ const confirmDelete = (no) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteItem(no);
+            deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
@@ -47,9 +57,9 @@ const confirmDelete = (no) => {
     });
 };
 
-const deleteItem = (no) => {
-    jabatans.value = jabatans.value.filter((item) => item.no !== no);
-};
+onBeforeMount(() => {
+    jabatan();
+});
 </script>
 
 <template>

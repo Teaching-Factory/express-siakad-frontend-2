@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import Swal from 'sweetalert2';
-import { get } from '../../../utiils/request';
+import { del, get } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_semester: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_jenis_aktivitas_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
@@ -15,10 +15,13 @@ const filters = ref({
 
 const aktivitasMahasiswas = ref([]);
 const loading1 = ref(true);
+const message = ref('');
+const currentPage = ref(0);
+const rowsPerPage = ref(100);
 
 const aktivitasMahasiswa = async () => {
     try {
-        const response = await get('aktivitas-mahasiswa');
+        const response = await get('anggota-aktivitas-mahasiswa');
         aktivitasMahasiswas.value = response.data.data;
         loading1.value = false;
     } catch (error) {
@@ -30,13 +33,24 @@ const aktivitasMahasiswa = async () => {
     }
 };
 
-onBeforeMount(() => {
-    aktivitasMahasiswa();
-});
-const confirmDelete = (no) => {
+const deleteItem = async (id_anggota) => {
+    try {
+        const response = await del(`anggota-aktivitas-mahasiswa/${id_anggota}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+            bobotPenilaians.value = bobotPenilaians.value.filter((data) => data.id_anggota !== id_anggota);
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
+
+const confirmDelete = (id_anggota) => {
     Swal.fire({
-        title: 'Apa Kamu yakin',
-        text: 'Ini Aida Andinar Maulidiana',
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Ya, saya yakin!',
@@ -44,17 +58,17 @@ const confirmDelete = (no) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteItem(no);
-            Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
+            deleteItem(id_anggota);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire('Berhasil', 'Data Anda Tidak Jadi Dihapus', 'error');
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
     });
 };
 
-const deleteItem = (no) => {
-    aktivitasMahasiswas.value = aktivitasMahasiswas.value.filter((item) => item.no !== no);
-};
+onBeforeMount(() => {
+    aktivitasMahasiswa();
+});
 </script>
 
 <template>
@@ -102,7 +116,13 @@ const deleteItem = (no) => {
             <hr />
             <DataTable
                 v-model:filters="filters"
-                :globalFilterFields="['nim', 'Semester.nama_semester', 'JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa', 'Prodi.nama_program_studi', 'judul']"
+                :globalFilterFields="[
+                    'Mahasiswa.nama_mahasiswa',
+                    'AktivitasMahasiswa.Prodi.nama_program_studi',
+                    'AktivitasMahasiswa.Semester.nama_semester',
+                    'AktivitasMahasiswa.JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa',
+                    'AktivitasMahasiswa.judul'
+                ]"
                 :value="aktivitasMahasiswas"
                 :paginator="true"
                 :rows="10"
@@ -110,6 +130,7 @@ const deleteItem = (no) => {
                 :rowHover="true"
                 :loading="loading1"
                 showGridlines
+                @page="(e) => (currentPage.value = e.page)"
             >
                 <template #header>
                     <div class="row">
@@ -121,7 +142,7 @@ const deleteItem = (no) => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-secondary"><i class="pi pi-download me-2"></i> Import Aktivitas</button>
+                                <router-link to="/import-aktivitas-mahasiswa" class="btn btn-secondary"><i class="pi pi-download me-2"></i> Import Aktivitas</router-link>
                             </div>
                         </div>
                     </div>
@@ -130,39 +151,40 @@ const deleteItem = (no) => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading customers data. Please wait. </template>
+                <!-- <template #loading> Loading customers data. Please wait. </template> -->
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">
-                        {{ slotProps.index + 1 }}
+                        {{ currentPage * rowsPerPage + slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column filterField="nim" header="NIM/Nama" style="min-width: 10rem">
+
+                <Column filterField="nama_mahasiswa" header="NIM/Nama" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nim }}</span>
+                            <span>{{ data.Mahasiswa.nim }} - {{ data.Mahasiswa.nama_mahasiswa }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.Prodi.nama_program_studi }}</span>
+                            <span>{{ data.AktivitasMahasiswa.Prodi.nama_program_studi }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_semester" header="Semester" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.Semester.nama_semester }}
+                        {{ data.AktivitasMahasiswa.Semester.nama_semester }}
                     </template>
                 </Column>
                 <Column filterField="nama_jenis_aktivitas_mahasiswa" header="Jenis" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa }}
+                        {{ data.AktivitasMahasiswa.JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa }}
                     </template>
                 </Column>
                 <Column filterField="judul" header="Judul" style="min-width: 30rem">
                     <template #body="{ data }">
-                        {{ data.judul }}
+                        {{ data.AktivitasMahasiswa.judul }}
                     </template>
                 </Column>
                 <Column header="Opsi" style="min-width: 15rem">
@@ -170,7 +192,7 @@ const deleteItem = (no) => {
                         <router-link to="#" class="btn btn-outline-primary me-2">
                             <i class="pi pi-eye"></i>
                         </router-link>
-                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                        <button class="btn btn-outline-danger" @click="confirmDelete(data.id_anggota)">
                             <i class="pi pi-trash"></i>
                         </button>
                     </template>

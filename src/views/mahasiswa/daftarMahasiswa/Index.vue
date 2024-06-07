@@ -7,25 +7,71 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const mahasiswas = ref([]);
+const angkatans = ref([]);
+const prodis = ref([]);
+const selectedProdi = ref('');
+const selectedAngkatan = ref('');
 const loading1 = ref(true);
 
-const mahasiswa = async () => {
+const fetchProdi = async () => {
     try {
-        const response = await get('mahasiswa'); // Memanggil fungsi get dengan endpoint 'mahasiswa'
-        console.log(response.data.data);
-        mahasiswas.value = response.data.data;
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data prodi:', error);
+    }
+};
+const fetchAngkatan = async () => {
+    try {
+        const response = await get('angkatan');
+        angkatans.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data angkatan mahasiswa:', error);
+    }
+};
+
+const selectedFilter = async () => {
+    loading1.value = true;
+    await Promise.all([fetchProdi(), fetchAngkatan()]);
+    loading1.value = false;
+};
+
+const filterData = async () => {
+    loading1.value = true;
+    const prodiId = selectedProdi.value;
+    const angkatanId = selectedAngkatan.value;
+
+    if (!prodiId || !angkatanId) {
+        console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        alert('Prodi atau Angkatan Mahasiswa belum dipilih');
+        return;
+    }
+
+    console.log('Prodi:', prodiId);
+    console.log('Angkatan:', angkatanId);
+
+    try {
+        const response = await get(`mahasiswa/prodi/${prodiId}/get`);
+        const filterMahasiswa = response.data.data;
+
+        mahasiswas.value = filterMahasiswa;
+
         loading1.value = false;
     } catch (error) {
         console.error('Gagal mengambil data mahasiswa:', error);
+        alert('Gagal mengambil data mahasiswa. Silakan coba lagi nanti.');
+        loading1.value = false;
     }
 };
 
 onBeforeMount(() => {
-    mahasiswa();
+    selectedFilter();
 });
 </script>
 
@@ -34,48 +80,41 @@ onBeforeMount(() => {
         <h5><i class="pi pi-user me-2"></i>DAFTAR MAHASISWA</h5>
         <div class="card">
             <div class="row">
-                <div class="col-lg-5 col-md-6 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Angkatan</option>
-                            <option value="1">2020</option>
-                            <option value="2">2021</option>
-                            <option value="3">2022</option>
-                            <option value="4">2023</option>
-                            <option value="5">2024</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="">
-                        <label for="exampleFormControlInput1" class="form-label">Status Mahasiswa</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Status Mahasiswa</option>
-                            <option value="1">Aktif</option>
-                            <option value="2">Cuti</option>
-                            <option value="3">DO</option>
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Angkatan</label>
+                        <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Angkatan</option>
+                            <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
         </div>
 
-        <DataTable v-model:filters="filters" :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa']" :value="mahasiswas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+        <DataTable
+            v-model:filters="filters"
+            :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa', 'Periode.Prodi.nama_program_studi', 'nama_periode_masuk']"
+            :value="mahasiswas"
+            :paginator="true"
+            :rows="10"
+            dataKey="id"
+            :rowHover="true"
+            :loading="loading1"
+            showGridlines
+        >
             <template #header>
                 <div class="flex justify-content-between flex-column sm:flex-row">
                     <IconField iconPosition="left">
@@ -88,7 +127,7 @@ onBeforeMount(() => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            <template #loading>Loading data. Please wait.</template>
+            <!-- <template #loading>Loading data. Please wait.</template> -->
             <Column header="No" headerStyle="width:3rem">
                 <template #body="slotProps">
                     {{ slotProps.index + 1 }}
@@ -108,9 +147,9 @@ onBeforeMount(() => {
                     </div>
                 </template>
             </Column>
-            <Column header="Program Studi" style="min-width: 15rem">
+            <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.id_periode }}
+                    {{ data.Periode?.Prodi?.nama_program_studi || '-' }}
                 </template>
             </Column>
             <Column filterField="nama_status_mahasiswa" header="Status" style="min-width: 10rem">
@@ -118,9 +157,9 @@ onBeforeMount(() => {
                     {{ data.nama_status_mahasiswa }}
                 </template>
             </Column>
-            <Column field="angkatan" header="Angkatan" style="min-width: 12rem">
+            <Column filterField="nama_periode_masuk" header="Angkatan" style="min-width: 12rem">
                 <template #body="{ data }">
-                    {{ data.angkatan }}
+                    {{ data.nama_periode_masuk }}
                 </template>
             </Column>
         </DataTable>
@@ -132,3 +171,4 @@ onBeforeMount(() => {
     background-color: rgba(154, 160, 172, 0.5);
 }
 </style>
+

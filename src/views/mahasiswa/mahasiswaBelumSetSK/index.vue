@@ -6,7 +6,9 @@ import { FilterMatchMode } from 'primevue/api';
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const belumSetSistemKuliahs = ref([]);
@@ -32,7 +34,17 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>MAHASISWA YANG BELUM SET SISTEM KULIAH</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['nim', 'nama_mahasiswa']" :value="belumSetSistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+            <DataTable
+                v-model:filters="filters"
+                :globalFilterFields="['nim', 'nama_mahasiswa', 'Periode.Prodi.nama_program_studi', 'nama_periode_masuk']"
+                :value="belumSetSistemKuliahs"
+                :paginator="true"
+                :rows="10"
+                dataKey="id"
+                :rowHover="true"
+                :loading="loading1"
+                showGridlines
+            >
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -52,20 +64,20 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading data. Please wait. </template>
+                <!-- <template #loading> Loading data. Please wait. </template> -->
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">
                         {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column header="Program Studi" style="min-width: 15rem">
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.prodi }}
+                        {{ data.Periode?.Prodi?.nama_program_studi || '-' }}
                     </template>
                 </Column>
-                <Column header="Angkatan" style="min-width: 10rem">
+                <Column filterField="nama_periode_masuk" header="Angkatan" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.angkatan }}
+                        {{ data.nama_periode_masuk }}
                     </template>
                 </Column>
                 <Column filterField="nim" header="NIM" style="min-width: 10rem">
