@@ -14,7 +14,7 @@ const filters = ref({
 
 const aktivitasKuliahMahasiswas = ref([]);
 const loading1 = ref(true);
-const selectedMhs = ref([]);
+const selectedMhs = ref();
 
 const aktivitasKuliahMahasiswa = async () => {
     try {
@@ -115,9 +115,9 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading>
+                <!-- <template #loading>
                     Loading customers data. Please wait.
-                </template>
+                </template> -->
                 <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
                 <Column filterField="nim" header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">

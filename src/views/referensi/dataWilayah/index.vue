@@ -11,6 +11,7 @@ const filters = ref({
 
 const wilayahs = ref([]);
 const loading1 = ref(true);
+const first = ref(0);
 
 // Fungsi untuk mengambil data wilayah dari API
 const wilayah = async () => {
@@ -24,6 +25,10 @@ const wilayah = async () => {
     }
 };
 
+const onPageChange = (event) => {
+    first.value = event.first;
+};
+
 onBeforeMount(() => {
     wilayah();
 });
@@ -33,7 +38,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR WILAYAH</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['id_wilayah', 'nama_wilayah']" :value="wilayahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+            <DataTable v-model:filters="filters" :first="first" @page="onPageChange" :globalFilterFields="['id_wilayah', 'nama_wilayah']" :value="wilayahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -51,10 +56,10 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading customers data. Please wait. </template>
+                <!-- <template #loading> Loading customers data. Please wait. </template> -->
                 <Column header="No" headerStyle="width:15rem">
                     <template #body="slotProps">
-                        {{ slotProps.index + 1 }}
+                        {{ first + slotProps.index + 1 }}
                     </template>
                 </Column>
                 <Column filterField="" header="ID Wilayah" style="min-width: 15rem">

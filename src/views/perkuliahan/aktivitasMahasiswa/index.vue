@@ -16,8 +16,7 @@ const filters = ref({
 const aktivitasMahasiswas = ref([]);
 const loading1 = ref(true);
 const message = ref('');
-const currentPage = ref(0);
-const rowsPerPage = ref(100);
+const first = ref(0);
 
 const aktivitasMahasiswa = async () => {
     try {
@@ -64,6 +63,10 @@ const confirmDelete = (id_anggota) => {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
     });
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
 };
 
 onBeforeMount(() => {
@@ -124,13 +127,14 @@ onBeforeMount(() => {
                     'AktivitasMahasiswa.judul'
                 ]"
                 :value="aktivitasMahasiswas"
+                :first="first"
+                @page="onPageChange"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
                 :loading="loading1"
                 showGridlines
-                @page="(e) => (currentPage.value = e.page)"
             >
                 <template #header>
                     <div class="row">
@@ -154,7 +158,7 @@ onBeforeMount(() => {
                 <!-- <template #loading> Loading customers data. Please wait. </template> -->
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">
-                        {{ currentPage * rowsPerPage + slotProps.index + 1 }}
+                        {{ first + slotProps.index + 1 }}
                     </template>
                 </Column>
 

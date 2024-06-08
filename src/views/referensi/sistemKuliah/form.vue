@@ -1,12 +1,13 @@
 <script>
 import { postData } from '../../../utiils/request'; // Perbaiki typo di 'utils'
 import Swal from 'sweetalert2';
+import StateMixin from '../../../mixins/StateMixin';
 
 export default {
     data() {
         return {
-            kode_sk: '',
-            nama_sk: '',
+            kode_sk: '' ?? this.state?.kode_sk,
+            nama_sk: '' ?? this.state?.nama_sk,
             message: ''
         };
     },
@@ -27,6 +28,10 @@ export default {
                 Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
             }
         }
+    },
+    mixins: [StateMixin],
+    mounted() {
+        console.log('State data:', this.routeState.data);
     }
 };
 </script>

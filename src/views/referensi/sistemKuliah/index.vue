@@ -41,7 +41,6 @@ const deleteItem = async (id) => {
             message.value = 'Data berhasil dihapus!';
             // Menghapus item dari array sistemKuliahs yang memiliki id yang sesuai
             // sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id !== id);
-            window.location.href = '/sistem-kuliah';
         } else {
             message.value = 'Terjadi kesalahan: ' + response.statusText;
         }
@@ -63,6 +62,7 @@ const confirmDelete = (id) => {
         if (result.isConfirmed) {
             deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id !== id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
@@ -120,8 +120,9 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/edit-ruang/${data.id}`" class="btn btn-outline-primary">
+                            <router-link :to="{ name: 'sistemkuliah-create', query: { id: data.id, kode: data.kode_sk, name: data.nama_sk} }" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
+                                <!-- {{ console.log(data.id) }} -->
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>

@@ -33,7 +33,6 @@ const deleteItem = async (id_bobot_penilaian) => {
         const response = await del(`bobot-penilaian/${id_bobot_penilaian}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
-            bobotPenilaians.value = bobotPenilaians.value.filter((data) => data.id_bobot_penilaian !== id_bobot_penilaian);
         } else {
             message.value = 'Terjadi kesalahan: ' + response.statusText;
         }
@@ -55,6 +54,7 @@ const confirmDelete = (id_bobot_penilaian) => {
         if (result.isConfirmed) {
             deleteItem(id_bobot_penilaian);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            bobotPenilaians.value = bobotPenilaians.value.filter((data) => data.id_bobot_penilaian !== id_bobot_penilaian);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }

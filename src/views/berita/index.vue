@@ -14,7 +14,6 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     judul_berita: { value: null, matchMode: FilterMatchMode.EQUALS },
     deskripsi_pendek: { value: null, matchMode: FilterMatchMode.EQUALS },
-    penulis: { value: null, matchMode: FilterMatchMode.EQUALS },
     createdAt: { value: null, matchMode: FilterMatchMode.EQUALS },
     kategori_berita: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
@@ -73,17 +72,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR BERITA</h5>
         <div class="card">
-            <DataTable
-                v-model:filters="filters"
-                :globalFilterFields="['judul_berita', 'deskripsi_pendek', 'penulis', 'createdAt', 'kategori_berita']"
-                :value="beritas"
-                :paginator="true"
-                :rows="10"
-                dataKey="id"
-                :rowHover="true"
-                :loading="loading1"
-                showGridlines
-            >
+            <DataTable v-model:filters="filters" :globalFilterFields="['judul_berita', 'deskripsi_pendek', 'createdAt', 'kategori_berita']" :value="beritas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -119,13 +108,6 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.deskripsi_pendek }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="penulis" header="Penulis" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.penulis }}</span>
                         </div>
                     </template>
                 </Column>

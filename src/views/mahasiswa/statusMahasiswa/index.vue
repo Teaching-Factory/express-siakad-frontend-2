@@ -4,11 +4,9 @@ import { FilterMatchMode } from 'primevue/api';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
     prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
-    angkatan: { value: null, matchMode: FilterMatchMode.EQUALS }
+    total: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const customer1 = ref([]);
@@ -18,19 +16,15 @@ onBeforeMount(() => {
     customer1.value = [
         {
             no: 1,
-            name: 'John Doe',
-            nim: '12345678',
             prodi: 'Teknologi Basis Data',
-            status: 'Aktif',
-            angkatan: 2021
+            status: 'A',
+            total: '564'
         },
         {
             no: 2,
-            name: 'Jane Smith',
-            nim: '87654321',
-            prodi: 'Perikanan',
-            status: 'Cuti',
-            angkatan: 2022
+            prodi: 'Teknologi Basis Data',
+            status: 'A',
+            total: '564'
         }
         // Add more dummy data here
     ];
@@ -56,7 +50,7 @@ onBeforeMount(() => {
                 </div>
             </div>
         </div>
-        <DataTable v-model:filters="filters" :globalFilterFields="['name', 'nim', 'prodi', 'status', 'angkatan']"
+        <DataTable v-model:filters="filters" :globalFilterFields="['prodi', 'status', 'total']"
             :value="customer1"
             :paginator="true"
             :rows="10"
@@ -85,34 +79,30 @@ onBeforeMount(() => {
                     {{ data.no }}
                 </template>
             </Column>
-            <Column filterField="name" header="Nama Mahasiswa" style="min-width: 14rem">
-                <template #body="{ data }">
-                    <div class="flex align-items-center gap-2">
-                        <span>{{ data.name }}</span>
-                    </div>
-                </template>
-            </Column>
-            <Column filterField="nim" header="NIM" style="min-width: 10rem">
-                <template #body="{ data }">
-                    <div class="flex align-items-center gap-2">
-                        <span>{{ data.nim }}</span>
-                    </div>
-                </template>
-            </Column>
-            <Column filterField="prodi" header="Program Studi" style="min-width: 15rem">
+            <Column filterField="prodi" header="Program Studi" style="min-width: 20rem">
                 <template #body="{ data }">
                     {{ data.prodi }}
                 </template>
             </Column>
-            <Column filterField="status" header="Status" style="min-width: 10rem">
+            <Column filterField="status" header="Status Prodi" style="min-width: 10rem">
                 <template #body="{ data }">
                     {{ data.status }}
                 </template>
             </Column>
-            <Column filterField="angkatan" field="angkatan" header="Angkatan" style="min-width: 12rem">
+            <Column filterField="total" header="Total Mahasiswa Belum di SET" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.angkatan }}
+                    {{ data.total }}
                 </template>
+            </Column>
+            <Column filterField="aksi" field="aksi" header="Aksi" style="min-width: 12rem">
+                <template #body="{ data }">
+                        <router-link to="/set-status-mahasiswa/create" class="btn btn-primary rounded-3"> 
+                            <p style="font-size: small;">
+                                <i class="pi pi-pencil me-2"></i>
+                                Set Status
+                            </p>
+                        </router-link>
+                    </template>
             </Column>
         </DataTable>
     </div>

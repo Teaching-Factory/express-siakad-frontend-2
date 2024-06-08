@@ -12,6 +12,7 @@ const filters = ref({
     nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
+const first = ref(0);
 const mahasiswas = ref([]);
 const angkatans = ref([]);
 const prodis = ref([]);
@@ -48,8 +49,8 @@ const filterData = async () => {
     const angkatanId = selectedAngkatan.value;
 
     if (!prodiId || !angkatanId) {
-        console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
-        alert('Prodi atau Angkatan Mahasiswa belum dipilih');
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        alert('Prodi atau Angkatan Mahasiswa belum tersedia');
         return;
     }
 
@@ -68,6 +69,10 @@ const filterData = async () => {
         alert('Gagal mengambil data mahasiswa. Silakan coba lagi nanti.');
         loading1.value = false;
     }
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
 };
 
 onBeforeMount(() => {
@@ -114,6 +119,8 @@ onBeforeMount(() => {
             :rowHover="true"
             :loading="loading1"
             showGridlines
+            :first="first"
+            @page="onPageChange"
         >
             <template #header>
                 <div class="flex justify-content-between flex-column sm:flex-row">
@@ -130,7 +137,7 @@ onBeforeMount(() => {
             <!-- <template #loading>Loading data. Please wait.</template> -->
             <Column header="No" headerStyle="width:3rem">
                 <template #body="slotProps">
-                    {{ slotProps.index + 1 }}
+                    {{ first + slotProps.index + 1 }}
                 </template>
             </Column>
             <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">

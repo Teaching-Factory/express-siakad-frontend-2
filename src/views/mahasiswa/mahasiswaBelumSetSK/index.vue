@@ -13,6 +13,7 @@ const filters = ref({
 
 const belumSetSistemKuliahs = ref([]);
 const loading1 = ref(true);
+const first = ref(0);
 
 const belumSetSistemKuliah = async () => {
     try {
@@ -23,6 +24,10 @@ const belumSetSistemKuliah = async () => {
     } catch (error) {
         console.error('Gagal mengambil data Unsur Penilaian:', error);
     }
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
 };
 
 onBeforeMount(() => {
@@ -38,6 +43,8 @@ onBeforeMount(() => {
                 v-model:filters="filters"
                 :globalFilterFields="['nim', 'nama_mahasiswa', 'Periode.Prodi.nama_program_studi', 'nama_periode_masuk']"
                 :value="belumSetSistemKuliahs"
+                :first="first"
+                @page="onPageChange"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
@@ -55,7 +62,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-secondary"><i class="pi pi-check me-2"></i> Set Sistem Kuliah</button>
+                                <router-link to="/set-sistem-kuliah-mahasiswa" class="btn btn-secondary"><i class="pi pi-check me-2"></i> Set Sistem Kuliah</router-link>
                             </div>
                         </div>
                     </div>
@@ -67,7 +74,7 @@ onBeforeMount(() => {
                 <!-- <template #loading> Loading data. Please wait. </template> -->
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">
-                        {{ slotProps.index + 1 }}
+                        {{ first + slotProps.index + 1 }}
                     </template>
                 </Column>
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
