@@ -9,7 +9,6 @@ const filters = ref({
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
     prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
     jumlahsks: { value: null, matchMode: FilterMatchMode.EQUALS },
-    detailkrs: { value: null, matchMode: FilterMatchMode.EQUALS },
     statusmhs: { value: null, matchMode: FilterMatchMode.EQUALS },
     statusvalidasi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
@@ -25,7 +24,6 @@ onBeforeMount(() => {
             name: 'John Doe',
             prodi: 'coba@gmail.com',
             jumlahsks: '24 sks',
-            detailkrs: 'Lihat KRS',
             statusmhs: 'Aktif',
             statusvalidasi: 'Tervalidasi',
             aksi: `
@@ -39,7 +37,6 @@ onBeforeMount(() => {
             name: 'John Doe',
             prodi: 'coba@gmail.com',
             jumlahsks: '24 sks',
-            detailkrs: 'Lihat KRS',
             statusmhs: 'Aktif',
             statusvalidasi: 'Tervalidasi',
             aksi: `
@@ -97,7 +94,7 @@ const deleteItem = (no) => {
                     </div>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['name', 'nim', 'prodi', 'jumlahsks', 'detailkrs ', 'statusmhs', 'statusvalidasi']"
+            <DataTable v-model:filters="filters" :globalFilterFields="['name', 'nim', 'prodi', 'jumlahsks', 'statusmhs', 'statusvalidasi']"
                 :value="customer1"
                 v-model:selection="selectedMhs"
                 :paginator="true"
@@ -155,11 +152,6 @@ const deleteItem = (no) => {
                         {{ data.jumlahsks }}
                     </template>
                 </Column>
-                <Column filterField="detailkrs" header="Detail KRS" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        {{ data.detailkrs }}
-                    </template>
-                </Column>
                 <Column filterField="statusmhs" header="Status Mahasiswa" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.statusmhs }}
@@ -172,7 +164,7 @@ const deleteItem = (no) => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link to="/import-mahasiswa" class="btn btn-outline-primary me-2 py-1 px-2"> 
+                        <router-link to="/validasi-krs-mahasiswa/detailKRS" class="btn btn-outline-primary me-2 py-1 px-2"> 
                             <i class="pi pi-pencil"></i>
                         </router-link>
                         

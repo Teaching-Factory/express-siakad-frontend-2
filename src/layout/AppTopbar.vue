@@ -96,7 +96,7 @@ const isOutsideClicked = (event) => {
             <div class="dropdown">
                 <button class="dropdown-toggle border-0" style="background:none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="pi pi-user text-white me-3 fs-4"></i>
-                    <span class="text-white">HI, MAHASISWA</span>
+                    <span class="text-white">Hi, SUPER ADMIN</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="#" @click="handleLogout ">Logout</a></li>

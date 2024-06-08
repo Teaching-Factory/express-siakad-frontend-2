@@ -1,25 +1,11 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import Modal from '../../../components/Modal.vue';
+
+
 const customer1 = ref([]);
-const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
+const showModal1 = ref(false);
+const showModal2 = ref(false);
 
 onBeforeMount(() => {
     customer1.value = [
@@ -47,6 +33,26 @@ onBeforeMount(() => {
         // Add more dummy data here
     ];
 })
+
+const dosens = ref([
+  { nama: 'SUDARMONO', nilai: '16', ipk: '2.00', isEditing: false }
+]);
+
+function addDosen() {
+  dosens.value.push({ nama: '', nilai: '', ipk: '', isEditing: true });
+}
+
+function editDosen(index) {
+  dosens.value[index].isEditing = true;
+}
+
+function saveDosen(index) {
+  dosens.value[index].isEditing = false;
+}
+
+function deleteDosen(index) {
+  dosens.value.splice(index, 1);
+}
 </script>
 
 <template>
@@ -143,60 +149,150 @@ onBeforeMount(() => {
                             <i class="pi pi-users">1/40</i>
                         </td>
                         <td>
-                            <router-link class="btn me-2" to="/kelas-jadwal-perkuliahan/create-dosen" style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </router-link>
+                            <button class="btn me-2" @click="showModal2=true"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </button>
                             <span>Suroto</span>
+                            
+                            <!-- modal 2 -->
+                            <Modal
+                            v-if="showModal2"
+                            :show="showModal2"
+                            title="DOSEN PENGAJAR KELAS KULIAH"
+                            @close="showModal2 = false"
+                            >
+                            <div class="card" style="border-radius: none !important">
+                                <div class="row">
+                                    <div class="col-lg-2">Program Studi</div>
+                                    <div class="col-lg-4"><span class="me-2">:</span> S1 Teknik Informatika</div>
+                                    <div class="col-lg-2">Periode</div>
+                                    <div class="col-lg-4"><span class="me-2">:</span> 2020/2021 Ganjil</div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-lg-2">Mata Kuliah</div>
+                                    <div class="col-lg-4"><span class="me-2">:</span> Pemrograman Terstruktur</div>
+                                    <div class="col-lg-2">Kelas</div>
+                                    <div class="col-lg-4"><span class="me-2">:</span> A</div>
+                                </div>
+                                <hr style="margin: 0;">
+
+                                <div class="row mt-4">
+                                    <table class="table">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th class="text-center">Nama Dosen Pengajar</th>
+                                                <th class="text-center">Rencana Pertemuan</th>
+                                                <th class="text-center">SKS</th>
+                                                <th class="text-center">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(dosen, index) in dosens" :key="index">
+                                                <td v-if="!dosen.isEditing" class="text-center">{{ dosen.nama }}</td>
+                                                <td v-else><input type="text" class="form-control" v-model="dosen.nama"></td>
+
+                                                <td v-if="!dosen.isEditing" class="text-center">{{ dosen.nilai }}</td>
+                                                <td v-else><input type="text" class="form-control" v-model="dosen.pertemuan"></td>
+
+                                                <td v-if="!dosen.isEditing" class="text-center">{{ dosen.ipk }}</td>
+                                                <td v-else><input type="text" class="form-control" v-model="dosen.sks"></td>
+                                                
+                                                <td class="text-center">
+                                                    <button class="btn btn-outline-secondary me-2" @click="saveDosen(index)" v-if="dosen.isEditing">
+                                                        Save
+                                                    </button>
+                                                    <button class="btn btn-outline-warning me-2" @click="editDosen(index)" v-else>
+                                                        <i class="pi pi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-outline-danger me-2" @click="deleteDosen(index)">
+                                                        <i class="pi pi-trash"></i>
+                                                    </button>
+                                                    <button class="btn btn-primary me-2" v-if="!dosen.isEditing">
+                                                        Set Ketua
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <button class="btn btn-secondary" @click="addDosen"><i class="pi pi-plus me-2"></i> Tambah Dosen
+                                            Pengajar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </Modal>
+
                         </td>
                         <td class="text-end">
-                            <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</router-link>
+                            <button @click="showModal1=true" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</button>
+                            <Modal
+                            v-if="showModal1"
+                            :show="showModal1"
+                            title="PESERTA KELAS"
+                            @close="showModal1 = false"
+                            >
+                            <table class="table table-bordered text-start">
+                                <tbody>
+                                    <tr>
+                                        <td class="table-header">Program Studi</td>
+                                        <td>S1 Teknik Informatika</td>
+                                        <td class="table-header">Periode</td>
+                                        <td>2023/2024 Ganjil</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-header">Matakuliah</td>
+                                        <td>PEMROGRAMAN TERSTRUKTUR (2.00 sks)</td>
+                                        <td class="table-header">Kelas</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="table-header">Jumlah Peserta</td>
+                                        <td>1</td>
+                                        <td class="table-header"></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div style="overflow-x: auto;">
+                                <table class="table table-bordered text-center">
+                                    <thead class="table-dark align-middle">
+                                        <tr>
+                                            <th  rowspan="2">No</th>
+                                            <th  rowspan="2">NIM</th>
+                                            <th  rowspan="2">Nama Mahasiswa</th>
+                                            <th  rowspan="2">Angkatan</th>
+                                            <th  rowspan="2">Prodi</th>              
+                                            <th  colspan="3">Nilai</th>              
+                                        </tr>
+                                        <tr>
+                                            <th>Angka</th>
+                                            <th>Numerik</th>
+                                            <th>Huruf</th>  
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>325325</td>
+                                            <td>Aida Andinar Maulidiana</td>
+                                            <td>2020</td>
+                                            <td>S1 Teknik Informatika</td>
+                                            <td>85.0</td>
+                                            <td>3.00</td>
+                                            <td>B</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                            </div>
+                        </Modal>
                         </td>
                         <td class="text-end">
                             <button class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </button>
                             <button class="btn  me-2 btn-danger"> <i class="pi pi-trash "></i> </button>
-                            <button class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </button>
-                            <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
-                            <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-center table-hover mb-4">
-                <thead class="table-primary align-middle">
-                    <tr>
-                        <th colspan="7">KAPITA SELEKTA [ 2 SKS | TINF 110B]</th>
-                        <th class="text-end">
-                            <button class="btn btn-secondary me-2"> 1 Kelas </button>
-                            <router-link to="/kelas-jadwal-perkuliahan/create-kelas" class="btn btn-success"><i class="pi pi-plus"></i></router-link>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="align-middle">
-                    <tr>
-                        <td>
-                            <i class="pi pi-building">A</i>
-                        </td>
-                        <td>
-                            <i class="pi pi-calendar">Sabtu</i>
-                        </td>
-                        <td>
-                            <i class="pi pi-time">07:00 - 08:00</i>
-                        </td>
-                        <td>
-                            <i class="pi pi-map">Ruang A 102</i>
-                        </td>
-                        <td>
-                            <i class="pi pi-users">1/40</i>
-                        </td>
-                        <td>
-                            <router-link class="btn me-2" to="/kelas-jadwal-perkuliahan/create-dosen" style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </router-link>
-                            <span>Suroto</span>
-                        </td>
-                        <td class="text-end">
-                            <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</router-link>
-                        </td>
-                        <td class="text-end">
-                            <button class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </button>
-                            <button class="btn  me-2 btn-danger"> <i class="pi pi-trash "></i> </button>
-                            <button class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </button>
+                            <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </router-link>
                             <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
                             <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button>
                         </td>
