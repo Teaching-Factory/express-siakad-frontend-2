@@ -47,6 +47,16 @@ const router = createRouter({
                     name: 'validasikrsmahasiswa',
                     component: () => import('../views/mahasiswa/validasiKrsMahasiswa/index.vue')
                 },
+                {
+                    path: '/validasi-krs-mahasiswa/detailKRS',
+                    name: 'validasikrsmahasiswa-detail',
+                    component: () => import('../views/mahasiswa/validasiKrsMahasiswa/detailKRS.vue')
+                },
+                {
+                    path: '/validasi-krs-mahasiswa/detailKRS/edit',
+                    name: 'validasikrsmahasiswa-detail-edit',
+                    component: () => import('../views/mahasiswa/validasiKrsMahasiswa/editKRS.vue')
+                },
 
                 {
                     path: '/import-aktivitas-mahasiswa',
@@ -93,12 +103,6 @@ const router = createRouter({
                     name: 'kelasjadwalperkuliahan-createpesertakelas',
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formPesertaKelas.vue')
                 },
-                {
-                    path: '/kelas-jadwal-perkuliahan/create-dosen',
-                    name: 'kelasjadwalperkuliahan-createdosen',
-                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formDosen.vue')
-                },
-
                 {
                     path: '/nilai-perkuliahan',
                     name: 'nilaiperkuliahan',
