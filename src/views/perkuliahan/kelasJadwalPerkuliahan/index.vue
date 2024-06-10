@@ -1,13 +1,61 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import Modal from '../../../components/Modal.vue';
-
+import { get } from '../../../utiils/request';
 
 const customer1 = ref([]);
 const showModal1 = ref(false);
 const showModal2 = ref(false);
+const prodis = ref([]);
+const kurikulums = ref([]);
+const periodes = ref([]);
+const semesters = ref([]);
+const selectedProdi = ref('');
+const selectedSemester = ref('');
+const selectedKurikulum = ref('');
+const selectedPeriode = ref('');
+
+const fetchProdi = async () => {
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const fetchSemester = async () => {
+    try {
+        const response = await get('semester');
+        semesters.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const fetchKurikullum = async () => {
+    try {
+        const response = await get('kurikulum');
+        kurikulums.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const fetchPeriode = async () => {
+    try {
+        const response = await get('periode');
+        periodes.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const selectedFilter = async () => {
+    // loading1.value = true;
+    await Promise.all([fetchProdi(), fetchSemester(), fetchKurikullum(), fetchPeriode()]);
+    // loading1.value = false;
+};
 
 onBeforeMount(() => {
+    selectedFilter();
     customer1.value = [
         {
             pertemuan: '1',
@@ -18,8 +66,9 @@ onBeforeMount(() => {
             materi: 'Sitasi Ilmiah',
             jumlahmhs: '30',
             statuspresensi: 'Aktif',
-            aksi: '-',
-        },{
+            aksi: '-'
+        },
+        {
             pertemuan: '2',
             tanggal: '18/05/2024',
             waktu: '09.10 - 10.10',
@@ -28,30 +77,28 @@ onBeforeMount(() => {
             materi: 'Sitasi Ilmiah',
             jumlahmhs: '30',
             statuspresensi: 'Aktif',
-            aksi: '-',
+            aksi: '-'
         }
         // Add more dummy data here
     ];
-})
+});
 
-const dosens = ref([
-  { nama: 'SUDARMONO', nilai: '16', ipk: '2.00', isEditing: false }
-]);
+const dosens = ref([{ nama: 'SUDARMONO', nilai: '16', ipk: '2.00', isEditing: false }]);
 
 function addDosen() {
-  dosens.value.push({ nama: '', nilai: '', ipk: '', isEditing: true });
+    dosens.value.push({ nama: '', nilai: '', ipk: '', isEditing: true });
 }
 
 function editDosen(index) {
-  dosens.value[index].isEditing = true;
+    dosens.value[index].isEditing = true;
 }
 
 function saveDosen(index) {
-  dosens.value[index].isEditing = false;
+    dosens.value[index].isEditing = false;
 }
 
 function deleteDosen(index) {
-  dosens.value.splice(index, 1);
+    dosens.value.splice(index, 1);
 }
 </script>
 
@@ -76,43 +123,36 @@ function deleteDosen(index) {
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Periode</option>
-                            <option value="1">2021/2022 Genap</option>
-                            <option value="2">2021/2022 Ganjil</option>
-                            <option value="3">2021/2022 Genap</option>
-                            <option value="4">2021/2022 Ganjil</option>
+                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Periode</option>
+                            <option v-for="periode in periodes" :key="periode.id_periode" :value="periode.id_periode">{{ periode.periode_pelaporan }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Kurikulum</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Kurikulum</option>
-                            <option value="1">S1 TEKNIK INFORMATIKA</option>
-                            <option value="1">D4 TEKNIK INFORMATIKA</option>
+                        <select v-model="selectedKurikulum" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Kurikulum</option>
+                            <option v-for="kurikulum in kurikulums" :key="kurikulum.id_kurikulum" :value="kurikulum.id_kurikulum">{{ kurikulum.nama_kurikulum }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Semester</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Semester</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
+                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Semester</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
