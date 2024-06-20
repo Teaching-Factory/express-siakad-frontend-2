@@ -15,6 +15,10 @@ const filters = ref({
 const aktivitasKuliahMahasiswas = ref([]);
 const loading1 = ref(true);
 const selectedMhs = ref();
+const selectedAngkatan = ref('');
+const selectedProdi = ref('');
+const prodis = ref([]);
+const angkatans = ref([]);
 
 const aktivitasKuliahMahasiswa = async () => {
     try {
@@ -29,9 +33,29 @@ const aktivitasKuliahMahasiswa = async () => {
         aktivitasKuliahMahasiswa.value = [];
     }
 };
+const fetchProdi = async () => {
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const fetchAngkatan = async () => {
+    try {
+        const response = await get('angkatan');
+        angkatans.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
 
+const selectedFilter = async () => {
+    await Promise.all([fetchProdi(), fetchAngkatan()]);
+};
 onBeforeMount(() => {
     aktivitasKuliahMahasiswa();
+    selectedFilter();
 });
 </script>
 
@@ -57,24 +81,18 @@ onBeforeMount(() => {
                         <div class="col-lg-5 col-md-6 col-sm-6">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected disabled hidden>Program Studi</option>
-                                    <option value="1">Teknologi Ternak</option>
-                                    <option value="2">Teknologi Basis Data</option>
-                                    <option value="3">Perikanan</option>
+                                <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                                    <option value="" selected disabled hidden>Pilih Program Studi</option>
+                                    <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-5 col-md-6 col-sm-6">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected disabled hidden>Angkatan</option>
-                                    <option value="1">2020</option>
-                                    <option value="2">2021</option>
-                                    <option value="3">2022</option>
-                                    <option value="4">2023</option>
-                                    <option value="5">2024</option>
+                                <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
+                                    <option value="" selected disabled hidden>Pilih Angkatan</option>
+                                    <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
                                 </select>
                             </div>
                         </div>

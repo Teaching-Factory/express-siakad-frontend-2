@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-import { get } from '../../../utiils/request';
+import { get, postData } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -14,6 +15,8 @@ const filters = ref({
 const belumSetSistemKuliahs = ref([]);
 const loading1 = ref(true);
 const first = ref(0);
+const sistemKuliahs = ref([]);
+const selectedSistemKuliah = ref([]);
 
 const belumSetSistemKuliah = async () => {
     try {
@@ -26,12 +29,41 @@ const belumSetSistemKuliah = async () => {
     }
 };
 
+const fetchSistemKuliah = async () => {
+    try {
+        const response = await get('sistem-kuliah');
+        sistemKuliahs.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data prodi:', error);
+    }
+};
+const setSistemKuliah = async () => {
+    try {
+        const dataToSubmit = {
+            mahasiswas: Object.entries(selectedSistemKuliah.value).map(([id_registrasi_mahasiswa, id_sistem_kuliah]) => ({
+                id_registrasi_mahasiswa,
+                id_sistem_kuliah
+            }))
+        };
+
+        const response = await postData('sistem-kuliah-mahasiswa/mahasiswa/not-set-sk/create', dataToSubmit);
+        console.log('Berhasil menambahkan sistem kuliah:', response.data);
+        // Refresh data
+        Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
+            window.location.href = '/belum-set-sk';
+        });
+    } catch (error) {
+        console.error('Gagal menambahkan data:', error);
+    }
+};
+
 const onPageChange = (event) => {
     first.value = event.first;
 };
 
 onBeforeMount(() => {
     belumSetSistemKuliah();
+    fetchSistemKuliah();
 });
 </script>
 
@@ -62,7 +94,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="/set-sistem-kuliah-mahasiswa" class="btn btn-secondary"><i class="pi pi-check me-2"></i> Set Sistem Kuliah</router-link>
+                                <button @click="setSistemKuliah" class="btn btn-secondary"><i class="pi pi-check me-2"></i> Set Sistem Kuliah</button>
                             </div>
                         </div>
                     </div>
@@ -102,11 +134,10 @@ onBeforeMount(() => {
                     </template>
                 </Column>
                 <Column header="Sistem Kuliah" style="min-width: 15rem">
-                    <template #body="{}">
-                        <select class="form-select" id="sistemkuliahDropdown">
-                            <option value="option1">--Pilih Sistem Kuliah</option>
-                            <option value="option2">Karyawan</option>
-                            <option value="option3">Reguler</option>
+                    <template #body="{ data }">
+                        <select class="form-select" v-model="selectedSistemKuliah[data.id_registrasi_mahasiswa]">
+                            <option value="">--Pilih Sistem Kuliah</option>
+                            <option v-for="sistemKuliah in sistemKuliahs" :key="sistemKuliah.id" :value="sistemKuliah.id">{{ sistemKuliah.nama_sk }}</option>
                         </select>
                     </template>
                 </Column>

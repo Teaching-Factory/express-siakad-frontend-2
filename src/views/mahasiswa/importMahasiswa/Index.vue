@@ -46,7 +46,7 @@ export default {
                 <div class="col-6 col-md-6 col-lg-6">
                     <span>Download Template</span>
                 </div>
-                <div class="col-8 col-md-8 col-lg-8">
+                <div class="col-6 col-md-8 col-lg-8">
                     <div class="text-info">
                         <router-link to="">
                             <span>template_mahasiswa.xls</span>

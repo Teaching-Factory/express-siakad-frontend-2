@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import Swal from 'sweetalert2';
 import { FilterMatchMode } from 'primevue/api';
+import { get } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -17,8 +18,33 @@ const filters = ref({
 
 const customer1 = ref([]);
 const loading1 = ref(false);
+const selectedProdi = ref('');
+const selectedPeriode = ref('');
+const prodis = ref([]);
+const periodes = ref([]);
+
+const fetchProdi = async () => {
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.log('Gagal mengambil data', error);
+    }
+};
+const fetchPeriode = async () => {
+    try {
+        const response = await get('periode');
+        periodes.value = response.data.data;
+    } catch (error) {
+        console.log('Gagal mengambil data', error);
+    }
+};
+const selectedFilter = async () => {
+    await Promise.all([fetchProdi(), fetchPeriode()]);
+};
 
 onBeforeMount(() => {
+    selectedFilter();
     customer1.value = [
         {
             no: '1',
@@ -79,23 +105,18 @@ const deleteItem = (no) => {
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Periode</option>
-                            <option value="1">2021/2022 Genap</option>
-                            <option value="2">2021/2022 Ganjil</option>
-                            <option value="3">2021/2022 Genap</option>
-                            <option value="4">2021/2022 Ganjil</option>
+                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Periode</option>
+                            <option v-for="periode in periodes" :key="periode.id" :value="periode.id">{{ periode.periode_pelaporan }}</option>
                         </select>
                     </div>
                 </div>

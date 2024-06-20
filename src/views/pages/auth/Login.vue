@@ -20,11 +20,17 @@ export default {
     data() {
         return {
             username: '',
-            password: ''
+            password: '',
+            errorMessage: ''
         };
     },
     methods: {
         async login() {
+            if (!this.username || !this.password) {
+                this.errorMessage = 'Username dan password harus diisi';
+                return;
+            }
+
             try {
                 const response = await axios.post(
                     `${API_URL}/auth/do-login`,
@@ -39,32 +45,31 @@ export default {
                         }
                     }
                 );
-                console.log(response);
 
-                if (response.status !== 200) {
-                    throw new Error('Login gagal');
-                }
+                // if (response.status !== 200) {
+                //     throw new Error('Login gagal');
+                // }
 
                 const data = response.data;
-                console.log('Login sukses, data:', data);
 
                 setToken(data.token);
 
                 this.$router.push('/dashboard').catch((err) => {
-                    console.error('Redirect error:', err);
+                    // console.error('Redirect error:', err);
                 });
             } catch (error) {
-                console.error('Login gagal:', error);
+                this.errorMessage = 'Username atau password tidak valid';
+                // console.error('Login gagal:', error);
             }
         }
     }
 };
 </script>
 
+
 <template>
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="flex flex-column align-items-center justify-content-center">
-            <!-- <img src="" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0" /> -->
             <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
@@ -87,6 +92,9 @@ export default {
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                         </div>
                         <Button label="Sign In" class="w-full p-3 text-xl" type="submit"></Button>
+
+                        <!-- Tampilkan pesan kesalahan jika ada -->
+                        <div v-if="errorMessage" class="text-red-500 mt-3">{{ errorMessage }}</div>
                     </form>
                 </div>
             </div>
@@ -94,6 +102,7 @@ export default {
     </div>
     <AppConfig simple />
 </template>
+
 
 <style scoped>
 .pi-eye {

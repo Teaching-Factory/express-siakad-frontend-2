@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { get } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -11,8 +12,19 @@ const filters = ref({
 
 const customer1 = ref([]);
 const loading1 = ref(false);
+const selectedAngkatan = ref('');
+const angkatans = ref([]);
+const fetchAngkatan = async () => {
+    try {
+        const response = await get('angkatan');
+        angkatans.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
 
 onBeforeMount(() => {
+    fetchAngkatan();
     customer1.value = [
         {
             no: '1',
@@ -63,13 +75,9 @@ onBeforeMount(() => {
                     <div class="col-lg-10 col-md-6 col-sm-6">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected disabled hidden>Angkatan</option>
-                                <option value="1">2020</option>
-                                <option value="2">2021</option>
-                                <option value="3">2022</option>
-                                <option value="4">2023</option>
-                                <option value="5">2024</option>
+                            <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
+                                <option  value="" selected disabled hidden>Pilih Angkatan</option>
+                                <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{angkatan.tahun}}</option>
                             </select>
                         </div>
                     </div>

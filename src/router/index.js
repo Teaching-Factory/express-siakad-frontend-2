@@ -31,7 +31,7 @@ const router = createRouter({
                     component: () => import('../views/mahasiswa/statusMahasiswa/index.vue')
                 },
                 {
-                    path: '/set-status-mahasiswa/create',
+                    path: '/status-mahasiswa/:id_prodi',
                     name: 'setstatusmahasiswa-create',
                     component: () => import('../views/mahasiswa/statusMahasiswa/setStatus.vue')
                 },
@@ -94,7 +94,7 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/index.vue')
                 },
                 {
-                    path: '/kelas-jadwal-perkuliahan/create-kelas',
+                    path: '/kelas-jadwal-perkuliahan/create-kelas/:id_matkul',
                     name: 'kelasjadwalperkuliahan-createkelas',
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formKelas.vue')
                 },
@@ -418,11 +418,9 @@ const router = createRouter({
                     path: '/laporan-transkrip-mahasiswa',
                     name: 'laporantranskripmahasiswa',
                     component: () => import('../views/laporan-mahasiswa/transkripMahasiswa/index.vue')
-                },
+                }
 
                 //batas pekerjaan hari ini 28/05/02
-
-                
             ]
         },
         {
