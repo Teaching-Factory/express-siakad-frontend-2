@@ -48,47 +48,8 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>PRESENSI KELAS PERKULIAHAN</h5>
+        <h5><i class="pi pi-user me-2"></i>ABSENSI PERKULIAHAN</h5>
         <div class="card">
-            <div class="row">
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Periode</option>
-                            <option value="1">2021/2022 Genap</option>
-                            <option value="2">2021/2022 Ganjil</option>
-                            <option value="3">2021/2022 Genap</option>
-                            <option value="4">2021/2022 Ganjil</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Kelas</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Ketikkan Nama Kelas / Mata Kuliah / Kode Mata Kuliah disini</option>
-                            <option value="1">Merdeka Belajar</option>
-                            <option value="2">K13</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
-                </div>
-            </div>
-            <hr />
             <DataTable
                 v-model:filters="filters"
                 :globalFilterFields="['pertemuan', 'tanggal', 'waktu', 'ruang', 'dosen', 'materi', 'jumlahmhs', 'statuspresensi']"
@@ -164,9 +125,13 @@ onBeforeMount(() => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link to="/presensi-perkuliahan/detail" class="btn btn-outline-primary me-2">
-                            <i class="pi pi-pencil"></i>
-                        </router-link>
+                        <select class="form-select" style="width: 60px;">
+                            <option value="">-</option>
+                            <option value="">H</option>
+                            <option value="">I</option>
+                            <option value="">S</option>
+                            <option value="">A</option>
+                        </select>
                     </template>
                 </Column>
             </DataTable>

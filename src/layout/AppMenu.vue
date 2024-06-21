@@ -343,6 +343,25 @@ const model = ref([
                 ]
             }
         ]
+    },
+    {
+        label: 'AKADEMIK (DOSEN)',
+        items: [
+            {
+                label: 'Perkuliahan',
+                icon: '',
+                items: [
+                    {
+                        label: 'Jadwal Kelas Perkuliahan',
+                        to: '/jadwal-kelas-perkuliahan'
+                    },
+                    {
+                        label: 'Presensi Perkuliahan',
+                        to: '/presensi-perkuliahan'
+                    }
+                ]
+            },
+        ]
     }
 ]);
 </script>

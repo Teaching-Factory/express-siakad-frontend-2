@@ -120,6 +120,11 @@ const router = createRouter({
                     name: 'presensiperkuliahan',
                     component: () => import('../views/perkuliahan/presensiPerkuliahan/index.vue')
                 },
+                {
+                    path: '/presensi-perkuliahan/detail',
+                    name: 'presensiperkuliahan-detail',
+                    component: () => import('../views/perkuliahan/presensiPerkuliahan/detail.vue')
+                },
 
                 {
                     path: '/aktivitas-mahasiswa',
@@ -422,7 +427,28 @@ const router = createRouter({
 
                 //batas pekerjaan hari ini 28/05/02
 
-                
+                //role dosen
+            //perkuliahan
+            {
+                path: '/jadwal-kelas-perkuliahan',
+                name: 'jadwalkelasperkuliahan',
+                component: () => import('../views/perkuliahan-dosen/jadwalKelas/index.vue')
+            },
+            {
+                path: '/pertemuan-perkuliahan',
+                name: 'pertemuanperkuliahan',
+                component: () => import('../views/perkuliahan-dosen/pertemuanKelas/index.vue')
+            },
+            {
+                path: '/pertemuan-perkuliahan/create',
+                name: 'pertemuanperkuliahan-create',
+                component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
+            },
+            {
+                path: '/presensi-perkuliahan-dosen',
+                name: 'presensiperkuliahan-dosen',
+                component: () => import('../views/perkuliahan-dosen/presensiPerkuliahan/index.vue')
+            },
             ]
         },
         {
@@ -460,14 +486,13 @@ router.beforeEach((to, from, next) => {
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
 
-    if (authRequired && !loggedIn) {
-        return next('/auth/login');
-    }
+    // if (authRequired && !loggedIn) {
+    //     return next('/auth/login');
+    // }
 
-    // Jika pengguna mencoba mengakses halaman login saat sudah login, arahkan mereka ke halaman beranda
-    if (to.path === '/auth/login' && loggedIn) {
-        return next('/dashboard');
-    }
+    // if (to.path === '/auth/login' && loggedIn) {
+    //     return next('/dashboard');
+    // }
 
     next();
 });
