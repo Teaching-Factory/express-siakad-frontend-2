@@ -17,6 +17,40 @@ const aktivitasMahasiswas = ref([]);
 const loading1 = ref(true);
 const message = ref('');
 const first = ref(0);
+const semesters = ref([]);
+const prodis = ref([]);
+const jenisAktifitas = ref([]);
+const selctedSemester = ref('');
+const selectedProdi = ref('');
+const selectedJenisAktivitas = ref('');
+
+const fetchSemester = async () => {
+    try {
+        const response = await get('semester');
+        semesters.value = response.data.data;
+    } catch (error) {
+        console.log('Gagal mengambil data', error);
+    }
+};
+const fetchProdi = async () => {
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.log('Gagal mengambil data', error);
+    }
+};
+const fetchJenisAktivitas = async () => {
+    try {
+        const response = await get('jenis-aktivitas-mahasiswa');
+        jenisAktifitas.value = response.data.data;
+    } catch (error) {
+        console.log('Gagal mengambil data', error);
+    }
+};
+const selectedFilter = async () => {
+    await Promise.all([fetchProdi(), fetchJenisAktivitas(), fetchSemester()]);
+};
 
 const aktivitasMahasiswa = async () => {
     try {
@@ -71,6 +105,7 @@ const onPageChange = (event) => {
 
 onBeforeMount(() => {
     aktivitasMahasiswa();
+    selectedFilter();
 });
 </script>
 
@@ -82,33 +117,29 @@ onBeforeMount(() => {
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Semester</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Semester</option>
-                            <option value="1">2021/2022 Genap</option>
-                            <option value="2">2021/2022 Ganjil</option>
-                            <option value="3">2021/2022 Genap</option>
-                            <option value="4">2021/2022 Ganjil</option>
+                        <select v-model="selctedSemester" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Semester</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Jenis Aktivitas</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Jenis Aktivitas</option>
-                            <option value="1">KKN</option>
-                            <option value="2">MKI</option>
+                        <select v-model="selectedJenisAktivitas" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Jenis Aktivitas</option>
+                            <option v-for="jenisAktifitasMahasiswa in jenisAktifitas" :key="jenisAktifitasMahasiswa.id_jenis_aktivitas_mahasiswa" :value="jenisAktifitasMahasiswa.id_jenis_aktivitas_mahasiswa">
+                                {{ jenisAktifitasMahasiswa.nama_jenis_aktivitas_mahasiswa }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -172,18 +203,18 @@ onBeforeMount(() => {
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.AktivitasMahasiswa.Prodi.nama_program_studi }}</span>
+                            <span>{{ data.AktivitasMahasiswa?.Prodi?.nama_program_studi || '-' }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_semester" header="Semester" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.AktivitasMahasiswa.Semester.nama_semester }}
+                        {{ data.AktivitasMahasiswa?.Semester?.nama_semester || '-' }}
                     </template>
                 </Column>
                 <Column filterField="nama_jenis_aktivitas_mahasiswa" header="Jenis" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.AktivitasMahasiswa.JenisAktivitasMahasiswa.nama_jenis_aktivitas_mahasiswa }}
+                        {{ data.AktivitasMahasiswa?.JenisAktivitasMahasiswa?.nama_jenis_aktivitas_mahasiswa || '-' }}
                     </template>
                 </Column>
                 <Column filterField="judul" header="Judul" style="min-width: 30rem">

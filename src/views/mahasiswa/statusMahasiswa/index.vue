@@ -1,33 +1,36 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { get } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
-    total: { value: null, matchMode: FilterMatchMode.EQUALS }
+    jumlahMahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const customer1 = ref([]);
+const first = ref(0);
+const statusMahasiswa = ref([]);
 const loading1 = ref(false);
 
+const fetchStatusMahasiswa = async () => {
+    try {
+        const response = await get('status-mahasiswa/get-prodi-with-mahasiswa-belum-sk');
+        statusMahasiswa.value = response.data.data;
+        console.log(response.data.data);
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
+};
+
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: 1,
-            prodi: 'Teknologi Basis Data',
-            status: 'A',
-            total: '564'
-        },
-        {
-            no: 2,
-            prodi: 'Teknologi Basis Data',
-            status: 'A',
-            total: '564'
-        }
-        // Add more dummy data here
-    ];
+    fetchStatusMahasiswa();
 });
 </script>
 
@@ -50,14 +53,15 @@ onBeforeMount(() => {
                 </div>
             </div>
         </div>
-        <DataTable v-model:filters="filters" :globalFilterFields="['prodi', 'status', 'total']"
-            :value="customer1"
+        <DataTable v-model:filters="filters" :globalFilterFields="['nama_prodi', 'status', 'jumlahMahasiswa']"
+            :value="statusMahasiswa"
             :paginator="true"
             :rows="10"
             dataKey="id"
             :rowHover="true"
             :loading="loading1"
             showGridlines
+            :first="first" @page="onPageChange"
         >
             <template #header>
                 <div class="flex justify-content-between flex-column sm:flex-row">
@@ -71,17 +75,14 @@ onBeforeMount(() => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            <template #loading>
-                Loading customers data. Please wait.
-            </template>
-            <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
+            <Column header="No" headerStyle="width:3rem">
+                <template #body="slotProps">
+                    {{ first + slotProps.index + 1 }}
                 </template>
             </Column>
-            <Column filterField="prodi" header="Program Studi" style="min-width: 20rem">
+            <Column filterField="nama_prodi" header="Program Studi" style="min-width: 20rem">
                 <template #body="{ data }">
-                    {{ data.prodi }}
+                    {{ data.nama_prodi }}
                 </template>
             </Column>
             <Column filterField="status" header="Status Prodi" style="min-width: 10rem">
@@ -89,14 +90,14 @@ onBeforeMount(() => {
                     {{ data.status }}
                 </template>
             </Column>
-            <Column filterField="total" header="Total Mahasiswa Belum di SET" style="min-width: 10rem">
+            <Column filterField="jumlahMahasiswa" header="Total Mahasiswa Belum di SET" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.total }}
+                    {{ data.jumlahMahasiswa }}
                 </template>
             </Column>
             <Column filterField="aksi" field="aksi" header="Aksi" style="min-width: 12rem">
                 <template #body="{ data }">
-                        <router-link to="/set-status-mahasiswa/create" class="btn btn-primary rounded-3"> 
+                        <router-link :to="`/status-mahasiswa/${data.id_prodi}`" class="btn btn-primary rounded-3"> 
                             <p style="font-size: small;">
                                 <i class="pi pi-pencil me-2"></i>
                                 Set Status

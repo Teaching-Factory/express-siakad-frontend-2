@@ -114,10 +114,11 @@ import VirtualScroller from 'primevue/virtualscroller';
 
 import BlockViewer from '@/components/BlockViewer.vue';
 
+import 'vue-select/dist/vue-select.css';
+
 import '@/assets/styles.scss';
 
 const app = createApp(App);
-
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);

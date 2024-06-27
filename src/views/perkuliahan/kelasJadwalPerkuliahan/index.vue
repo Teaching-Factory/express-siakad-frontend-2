@@ -2,18 +2,20 @@
 import { ref, onBeforeMount } from 'vue';
 import Modal from '../../../components/Modal.vue';
 import { get } from '../../../utiils/request';
+import Swal from 'sweetalert2';
 
 const customer1 = ref([]);
 const showModal1 = ref(false);
 const showModal2 = ref(false);
 const prodis = ref([]);
-const kurikulums = ref([]);
-const periodes = ref([]);
 const semesters = ref([]);
 const selectedProdi = ref('');
 const selectedSemester = ref('');
-const selectedKurikulum = ref('');
-const selectedPeriode = ref('');
+const kelasjadwal = ref([]);
+const dosenpengajar = ref([]);
+const selectedKelasId = ref(null);
+const selectedPesertaId = ref(null);
+const pesertakelas = ref([]);
 
 const fetchProdi = async () => {
     try {
@@ -31,27 +33,76 @@ const fetchSemester = async () => {
         console.error('Gagal mengambil data :', error);
     }
 };
-const fetchKurikullum = async () => {
-    try {
-        const response = await get('kurikulum');
-        kurikulums.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data :', error);
-    }
-};
-const fetchPeriode = async () => {
-    try {
-        const response = await get('periode');
-        periodes.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data :', error);
-    }
-};
 
 const selectedFilter = async () => {
     // loading1.value = true;
-    await Promise.all([fetchProdi(), fetchSemester(), fetchKurikullum(), fetchPeriode()]);
+    await Promise.all([fetchProdi(), fetchSemester()]);
     // loading1.value = false;
+};
+
+const filterData = async () => {
+    const prodiId = selectedProdi.value;
+    const semesterId = selectedSemester.value;
+
+    if (!prodiId || !semesterId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        alert('Data Kelas belum tersedia');
+        return;
+    }
+
+    console.log('Prodi:', prodiId);
+    console.log('Semester:', semesterId);
+
+    try {
+        const response = await get(`detail-kelas-kuliah/filter/${prodiId}/${semesterId}/get`);
+        const filterKelasJadwal = response.data.data;
+
+        kelasjadwal.value = filterKelasJadwal;
+    } catch (error) {
+        console.error('Gagal mengambil data:', error);
+        alert('Gagal mengambil data. Silakan coba lagi nanti.');
+    }
+};
+
+const showDosenPengajar = async (id_kelas_kuliah) => {
+    selectedKelasId.value = id_kelas_kuliah;
+
+    try {
+        const response = await get(`dosen-pengajar-kelas-kuliah/${selectedKelasId.value}/get`);
+        const pengajar = response.data.data;
+
+        // Memastikan pengajar memiliki nilai sebelum diassign
+        if (pengajar !== null && pengajar.length !== 0) {
+            dosenpengajar.value = pengajar;
+        } else {
+            // Jika pengajar kosong, assign nilai default atau kosong
+            dosenpengajar.value = []; // atau null, atau nilai default lainnya
+        }
+
+        showModal2.value = true;
+    } catch (error) {
+        Swal.fire('BERHASIL!', 'Data Dosen Pengajar tidak ditemukan.', 'info').then(() => {});
+    }
+};
+
+const showPesertaKelas = async (id_kelas_kuliah) => {
+    selectedPesertaId.value = id_kelas_kuliah;
+
+    try {
+        const response = await get(`peserta-kelas-kuliah/${selectedPesertaId.value}/get-nilai-kelas`);
+        const peserta = response.data.data;
+        console.log('data-2', peserta[0].KelasKuliah.Prodi.nama_program_studi);
+        // Memastikan pengajar memiliki nilai sebelum diassign
+        if (peserta !== null && peserta.length !== 0) {
+            pesertakelas.value = peserta;
+        } else {
+            // Jika pengajar kosong, assign nilai default atau kosong
+            pesertakelas.value = []; // atau null, atau nilai default lainnya
+        }
+        showModal1.value = true;
+    } catch (error) {
+        Swal.fire('BERHASIL!', 'Data Peserta Kelas tidak ditemukan.', 'info').then(() => {});
+    }
 };
 
 onBeforeMount(() => {
@@ -83,22 +134,20 @@ onBeforeMount(() => {
     ];
 });
 
-const dosens = ref([{ nama: 'SUDARMONO', nilai: '16', ipk: '2.00', isEditing: false }]);
-
 function addDosen() {
-    dosens.value.push({ nama: '', nilai: '', ipk: '', isEditing: true });
+    dosenpengajar.value.push({ nama: '', nilai: '', ipk: '', isEditing: true });
 }
 
 function editDosen(index) {
-    dosens.value[index].isEditing = true;
+    dosenpengajar.value[index].isEditing = true;
 }
 
 function saveDosen(index) {
-    dosens.value[index].isEditing = false;
+    dosenpengajar.value[index].isEditing = false;
 }
 
 function deleteDosen(index) {
-    dosens.value.splice(index, 1);
+    dosenpengajar.value.splice(index, 1);
 }
 </script>
 
@@ -131,24 +180,6 @@ function deleteDosen(index) {
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Periode</option>
-                            <option v-for="periode in periodes" :key="periode.id_periode" :value="periode.id_periode">{{ periode.periode_pelaporan }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Kurikulum</label>
-                        <select v-model="selectedKurikulum" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Kurikulum</option>
-                            <option v-for="kurikulum in kurikulums" :key="kurikulum.id_kurikulum" :value="kurikulum.id_kurikulum">{{ kurikulum.nama_kurikulum }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Semester</label>
                         <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Semester</option>
@@ -157,40 +188,40 @@ function deleteDosen(index) {
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
                 </div>
                 </div>
                 <hr/>
-            <table class="table table-center table-hover mb-4">
+            <table v-for="(kelas, index) in kelasjadwal" :key="index" class="table table-center table-hover mb-4">
                 <thead class="table-primary align-middle">
                     <tr>
-                        <th colspan="7">PEMROGRAMAN TERSTRUKTUR [ 2 SKS | TINF 110B]</th>
+                        <th colspan="7">{{kelas.KelasKuliah.MataKuliah.nama_mata_kuliah}} [ {{kelas.KelasKuliah.MataKuliah.sks_mata_kuliah}} | {{kelas.KelasKuliah.MataKuliah.kode_mata_kuliah}}]</th>
                         <th class="text-end">
                             <button class="btn btn-secondary me-2"> 1 Kelas </button>
-                            <router-link to="/kelas-jadwal-perkuliahan/create-kelas" class="btn btn-success"><i class="pi pi-plus"></i></router-link>
+                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.KelasKuliah.id_matkul}`" class="btn btn-success"><i class="pi pi-plus"></i></router-link>
                         </th>
                     </tr>
                 </thead>
                 <tbody class="align-middle">
                     <tr>
                         <td>
-                            <i class="pi pi-building">A</i>
+                            <i class="pi pi-building">{{ kelas.KelasKuliah.nama_kelas_kuliah }}</i>
                         </td>
                         <td>
-                            <i class="pi pi-calendar">Sabtu</i>
+                            <i class="pi pi-calendar">{{kelas.hari}}</i>
                         </td>
                         <td>
-                            <i class="pi pi-time">07:00 - 08:00</i>
+                            <i class="pi pi-time">{{kelas.jam_mulai}} - {{kelas.jam_selesai}}</i>
                         </td>
                         <td>
-                            <i class="pi pi-map">Ruang A 102</i>
+                            <i class="pi pi-map">{{kelas.RuangPerkuliahan}}</i>
                         </td>
                         <td>
-                            <i class="pi pi-users">1/40</i>
+                            <i class="pi pi-users">{{kelas.kapasitas || '0'}}/40</i>
                         </td>
                         <td>
-                            <button class="btn me-2" @click="showModal2=true"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </button>
-                            <span>Suroto</span>
+                            <button class="btn me-2" @click="showDosenPengajar(kelas.id_kelas_kuliah)"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </button>
+                            <span>{{kelas.KelasKuliah?.Dosen?.nama_dosen || '-'}}</span>
                             
                             <!-- modal 2 -->
                             <Modal
@@ -200,19 +231,26 @@ function deleteDosen(index) {
                             @close="showModal2 = false"
                             >
                             <div class="card" style="border-radius: none !important">
-                                <div class="row">
-                                    <div class="col-lg-2">Program Studi</div>
-                                    <div class="col-lg-4"><span class="me-2">:</span> S1 Teknik Informatika</div>
-                                    <div class="col-lg-2">Periode</div>
-                                    <div class="col-lg-4"><span class="me-2">:</span> 2020/2021 Ganjil</div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-lg-2">Mata Kuliah</div>
-                                    <div class="col-lg-4"><span class="me-2">:</span> Pemrograman Terstruktur</div>
-                                    <div class="col-lg-2">Kelas</div>
-                                    <div class="col-lg-4"><span class="me-2">:</span> A</div>
-                                </div>
+                                    <!-- <div v-if="dosenpengajar"> -->
+                                        <div class="row">
+                                        <div class="col-lg-2">Program Studi</div>
+                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar?.Prodi?.nama_program_studi || '-' }}</div>
+                                        <div class="col-lg-2">Periode</div>
+                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar?.Semester?.nama_semester || '-' }}</div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                        <div class="col-lg-2">Mata Kuliah</div>
+                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar.KelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}</div>
+                                        <div class="col-lg-2">Kelas</div>
+                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar.KelasKuliah?.nama_kelas_kuliah || '-' }}</div>
+                                        </div>
+                                        <!-- <pre>{{ dosenpengajar.id_prodi }}</pre> -->
+                                    <!-- </div> -->
+                                    <!-- <div v-else>
+                                        <p>Data tidak ditemukan</p>
+                                    </div> -->
+
                                 <hr style="margin: 0;">
 
                                 <div class="row mt-4">
@@ -226,32 +264,38 @@ function deleteDosen(index) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(dosen, index) in dosens" :key="index">
-                                                <td v-if="!dosen.isEditing" class="text-center">{{ dosen.nama }}</td>
-                                                <td v-else><input type="text" class="form-control" v-model="dosen.nama"></td>
+                                            
+                                                <tr v-if="dosenpengajar">
+                                                    <td v-if="!dosenpengajar.isEditing" class="text-center">{{ dosenpengajar.Dosen?.nama_dosen || "-" }}</td>
+                                                    <td v-else><input type="text" class="form-control" v-model="dosenpengajar.Dosen.nama_dosen"></td>
 
-                                                <td v-if="!dosen.isEditing" class="text-center">{{ dosen.nilai }}</td>
-                                                <td v-else><input type="text" class="form-control" v-model="dosen.pertemuan"></td>
+                                                    <td v-if="!dosenpengajar.isEditing" class="text-center">{{ dosenpengajar?.rencana_minggu_pertemuan || "-"}}</td>
+                                                    <td v-else><input type="text" class="form-control" v-model="dosenpengajar.rencana_minggu_pertemuan"></td>
 
-                                                <td v-if="!dosen.isEditing" class="text-center">{{ dosen.ipk }}</td>
-                                                <td v-else><input type="text" class="form-control" v-model="dosen.sks"></td>
-                                                
-                                                <td class="text-center">
-                                                    <button class="btn btn-outline-secondary me-2" @click="saveDosen(index)" v-if="dosen.isEditing">
-                                                        Save
-                                                    </button>
-                                                    <button class="btn btn-outline-warning me-2" @click="editDosen(index)" v-else>
-                                                        <i class="pi pi-pencil"></i>
-                                                    </button>
-                                                    <button class="btn btn-outline-danger me-2" @click="deleteDosen(index)">
-                                                        <i class="pi pi-trash"></i>
-                                                    </button>
-                                                    <button class="btn btn-primary me-2" v-if="!dosen.isEditing">
-                                                        Set Ketua
-                                                    </button>
-                                                </td>
+                                                    <td v-if="!dosenpengajar.isEditing" class="text-center">{{ dosenpengajar.KelasKuliah?.sks || "-"}}</td>
+                                                    <td v-else><input type="text" class="form-control" v-model="dosenpengajar.KelasKuliah.sks"></td>
+                                                    
+                                                    <td class="text-center">
+                                                        <button class="btn btn-outline-secondary me-2" @click="saveDosen(index)" v-if="dosenpengajar.isEditing">
+                                                            Save
+                                                        </button>
+                                                        <button class="btn btn-outline-warning me-2" @click="editDosen(index)" v-else>
+                                                            <i class="pi pi-pencil"></i>
+                                                        </button>
+                                                        <button class="btn btn-outline-danger me-2" @click="deleteDosen(index)">
+                                                            <i class="pi pi-trash"></i>
+                                                        </button>
+                                                        <button class="btn btn-primary me-2" v-if="!dosenpengajar.isEditing">
+                                                            Set Ketua
+                                                        </button>
+                                                    </td>
+                                                </tr>
+    
+                                            <tr v-else>
+                                                <p>Data tidak ditemukan</p>
                                             </tr>
                                         </tbody>
+
                                     </table>
                                 </div>
 
@@ -266,7 +310,7 @@ function deleteDosen(index) {
 
                         </td>
                         <td class="text-end">
-                            <button @click="showModal1=true" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</button>
+                            <button  @click="showPesertaKelas(kelas.id_kelas_kuliah)" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</button>
                             <Modal
                             v-if="showModal1"
                             :show="showModal1"
@@ -277,34 +321,34 @@ function deleteDosen(index) {
                                 <tbody>
                                     <tr>
                                         <td class="table-header">Program Studi</td>
-                                        <td>S1 Teknik Informatika</td>
+                                        <td>{{ pesertakelas[0].KelasKuliah?.Prodi?.nama_program_studi ||'-' }}</td>
                                         <td class="table-header">Periode</td>
-                                        <td>2023/2024 Ganjil</td>
+                                        <td>{{pesertakelas[0].KelasKuliah.Semester.nama_semester}}</td>
                                     </tr>
                                     <tr>
                                         <td class="table-header">Matakuliah</td>
-                                        <td>PEMROGRAMAN TERSTRUKTUR (2.00 sks)</td>
+                                        <td>{{pesertakelas[0].KelasKuliah.MataKuliah.nama_mata_kuliah}} ({{pesertakelas[0].KelasKuliah.MataKuliah.sks_mata_kuliah}})</td>
                                         <td class="table-header">Kelas</td>
-                                        <td>A</td>
+                                        <td>{{ pesertakelas[0].KelasKuliah.nama_kelas_kuliah }}</td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <td class="table-header">Jumlah Peserta</td>
                                         <td>1</td>
                                         <td class="table-header"></td>
                                         <td></td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                             <div style="overflow-x: auto;">
                                 <table class="table table-bordered text-center">
                                     <thead class="table-dark align-middle">
                                         <tr>
-                                            <th  rowspan="2">No</th>
-                                            <th  rowspan="2">NIM</th>
-                                            <th  rowspan="2">Nama Mahasiswa</th>
-                                            <th  rowspan="2">Angkatan</th>
-                                            <th  rowspan="2">Prodi</th>              
-                                            <th  colspan="3">Nilai</th>              
+                                            <th rowspan="2">No</th>
+                                            <th rowspan="2">NIM</th>
+                                            <th rowspan="2">Nama Mahasiswa</th>
+                                            <th rowspan="2">Angkatan</th>
+                                            <th rowspan="2">Prodi</th>              
+                                            <th colspan="3">Nilai</th>              
                                         </tr>
                                         <tr>
                                             <th>Angka</th>
@@ -312,16 +356,16 @@ function deleteDosen(index) {
                                             <th>Huruf</th>  
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>325325</td>
-                                            <td>Aida Andinar Maulidiana</td>
-                                            <td>2020</td>
-                                            <td>S1 Teknik Informatika</td>
-                                            <td>85.0</td>
-                                            <td>3.00</td>
-                                            <td>B</td>
+                                    <tbody >
+                                        <tr v-for="(mahasiswaKelas, index) in pesertakelas" :key="index">
+                                            <td>{{index + 1}}</td>
+                                            <td>{{mahasiswaKelas?.Mahasiswa?.nim || '-'}}</td>
+                                            <td>{{mahasiswaKelas.Mahasiswa.nama_mahasiswa}}</td>
+                                            <td>{{mahasiswaKelas.angkatan}}</td>
+                                            <td>{{mahasiswaKelas.KelasKuliah.Prodi.nama_program_studi}}</td>
+                                            <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_angka}}</td>
+                                            <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_indeks}}</td>
+                                            <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_huruf}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -333,12 +377,13 @@ function deleteDosen(index) {
                             <button class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </button>
                             <button class="btn  me-2 btn-danger"> <i class="pi pi-trash "></i> </button>
                             <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </router-link>
-                            <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
-                            <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button>
+                            <!-- <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
+                            <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
+
     </div>
 </template>
 

@@ -1,73 +1,98 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onMounted } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { get } from '../../../utiils/request';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+import { getToken } from '../../../service/auth';
+import Swal from 'sweetalert2';
+import { API_URL } from '../../../config/config';
+
+const route = useRoute(); // Inisialisasi useRoute untuk mendapatkan akses ke route saat ini
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    angkatan: { value: null, matchMode: FilterMatchMode.EQUALS },
-    jumlah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    jumlahBelumSET: { value: null, matchMode: FilterMatchMode.EQUALS }
+    tahun: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlahMahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlahMahasiswaBelumSetSK: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const first = ref(0);
+const setStatus = ref([]);
+const loading1 = ref(true);
+const selectedIds = ref([]);
+const id_prodi = route.params.id_prodi; // Variable to store the id_prodi
 
-onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            angkatan: '2020',
-            jumlah: '300',
-            jumlahBelumSET: '20',
-            aksi: 'cekbok'
-        },
-        {
-            no: '2',
-            angkatan: '2020',
-            jumlah: '300',
-            jumlahBelumSET: '20',
-            aksi: 'cekbok'
-        }
-        // Add more dummy data here
-    ];
+const fetchSetStatusMahasiswa = async (id_prodi) => {
+    console.log(id_prodi);
+    try {
+        const response = await get(`status-mahasiswa/${id_prodi}/get-periode-with-count-mahasiswa`);
+        setStatus.value = response.data.data;
+        console.log(response.data.data);
+        loading1.value = false;
+        // console.log(id_prodi);
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const updateStatus = async (id_prodi, id_angkatan) => {
+    try {
+        const token = getToken();
+        const url = `${API_URL}/status-mahasiswa/filter/${id_prodi}/${id_angkatan}/set-status-nonaktif`;
+        console.log('PUT URL:', url); // Tambahkan log untuk URL endpoint
+        const response = await axios.put(
+            url,
+            {},
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        );
+
+        console.log(`Status untuk id_angkatan ${id_angkatan} berhasil diperbarui:`, response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+    }
+};
+
+// Function to set mahasiswa status to non-aktif
+const setNonAktif = async () => {
+    for (const id_angkatan of selectedIds.value) {
+        await updateStatus(id_prodi, id_angkatan);
+    }
+    Swal.fire('BERHASIL!', 'Data berhasil diUpdate.', 'success').then(() => {
+        window.location.href = `/status-mahasiswa/${id_prodi}`;
+    });
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
+};
+
+onMounted(() => {
+    /// Mengambil id_prodi dari route parameters
+    fetchSetStatusMahasiswa(id_prodi);
 });
 </script>
+
 
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>SET STATUS AWAL PERIODE MAHASISWA</h5>
-        <div class="card">
-            <div class="row">
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Periode</option>
-                            <option value="1">2020</option>
-                            <option value="2">2021</option>
-                            <option value="3">2022</option>
-                            <option value="4">2023</option>
-                            <option value="5">2024</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
-                </div>
-            </div>
-        </div>
-        <DataTable v-model:filters="filters" :globalFilterFields="['angkatan', 'jumlah', 'jumlahBelumSET']" :value="customer1" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+        <DataTable
+            v-model:filters="filters"
+            :globalFilterFields="['tahun', 'jumlahMahasiswa', 'jumlahMahasiswaBelumSetSK']"
+            :value="setStatus"
+            :paginator="true"
+            :rows="10"
+            dataKey="id"
+            :rowHover="true"
+            :loading="loading1"
+            showGridlines
+            :first="first"
+            @page="onPageChange"
+        >
             <template #header>
                 <div class="row">
                     <div class="col-lg-6 d-flex justify-content-start">
@@ -78,7 +103,7 @@ onBeforeMount(() => {
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <button class="btn btn-secondary"><i class="pi pi-check me-2"></i> Set Non Aktif</button>
+                            <button class="btn btn-secondary" @click="setNonAktif"><i class="pi pi-check me-2"></i> Set Non Aktif</button>
                         </div>
                     </div>
                 </div>
@@ -87,30 +112,31 @@ onBeforeMount(() => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            <template #loading> Loading customers data. Please wait. </template>
-            <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
+            <Column header="No" headerStyle="width:3rem">
+                <template #body="slotProps">
+                    {{ first + slotProps.index + 1 }}
                 </template>
             </Column>
-            <Column filterField="angkatan" header="Angkatan" style="min-width: 15rem">
+            <Column filterField="tahun" header="Angkatan" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.angkatan }}
+                    {{ data.tahun }}
                 </template>
             </Column>
-            <Column filterField="jumlah" header="Jumlah Mahasiswa" style="min-width: 10rem">
+            <Column filterField="jumlahMahasiswa" header="Jumlah Mahasiswa" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.jumlah }}
+                    {{ data.jumlahMahasiswa }}
                 </template>
             </Column>
-            <Column filterField="jumlahBelumSET" header="Jumlah Mahasiswa Belum di SET" style="min-width: 10rem">
+            <Column filterField="jumlahMahasiswaBelumSetSK" header="Jumlah Mahasiswa Belum di SET" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.jumlahBelumSET }}
+                    {{ data.jumlahMahasiswaBelumSetSK }}
                 </template>
             </Column>
             <Column filterField="aksi" header="Aksi" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.aksi }}
+                    <div class="actions gap-2">
+                        <input type="checkbox" id="actionCheckbox" name="actionCheckbox" class="form-check-input" :value="data.id_angkatan" v-model="selectedIds" />
+                    </div>
                 </template>
             </Column>
         </DataTable>

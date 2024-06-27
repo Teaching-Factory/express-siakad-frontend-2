@@ -40,22 +40,19 @@ const filters = ref({
 
 const customer1 = ref([]);
 const sistemKuliahMahasiswa = ref([]);
-const loading1 = ref(true);
+const loading1 = ref(false);
 const selectedMhs = ref([]);
-const id = ref('');
 const sistemKuliahs = ref([]);
+const selectedProdi = ref('');
+const selectedSistemKuliah = ref('');
+const prodis = ref([]);
 
-const fetchSistemKuliahMahasiswa = async () => {
+const fetchProdi = async () => {
     try {
-        const response = await get('sistem-kuliah-mahasiswa/mahasiswa/not-set-sk/get');
-        sistemKuliahMahasiswa.value = response.data.data;
-        loading1.value = false;
+        const response = await get('prodi');
+        prodis.value = response.data.data;
     } catch (error) {
-        console.error('Gagal mengambil data Aktivitas Mahawiswa:', error);
-
-        loading1.value = false;
-
-        fetchSistemKuliahMahasiswa.value = [];
+        console.error('Gagal mengambil data :', error);
     }
 };
 
@@ -67,47 +64,36 @@ const fetchSistemKuliah = async () => {
         console.error('Gagal mengambil data prodi:', error);
     }
 };
+const filterData = async () => {
+    const prodiId = selectedProdi.value;
+    const sistemKuliahId = selectedSistemKuliah.value;
+
+    if (!prodiId || !sistemKuliahId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        alert('Data belum tersedia');
+        return;
+    }
+
+    console.log('Prodi:', prodiId);
+    console.log('Semester:', sistemKuliahId);
+
+    try {
+        const response = await get(`sistem-kuliah/filter/${prodiId}/${sistemKuliahId}/get`);
+        const sistem_kuliah = response.data.data;
+
+        sistemKuliahMahasiswa.value = sistem_kuliah;
+    } catch (error) {
+        console.error('Gagal mengambil data:', error);
+        alert('Gagal mengambil data. Silakan coba lagi nanti.');
+    }
+};
+
+const selectedFilter = async () => {
+    await Promise.all([fetchProdi(), fetchSistemKuliah()]);
+};
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            nama_mahasiswa: 'John Doe',
-            nim: '12345678',
-            email: 'coba@gmail.com',
-            angkatan: 2021,
-            jeniskelamin: 'Perempuan',
-            tanggallahir: '18/05/2002',
-            namaibu: 'Supin',
-            sistemKuliah: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Sistem Kuliah</option>
-                    <option value="option2">Karyawan</option>
-                    <option value="option3">Reguler</option>
-                </select>
-            </div>`
-        },
-        {
-            nama_mahasiswa: 'John Doe',
-            nim: '87654321',
-            email: 'coba@gmail.com',
-            angkatan: 2021,
-            jeniskelamin: 'Perempuan',
-            tanggallahir: '18/05/2002',
-            namaibu: 'Supin',
-            sistemKuliah: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Sistem Kuliah</option>
-                    <option value="option2">Karyawan</option>
-                    <option value="option3">Reguler</option>
-                </select>
-            </div>`
-        }
-        // Add more dummy data here
-    ];
-    fetchSistemKuliahMahasiswa();
-    fetchSistemKuliah();
+    selectedFilter();
 });
 </script>
 
@@ -141,39 +127,24 @@ onBeforeMount(() => {
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Angkatan</option>
-                            <option value="1">2020</option>
-                            <option value="2">2021</option>
-                            <option value="3">2022</option>
-                            <option value="4">2023</option>
-                            <option value="5">2024</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="">
                         <label for="exampleFormControlInput1" class="form-label">Sistem Kuliah</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Sistem Kuliah</option>
-                            <option value="1">Reguler</option>
-                            <option value="2">Karyawan</option>
+                        <select v-model="selectedSistemKuliah" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Sistem Kuliah</option>
+                            <option v-for="sistemKuliah in sistemKuliahs" :key="sistemKuliah.id" :value="sistemKuliah.id">{{sistemKuliah.nama_sk}}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
                 </div>
             </div>
             <hr />
@@ -208,45 +179,45 @@ onBeforeMount(() => {
                 <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data . nama_mahasiswa }}</span>
+                            <span>{{ data.Mahasiswa.nama_mahasiswa }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nim" header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data . nim }}</span>
+                            <span>{{ data.Mahasiswa.nim }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="email" header="Email" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data . BiodataMahasiswa . email }}
+                        {{ data.Mahasiswa. BiodataMahasiswa . email }}
                     </template>
                 </Column>
                 <Column filterField="nama_periode_masuk" header="Angkatan" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data . nama_periode_masuk }}
+                        {{ data.Mahasiswa.nama_periode_masuk }}
                     </template>
                 </Column>
                 <Column filterField="jenis_kelamin" header="Jenis Kelamin" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data . jenis_kelamin }}
+                        {{ data.Mahasiswa.jenis_kelamin }}
                     </template>
                 </Column>
                 <Column filterField="tanggal_lahir" header="Tanggal Lahir" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data . tanggal_lahir }}
+                        {{ data.Mahasiswa.tanggal_lahir }}
                     </template>
                 </Column>
                 <Column filterField="nama_ibu_kandung" header="Nama Ibu" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data . BiodataMahasiswa . nama_ibu_kandung }}
+                        {{ data.Mahasiswa. BiodataMahasiswa . nama_ibu_kandung }}
                     </template>
                 </Column>
                 <Column header="Sistem Kuliah" style="min-width: 15rem">
                     <template #body="{}">
-                        <select v-model="id" class="form-select" aria-label="Default select example">
+                        <select v-model="selectedSistemKuliah" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Sistem Kuliah</option>
                         <option v-for="sistemKuliah in sistemKuliahs" :key="sistemKuliah.id" :value="sistemKuliah.id">{{ sistemKuliah.nama_sk }}</option>
                         </select>

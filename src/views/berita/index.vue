@@ -35,7 +35,6 @@ const deleteItem = async (id) => {
         const response = await del(`berita/${id}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
-            beritas.value = beritas.value.filter((data) => data.id !== id);
         } else {
             message.value = 'Terjadi kesalahan: ' + response.statusText;
         }
@@ -57,6 +56,7 @@ const confirmDelete = (id) => {
         if (result.isConfirmed) {
             deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            beritas.value = beritas.value.filter((data) => data.id !== id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }

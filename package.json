@@ -19,7 +19,8 @@
         "sweetalert": "^2.1.2",
         "sweetalert2": "^11.11.0",
         "vue": "^3.2.41",
-        "vue-router": "^4.1.5"
+        "vue-router": "^4.1.5",
+        "vue-select": "^4.0.0-beta.6"
     },
     "devDependencies": {
         "@rushstack/eslint-patch": "^1.1.4",
