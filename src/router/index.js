@@ -456,7 +456,6 @@ const router = createRouter({
                     name: 'laporantranskripmahasiswa',
                     component: () => import('../views/laporan-mahasiswa/transkripMahasiswa/index.vue')
                 }
-
                 //batas pekerjaan hari ini 28/05/02
             ]
         },
