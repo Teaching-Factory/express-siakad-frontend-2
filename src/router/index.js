@@ -157,6 +157,7 @@ const router = createRouter({
                     name: 'sistemkuliah',
                     component: () => import('../views/referensi/sistemKuliah/index.vue')
                 },
+
                 {
                     path: '/ruang-perkuliahan',
                     name: 'ruangperkuliahan',
@@ -193,6 +194,11 @@ const router = createRouter({
                     component: () => import('../views/referensi/sistemKuliah/form.vue')
                 },
                 {
+                    path: '/sistem-kuliah/edit/:id',
+                    name: 'sistemkuliah-edit',
+                    component: () => import('../views/referensi/sistemKuliah/form.vue')
+                },
+                {
                     path: '/ruang-perkuliahan',
                     name: 'ruangperkuliahan',
                     component: () => import('../views/referensi/ruangPerkuliahan/index.vue')
@@ -200,6 +206,11 @@ const router = createRouter({
                 {
                     path: '/ruang-perkuliahan/create',
                     name: 'ruangperkuliahan-create',
+                    component: () => import('../views/referensi/ruangPerkuliahan/form.vue')
+                },
+                {
+                    path: '/ruang-perkuliahan/:id/edit',
+                    name: 'ruangperkuliahan-edit',
                     component: () => import('../views/referensi/ruangPerkuliahan/form.vue')
                 },
                 {
@@ -213,6 +224,11 @@ const router = createRouter({
                     component: () => import('../views/referensi/unsurPenilaian/form.vue')
                 },
                 {
+                    path: '/unsur-penilaian/:id/edit',
+                    name: 'unsurpenilaian-edit',
+                    component: () => import('../views/referensi/unsurPenilaian/form.vue')
+                },
+                {
                     path: '/bobot-penilaian',
                     name: 'bobotpenilaian',
                     component: () => import('../views/referensi/bobotPenilaian/index.vue')
@@ -223,6 +239,11 @@ const router = createRouter({
                     component: () => import('../views/referensi/bobotPenilaian/form.vue')
                 },
                 {
+                    path: '/bobot-penilaian/:id/edit',
+                    name: 'bobotpenilaian-edit',
+                    component: () => import('../views/referensi/bobotPenilaian/form.vue')
+                },
+                {
                     path: '/daftar-jabatan',
                     name: 'daftarjabatan',
                     component: () => import('../views/referensi/daftarJabatan/index.vue')
@@ -230,6 +251,11 @@ const router = createRouter({
                 {
                     path: '/daftar-jabatan/create',
                     name: 'daftarjabatan-create',
+                    component: () => import('../views/referensi/daftarJabatan/form.vue')
+                },
+                {
+                    path: '/daftar-jabatan/:id/edit',
+                    name: 'daftarjabatan-edit',
                     component: () => import('../views/referensi/daftarJabatan/form.vue')
                 },
                 {

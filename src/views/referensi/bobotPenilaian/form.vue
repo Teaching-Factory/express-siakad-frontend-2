@@ -1,6 +1,10 @@
 <script setup>
+import axios from 'axios';
 import swal from 'sweetalert2';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { API_URL } from '../../../config/config';
+import { getToken } from '../../../service/auth';
 import { get, postData } from '../../../utiils/request';
 
 const prodis = ref([]);
@@ -13,6 +17,23 @@ const errors = ref({
     id_unsur_penilaian: '',
     bobot_penilaian: ''
 });
+const isEdit = ref(false);
+const id = ref(null);
+
+const route = useRoute();
+const router = useRouter();
+
+const fetchData = async (id) => {
+    try {
+        const response = await get(`bobot-penilaian/${id}/get`);
+        const data = response.data.data;
+        id_prodi.value = data.id_prodi;
+        id_unsur_penilaian.value = data.id_unsur_penilaian;
+        bobot_penilaian.value = data.bobot_penilaian;
+    } catch (error) {
+        swal.fire('GAGAL', 'Gagal memuat data. Silakan coba lagi.', 'error');
+    }
+};
 
 const fetchProdi = async () => {
     try {
@@ -77,19 +98,62 @@ const create = async () => {
     }
 };
 
-onBeforeMount(() => {
+const update = async () => {
+    try {
+        const token = getToken();
+        await axios.put(
+            `${API_URL}/bobot-penilaian/${id.value}/update`,
+            {
+                id_prodi: id_prodi.value,
+                id_unsur_penilaian: id_unsur_penilaian.value,
+                bobot_penilaian: bobot_penilaian.value
+            },
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        );
+        swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            router.push('/bobot-penilaian').catch((err) => {
+                console.error('Redirect error:', err);
+            });
+        });
+    } catch (error) {
+        Swal.fire('GAGAL', 'Gagal memperbarui data. Silakan coba lagi.', 'error');
+    }
+};
+
+const submit = async () => {
+    if (isEdit.value) {
+        update();
+    } else {
+        create();
+    }
+};
+
+onMounted(async () => {
+    id.value = route.params.id;
+    if (id.value) {
+        isEdit.value = true;
+        await fetchData(id.value);
+    }
     fetchPenilaian();
     fetchProdi();
 });
+
+// onBeforeMount(() => {
+
+// });
 </script>
 
 
 <template>
     <div class="card">
-        <form @submit.prevent="create">
+        <form @submit.prevent="submit">
             <div class="row">
                 <div class="col-lg-5">
-                    <h5><i class="pi pi-user me-2"></i>TAMBAH UNSUR & BOBOT PENILAIAN</h5>
+                    <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} UNSUR & BOBOT PENILAIAN</h5>
                 </div>
                 <div class="col-lg-7 d-flex justify-content-end">
                     <router-link to="/bobot-penilaian" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>

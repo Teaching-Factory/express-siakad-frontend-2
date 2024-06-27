@@ -35,24 +35,6 @@ onBeforeMount(() => {
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR UNIT JABATAN</h5>
-        <div class="card">
-            <div class="row">
-                <div class="col-lg-10 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
-                </div>
-            </div>
-        </div>
 
         <DataTable v-model:filters="filters" :globalFilterFields="['Jabatan.nama_habatan', 'Dosen.nama_dosen', 'Dosen.nip']" :value="unitJabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
             <template #header>

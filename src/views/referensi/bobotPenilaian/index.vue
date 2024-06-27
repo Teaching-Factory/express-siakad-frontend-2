@@ -135,7 +135,7 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 5rem">
                     <template #body="slotProps">
                         <div class="flex gap-2">
-                            <router-link :to="`/edit-ruang/${slotProps.data.idruang}`" class="btn btn-outline-primary">
+                            <router-link :to="`/bobot-penilaian/${slotProps.data.id_bobot_penilaian}/edit`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(slotProps.data.id_bobot_penilaian)" class="btn btn-outline-danger">
