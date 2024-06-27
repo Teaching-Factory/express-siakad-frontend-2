@@ -46,12 +46,9 @@ const filterData = async () => {
 
     if (!prodiId || !semesterId) {
         // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
-        alert('Data Kelas belum tersedia');
+        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
         return;
     }
-
-    console.log('Prodi:', prodiId);
-    console.log('Semester:', semesterId);
 
     try {
         const response = await get(`detail-kelas-kuliah/filter/${prodiId}/${semesterId}/get`);
@@ -59,8 +56,7 @@ const filterData = async () => {
 
         kelasjadwal.value = filterKelasJadwal;
     } catch (error) {
-        console.error('Gagal mengambil data:', error);
-        alert('Gagal mengambil data. Silakan coba lagi nanti.');
+        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
     }
 };
 
@@ -81,7 +77,7 @@ const showDosenPengajar = async (id_kelas_kuliah) => {
 
         showModal2.value = true;
     } catch (error) {
-        Swal.fire('BERHASIL!', 'Data Dosen Pengajar tidak ditemukan.', 'info').then(() => {});
+        Swal.fire('GAGAL!', 'Data Dosen Pengajar tidak ditemukan.', 'warning').then(() => {});
     }
 };
 
@@ -101,37 +97,12 @@ const showPesertaKelas = async (id_kelas_kuliah) => {
         }
         showModal1.value = true;
     } catch (error) {
-        Swal.fire('BERHASIL!', 'Data Peserta Kelas tidak ditemukan.', 'info').then(() => {});
+        Swal.fire('GAGAL!', 'Data Peserta Kelas tidak ditemukan.', 'warning').then(() => {});
     }
 };
 
 onBeforeMount(() => {
     selectedFilter();
-    customer1.value = [
-        {
-            pertemuan: '1',
-            tanggal: '18/05/2024',
-            waktu: '09.10 - 10.10',
-            ruang: 'G4.08',
-            dosen: 'Lukman Hakim',
-            materi: 'Sitasi Ilmiah',
-            jumlahmhs: '30',
-            statuspresensi: 'Aktif',
-            aksi: '-'
-        },
-        {
-            pertemuan: '2',
-            tanggal: '18/05/2024',
-            waktu: '09.10 - 10.10',
-            ruang: 'G4.08',
-            dosen: 'Lukman Hakim',
-            materi: 'Sitasi Ilmiah',
-            jumlahmhs: '30',
-            statuspresensi: 'Aktif',
-            aksi: '-'
-        }
-        // Add more dummy data here
-    ];
 });
 
 function addDosen() {
@@ -195,33 +166,33 @@ function deleteDosen(index) {
             <table v-for="(kelas, index) in kelasjadwal" :key="index" class="table table-center table-hover mb-4">
                 <thead class="table-primary align-middle">
                     <tr>
-                        <th colspan="7">{{kelas.KelasKuliah.MataKuliah.nama_mata_kuliah}} [ {{kelas.KelasKuliah.MataKuliah.sks_mata_kuliah}} | {{kelas.KelasKuliah.MataKuliah.kode_mata_kuliah}}]</th>
+                        <th colspan="7">{{kelas.mataKuliah.nama_mata_kuliah}} [ {{kelas.mataKuliah.sks_mata_kuliah}} | {{kelas.mataKuliah.kode_mata_kuliah}}]</th>
                         <th class="text-end">
                             <button class="btn btn-secondary me-2"> 1 Kelas </button>
-                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.KelasKuliah.id_matkul}`" class="btn btn-success"><i class="pi pi-plus"></i></router-link>
+                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${kelas.details[0].KelasKuliah.id_semester}`" class="btn btn-success"><i class="pi pi-plus"></i></router-link>
                         </th>
                     </tr>
                 </thead>
                 <tbody class="align-middle">
-                    <tr>
+                    <tr v-for="(detail, index) in kelas.details" :key="index">
                         <td>
-                            <i class="pi pi-building">{{ kelas.KelasKuliah.nama_kelas_kuliah }}</i>
+                            <i class="pi pi-building">{{ detail.KelasKuliah.nama_kelas_kuliah }}</i>
                         </td>
                         <td>
-                            <i class="pi pi-calendar">{{kelas.hari}}</i>
+                            <i class="pi pi-calendar">{{ detail.hari || '-' }}</i>
                         </td>
                         <td>
-                            <i class="pi pi-time">{{kelas.jam_mulai}} - {{kelas.jam_selesai}}</i>
+                            <i class="pi pi-time">{{ detail.jam_mulai || '00:00' }} - {{ detail.jam_selesai || '00:00' }}</i>
                         </td>
                         <td>
-                            <i class="pi pi-map">{{kelas.RuangPerkuliahan}}</i>
+                            <i class="pi pi-map"> {{ detail.RuangPerkuliahan?.nama_ruang_perkuliahan || '-' }}</i>
                         </td>
                         <td>
-                            <i class="pi pi-users">{{kelas.kapasitas || '0'}}/40</i>
+                            <i class="pi pi-users">0/{{ detail.kapasitas || '0' }}</i>
                         </td>
                         <td>
-                            <button class="btn me-2" @click="showDosenPengajar(kelas.id_kelas_kuliah)"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </button>
-                            <span>{{kelas.KelasKuliah?.Dosen?.nama_dosen || '-'}}</span>
+                            <button class="btn me-2" @click="showDosenPengajar(detail.KelasKuliah.id_kelas_kuliah)"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </button>
+                            <span>{{detail.KelasKuliah?.Dosen?.nama_dosen || '-'}}</span>
                             
                             <!-- modal 2 -->
                             <Modal
@@ -310,7 +281,7 @@ function deleteDosen(index) {
 
                         </td>
                         <td class="text-end">
-                            <button  @click="showPesertaKelas(kelas.id_kelas_kuliah)" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</button>
+                            <button  @click="showPesertaKelas(detail.KelasKuliah.id_kelas_kuliah)" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</button>
                             <Modal
                             v-if="showModal1"
                             :show="showModal1"

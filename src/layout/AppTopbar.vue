@@ -4,16 +4,18 @@ import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { API_URL } from '../config/config';
-import { clearToken } from '../service/auth';
+import { clearPermissions, clearToken, clearUser } from '../service/auth';
+import { getUser } from '../utiils/local_storage';
 
 const { onMenuToggle } = useLayout();
-
+const user = ref([]);
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
 
 onMounted(() => {
     bindOutsideClickListener();
+    user.value = getUser();
 });
 
 onBeforeUnmount(() => {
@@ -30,6 +32,8 @@ const handleLogout = async () => {
         console.log(response);
         if (response.status == 200 && response.statusText === 'OK') {
             clearToken();
+            clearUser();
+            clearPermissions();
             router.push('/auth/login');
         }
     } catch (error) {
@@ -95,7 +99,7 @@ const isOutsideClicked = (event) => {
             <div class="dropdown">
                 <button class="dropdown-toggle border-0" style="background: none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="pi pi-user text-white me-3 fs-4"></i>
-                    <span class="text-white">Hi, SUPER ADMIN</span>
+                    <span class="text-white">Hi, {{ user ? user : 'Guest' }}</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="#" @click="handleLogout">Logout</a></li>

@@ -13,7 +13,7 @@ const logoUrl = computed(() => {
 
 <script>
 import { API_URL } from '../../../config/config';
-import { setToken } from '../../../service/auth';
+import { setPermissions, setToken, setUser } from '../../../service/auth';
 import axios from 'axios';
 
 export default {
@@ -47,10 +47,14 @@ export default {
                 );
 
                 const data = response.data;
+                console.log(data);
 
                 setToken(data.token);
-
-                this.$router.push('/dashboard');
+                setUser(data.user);
+                setPermissions(data.permissions);
+                this.$router.push('/dashboard').catch((err) => {
+                    // console.error('Redirect error:', err);
+                });
             } catch (error) {
                 this.errorMessage = 'Username atau password tidak valid';
             }

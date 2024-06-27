@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { get } from '../../../utiils/request';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: {
@@ -84,7 +85,7 @@ const filterData = async () => {
         sistemKuliahMahasiswa.value = sistem_kuliah;
     } catch (error) {
         console.error('Gagal mengambil data:', error);
-        alert('Gagal mengambil data. Silakan coba lagi nanti.');
+        Swal.fire('BERHASIL!', 'Data Dosen Pengajar tidak ditemukan.', 'info').then(() => {});
     }
 };
 

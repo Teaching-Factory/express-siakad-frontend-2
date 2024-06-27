@@ -54,7 +54,7 @@ const router = createRouter({
                     component: () => import('../views/mahasiswa/validasiKrsMahasiswa/index.vue')
                 },
                 {
-                    path: '/validasi-krs-mahasiswa/detailKRS',
+                    path: '/validasi-krs-mahasiswa/detailKRS/:id_registrasi_mahasiswa',
                     name: 'validasikrsmahasiswa-detail',
                     component: () => import('../views/mahasiswa/validasiKrsMahasiswa/detailKRS.vue')
                 },
@@ -100,7 +100,7 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/index.vue')
                 },
                 {
-                    path: '/kelas-jadwal-perkuliahan/create-kelas/:id_matkul',
+                    path: '/kelas-jadwal-perkuliahan/create-kelas/:id_matkul/:id_semester',
                     name: 'kelasjadwalperkuliahan-createkelas',
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formKelas.vue')
                 },
@@ -442,14 +442,16 @@ router.beforeEach((to, from, next) => {
     const publicPages = ['/auth/login'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
+    const userIN = localStorage.getItem('user-data');
 
-    // if (authRequired && !loggedIn) {
-    //     return next('/auth/login');
-    // }
+    if (authRequired && !loggedIn && !userIN) {
+        return next('/auth/login');
+    }
 
-    // if (to.path === '/auth/login' && loggedIn) {
-    //     return next('/dashboard');
-    // }
+    // Jika pengguna mencoba mengakses halaman login saat sudah login, arahkan mereka ke halaman beranda
+    if (to.path === '/auth/login' && loggedIn && userIN) {
+        return next('/dashboard');
+    }
 
     next();
 });

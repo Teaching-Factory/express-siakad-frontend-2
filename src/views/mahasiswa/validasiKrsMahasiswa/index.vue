@@ -2,52 +2,72 @@
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
+import { get } from '../../../utiils/request';
+import { getToken } from '../../../service/auth';
+import { API_URL } from '../../../config/config';
+import axios from 'axios';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
-    prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
-    jumlahsks: { value: null, matchMode: FilterMatchMode.EQUALS },
-    statusmhs: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    total_sks: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
     statusvalidasi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const customer1 = ref([]);
+const validasiKRS = ref([]);
 const loading1 = ref(false);
 const selectedMhs = ref([]);
 
-onBeforeMount(() => {
-    customer1.value = [
-        {
-            nim: '12345678',
-            name: 'John Doe',
-            prodi: 'coba@gmail.com',
-            jumlahsks: '24 sks',
-            statusmhs: 'Aktif',
-            statusvalidasi: 'Tervalidasi',
-            aksi: `
-            <div class="actions gap-2">
-                <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
-                <button type="button" class="btn btn-outline-danger"> <i class="pi pi-times"></i></button>
-            </div>`
-        },
-        {
-            nim: '87654321',
-            name: 'John Doe',
-            prodi: 'coba@gmail.com',
-            jumlahsks: '24 sks',
-            statusmhs: 'Aktif',
-            statusvalidasi: 'Tervalidasi',
-            aksi: `
-            <div class="actions gap-2">
-                <router-link to="/" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
-                <button type="button" class="btn btn-outline-danger"> <i class="pi pi-times"></i></button>
-            </div>`
+const fetchValidasi = async () => {
+    try {
+        const response = await get('krs-mahasiswa/get-mahasiswa-krs-tervalidasi');
+        const validasi = response.data.data;
+        validasiKRS.value = validasi;
+    } catch (error) {
+        console.error('Gagal mengambil data:', error);
+    }
+};
+const updateValidasi = async () => {
+    try {
+        if (selectedMhs.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
+            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
         }
-        // Add more dummy data here
-    ];
+
+        const token = getToken();
+        const url = `${API_URL}/krs-mahasiswa/validasi-krs`;
+
+        // Persiapkan data untuk permintaan PUT
+        const data = {
+            mahasiswas: selectedMhs.value.map((mahasiswa) => ({
+                id_registrasi_mahasiswa: mahasiswa.id_registrasi_mahasiswa
+            }))
+        };
+
+        const response = await axios.put(
+            url,
+            data, // Body permintaan
+            {
+                headers: {
+                    Authorization: token,
+                    'Content-Type': 'application/json' // Tambahkan header Content-Type
+                }
+            }
+        );
+
+        Swal.fire('BERHASIL!', 'KRS Berhasil di Validasi.', 'success').then(() => {});
+        console.log('Status berhasil diperbarui:', response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+    }
+};
+onBeforeMount(() => {
+    fetchValidasi();
 });
+
 const confirmDelete = (no) => {
     Swal.fire({
         title: 'Apa Kamu yakin',
@@ -68,7 +88,7 @@ const confirmDelete = (no) => {
 };
 
 const deleteItem = (no) => {
-    customer1.value = customer1.value.filter((item) => item.no !== no);
+    validasiKRS.value = validasiKRS.value.filter((item) => item.no !== no);
 };
 </script>
 
@@ -94,8 +114,8 @@ const deleteItem = (no) => {
                     </div>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['name', 'nim', 'prodi', 'jumlahsks', 'statusmhs', 'statusvalidasi']"
-                :value="customer1"
+            <DataTable v-model:filters="filters" :globalFilterFields="['nama_mahasiswa', 'nim', 'Periode.Prodi.nama_program_studi', 'total_sks', 'nama_status_mahasiswa', 'statusvalidasi']"
+                :value="validasiKRS"
                 v-model:selection="selectedMhs"
                 :paginator="true"
                 :rows="10"
@@ -115,7 +135,7 @@ const deleteItem = (no) => {
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
                                 <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button>
-                                <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Proses Validasi</button>
+                                <button class="btn btn-primary" @click="updateValidasi"> <i class="pi pi-check me-2"></i> Proses Validasi</button>
                             </div>
                         </div>
                     </div>
@@ -123,9 +143,6 @@ const deleteItem = (no) => {
 
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
-                </template>
-                <template #loading>
-                    Loading customers data. Please wait.
                 </template>
                 <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
                 <Column filterField="nim" header="NIM" style="min-width: 10rem">
@@ -135,26 +152,26 @@ const deleteItem = (no) => {
                         </div>
                     </template>
                 </Column>
-                <Column filterField="name" header="Nama Mahasiswa" style="min-width: 14rem">
+                <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.name }}</span>
+                            <span>{{ data.nama_mahasiswa }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="prodi" header="Program Studi" style="min-width: 15rem">
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.prodi }}
+                        {{ data.Periode.Prodi.nama_program_studi }}
                     </template>
                 </Column>
-                <Column filterField="jumlahsks" header="Jumlah SKS" style="min-width: 10rem">
+                <Column filterField="total_sks" header="Jumlah SKS" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jumlahsks }}
+                        {{ data.total_sks }}
                     </template>
                 </Column>
-                <Column filterField="statusmhs" header="Status Mahasiswa" style="min-width: 10rem">
+                <Column filterField="nama_status_mahasiswa" header="Status Mahasiswa" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.statusmhs }}
+                        {{ data.nama_status_mahasiswa }}
                     </template>
                 </Column>
                 <Column filterField="statusvalidasi" header="Status Validasi" style="min-width: 10rem">
@@ -164,7 +181,7 @@ const deleteItem = (no) => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link to="/validasi-krs-mahasiswa/detailKRS" class="btn btn-outline-primary me-2 py-1 px-2"> 
+                        <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2"> 
                             <i class="pi pi-pencil"></i>
                         </router-link>
                         
