@@ -1,21 +1,34 @@
 <script setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { get } from '../../../utiils/request';
 
-const periodes = ref([]);
+const route = useRoute();
 const selectedPeriode = ref('');
+const details = ref([]);
 
-const fetchPeriode = async () => {
+const detailKrs = async (id_registrasi_mahasiswa) => {
     try {
-        const response = await get('periode');
-        periodes.value = response.data.data;
+        const response = await get(`krs-mahasiswa/mahasiswa/periode/${id_registrasi_mahasiswa}/get`);
+        const krs = response.data.data;
+        // Memastikan pengajar memiliki nilai sebelum diassign
+        if (krs !== null && krs.length !== 0) {
+            details.value = krs;
+        } else {
+            // Jika pengajar kosong, assign nilai default atau kosong
+            details.value = []; // atau null, atau nilai default lainnya
+        }
+        
     } catch (error) {
-        console.error('Gagal mengambil data :', error);
+        console.error('Gagal mengambil data:', error);
+        // Berikan pesan error kepada pengguna jika diperlukan
+        // Misalnya: Notify.error('Gagal mengambil data mata kuliah.');
     }
 };
 
-onBeforeMount(() => {
-    fetchPeriode();
+onMounted(() => {
+    const id_registrasi_mahasiswa = route.params.id_registrasi_mahasiswa;
+    detailKrs(id_registrasi_mahasiswa);
 });
 </script>
 <template>
@@ -31,7 +44,7 @@ onBeforeMount(() => {
             </div>
 
             <hr />
-            <div class="row mt-3">
+            <!-- <div class="row mt-3">
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Periode</label>
@@ -44,34 +57,37 @@ onBeforeMount(() => {
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
                     <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
-            </div>
+            </div> -->
             <div class="card" style="border-radius: none !important">
                 <div class="row">
                     <div class="col-lg-2">NIM</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> 362055401012</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ details[0]?.Mahasiswa?.nim || '' }}</div>
                     <div class="col-lg-2">Jurusan</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> S1 Teknik Informatika</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ details[0]?.Prodi?.nama_program_studi ? details[0].Prodi.nama_program_studi : 'Data tidak tersedia' }}</div>
                 </div>
                 <hr />
                 <div class="row">
                     <div class="col-lg-2">Nama</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> Aida Andinar Maulidiana</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ details[0]?.Mahasiswa?.nama_mahasiswa || '' }}</div>
                     <div class="col-lg-2">Jenis Kelamin</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> Perempuan</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ details[0]?.Mahasiswa?.jenis_kelamin || '' }}</div>
                 </div>
                 <hr />
                 <div class="row">
                     <div class="col-lg-2">Status Mahasiswa</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> Aktif</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ details[0]?.Mahasiswa?.nama_status_mahasiswa || '' }}</div>
                     <div class="col-lg-2">IPS Semester Lalu</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> 3.88</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ details[0]?.Mahasiswa?.ipk || '-' }}</div>
+                    <!-- Jika tidak ada data IPS Semester Lalu, sesuaikan dengan data yang ada -->
                 </div>
                 <hr />
                 <div class="row">
                     <div class="col-lg-2">Dosen Wali</div>
                     <div class="col-lg-4"><span class="me-2">:</span> Susui Susilowati</div>
+                    <!-- Ganti dengan data dosen wali yang sesuai -->
                 </div>
             </div>
+
             <div style="overflow-x: auto">
                 <table class="table table-bordered text-center">
                     <thead class="table-dark align-middle">
@@ -89,23 +105,11 @@ onBeforeMount(() => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Pengembangan Aplikasi</td>
-                            <td>22A</td>
-                            <td>Suroto</td>
-                            <td>G1.01</td>
-                            <td>Senin</td>
-                            <td>09.10</td>
-                            <td>10.10</td>
-                            <td>2</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>Pengembangan Aplikasi</td>
-                            <td>22A</td>
-                            <td>Suroto</td>
+                        <tr v-for="(krs, index) in details" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ krs?.KelasKuliah.MataKuliah.nama_mata_kuliah || '' }}</td>
+                            <td>{{ krs.KelasKuliah.nama_kelas_kuliah }}</td>
+                            <td>{{ krs.KelasKuliah.Dosen.nama_dosen }}</td>
                             <td>G1.01</td>
                             <td>Senin</td>
                             <td>09.10</td>

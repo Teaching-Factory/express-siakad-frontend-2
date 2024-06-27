@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { get } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -50,7 +51,7 @@ const filterData = async () => {
 
     if (!prodiId || !angkatanId) {
         // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
-        alert('Prodi atau Angkatan Mahasiswa belum tersedia');
+        Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
         return;
     }
 
@@ -66,7 +67,7 @@ const filterData = async () => {
         loading1.value = false;
     } catch (error) {
         console.error('Gagal mengambil data mahasiswa:', error);
-        alert('Gagal mengambil data mahasiswa. Silakan coba lagi nanti.');
+        Swal.fire('Gagal', 'Data Dosen Pengajar tidak ditemukan.', 'warning').then(() => {});
         loading1.value = false;
     }
 };

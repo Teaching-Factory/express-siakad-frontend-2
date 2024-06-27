@@ -8,6 +8,11 @@ const id_prodi = ref('');
 const id_unsur_penilaian = ref('');
 const bobot_penilaian = ref('');
 const penilaians = ref([]);
+const errors = ref({
+    id_prodi: '',
+    id_unsur_penilaian: '',
+    bobot_penilaian: ''
+});
 
 const fetchProdi = async () => {
     try {
@@ -27,8 +32,37 @@ const fetchPenilaian = async () => {
     }
 };
 
+const validateProdi = () => {
+    if (!id_prodi.value) {
+        errors.value.id_prodi = 'Program Studi harus dipilih.';
+    } else {
+        errors.value.id_prodi = '';
+    }
+};
+
+const validateUnsur = () => {
+    if (!id_unsur_penilaian.value) {
+        errors.value.id_unsur_penilaian = 'Unsur Penilaian harus dipilih.';
+    } else {
+        errors.value.id_unsur_penilaian = '';
+    }
+};
+const validateBobot = () => {
+    if (!bobot_penilaian.value) {
+        errors.value.bobot_penilaian = 'Unsur Penilaian harus dipilih.';
+    } else {
+        errors.value.bobot_penilaian = '';
+    }
+};
+
 const create = async () => {
     try {
+        validateProdi();
+        validateUnsur();
+        if (errors.value.id_prodi || errors.value.id_unsur_penilaian || errors.value.bobot_penilaian) {
+            swal.fire('GAGAL', 'Silakan periksa inputan Anda.', 'error');
+            return;
+        }
         const response = await postData('bobot-penilaian/create', {
             id_prodi: id_prodi.value,
             id_unsur_penilaian: id_unsur_penilaian.value,
@@ -67,7 +101,7 @@ onBeforeMount(() => {
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Program Studi</label>
                 <div class="col-md-7">
-                    <select v-model="id_prodi" class="form-select" aria-label="Default select example">
+                    <select v-model="id_prodi" @blur="validateProdi" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Program Studi</option>
                         <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                     </select>
@@ -76,7 +110,7 @@ onBeforeMount(() => {
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Unsur Penilaian</label>
                 <div class="col-md-7">
-                    <select v-model="id_unsur_penilaian" class="form-select" aria-label="Default select example">
+                    <select v-model="id_unsur_penilaian" @blur="validateUnsur" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Unsur Penilaian</option>
                         <option v-for="penilaian in penilaians" :key="penilaian.id_unsur_penilaian" :value="penilaian.id_unsur_penilaian">{{ penilaian.nama_unsur_penilaian }}</option>
                     </select>
@@ -85,7 +119,7 @@ onBeforeMount(() => {
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="bobotPenilaian" class="col-sm-3 col-form-label">Bobot Penilaian</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" id="bobotPenilaian" v-model="bobot_penilaian" />
+                    <input type="text" class="form-control" @blur="validateBobot" id="bobotPenilaian" v-model="bobot_penilaian" />
                 </div>
             </div>
         </form>

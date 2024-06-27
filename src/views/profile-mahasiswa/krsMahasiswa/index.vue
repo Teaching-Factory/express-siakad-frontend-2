@@ -1,65 +1,50 @@
-<script setup>
-import { ref, onBeforeMount } from 'vue';
+<script setup >
+import { FilterMatchMode } from 'primevue/api';
+import { onBeforeMount, ref } from 'vue';
+import { get } from '../../../utiils/request';
 
-const customer1 = ref([]);
-const loading1 = ref(false);
-const selectedMhs = ref([]);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    kode_mata_Kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_kelas_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_dosen: { value: null, matchMode: FilterMatchMode.EQUALS },
+    sks: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+const viewKRS = ref([]);
+const selectedKHS = ref([]);
+const loading1 = ref(true);
 
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
+const fetchKRS = async () => {
+    const response = await get('kelas-kuliah/get-kelas-kuliah-available');
+    const krs = response.data.data;
+    viewKRS.value = krs;
+    loading1.value = false;
 };
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            kode: '98976',
-            nama: 'Kapita Selekta',
-            kelas: '2020',
-            dosenpengajar: 'John Doe',
-            sks: '2',
-        },{
-            no: '1',
-            kode: '98976',
-            nama: 'Kapita Selekta',
-            kelas: '2020',
-            dosenpengajar: 'John Doe',
-            sks: '2',
-        }
-        // Add more dummy data here
-    ];
-})
+    fetchKRS();
+});
 </script>
 
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>KRS MAHASISWA - 2023/2024 GANJIL</h5>
-            
-            <div class="card">
-                <p>Pembimbing Akademik : -</p>
-                
-                <DataTable
-                :value="customer1"
+
+        <div class="card">
+            <p>Pembimbing Akademik : -</p>
+
+            <DataTable
+                :value="viewKRS"
+                v-model:filters="filters"
+                :globalFilterFields="['MataKuliah.kode_mata_Kuliah', 'MataKuliah.nama_mata_kuliah', 'nama_kelas_kuliah', 'Dosen.nama_dosen', 'sks']"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
                 :loading="loading1"
+                v-model:selection="selectedKHS"
                 showGridlines
             >
                 <template #header>
@@ -67,13 +52,13 @@ onBeforeMount(() => {
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Keyword Search" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
+                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>-->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
                                 <!-- <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Set Sistem Kuliah</button> -->
                             </div>
@@ -84,41 +69,38 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading>
-                    Loading customers data. Please wait.
-                </template>
                 <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
-                <Column header="Kode Mata Kuliah" style="min-width: 15rem">
+                <Column filterField="kode_mata_kuliah" header="Kode Mata Kuliah" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.kode }}
+                        {{ data.MataKuliah.kode_mata_kuliah }}
                     </template>
                 </Column>
-                <Column header="Nama Mata Kuliah" style="min-width: 10rem">
+                <Column filterField="nama_mata_kuliah" header="Nama Mata Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.nama }}
+                        {{ data.MataKuliah.nama_mata_kuliah }}
                     </template>
                 </Column>
-                <Column header="Kelas" style="min-width: 10rem">
+                <Column filterField="nama_kelas_kuliah" header="Kelas" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.kelas }}</span>
+                            <span>{{ data.nama_kelas_kuliah }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Dosen Pengajar" style="min-width: 14rem">
+                <Column filterField="nama_dosen" header="Dosen Pengajar" style="min-width: 14rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.dosenpengajar }}</span>
+                            <span>{{ data.Dosen.nama_dosen }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="SKS" style="min-width: 15rem">
+                <Column filterField="sks" header="SKS" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div v-html="data.sks"></div>
                     </template>
                 </Column>
             </DataTable>
-            </div>
+        </div>
     </div>
 </template>
 

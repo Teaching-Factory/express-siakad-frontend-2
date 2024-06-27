@@ -1,8 +1,9 @@
+
 <template>
     <div class="card">
         <div class="card-body">
             <h5><i class="pi pi-user me-2"></i>KHS MAHASISWA</h5>
-            <hr>
+            <hr />
             <div class="row mt-3">
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
@@ -17,11 +18,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto">
                 <table class="table table-bordered text-center">
                     <thead class="table-dark align-middle">
                         <tr>
@@ -30,7 +31,6 @@
                             <th rowspan="2">Nama Mata Kuliah</th>
                             <th rowspan="2">SKS</th>
                             <th colspan="3">Nilai</th>
-                            
                         </tr>
                         <tr>
                             <th>Angka</th>
@@ -47,7 +47,6 @@
                             <td>4</td>
                             <td>A</td>
                             <td>4.0</td>
-                            
                         </tr>
                         <tr>
                             <td>2</td>
@@ -57,7 +56,6 @@
                             <td>4</td>
                             <td>A</td>
                             <td>4.0</td>
-                            
                         </tr>
                         <tr>
                             <td colspan="3">Total SKS</td>
@@ -65,11 +63,11 @@
                             <td colspan="3">0</td>
                         </tr>
                         <tr>
-                            <td colspan="4">IPS (Index Prestasi Semester) </td>
+                            <td colspan="4">IPS (Index Prestasi Semester)</td>
                             <td colspan="3">00.00</td>
                         </tr>
-                        <tr >
-                            <td colspan="4">IPK (Index Prestasi Kumulatif) </td>
+                        <tr>
+                            <td colspan="4">IPK (Index Prestasi Kumulatif)</td>
                             <td colspan="3">00.00</td>
                         </tr>
                     </tbody>

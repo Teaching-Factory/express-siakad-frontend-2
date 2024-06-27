@@ -9,7 +9,7 @@ export const get = async (url, props = {}) => {
         if (!token) {
             throw new Error('No token found');
         }
-        console.log(token);
+        // console.log(token);
 
         const response = await axios.get(`${API_URL}/${url}`, {
             headers: {
