@@ -30,7 +30,6 @@ const deleteItem = async (id_unsur_penilaian) => {
         const response = await del(`unsur-penilaian/${id_unsur_penilaian}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
-            unsurPenilaians.value = unsurPenilaians.value.filter((data) => data.id_unsur_penilaian !== id_unsur_penilaian);
         } else {
             message.value = 'Terjadi kesalahan: ' + response.statusText;
         }
@@ -52,6 +51,7 @@ const confirmDelete = (id_unsur_penilaian) => {
         if (result.isConfirmed) {
             deleteItem(id_unsur_penilaian);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            unsurPenilaians.value = unsurPenilaians.value.filter((data) => data.id_unsur_penilaian !== id_unsur_penilaian);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
@@ -110,7 +110,7 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/edit-ruang/${data.id}`" class="btn btn-outline-primary">
+                            <router-link :to="`/unsur-penilaian/${data.id_unsur_penilaian}/edit`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id_unsur_penilaian)" class="btn btn-outline-danger">

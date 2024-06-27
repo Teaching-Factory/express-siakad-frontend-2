@@ -1,6 +1,9 @@
 <script>
-import { postData } from '../../../utiils/request'; // Perbaiki typo di 'utils'
+import { get, postData } from '../../../utiils/request'; // Perbaiki typo di 'utils'
 import Swal from 'sweetalert2';
+import { getToken } from '../../../service/auth';
+import axios from 'axios';
+import { API_URL } from '../../../config/config';
 
 export default {
     data() {
@@ -9,7 +12,31 @@ export default {
             nama_unsur_penilaian: ''
         };
     },
+    async created() {
+        this.id = this.$route.params.id;
+        if (this.id) {
+            this.isEdit = true;
+            await this.fetchData(this.id);
+        }
+    },
     methods: {
+        async submit() {
+            if (this.isEdit) {
+                this.update();
+            } else {
+                this.create();
+            }
+        },
+        async fetchData(id) {
+            try {
+                const response = await get(`unsur-penilaian/${id}/get`);
+                const data = response.data.data;
+                this.id_unsur = data.id_unsur;
+                this.nama_unsur_penilaian = data.nama_unsur_penilaian;
+            } catch (error) {
+                Swal.fire('GAGAL', 'Gagal memuat data. Silakan coba lagi.', 'error');
+            }
+        },
         async create() {
             try {
                 const response = await postData('unsur-penilaian/create', {
@@ -25,6 +52,31 @@ export default {
             } catch (error) {
                 Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
             }
+        },
+        async update() {
+            try {
+                const token = getToken();
+                const response = await axios.put(
+                    `${API_URL}/unsur-penilaian/${this.id}/update`,
+                    {
+                        id_unsur: this.id_unsur,
+                        nama_unsur_penilaian: this.nama_unsur_penilaian
+                    },
+                    {
+                        headers: {
+                            Authorization: token
+                        }
+                    }
+                );
+                const data = response.data;
+                Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+                    this.$router.push('/unsur-penilaian').catch((err) => {
+                        console.error('Redirect error:', err);
+                    });
+                });
+            } catch (error) {
+                Swal.fire('GAGAL', 'Gagal memperbarui data. Silakan coba lagi.', 'error');
+            }
         }
     }
 };
@@ -32,10 +84,10 @@ export default {
 
 <template>
     <div class="card">
-        <form @submit.prevent="create">
+        <form @submit.prevent="submit">
             <div class="row">
                 <div class="col-lg-4">
-                    <h5><i class="pi pi-user me-2"></i>TAMBAH UNSUR PENILAIAN</h5>
+                    <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} UNSUR PENILAIAN</h5>
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
                     <router-link to="/unsur-penilaian" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>

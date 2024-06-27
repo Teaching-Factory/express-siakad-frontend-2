@@ -120,7 +120,7 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="{ name: 'sistemkuliah-create', query: { id: data.id, kode: data.kode_sk, name: data.nama_sk} }" class="btn btn-outline-primary">
+                            <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                                 <!-- {{ console.log(data.id) }} -->
                             </router-link>
