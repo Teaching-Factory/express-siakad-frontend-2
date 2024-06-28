@@ -6,7 +6,7 @@ const router = createRouter({
     routes: [
         
         {
-            path: '/auth/login',
+            path: '/',
             name: 'login',
             component: () => import('../views/pages/auth/Login.vue')
         },
@@ -163,41 +163,11 @@ const router = createRouter({
                 },
 
                 //referensi
+                //sistem kuliah
                 {
                     path: '/sistem-kuliah',
                     name: 'sistemkuliah',
                     component: () => import('../views/referensi/sistemKuliah/index.vue')
-                },
-
-                {
-                    path: '/ruang-perkuliahan',
-                    name: 'ruangperkuliahan',
-                    component: () => import('../views/referensi/ruangPerkuliahan/index.vue')
-                },
-                {
-                    path: '/unsur-penilaian',
-                    name: 'unsurpenilaian',
-                    component: () => import('../views/referensi/unsurPenilaian/index.vue')
-                },
-                {
-                    path: '/bobot-penilaian',
-                    name: 'bobotpenilaian',
-                    component: () => import('../views/referensi/bobotPenilaian/index.vue')
-                },
-                {
-                    path: '/daftar-jabatan',
-                    name: 'daftarjabatan',
-                    component: () => import('../views/referensi/daftarJabatan/index.vue')
-                },
-                {
-                    path: '/unit-jabatan',
-                    name: 'unitjabatan',
-                    component: () => import('../views/referensi/unitJabatan/index.vue')
-                },
-                {
-                    path: '/data-wilayah',
-                    name: 'datawilayah',
-                    component: () => import('../views/referensi/dataWilayah/index.vue')
                 },
                 {
                     path: '/sistem-kuliah/create',
@@ -209,6 +179,8 @@ const router = createRouter({
                     name: 'sistemkuliah-edit',
                     component: () => import('../views/referensi/sistemKuliah/form.vue')
                 },
+
+                //ruang perkuliahan
                 {
                     path: '/ruang-perkuliahan',
                     name: 'ruangperkuliahan',
@@ -224,6 +196,8 @@ const router = createRouter({
                     name: 'ruangperkuliahan-edit',
                     component: () => import('../views/referensi/ruangPerkuliahan/form.vue')
                 },
+
+                //unsur perkuliahan
                 {
                     path: '/unsur-penilaian',
                     name: 'unsurpenilaian',
@@ -239,6 +213,8 @@ const router = createRouter({
                     name: 'unsurpenilaian-edit',
                     component: () => import('../views/referensi/unsurPenilaian/form.vue')
                 },
+                
+                //bobot penilaian
                 {
                     path: '/bobot-penilaian',
                     name: 'bobotpenilaian',
@@ -254,6 +230,8 @@ const router = createRouter({
                     name: 'bobotpenilaian-edit',
                     component: () => import('../views/referensi/bobotPenilaian/form.vue')
                 },
+
+                //daftar jabatan
                 {
                     path: '/daftar-jabatan',
                     name: 'daftarjabatan',
@@ -269,6 +247,8 @@ const router = createRouter({
                     name: 'daftarjabatan-edit',
                     component: () => import('../views/referensi/daftarJabatan/form.vue')
                 },
+
+                //unit jabatan
                 {
                     path: '/unit-jabatan',
                     name: 'unitjabatan',
@@ -284,6 +264,7 @@ const router = createRouter({
                     name: 'datawilayah',
                     component: () => import('../views/referensi/dataWilayah/index.vue')
                 },
+
                 //keuangan
 
                 {
@@ -392,8 +373,7 @@ const router = createRouter({
                     component: () => import('../views/manajemenSetting/settingIdentitasPT/index.vue')
                 },
 
-                //role mahasiswa
-
+                //-----------role mahasiswa-------------------
                 //tentang saya
 
                 {
@@ -416,11 +396,7 @@ const router = createRouter({
                     name: 'profilekhsmahasiswa',
                     component: () => import('../views/profile-mahasiswa/khsMahasiswa/index.vue')
                 },
-                {
-                    path: '/profile-tagihan-pembayaran-mahasiswa',
-                    name: 'profiletagihanpembayaranmahasiswa',
-                    component: () => import('../views/profile-mahasiswa/tagihanPembayaranMahasiswa/index.vue')
-                },
+                
 
                 //kegiatan
                 //perkuliahan
@@ -455,8 +431,24 @@ const router = createRouter({
                     path: '/laporan-transkrip-mahasiswa',
                     name: 'laporantranskripmahasiswa',
                     component: () => import('../views/laporan-mahasiswa/transkripMahasiswa/index.vue')
+                },
+
+                //pembayaran
+                {
+                    path: '/tagihan-pembayaran-mahasiswa',
+                    name: 'tagihanpembayaranmahasiswa',
+                    component: () => import('../views/profile-mahasiswa/tagihanPembayaranMahasiswa/index.vue')
+                },
+                {
+                    path: '/detail-pembayaran-mahasiswa',
+                    name: 'detailpembayaranmahasiswa',
+                    component: () => import('../views/profile-mahasiswa/tagihanPembayaranMahasiswa/detailPembayaran.vue')
                 }
-                //batas pekerjaan hari ini 28/05/02
+
+                // -----------batas fitur mahasiswa------------------
+
+        
+                //role dosen dibawah sini ya
             ]
         },
     ]
@@ -464,17 +456,17 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/auth/login'];
+    const publicPages = ['/'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');
 
     if (authRequired && !loggedIn && !userIN) {
-        return next('/auth/login');
+        return next('/');
     }
 
     // Jika pengguna mencoba mengakses halaman login saat sudah login, arahkan mereka ke halaman beranda
-    if (to.path === '/auth/login' && loggedIn && userIN) {
+    if (to.path === '/' && loggedIn && userIN) {
         return next('/dashboard');
     }
 

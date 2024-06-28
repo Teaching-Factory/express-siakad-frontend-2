@@ -1,66 +1,43 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
-import AppConfig from '@/layout/AppConfig.vue';
-
+import { useRouter } from 'vue-router';
+const router = useRouter(); 
 const { layoutConfig } = useLayout();
 const checked = ref(false);
+const username = ref('');
+const password = ref('');
+import { login } from '../../../service/login'
+import Swal from 'sweetalert2';
 
 const logoUrl = computed(() => {
     return `/layout/images/ubi.jpg`;
 });
-</script>
 
-<script>
-import { API_URL } from '../../../config/config';
-import { setPermissions, setToken, setUser } from '../../../service/auth';
-import axios from 'axios';
-
-export default {
-    data() {
-        return {
-            username: '',
-            password: '',
-            errorMessage: ''
-        };
-    },
-    methods: {
-        async login() {
-            if (!this.username || !this.password) {
-                this.errorMessage = 'Username dan password harus diisi';
-                return;
+const handleSubmit = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            timer: 1000,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
             }
-
-            try {
-                const response = await axios.post(
-                    `${API_URL}/auth/do-login`,
-                    {
-                        username: this.username,
-                        password: this.password
-                    },
-                    {
-                        headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-
-                const data = response.data;
-                console.log(data);
-
-                setToken(data.token);
-                setUser(data.user);
-                setPermissions(data.permissions);
-                this.$router.push('/dashboard').catch((err) => {
-                    // console.error('Redirect error:', err);
-                });
-            } catch (error) {
-                this.errorMessage = 'Username atau password tidak valid';
-            }
+        })
+        const res = await login(username.value, password.value);
+        Swal.close();
+        if (res.status === 200) {
+            console.log('login berhasil');
+            router.push('/dashboard');
+        } else {
+            console.error('login failed:', res.message);
         }
+    } catch(error) {
+        console.error('login eror', error.message);
     }
-};
+}
+
 </script>
 
 
@@ -74,7 +51,7 @@ export default {
                         <div class="text-900 text-3xl font-medium mb-3">Nama Instansi</div>
                     </div>
 
-                    <form @submit.prevent="login">
+                    <form @submit.prevent="handleSubmit">
                         <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
                         <InputText id="username" type="text" placeholder="Input Username" class="w-full md:w-30rem mb-5" style="padding: 1rem" v-model="username" />
 

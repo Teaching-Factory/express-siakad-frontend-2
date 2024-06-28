@@ -41,7 +41,7 @@ export default {
         <h5><i class="pi pi-user me-2"></i>IMPORT DATA AKTIVITAS MAHASISWA</h5>
         <div class="card">
             <div class="row">
-                <div class="col-6 col-md-6 col-lg-6">
+                <div class="col-3 col-md-6 col-lg-6">
                     <span>Download Template</span>
                 </div>
                 <div class="col-6 col-md-6 col-lg-6">
@@ -54,18 +54,15 @@ export default {
             </div>
             <form @submit.prevent="create">
                 <div class="row">
-                    <div class="col-6 col-md-6 col-lg-6">
+                    <div class="col-3 col-md-6 col-lg-6">
                         <span>Import Data</span>
                     </div>
                     <div class="col-6 col-md-6 col-lg-6">
                         <div class="input-group mb-3">
                             <input type="file" class="form-control" id="inputGroupFile02" @change="handleFileUpload" />
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-12 text-end">
+                    <div class="col-3 col-md-6 col-lg-12">
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { API_URL } from './../config/config';
 import { getToken } from './../service/auth';
+import Swal from 'sweetalert2';
 
 export const get = async (url, props = {}) => {
     try {
@@ -91,3 +92,28 @@ export const del = async (url, props = {}) => {
         throw err;
     }
 };
+
+
+export const post = async (url, body, config = {}) => {
+    try {
+        const res = await fetch(`${API_URL}/${url}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...config.headers
+            },
+            body: JSON.stringify(body),
+            mode: 'cors'
+        });
+
+        if(!res.ok) {
+            throw new Error('Network response was not oke')
+        }
+
+        const responseData = await res.json();
+        Swal.close();
+        return { status: res.status, data: responseData};
+    } catch(error) {
+        throw error;
+    }
+}

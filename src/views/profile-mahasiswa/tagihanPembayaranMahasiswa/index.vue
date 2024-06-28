@@ -24,13 +24,13 @@ const getSeverity = (status) => {
 onBeforeMount(() => {
     customer1.value = [
         {
-            no: '1',
+            id: '9876567',
             jenistagihan: 'UKT',
             periodetagihan: '2024',
             jumlahtagihan: 'RP.2.400.000,-',
             statustagihan: 'Lunas',
         }, {
-            no: '2',
+            id: '20987566',
             jenistagihan: 'MKI',
             periodetagihan: '2024',
             jumlahtagihan: 'RP.2.000.000,-',
@@ -91,9 +91,9 @@ onBeforeMount(() => {
                                 </tbody>
                             </table>tomers data. Please wait.
                         </template>
-                        <Column field="no" header="No" style="min-width: 5rem">
+                        <Column field="id" header="ID Pembayaran" style="min-width: 8rem">
                             <template #body="{ data }">
-                                {{ data.no }}
+                                {{ data.id }}
                             </template>
                         </Column>
                         <Column header="Jenis Tagihan" style="min-width: 15rem">
@@ -118,6 +118,13 @@ onBeforeMount(() => {
                                 <div class="flex align-items-center gap-2">
                                     <span>{{ data.statustagihan }}</span>
                                 </div>
+                            </template>
+                        </Column>
+                        <Column header="Aksi" style="min-width: 15rem">
+                            <template #body="{ data }">
+                                <router-link to="/detail-pembayaran-mahasiswa" class="btn btn-outline-primary me-2">
+                                    <i class="pi pi-eye"></i>
+                                </router-link>
                             </template>
                         </Column>
                     </DataTable>
