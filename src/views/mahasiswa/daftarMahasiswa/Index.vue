@@ -67,7 +67,7 @@ const filterData = async () => {
         loading1.value = false;
     } catch (error) {
         console.error('Gagal mengambil data mahasiswa:', error);
-        Swal.fire('Gagal', 'Data Dosen Pengajar tidak ditemukan.', 'warning').then(() => {});
+        Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
         loading1.value = false;
     }
 };

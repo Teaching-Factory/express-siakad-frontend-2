@@ -4,7 +4,6 @@ import AppLayout from '@/layout/AppLayout.vue';
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        
         {
             path: '/',
             name: 'login',
@@ -213,7 +212,7 @@ const router = createRouter({
                     name: 'unsurpenilaian-edit',
                     component: () => import('../views/referensi/unsurPenilaian/form.vue')
                 },
-                
+
                 //bobot penilaian
                 {
                     path: '/bobot-penilaian',
@@ -396,7 +395,6 @@ const router = createRouter({
                     name: 'profilekhsmahasiswa',
                     component: () => import('../views/profile-mahasiswa/khsMahasiswa/index.vue')
                 },
-                
 
                 //kegiatan
                 //perkuliahan
@@ -443,14 +441,28 @@ const router = createRouter({
                     path: '/detail-pembayaran-mahasiswa',
                     name: 'detailpembayaranmahasiswa',
                     component: () => import('../views/profile-mahasiswa/tagihanPembayaranMahasiswa/detailPembayaran.vue')
-                }
+                },
 
                 // -----------batas fitur mahasiswa------------------
 
-        
                 //role dosen dibawah sini ya
+                {
+                    path: '/jadwal-kelas-perkuliahan',
+                    name: 'jadwalkelasperkuliahan',
+                    component: () => import('../views/perkuliahan-dosen/jadwalKelas/index.vue')
+                },
+                {
+                    path: '/pertemuan-perkuliahan',
+                    name: 'pertemuanperkuliahan',
+                    component: () => import('../views/perkuliahan-dosen/pertemuanKelas/index.vue')
+                },
+                {
+                    path: '/pertemuan-perkuliahan/create',
+                    name: 'pertemuanperkuliahan-create',
+                    component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
+                }
             ]
-        },
+        }
     ]
 });
 

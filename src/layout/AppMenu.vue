@@ -35,7 +35,7 @@ const model = ref([
                     {
                         label: 'Set Sistem Kuliah Mahasiswa',
                         to: '/set-sistem-kuliah-mahasiswa',
-                        visible: computed(() => permissions.includes('set-sistem-mahasiswa'))
+                        visible: computed(() => permissions.includes('set-sistem-kuliah-mahasiswa'))
                     },
                     {
                         label: 'Validasi KRS Mahasiswa',
@@ -149,7 +149,6 @@ const model = ref([
                         label: 'Bobot Penilaian',
                         to: '/bobot-penilaian',
                         visible: computed(() => permissions.includes('bobot-penilaian'))
-                        
                     },
                     {
                         label: 'Jabatan',
@@ -393,7 +392,7 @@ const model = ref([
                         visible: computed(() => permissions.includes('profile-tagihan-pembayaran-mahasiswa'))
                     }
                 ]
-            },
+            }
         ]
     },
     {
@@ -412,7 +411,7 @@ const model = ref([
                         to: '/presensi-perkuliahan'
                     }
                 ]
-            },
+            }
         ]
     }
 ]);
@@ -421,8 +420,7 @@ const model = ref([
 <template>
     <ul class="layout-menu">
         <template v-for="(item, i) in model" :key="item">
-            <app-menu-item v-if="!item.separator && item.items && item.items.length > 0" :item="item"
-                 :index="i"></app-menu-item>
+            <app-menu-item v-if="!item.separator && item.items && item.items.length > 0" :item="item" :index="i"></app-menu-item>
             <li v-if="item.separator" class="menu-separator"></li>
         </template>
     </ul>
