@@ -74,7 +74,7 @@
             </div>
             <div class="row ">
                 <div class="col-lg-12 d-flex justify-content-center">
-                    <button class="btn btn-primary">Tampilkan</button>
+                    <router-link to="/cetak-presensi-kelas" class="btn btn-primary">Tampilkan</router-link>
                 </div>
             </div>
         </div>

@@ -73,52 +73,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- <table class="table">
-                <thead class="table-dark">
-                    <tr>
-                        <th>No</th>
-                        <th>Kode Mata Kuliah</th>
-                        <th>Nama Mata Kuliah</th>
-                        <th>SKS</th>
-                        <th>Nilai Angka</th>
-                        <th>Nilai Huruf</th>
-                        <th>Nilai Index</th>                
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>325325</td>
-                        <td>Kapita Selekta</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>A</td>
-                        <td>4.0</td>  
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>325325</td>
-                        <td>Kapita Selekta</td>
-                        <td>2</td>
-                        <td>4</td>
-                        <td>A</td>
-                        <td>4.0</td>
-                    </tr>
-                    <tr>
-                        <td  class="text-center" colspan="3">Total SKS</td>
-                        <td  colspan="1">0</td>
-                        <td  class="text-center" colspan="3">0</td>
-                    </tr>
-                    <tr >
-                        <td class="text-center" colspan="6">IPS (Index Prestasi Semester) </td>
-                        <td>00.00</td>
-                    </tr>
-                    <tr >
-                        <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif) </td>
-                        <td>00.00</td>
-                    </tr>
-                </tbody>
-            </table> -->
+            
         </div>
     </div>
 </template>

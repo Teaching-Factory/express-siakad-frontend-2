@@ -24,3 +24,21 @@ body{
     content: none;
 }
 
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .layout-topbar, .btn-print{
+        display: none;
+    }
+    .print, .print * {
+        visibility: visible;
+    }
+    .print {
+        left: 0;
+        top: 0;
+        position: absolute;
+    }
+}
+
+

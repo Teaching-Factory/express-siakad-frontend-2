@@ -67,7 +67,8 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 5rem">
                     <template #body="{}">
                         <div class="actions gap-2">
-                            <router-link to="/import-mahasiswa" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
+                            <router-link to="/setting-hakakses" class="btn btn-outline-warning me-2"> <i class="pi pi-shield"></i></router-link>
+                            <router-link to="/import-mahasiswa" class="btn btn-outline-primary me-2"> <i class="pi pi-pencil"></i></router-link>
                             <router-link to="/import-mahasiswa" class="btn btn-outline-danger"> <i class="pi pi-trash"></i></router-link>
                         </div>
                     </template>

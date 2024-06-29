@@ -302,9 +302,19 @@ const router = createRouter({
                     component: () => import('../views/laporan/krsMahasiswa/index.vue')
                 },
                 {
+                    path: '/cetak-krs-mahasiswa',
+                    name: 'cetakkrsmahasiswa',
+                    component: () => import('../views/laporan/krsMahasiswa/cetakKRS.vue')
+                },
+                {
                     path: '/khs-mahasiswa',
                     name: 'khsmahasiswa',
                     component: () => import('../views/laporan/khsMahasiswa/index.vue')
+                },
+                {
+                    path: '/cetak-khs-mahasiswa',
+                    name: 'cetakkhsmahasiswa',
+                    component: () => import('../views/laporan/khsMahasiswa/cetakKHS.vue')
                 },
                 {
                     path: '/transkrip-mahasiswa',
@@ -317,9 +327,19 @@ const router = createRouter({
                     component: () => import('../views/laporan/rekapNilaiKelas/index.vue')
                 },
                 {
+                    path: '/cetak-nilai-kelas',
+                    name: 'cetaknilaikelas',
+                    component: () => import('../views/laporan/rekapNilaiKelas/cetakNilai.vue')
+                },
+                {
                     path: '/rekap-presensi-kelas',
                     name: 'rekappresensikelas',
                     component: () => import('../views/laporan/rekapPresensiKelas/index.vue')
+                },
+                {
+                    path: '/cetak-presensi-kelas',
+                    name: 'cetakpresensikelas',
+                    component: () => import('../views/laporan/rekapPresensiKelas/cetakPresensi.vue')
                 },
                 {
                     path: '/jadwal-kuliah',
@@ -338,6 +358,11 @@ const router = createRouter({
                     path: '/manajemen-role',
                     name: 'manajemenrole',
                     component: () => import('../views/manajemenSetting/manajemenRole/index.vue')
+                },
+                {
+                    path: '/setting-hakakses',
+                    name: 'settinghakakses',
+                    component: () => import('../views/manajemenSetting/manajemenRole/changePermissions.vue')
                 },
                 {
                     path: '/manajemen-user',
