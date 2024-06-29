@@ -18,7 +18,6 @@ const detailKrs = async (id_registrasi_mahasiswa) => {
             // Jika pengajar kosong, assign nilai default atau kosong
             details.value = []; // atau null, atau nilai default lainnya
         }
-        
     } catch (error) {
         console.error('Gagal mengambil data:', error);
         // Berikan pesan error kepada pengguna jika diperlukan
@@ -81,11 +80,11 @@ onMounted(() => {
                     <!-- Jika tidak ada data IPS Semester Lalu, sesuaikan dengan data yang ada -->
                 </div>
                 <hr />
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-lg-2">Dosen Wali</div>
                     <div class="col-lg-4"><span class="me-2">:</span> Susui Susilowati</div>
-                    <!-- Ganti dengan data dosen wali yang sesuai -->
-                </div>
+                    Ganti dengan data dosen wali yang sesuai
+                </div> -->
             </div>
 
             <div style="overflow-x: auto">
@@ -107,9 +106,9 @@ onMounted(() => {
                     <tbody>
                         <tr v-for="(krs, index) in details" :key="index">
                             <td>{{ index + 1 }}</td>
-                            <td>{{ krs?.KelasKuliah.MataKuliah.nama_mata_kuliah || '' }}</td>
-                            <td>{{ krs.KelasKuliah.nama_kelas_kuliah }}</td>
-                            <td>{{ krs.KelasKuliah.Dosen.nama_dosen }}</td>
+                            <td>{{ krs?.MataKuliah.nama_mata_kuliah || '' }}</td>
+                            <td>{{ krs?.KelasKuliah?.nama_kelas_kuliah || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.Dosen?.nama_dosen || '-' }}</td>
                             <td>G1.01</td>
                             <td>Senin</td>
                             <td>09.10</td>

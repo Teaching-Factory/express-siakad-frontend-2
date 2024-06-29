@@ -25,7 +25,7 @@ export default {
                 const response = await postData('mahasiswa/import-data-mahasiswa', formData);
                 console.log(response);
                 Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-                    this.$router.push('/import-mahasiswa').catch((err) => {
+                    this.$router.push('/daftar-mahasiswa').catch((err) => {
                         console.error('Redirect error:', err);
                     });
                 });

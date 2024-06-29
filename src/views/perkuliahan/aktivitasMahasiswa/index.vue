@@ -49,20 +49,37 @@ const fetchJenisAktivitas = async () => {
     }
 };
 const selectedFilter = async () => {
+    loading1.value = true;
     await Promise.all([fetchProdi(), fetchJenisAktivitas(), fetchSemester()]);
+    loading1.value = false;
 };
 
-const aktivitasMahasiswa = async () => {
+const filterData = async () => {
+    loading1.value = true;
+    const semesterId = selctedSemester.value;
+    const prodiId = selectedProdi.value;
+    const aktivitasId = selectedJenisAktivitas.value;
+
+    if (!semesterId || !prodiId || !aktivitasId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
+        return;
+    }
+
+    // console.log('Prodi:', semesterId);
+    // console.log('Angkatan:', prodiId);
+
     try {
-        const response = await get('anggota-aktivitas-mahasiswa');
-        aktivitasMahasiswas.value = response.data.data;
+        const response = await get(`anggota-aktivitas-mahasiswa/filter/${semesterId}/${prodiId}/${aktivitasId}/get`);
+        const aktivitas = response.data.data;
+
+        aktivitasMahasiswas.value = aktivitas;
+
         loading1.value = false;
     } catch (error) {
-        console.error('Gagal mengambil data Aktivitas Mahawiswa:', error);
-
+        // console.error('Gagal mengambil data mahasiswa:', error);
+        Swal.fire('Gagal', 'Data Aktivitas Mahasiswa tidak ditemukan.', 'warning').then(() => {});
         loading1.value = false;
-
-        aktivitasMahasiswa.value = [];
     }
 };
 
@@ -104,7 +121,6 @@ const onPageChange = (event) => {
 };
 
 onBeforeMount(() => {
-    aktivitasMahasiswa();
     selectedFilter();
 });
 </script>
@@ -144,7 +160,7 @@ onBeforeMount(() => {
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
             <hr />

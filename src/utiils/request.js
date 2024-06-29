@@ -93,7 +93,6 @@ export const del = async (url, props = {}) => {
     }
 };
 
-
 export const post = async (url, body, config = {}) => {
     try {
         const res = await fetch(`${API_URL}/${url}`, {
@@ -106,14 +105,14 @@ export const post = async (url, body, config = {}) => {
             mode: 'cors'
         });
 
-        if(!res.ok) {
-            throw new Error('Network response was not oke')
+        if (!res.ok) {
+            throw new Error('Network response was not oke');
         }
 
         const responseData = await res.json();
         Swal.close();
-        return { status: res.status, data: responseData};
-    } catch(error) {
+        return { status: res.status, data: responseData };
+    } catch (error) {
         throw error;
     }
-}
+};
