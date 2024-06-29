@@ -1,84 +1,38 @@
+<script setup>
+import { onMounted, ref } from 'vue';
+import { get } from '../../../utiils/request';
+
+const permissions = ref([]);
+
+const fetchPermissions = async (id) => {
+    try {
+        const response = await get(`role-permission/permissions`);
+        permissions.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data:', error);
+    }
+};
+onMounted(() => {
+    fetchPermissions();
+});
+</script>
+
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>SETTING HAK AKSES</h5>
-        <hr>
+        <hr />
         <div class="card-body">
             <div class="row">
-                <div class="col-lg-3">
+                <!-- Perulangan untuk membuat kolom hak akses berdasarkan data permissions -->
+                <div v-for="(permission, index) in permissions" :key="index" class="col-lg-3">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">dashboard</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">import-data</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">set-status-mahasiswa</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">edit-set-status-mahasiswa</label>
+                        <input type="checkbox" class="form-check-input" :id="'permissionCheckbox' + index" />
+                        <label class="form-check-label" :for="'permissionCheckbox' + index">
+                            {{ permission.nama_permission }}
+                        </label>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">dashboard</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">import-data</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">set-status-mahasiswa</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">edit-set-status-mahasiswa</label>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">dashboard</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">import-data</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">set-status-mahasiswa</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">edit-set-status-mahasiswa</label>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">dashboard</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">import-data</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">set-status-mahasiswa</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheckbox">
-                        <label class="form-check-label" for="exampleCheckbox">edit-set-status-mahasiswa</label>
-                    </div>
-                </div>
-                
             </div>
-            
             <div class="text-end">
                 <button class="btn btn-primary mt-3">Simpan</button>
             </div>

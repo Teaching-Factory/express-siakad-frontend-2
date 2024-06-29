@@ -97,7 +97,7 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data</div>
                 </template>
-                <template #loading> Loading data. Please wait. </template>
+                <!-- <template #loading> Loading data. Please wait. </template> -->
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">
                         {{ slotProps.index + 1 }}

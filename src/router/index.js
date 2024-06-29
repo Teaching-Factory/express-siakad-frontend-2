@@ -364,7 +364,17 @@ const router = createRouter({
                     component: () => import('../views/manajemenSetting/manajemenRole/index.vue')
                 },
                 {
-                    path: '/setting-hakakses',
+                    path: '/manajemen-role/create',
+                    name: 'manajemenrolecreate',
+                    component: () => import('../views/manajemenSetting/manajemenRole/form.vue')
+                },
+                {
+                    path: '/manajemen-role/:id/update',
+                    name: 'manajemenroleupdate',
+                    component: () => import('../views/manajemenSetting/manajemenRole/form.vue')
+                },
+                {
+                    path: '/setting-hak-akses/:id',
                     name: 'settinghakakses',
                     component: () => import('../views/manajemenSetting/manajemenRole/changePermissions.vue')
                 },
@@ -372,6 +382,16 @@ const router = createRouter({
                     path: '/manajemen-user',
                     name: 'manajemenuser',
                     component: () => import('../views/manajemenSetting/manajemenUser/index.vue')
+                },
+                {
+                    path: '/manajemen-user/create',
+                    name: 'manajemenusercreate',
+                    component: () => import('../views/manajemenSetting/manajemenUser/form.vue')
+                },
+                {
+                    path: '/manajemen-user/:id/update',
+                    name: 'manajemenuserupdate',
+                    component: () => import('../views/manajemenSetting/manajemenUser/form.vue')
                 },
                 {
                     path: '/generate-user-mahasiswa',

@@ -86,7 +86,7 @@ onBeforeMount(() => {
         <h5><i class="pi pi-user me-2"></i>DAFTAR MAHASISWA</h5>
         <div class="card">
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
                         <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
@@ -95,7 +95,7 @@ onBeforeMount(() => {
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Angkatan</label>
                         <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
