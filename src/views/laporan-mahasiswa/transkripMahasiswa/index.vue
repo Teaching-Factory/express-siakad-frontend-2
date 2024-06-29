@@ -87,7 +87,7 @@
                         <tr>
                             <td  class="text-center" colspan="3">Total SKS</td>
                             <td  colspan="1">0</td>
-                            <td  class="text-center" colspan="3">0</td>
+                            <td  class="text-center" colspan="3"></td>
                             <td colspan="1">0</td>
                         </tr>
                         <tr >

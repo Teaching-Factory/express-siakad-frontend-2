@@ -321,6 +321,11 @@ const router = createRouter({
                     component: () => import('../views/laporan/transkripMahasiswa/index.vue')
                 },
                 {
+                    path: '/cetak-transkrip-mahasiswa',
+                    name: 'cetaktranskripmahasiswa',
+                    component: () => import('../views/laporan/transkripMahasiswa/cetakTranskrip.vue')
+                },
+                {
                     path: '/rekap-nilai-kelas',
                     name: 'rekapnilaikelas',
                     component: () => import('../views/laporan/rekapNilaiKelas/index.vue')

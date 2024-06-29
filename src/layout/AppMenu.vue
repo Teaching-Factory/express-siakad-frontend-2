@@ -404,11 +404,13 @@ const model = ref([
                 items: [
                     {
                         label: 'Jadwal Kelas Perkuliahan',
-                        to: '/jadwal-kelas-perkuliahan'
+                        to: '/jadwal-kelas-perkuliahan',
+                        visible: computed(() => permissions.includes('jadwal-kelas-perkuliahan-dosen'))
                     },
                     {
                         label: 'Presensi Perkuliahan',
-                        to: '/presensi-perkuliahan'
+                        to: '/presensi-perkuliahan',
+                        visible: computed(() => permissions.includes('presensi-perkuliahan'))
                     }
                 ]
             }
