@@ -23,7 +23,6 @@ const angkatans = ref([]);
 const prodis = ref([]);
 const selectedProdi = ref('');
 const selectedAngkatan = ref('');
-const loading1 = ref(true);
 
 const fetchProdi = async () => {
     try {
@@ -43,13 +42,19 @@ const fetchAngkatan = async () => {
 };
 
 const selectedFilter = async () => {
-    loading1.value = true;
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     await Promise.all([fetchProdi(), fetchAngkatan()]);
-    loading1.value = false;
+    Swal.close();
 };
 
 const filterData = async () => {
-    loading1.value = true;
     const prodiId = selectedProdi.value;
     const angkatanId = selectedAngkatan.value;
 
@@ -63,21 +68,36 @@ const filterData = async () => {
     console.log('Angkatan:', angkatanId);
 
     try {
-        const response = await get(`mahasiswa/prodi/${prodiId}/get`);
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`mahasiswa/${prodiId}/${angkatanId}/get`);
         const filterMahasiswa = response.data.data;
 
         mahasiswas.value = filterMahasiswa;
 
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data mahasiswa:', error);
         Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
-        loading1.value = false;
     }
 };
 
 const generateUserMahasiswa = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         if (selectedMahasiswa.value.length === 0) {
             Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
             return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
@@ -109,6 +129,7 @@ const generateUserMahasiswa = async () => {
             console.log(`Batch ${i / batchSize + 1} berhasil diperbarui:`, response.data);
         }
 
+        Swal.close();
         Swal.fire('BERHASIL!', 'Generate User Mahasiswa Berhasil.', 'success').then(() => {
             window.location.href = '/generate-user-mahasiswa';
         });
@@ -180,7 +201,6 @@ onBeforeMount(() => {
             :rows="10"
             dataKey="id_registrasi_mahasiswa"
             :rowHover="true"
-            :loading="loading1"
             showGridlines
             :first="first"
             @page="onPageChange"

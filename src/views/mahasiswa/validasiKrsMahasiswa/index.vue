@@ -23,9 +23,18 @@ const selectedValidasi = ref([]);
 
 const fetchValidasi = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('krs-mahasiswa/get-mahasiswa-krs-tervalidasi');
         const validasi = response.data.data;
         validasiKRS.value = validasi;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
     }

@@ -4,19 +4,24 @@ import { ref, onBeforeMount } from 'vue';
 import { del, get } from '../../../utiils/request';
 
 const users = ref([]);
-const loading1 = ref(true);
 const message = ref('');
 const first = ref(0);
 
 const user = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('user');
         users.value = response.data.data;
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data Unit Jabatan:', error);
-
-        loading1.value = false;
 
         user.value = [];
     }
@@ -67,7 +72,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>MANAJEMEN USER</h5>
         <div class="card">
-            <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" :first="first" @page="onPageChange" showGridlines>
+            <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :first="first" @page="onPageChange" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">

@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { get } from '../../../utiils/request';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -12,14 +13,21 @@ const filters = ref({
 
 const first = ref(0);
 const statusMahasiswa = ref([]);
-const loading1 = ref(false);
 
 const fetchStatusMahasiswa = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('status-mahasiswa/get-prodi-with-mahasiswa-belum-sk');
         statusMahasiswa.value = response.data.data;
         console.log(response.data.data);
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
@@ -59,7 +67,6 @@ onBeforeMount(() => {
             :rows="10"
             dataKey="id"
             :rowHover="true"
-            :loading="loading1"
             showGridlines
             :first="first" @page="onPageChange"
         >

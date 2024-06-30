@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { get } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -11,18 +12,22 @@ const filters = ref({
 });
 
 const unitJabatans = ref([]);
-const loading1 = ref(true);
 
 const unitJabatan = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('unit-jabatan');
         unitJabatans.value = response.data.data;
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data Unit Jabatan:', error);
-
-        loading1.value = false;
-
         unitJabatan.value = [];
     }
 };
@@ -36,7 +41,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR UNIT JABATAN</h5>
 
-        <DataTable v-model:filters="filters" :globalFilterFields="['Jabatan.nama_habatan', 'Dosen.nama_dosen', 'Dosen.nip']" :value="unitJabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+        <DataTable v-model:filters="filters" :globalFilterFields="['Jabatan.nama_habatan', 'Dosen.nama_dosen', 'Dosen.nip']" :value="unitJabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
             <template #header>
                 <div class="row">
                     <div class="col-lg-6 d-flex justify-content-start">

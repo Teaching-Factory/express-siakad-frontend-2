@@ -39,7 +39,6 @@ const filters = ref({
     }
 });
 
-const customer1 = ref([]);
 const sistemKuliahMahasiswa = ref([]);
 const loading1 = ref(false);
 const selectedMhs = ref([]);
@@ -79,10 +78,19 @@ const filterData = async () => {
     console.log('Semester:', sistemKuliahId);
 
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`sistem-kuliah/filter/${prodiId}/${sistemKuliahId}/get`);
         const sistem_kuliah = response.data.data;
 
         sistemKuliahMahasiswa.value = sistem_kuliah;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
         Swal.fire('BERHASIL!', 'Data Dosen Pengajar tidak ditemukan.', 'info').then(() => {});
@@ -154,7 +162,7 @@ onBeforeMount(() => {
                     'nama_periode_masuk', 'BiodataMahasiswa.nama_ibu_kandung'
                 ]"
                 :value="sistemKuliahMahasiswa" v-model:selection="selectedMhs" :paginator="true" :rows="10"
-                dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+                dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">

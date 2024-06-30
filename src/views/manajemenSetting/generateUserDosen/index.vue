@@ -7,7 +7,6 @@ import { API_URL } from '../../../config/config';
 import { getToken } from '../../../service/auth';
 import axios from 'axios';
 
-const loading1 = ref(true);
 const dosens = ref([]);
 const selectedDosen = ref([]);
 const filters = ref({
@@ -19,11 +18,18 @@ const filters = ref({
 
 const fetchDosen = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('dosen');
         const dataDosen = response.data.data;
         dosens.value = dataDosen;
-        // console.log(dosens);
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         Swal.fire('GAGAL', 'Gagal memuat data. Silakan coba lagi.', 'error');
     }
@@ -31,6 +37,14 @@ const fetchDosen = async () => {
 
 const generateUserDosen = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         if (selectedDosen.value.length === 0) {
             Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
             return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
@@ -57,6 +71,7 @@ const generateUserDosen = async () => {
             }
         );
 
+        Swal.close();
         Swal.fire('BERHASIL!', 'Generate User Dosen Berhasil.', 'success').then(() => {
             window.location.href = '/generate-user-dosen';
         });
@@ -89,36 +104,7 @@ onBeforeMount(() => {
             </div>
         </div>
 
-        <div class="car">
-            <div class="row">
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Angkatan</option>
-                            <option value="1">2020</option>
-                            <option value="2">2021</option>
-                            <option value="3">2022</option>
-                            <option value="4">2023</option>
-                            <option value="5">2024</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
-                </div>
-                </div>
+        <div class="card">
                 <hr/>
 
             <DataTable
