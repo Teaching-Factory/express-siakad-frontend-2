@@ -2,12 +2,12 @@
 import { useLayout } from '@/layout/composables/layout';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
-const router = useRouter(); 
+const router = useRouter();
 const { layoutConfig } = useLayout();
 const checked = ref(false);
 const username = ref('');
 const password = ref('');
-import { login } from '../../../service/login'
+import { login } from '../../../service/login';
 import Swal from 'sweetalert2';
 
 const logoUrl = computed(() => {
@@ -22,9 +22,9 @@ const handleSubmit = async () => {
             timer: 1000,
             allowOutsideClick: false,
             didOpen: () => {
-                Swal.showLoading()
+                Swal.showLoading();
             }
-        })
+        });
         const res = await login(username.value, password.value);
         Swal.close();
         if (res.status === 200) {
@@ -33,11 +33,10 @@ const handleSubmit = async () => {
         } else {
             console.error('login failed:', res.message);
         }
-    } catch(error) {
+    } catch (error) {
         console.error('login eror', error.message);
     }
-}
-
+};
 </script>
 
 

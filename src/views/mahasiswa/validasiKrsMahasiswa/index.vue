@@ -19,7 +19,7 @@ const filters = ref({
 
 const validasiKRS = ref([]);
 const loading1 = ref(false);
-const selectedMhs = ref([]);
+const selectedValidasi = ref([]);
 
 const fetchValidasi = async () => {
     try {
@@ -32,7 +32,7 @@ const fetchValidasi = async () => {
 };
 const updateValidasi = async () => {
     try {
-        if (selectedMhs.value.length === 0) {
+        if (selectedValidasi.value.length === 0) {
             Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
             return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
         }
@@ -42,7 +42,7 @@ const updateValidasi = async () => {
 
         // Persiapkan data untuk permintaan PUT
         const data = {
-            mahasiswas: selectedMhs.value.map((mahasiswa) => ({
+            mahasiswas: selectedValidasi.value.map((mahasiswa) => ({
                 id_registrasi_mahasiswa: mahasiswa.id_registrasi_mahasiswa
             }))
         };
@@ -116,10 +116,10 @@ const deleteItem = (no) => {
             </div>
             <DataTable v-model:filters="filters" :globalFilterFields="['nama_mahasiswa', 'nim', 'Periode.Prodi.nama_program_studi', 'total_sks', 'nama_status_mahasiswa', 'statusvalidasi']"
                 :value="validasiKRS"
-                v-model:selection="selectedMhs"
+                v-model:selection="selectedValidasi"
                 :paginator="true"
                 :rows="10"
-                dataKey="id"
+                dataKey="id_registrasi_mahasiswa"
                 :rowHover="true"
                 :loading="loading1"
                 showGridlines

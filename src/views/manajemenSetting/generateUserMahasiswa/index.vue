@@ -1,48 +1,128 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { get } from '../../../utiils/request';
+import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
+import { getToken } from '../../../service/auth';
+import { API_URL } from '../../../config/config';
+import axios from 'axios';
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+const first = ref(0);
+const selectedMahasiswa = ref([]);
+const mahasiswas = ref([]);
+const angkatans = ref([]);
+const prodis = ref([]);
+const selectedProdi = ref('');
+const selectedAngkatan = ref('');
+const loading1 = ref(true);
 
-        case 'qualified':
-            return 'success';
-
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
+const fetchProdi = async () => {
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data prodi:', error);
+    }
+};
+const fetchAngkatan = async () => {
+    try {
+        const response = await get('angkatan');
+        angkatans.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data angkatan mahasiswa:', error);
     }
 };
 
+const selectedFilter = async () => {
+    loading1.value = true;
+    await Promise.all([fetchProdi(), fetchAngkatan()]);
+    loading1.value = false;
+};
+
+const filterData = async () => {
+    loading1.value = true;
+    const prodiId = selectedProdi.value;
+    const angkatanId = selectedAngkatan.value;
+
+    if (!prodiId || !angkatanId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
+        return;
+    }
+
+    console.log('Prodi:', prodiId);
+    console.log('Angkatan:', angkatanId);
+
+    try {
+        const response = await get(`mahasiswa/prodi/${prodiId}/get`);
+        const filterMahasiswa = response.data.data;
+
+        mahasiswas.value = filterMahasiswa;
+
+        loading1.value = false;
+    } catch (error) {
+        console.error('Gagal mengambil data mahasiswa:', error);
+        Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
+        loading1.value = false;
+    }
+};
+
+const generateUserMahasiswa = async () => {
+    try {
+        if (selectedMahasiswa.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
+            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
+        }
+
+        const token = getToken();
+        const url = `${API_URL}/user/mahasiswa/generate`;
+        const batchSize = 100; //
+
+        const mahasiswas = selectedMahasiswa.value.map((mahasiswa) => ({
+            id_registrasi_mahasiswa: mahasiswa.id_registrasi_mahasiswa
+        }));
+
+        for (let i = 0; i < mahasiswas.length; i += batchSize) {
+            const batch = mahasiswas.slice(i, i + batchSize);
+            const data = { mahasiswas: batch };
+
+            const response = await axios.post(
+                url,
+                data, // Body permintaan
+                {
+                    headers: {
+                        Authorization: token,
+                        'Content-Type': 'application/json' // Tambahkan header Content-Type
+                    }
+                }
+            );
+
+            console.log(`Batch ${i / batchSize + 1} berhasil diperbarui:`, response.data);
+        }
+
+        Swal.fire('BERHASIL!', 'Generate User Mahasiswa Berhasil.', 'success').then(() => {
+            window.location.href = '/generate-user-mahasiswa';
+        });
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+    }
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
+};
+
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: 1,
-            name: 'John Doe',
-            nim: '12345678',
-            prodi: 'Teknologi Basis Data',
-            status: 'Aktif',
-            angkatan: 2021,
-        },
-        {
-            no: 2,
-            name: 'Jane Smith',
-            nim: '87654321',
-            prodi: 'Perikanan',
-            status: 'Cuti',
-            angkatan: 2022,
-        },
-        // Add more dummy data here
-    ];
+    selectedFilter();
 });
 </script>
 
@@ -69,57 +149,53 @@ onBeforeMount(() => {
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">Teknologi Ternak</option>
-                            <option value="2">Teknologi Basis Data</option>
-                            <option value="3">Perikanan</option>
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Angkatan</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Angkatan</option>
-                            <option value="1">2020</option>
-                            <option value="2">2021</option>
-                            <option value="3">2022</option>
-                            <option value="4">2023</option>
-                            <option value="5">2024</option>
+                    <div class="">
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Angkatan</label>
+                        <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Angkatan</option>
+                            <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
                 </div>
                 <hr/>
 
             <DataTable
-            :value="customer1"
+            v-model:filters="filters"
+            :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa', 'Periode.Prodi.nama_program_studi', 'nama_periode_masuk']"
+            :value="mahasiswas"
+            v-model:selection="selectedMahasiswa"
             :paginator="true"
             :rows="10"
-            dataKey="id"
+            dataKey="id_registrasi_mahasiswa"
             :rowHover="true"
             :loading="loading1"
             showGridlines
+            :first="first"
+            @page="onPageChange"
         >
             <template #header>
                 <div class="row">
                     <div class="col-lg-6 d-flex justify-content-start">
                         <IconField iconPosition="left">
                             <InputIcon class="pi pi-search" />
-                            <InputText placeholder="Cari disini" style="width: 100%" />
+                            <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                         </IconField>
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                            <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                            <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button>-->
-                            <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Generate</button> 
+                            <button @click="generateUserMahasiswa" class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Generate</button> 
                         </div>
                     </div>
                 </div>
@@ -128,41 +204,34 @@ onBeforeMount(() => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            <template #loading>
-                Loading customers data. Please wait.
-            </template>
-            <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
-                </template>
-            </Column>
-            <Column header="Nama Mahasiswa" style="min-width: 14rem">
+            <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
+            <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.name }}</span>
+                        <span>{{ data.nama_mahasiswa }}</span>
                     </div>
                 </template>
             </Column>
-            <Column header="NIM" style="min-width: 10rem">
+            <Column filterField="nim" header="NIM" style="min-width: 12rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.nim }}</span>
                     </div>
                 </template>
             </Column>
-            <Column header="Program Studi" style="min-width: 15rem">
+            <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.prodi }}
+                    {{ data.Periode?.Prodi?.nama_program_studi || '-' }}
                 </template>
             </Column>
-            <Column header="Status" style="min-width: 10rem">
+            <Column filterField="nama_status_mahasiswa" header="Status" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.status }}
+                    {{ data.nama_status_mahasiswa }}
                 </template>
             </Column>
-            <Column field="angkatan" header="Angkatan" style="min-width: 12rem">
+            <Column filterField="nama_periode_masuk" header="Angkatan" style="min-width: 12rem">
                 <template #body="{ data }">
-                    {{ data.angkatan }}
+                    {{ data.nama_periode_masuk }}
                 </template>
             </Column>
             </DataTable>

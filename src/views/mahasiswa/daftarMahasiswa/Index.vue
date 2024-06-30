@@ -116,7 +116,7 @@ onBeforeMount(() => {
             :value="mahasiswas"
             :paginator="true"
             :rows="10"
-            dataKey="id"
+            dataKey="id_registrasi_mahasiswa"
             :rowHover="true"
             :loading="loading1"
             showGridlines
