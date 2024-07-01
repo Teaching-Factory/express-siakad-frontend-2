@@ -13,17 +13,26 @@ const filters = ref({
 });
 
 const belumSetSistemKuliahs = ref([]);
-const loading1 = ref(true);
+// const loading1 = ref(true);
 const first = ref(0);
 const sistemKuliahs = ref([]);
 const selectedSistemKuliah = ref([]);
 
 const belumSetSistemKuliah = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('sistem-kuliah-mahasiswa/mahasiswa/not-set-sk/get'); // Memanggil fungsi get dengan endpoint 'belumSetSistemKuliah'
         console.log(response.data.data);
         belumSetSistemKuliahs.value = response.data.data;
-        loading1.value = false;
+        Swal.close();
+        // loading1.value = false;
     } catch (error) {
         console.error('Gagal mengambil data Unsur Penilaian:', error);
     }
@@ -81,7 +90,6 @@ onBeforeMount(() => {
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
-                :loading="loading1"
                 showGridlines
             >
                 <template #header>

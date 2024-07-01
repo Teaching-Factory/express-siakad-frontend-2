@@ -1,4 +1,5 @@
 <script setup>
+import Swal from 'sweetalert2';
 import { onMounted, ref } from 'vue';
 import { get } from '../../../utiils/request';
 
@@ -6,8 +7,17 @@ const permissions = ref([]);
 
 const fetchPermissions = async (id) => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`role-permission/permissions`);
         permissions.value = response.data.data;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
     }
@@ -24,7 +34,7 @@ onMounted(() => {
         <div class="card-body">
             <div class="row">
                 <!-- Perulangan untuk membuat kolom hak akses berdasarkan data permissions -->
-                <div v-for="(permission, index) in permissions" :key="index" class="col-lg-3">
+                <div v-for="(permission, index) in permissions" :key="index" class="col-lg-3 mb-3">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" :id="'permissionCheckbox' + index" />
                         <label class="form-check-label" :for="'permissionCheckbox' + index">

@@ -106,7 +106,7 @@ onBeforeMount(() => {
                 v-model:selection="selectedMhs"
                 :paginator="true"
                 :rows="10"
-                dataKey="id"
+                dataKey="id_aktivitas_kuliah_mahasiswa"
                 :rowHover="true"
                 :loading="loading1"
                 showGridlines

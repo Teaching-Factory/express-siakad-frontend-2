@@ -5,7 +5,6 @@ import { del, get } from '../../../utiils/request';
 import Swal from 'sweetalert2';
 
 const jabatans = ref([]);
-const loading1 = ref(true);
 const message = ref('');
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -15,10 +14,18 @@ const filters = ref({
 // Fungsi untuk mengambil data jabatan dari API
 const jabatan = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('jabatan'); // Memanggil fungsi get dengan endpoint 'jabatan'
         console.log(response.data.data);
         jabatans.value = response.data.data;
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data jabatan:', error);
     }

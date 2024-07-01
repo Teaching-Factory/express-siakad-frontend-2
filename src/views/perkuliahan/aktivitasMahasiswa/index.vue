@@ -14,7 +14,6 @@ const filters = ref({
 });
 
 const aktivitasMahasiswas = ref([]);
-const loading1 = ref(true);
 const message = ref('');
 const first = ref(0);
 const semesters = ref([]);
@@ -49,13 +48,19 @@ const fetchJenisAktivitas = async () => {
     }
 };
 const selectedFilter = async () => {
-    loading1.value = true;
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     await Promise.all([fetchProdi(), fetchJenisAktivitas(), fetchSemester()]);
-    loading1.value = false;
+    Swal.close();
 };
 
 const filterData = async () => {
-    loading1.value = true;
     const semesterId = selctedSemester.value;
     const prodiId = selectedProdi.value;
     const aktivitasId = selectedJenisAktivitas.value;
@@ -70,16 +75,22 @@ const filterData = async () => {
     // console.log('Angkatan:', prodiId);
 
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`anggota-aktivitas-mahasiswa/filter/${semesterId}/${prodiId}/${aktivitasId}/get`);
         const aktivitas = response.data.data;
 
         aktivitasMahasiswas.value = aktivitas;
-
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         // console.error('Gagal mengambil data mahasiswa:', error);
         Swal.fire('Gagal', 'Data Aktivitas Mahasiswa tidak ditemukan.', 'warning').then(() => {});
-        loading1.value = false;
     }
 };
 

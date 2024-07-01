@@ -5,7 +5,6 @@ import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 
 const bobotPenilaians = ref([]);
-const loading1 = ref(true);
 const currentPage = ref(0);
 const rowsPerPage = ref(100);
 const message = ref('');
@@ -18,12 +17,19 @@ const filters = ref({
 
 const fetchBobotPenilaian = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('bobot-penilaian');
         bobotPenilaians.value = response.data.data;
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data Bobot Penilaian:', error);
-        loading1.value = false;
         bobotPenilaians.value = [];
     }
 };
@@ -72,7 +78,6 @@ onBeforeMount(() => {
         <div class="card">
             <DataTable
                 v-model:filters="filters"
-                v-if="!loading1"
                 :value="bobotPenilaians"
                 :paginator="true"
                 :rows="rowsPerPage"
@@ -103,7 +108,6 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <!-- <template #loading> Loading data...</template> -->
 
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">

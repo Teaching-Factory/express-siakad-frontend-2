@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { get } from '../../../utiils/request';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -14,14 +15,21 @@ const filters = ref({
 });
 
 const kelasAktif = ref([]);
-const loading1 = ref(true);
 
 const fetchKelasAktif = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('detail-kelas-kuliah');
         console.log(response.data.data);
         kelasAktif.value = response.data.data;
-        loading1.value = false;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
@@ -83,7 +91,7 @@ onBeforeMount(() => {
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
-                :loading="loading1"
+
                 showGridlines
             >
                 <template #header>

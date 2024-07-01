@@ -7,6 +7,7 @@ import swal from 'sweetalert2';
 import axios from 'axios';
 import { getToken } from '../../../service/auth';
 import { API_URL } from '../../../config/config';
+import Swal from 'sweetalert2';
 
 // Vue.component('v-select', vSelect);
 const matkul = ref([]);
@@ -114,8 +115,17 @@ const validateTanggalSelesai = () => {
 
 const fetchMataKuliah = async (id_matkul) => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`mata-kuliah/${id_matkul}/get`);
         matkul.value = response.data.data;
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
         // Berikan pesan error kepada pengguna jika diperlukan
@@ -146,6 +156,14 @@ const fetchDosen = async () => {
 
 const create = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         validateDosen();
         validateHari();
         validateJamMulai();
@@ -185,6 +203,7 @@ const create = async () => {
         });
 
         const data = response.data;
+        Swal.close();
         swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
             window.location.href = '/kelas-jadwal-perkuliahan';
         });

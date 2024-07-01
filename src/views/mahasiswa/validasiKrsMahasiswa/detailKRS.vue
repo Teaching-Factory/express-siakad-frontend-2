@@ -1,4 +1,5 @@
 <script setup>
+import Swal from 'sweetalert2';
 import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { get } from '../../../utiils/request';
@@ -9,6 +10,15 @@ const details = ref([]);
 
 const detailKrs = async (id_registrasi_mahasiswa) => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`krs-mahasiswa/mahasiswa/periode/${id_registrasi_mahasiswa}/get`);
         const krs = response.data.data;
         // Memastikan pengajar memiliki nilai sebelum diassign
@@ -18,6 +28,7 @@ const detailKrs = async (id_registrasi_mahasiswa) => {
             // Jika pengajar kosong, assign nilai default atau kosong
             details.value = []; // atau null, atau nilai default lainnya
         }
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
         // Berikan pesan error kepada pengguna jika diperlukan

@@ -36,8 +36,16 @@ const fetchSemester = async () => {
 
 const selectedFilter = async () => {
     // loading1.value = true;
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     await Promise.all([fetchProdi(), fetchSemester()]);
-    // loading1.value = false;
+    Swal.close();
 };
 
 const filterData = async () => {
@@ -51,10 +59,19 @@ const filterData = async () => {
     }
 
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`detail-kelas-kuliah/filter/${prodiId}/${semesterId}/get`);
         const filterKelasJadwal = response.data.data;
 
         kelasjadwal.value = filterKelasJadwal;
+        Swal.close();
     } catch (error) {
         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
     }
@@ -64,6 +81,14 @@ const showDosenPengajar = async (id_kelas_kuliah) => {
     selectedKelasId.value = id_kelas_kuliah;
 
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`dosen-pengajar-kelas-kuliah/${selectedKelasId.value}/get`);
         const pengajar = response.data.data;
 
@@ -76,6 +101,7 @@ const showDosenPengajar = async (id_kelas_kuliah) => {
         }
 
         showModal2.value = true;
+        Swal.close();
     } catch (error) {
         Swal.fire('GAGAL!', 'Data Dosen Pengajar tidak ditemukan.', 'warning').then(() => {});
     }
@@ -85,6 +111,14 @@ const showPesertaKelas = async (id_kelas_kuliah) => {
     selectedPesertaId.value = id_kelas_kuliah;
 
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`peserta-kelas-kuliah/${selectedPesertaId.value}/get-nilai-kelas`);
         const peserta = response.data.data;
         console.log('data-2', peserta[0].KelasKuliah.Prodi.nama_program_studi);
@@ -96,6 +130,7 @@ const showPesertaKelas = async (id_kelas_kuliah) => {
             pesertakelas.value = []; // atau null, atau nilai default lainnya
         }
         showModal1.value = true;
+        Swal.close();
     } catch (error) {
         Swal.fire('GAGAL!', 'Data Peserta Kelas tidak ditemukan.', 'warning').then(() => {});
     }

@@ -22,8 +22,17 @@ export default {
             formData.append('file', this.file);
 
             try {
+                Swal.fire({
+                    title: 'Loading...',
+                    html: 'Sedang Memuat Data',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
                 const response = await postData('mahasiswa/import-data-mahasiswa', formData);
                 console.log(response);
+                Swal.close();
                 Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
                     this.$router.push('/daftar-mahasiswa').catch((err) => {
                         console.error('Redirect error:', err);

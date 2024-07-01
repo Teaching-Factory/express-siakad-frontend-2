@@ -19,24 +19,38 @@ const filters = ref({
 
 const first = ref(0);
 const setStatus = ref([]);
-const loading1 = ref(true);
 const selectedIds = ref([]);
 const id_prodi = route.params.id_prodi; // Variable to store the id_prodi
 
 const fetchSetStatusMahasiswa = async (id_prodi) => {
     console.log(id_prodi);
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get(`status-mahasiswa/${id_prodi}/get-periode-with-count-mahasiswa`);
         setStatus.value = response.data.data;
         console.log(response.data.data);
-        loading1.value = false;
-        // console.log(id_prodi);
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
 };
 const updateStatus = async (id_prodi, id_angkatan) => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const token = getToken();
         const url = `${API_URL}/status-mahasiswa/filter/${id_prodi}/${id_angkatan}/set-status-nonaktif`;
         console.log('PUT URL:', url); // Tambahkan log untuk URL endpoint
@@ -51,6 +65,7 @@ const updateStatus = async (id_prodi, id_angkatan) => {
         );
 
         console.log(`Status untuk id_angkatan ${id_angkatan} berhasil diperbarui:`, response.data);
+        Swal.close();
     } catch (error) {
         console.error('Gagal memperbarui status:', error);
     }
@@ -88,7 +103,6 @@ onMounted(() => {
             :rows="10"
             dataKey="id"
             :rowHover="true"
-            :loading="loading1"
             showGridlines
             :first="first"
             @page="onPageChange"

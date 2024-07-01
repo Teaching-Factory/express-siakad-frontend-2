@@ -1,5 +1,6 @@
 <script setup >
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
 import { onBeforeMount, ref } from 'vue';
 import { get } from '../../../utiils/request';
 
@@ -14,13 +15,20 @@ const filters = ref({
 
 const viewKRS = ref([]);
 const selectedKHS = ref([]);
-const loading1 = ref(true);
 
 const fetchKRS = async () => {
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     const response = await get('kelas-kuliah/get-kelas-kuliah-available');
     const krs = response.data.data;
     viewKRS.value = krs;
-    loading1.value = false;
+    Swal.close();
 };
 
 onBeforeMount(() => {
@@ -41,9 +49,8 @@ onBeforeMount(() => {
                 :globalFilterFields="['MataKuliah.kode_mata_Kuliah', 'MataKuliah.nama_mata_kuliah', 'nama_kelas_kuliah', 'Dosen.nama_dosen', 'sks']"
                 :paginator="true"
                 :rows="10"
-                dataKey="id"
+                dataKey="id_kelas_kuliah"
                 :rowHover="true"
-                :loading="loading1"
                 v-model:selection="selectedKHS"
                 showGridlines
             >
