@@ -57,9 +57,9 @@ export default {
                 </div>
                 <div class="col-6 col-md-8 col-lg-8">
                     <div class="text-info">
-                        <router-link to="">
+                        <a href="../../../../public/file/template_data_mahasiswa.xlsx" download>
                             <span>template_mahasiswa.xls</span>
-                        </router-link>
+                        </a>
                     </div>
                 </div>
             </div>

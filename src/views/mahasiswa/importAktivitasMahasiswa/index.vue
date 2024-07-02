@@ -46,9 +46,9 @@ export default {
                 </div>
                 <div class="col-6 col-md-6 col-lg-6">
                     <div class="text-info">
-                        <router-link to="">
+                        <a href="../../../../public/file/template aktivitas-mahasiswa.xlsx" download>
                             <span>template_aktivitas_mhs.xls</span>
-                        </router-link>
+                        </a>
                     </div>
                 </div>
             </div>

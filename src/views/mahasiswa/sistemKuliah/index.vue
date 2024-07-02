@@ -98,7 +98,16 @@ const filterData = async () => {
 };
 
 const selectedFilter = async () => {
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     await Promise.all([fetchProdi(), fetchSistemKuliah()]);
+    Swal.close();
 };
 
 onBeforeMount(() => {

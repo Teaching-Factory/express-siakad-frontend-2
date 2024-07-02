@@ -6,6 +6,7 @@ import axios from 'axios';
 import { API_URL } from '../config/config';
 import { clearPermissions, clearToken, clearUser } from '../service/auth';
 import { getUser } from '../utiils/local_storage';
+import Swal from 'sweetalert2';
 
 const { onMenuToggle } = useLayout();
 const user = ref([]);
@@ -28,6 +29,14 @@ const logoUrl = computed(() => {
 
 const handleLogout = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await axios.get(`${API_URL}/auth/do-logout`);
         console.log(response);
         if (response.status == 200 && response.statusText === 'OK') {
@@ -36,6 +45,7 @@ const handleLogout = async () => {
             clearPermissions();
             router.push('/');
         }
+        Swal.close();
     } catch (error) {
         console.log(error);
     }
