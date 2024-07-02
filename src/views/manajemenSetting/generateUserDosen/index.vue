@@ -26,7 +26,7 @@ const fetchDosen = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('dosen');
+        const response = await get('user/get-dosen-dont-have-user');
         const dataDosen = response.data.data;
         dosens.value = dataDosen;
         Swal.close();

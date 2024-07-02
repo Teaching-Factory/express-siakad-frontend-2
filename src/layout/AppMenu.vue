@@ -12,10 +12,46 @@ const model = ref([
     },
     {
         label: 'Akademik',
+        visible: computed(() => {
+            return [
+                'import-mahasiswa',
+                'daftar-mahasiswa',
+                'set-status-mahasiswa',
+                'set-sistem-kuliah-mahasiswa',
+                'validasi-krs-mahasiswa',
+                'import-aktivitas-mahasiswa',
+                'mahasiswa-belum-krs',
+                'perhitungan-transkrip',
+                'set-aktif-akm',
+                'belum-set-sk',
+                'kelas-jadwal-perkuliahan',
+                'nilai-perkuliahan',
+                'presensi-perkuliahan',
+                'aktivitas-mahasiswa',
+                'kelas-aktif',
+                'daftar-dosen-wali',
+                'manajemen-mahasiswa-wali',
+                'set-kolektif-dosenwali'
+            ].some((permission) => permissions.includes(permission));
+        }),
         items: [
             {
                 label: 'Mahasiswa',
                 icon: 'pi pi-fw pi-user',
+                visible: computed(() => {
+                    return [
+                        'import-mahasiswa',
+                        'daftar-mahasiswa',
+                        'set-status-mahasiswa',
+                        'set-sistem-kuliah-mahasiswa',
+                        'validasi-krs-mahasiswa',
+                        'import-aktivitas-mahasiswa',
+                        'mahasiswa-belum-krs',
+                        'perhitungan-transkrip',
+                        'set-aktif-akm',
+                        'belum-set-sk'
+                    ].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Import Data Mahasiswa',
@@ -72,6 +108,9 @@ const model = ref([
             {
                 label: 'Perkuliahan',
                 icon: 'pi pi-fw pi-user',
+                visible: computed(() => {
+                    return ['kelas-jadwal-perkuliahan', 'nilai-perkuliahan', 'presensi-perkuliahan', 'aktivitas-mahasiswa', 'kelas-aktif'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Kelas dan Jadwal',
@@ -103,6 +142,9 @@ const model = ref([
             {
                 label: 'Dosen Wali',
                 icon: 'pi pi-fw pi-user',
+                visible: computed(() => {
+                    return [, 'daftar-dosen-wali', 'manajemen-mahasiswa-wali', 'set-kolektif-dosenwali'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Daftar Dosen Wali',
@@ -125,10 +167,18 @@ const model = ref([
     },
     {
         label: 'Data',
+        visible: computed(() => {
+            return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah', 'daftar-tagihan', 'daftar-pembayaran', 'daftar-berita'].some((permission) =>
+                permissions.includes(permission)
+            );
+        }),
         items: [
             {
                 label: 'Referensi',
                 icon: 'pi pi-fw pi-user',
+                visible: computed(() => {
+                    return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Sistem Kuliah',
@@ -198,10 +248,18 @@ const model = ref([
     },
     {
         label: 'Laporan',
+        visible: computed(() => {
+            return ['cetak-KRS-mahasiswa', 'cetak-KHS-mahasiswa', 'cetak-transkrip-mahasiswa', 'cetak-rekap-nilai-kelas', 'cetak-rekap-presensi-kelas', 'cetak-jadwal-kuliah', 'cetak-daftar-belum-krs'].some((permission) =>
+                permissions.includes(permission)
+            );
+        }),
         items: [
             {
                 label: 'Mahasiswa',
                 icon: '',
+                visible: computed(() => {
+                    return ['cetak-KRS-mahasiswa', 'cetak-KHS-mahasiswa', 'cetak-transkrip-mahasiswa'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'KRS Mahasiswa',
@@ -223,6 +281,9 @@ const model = ref([
             {
                 label: 'Kelas Perkuliahan',
                 icon: '',
+                visible: computed(() => {
+                    return ['cetak-rekap-nilai-kelas', 'cetak-rekap-presensi-kelas', 'cetak-jadwal-kuliah'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Rekap Nilai Kelas',
@@ -244,6 +305,9 @@ const model = ref([
             {
                 label: 'KRS',
                 icon: '',
+                visible: computed(() => {
+                    return ['cetak-daftar-belum-krs'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Daftar Mahasiswa Belum KRS',
@@ -256,10 +320,16 @@ const model = ref([
     },
     {
         label: 'Settings',
+        visible: computed(() => {
+            return ['manajemen-role', 'manajemen-user', 'generate-user-mahasiswa', 'generate-user-dosen', 'setting-global', 'setting-ws', 'identitas-pt'].some((permission) => permissions.includes(permission));
+        }),
         items: [
             {
                 label: 'Manajement',
                 icon: '',
+                visible: computed(() => {
+                    return ['manajemen-role', 'manajemen-user', 'generate-user-mahasiswa', 'generate-user-dosen'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Manajemen Role',
@@ -286,6 +356,9 @@ const model = ref([
             {
                 label: 'Setting',
                 icon: '',
+                visible: computed(() => {
+                    return ['setting-global', 'setting-ws', 'identitas-pt'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Setting Global',
@@ -308,6 +381,9 @@ const model = ref([
     },
     {
         label: 'TENTANG SAYA',
+        visible: computed(() => {
+            return ['profile-data-mahasiswa', 'profile-krs-mahasiswa', 'profile-akm-mahasiswa', 'profile-khs-mahasiswa'].some((permission) => permissions.includes(permission));
+        }),
         items: [
             {
                 label: 'Profile',
@@ -339,10 +415,18 @@ const model = ref([
     },
     {
         label: 'KEGIATAN',
+        visible: computed(() => {
+            return ['perkuliahan-krs-mahasiswa', 'perkuliahan-khs-mahasiswa', 'perkuliahan-jadwal-perkuliahan', 'laporan-krs-mahasiswa', 'laporan-khs-mahasiswa', 'laporan-transkrip-mahasiswa', 'profile-tagihan-pembayaran-mahasiswa'].some(
+                (permission) => permissions.includes(permission)
+            );
+        }),
         items: [
             {
                 label: 'Perkuliahan',
                 icon: '',
+                visible: computed(() => {
+                    return ['perkuliahan-krs-mahasiswa', 'perkuliahan-khs-mahasiswa', 'perkuliahan-jadwal-perkuliahan'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Kartu Rencana Studi Online',
@@ -364,6 +448,9 @@ const model = ref([
             {
                 label: 'Laporan',
                 icon: '',
+                visible: computed(() => {
+                    return ['laporan-krs-mahasiswa', 'laporan-khs-mahasiswa', 'laporan-transkrip-mahasiswa'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Kartu Rencana Studi',
@@ -385,6 +472,9 @@ const model = ref([
             {
                 label: 'Pembayaran',
                 icon: '',
+                visible: computed(() => {
+                    return ['profile-tagihan-pembayaran-mahasiswa'].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Tagihan',
@@ -397,6 +487,9 @@ const model = ref([
     },
     {
         label: 'AKADEMIK (DOSEN)',
+        visible: computed(() => {
+            return ['jadwal-kelas-perkuliahan-dosen', 'presensi-perkuliahan'].some((permission) => permissions.includes(permission));
+        }),
         items: [
             {
                 label: 'Perkuliahan',
