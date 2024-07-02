@@ -51,6 +51,7 @@ const generateUserDosen = async () => {
         }
 
         const token = getToken();
+        console.log(token);
         const url = `${API_URL}/user/dosen/generate`;
 
         // Persiapkan data untuk permintaan PUT
@@ -116,7 +117,6 @@ onBeforeMount(() => {
             :rows="10"
             dataKey="id_dosen"
             :rowHover="true"
-            :loading="loading1"
             showGridlines
         >
             <template #header>
