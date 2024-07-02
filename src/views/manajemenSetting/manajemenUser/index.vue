@@ -1,4 +1,5 @@
 <script setup>
+import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { ref, onBeforeMount } from 'vue';
 import { del, get } from '../../../utiils/request';
@@ -6,6 +7,12 @@ import { del, get } from '../../../utiils/request';
 const users = ref([]);
 const message = ref('');
 const first = ref(0);
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    nama: { value: null, matchMode: FilterMatchMode.EQUALS },
+    email: { value: null, matchMode: FilterMatchMode.EQUALS },
+    username: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
 
 const user = async () => {
     try {
@@ -72,13 +79,13 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>MANAJEMEN USER</h5>
         <div class="card">
-            <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :first="first" @page="onPageChange" showGridlines>
+            <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :first="first" @page="onPageChange" v-model:filters="filters" :globalFilterFields="['nama', 'email', 'username']" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
@@ -98,30 +105,37 @@ onBeforeMount(() => {
                         {{ first + slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column header="Nama User" style="min-width: 15rem">
+                <Column filterField="nama" header="Nama User" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.nama }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Email" style="min-width: 15rem">
+                <Column filterField="email" header="Email" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.email }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Username" style="min-width: 10rem">
+                <Column filterField="username" header="Username" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.username }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column header="Role" style="min-width: 5rem">
+                <Column filterField="hints" header="Hints" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <div v-html="data.role"></div>
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.hints }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nama_role" header="nama_role" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        <div v-html="data.UserRoles[0].Role.nama_role"></div>
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 5rem">

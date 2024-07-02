@@ -2,6 +2,7 @@
 import { ref, onBeforeMount } from 'vue';
 import { get } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -13,7 +14,6 @@ const filters = ref({
 });
 
 const aktivitasKuliahMahasiswas = ref([]);
-const loading1 = ref(true);
 const selectedMhs = ref();
 const selectedAngkatan = ref('');
 const selectedProdi = ref('');
@@ -22,14 +22,20 @@ const angkatans = ref([]);
 
 const aktivitasKuliahMahasiswa = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const response = await get('aktivitas-kuliah-mahasiswa');
         aktivitasKuliahMahasiswas.value = response.data.data;
-        loading1.value = false;
+
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data Aktivitas Mahawiswa:', error);
-
-        loading1.value = false;
-
         aktivitasKuliahMahasiswa.value = [];
     }
 };
@@ -51,7 +57,16 @@ const fetchAngkatan = async () => {
 };
 
 const selectedFilter = async () => {
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     await Promise.all([fetchProdi(), fetchAngkatan()]);
+    Swal.close();
 };
 onBeforeMount(() => {
     aktivitasKuliahMahasiswa();
@@ -108,7 +123,6 @@ onBeforeMount(() => {
                 :rows="10"
                 dataKey="id_aktivitas_kuliah_mahasiswa"
                 :rowHover="true"
-                :loading="loading1"
                 showGridlines
             >
                 <template #header>

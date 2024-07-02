@@ -31,7 +31,7 @@ const fetchValidasi = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('krs-mahasiswa/get-mahasiswa-krs-tervalidasi');
+        const response = await get('krs-mahasiswa/get-mahasiswa-krs-belum-tervalidasi');
         const validasi = response.data.data;
         validasiKRS.value = validasi;
         Swal.close();
@@ -67,7 +67,9 @@ const updateValidasi = async () => {
             }
         );
 
-        Swal.fire('BERHASIL!', 'KRS Berhasil di Validasi.', 'success').then(() => {});
+        Swal.fire('BERHASIL!', 'KRS Berhasil di Validasi.', 'success').then(() => {
+            window.location.href = '/validasi-krs-mahasiswa';
+        });
         console.log('Status berhasil diperbarui:', response.data);
     } catch (error) {
         console.error('Gagal memperbarui status:', error);

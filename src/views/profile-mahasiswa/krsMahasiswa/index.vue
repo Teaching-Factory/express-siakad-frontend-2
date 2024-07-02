@@ -64,7 +64,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                                <button type="submit" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Simpan</button>
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>-->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
                                 <!-- <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Set Sistem Kuliah</button> -->

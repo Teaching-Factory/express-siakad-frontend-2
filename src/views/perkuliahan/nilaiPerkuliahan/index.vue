@@ -6,22 +6,22 @@ import { get } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    kodemk: { value: null, matchMode: FilterMatchMode.EQUALS },
-    namamk: { value: null, matchMode: FilterMatchMode.EQUALS },
-    prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
-    kelas: { value: null, matchMode: FilterMatchMode.EQUALS },
+    kode_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_kelas_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
     sks: { value: null, matchMode: FilterMatchMode.EQUALS },
-    periode: { value: null, matchMode: FilterMatchMode.EQUALS },
-    peserta: { value: null, matchMode: FilterMatchMode.EQUALS },
-    kuncinilai: { value: null, matchMode: FilterMatchMode.EQUALS }
+    semester: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlah_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const customer1 = ref([]);
-const loading1 = ref(false);
 const selectedProdi = ref('');
-const selectedPeriode = ref('');
+const selectedSemester = ref('');
 const prodis = ref([]);
-const periodes = ref([]);
+const semesters = ref([]);
+const daftarNilai = ref([]);
+const first = ref(0);
 
 const fetchProdi = async () => {
     try {
@@ -31,47 +31,63 @@ const fetchProdi = async () => {
         console.log('Gagal mengambil data', error);
     }
 };
-const fetchPeriode = async () => {
+const fetchSemester = async () => {
     try {
-        const response = await get('periode');
-        periodes.value = response.data.data;
+        const response = await get('semester');
+        semesters.value = response.data.data;
     } catch (error) {
         console.log('Gagal mengambil data', error);
     }
 };
 const selectedFilter = async () => {
-    await Promise.all([fetchProdi(), fetchPeriode()]);
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    await Promise.all([fetchProdi(), fetchSemester()]);
+    Swal.close();
+};
+
+const filterData = async () => {
+    const prodiId = selectedProdi.value;
+    const semesterId = selectedSemester.value;
+
+    if (!prodiId || !semesterId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
+        return;
+    }
+
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`kelas-kuliah/filter/${prodiId}/${semesterId}/get`);
+        const filterNilai = response.data.dataKelasKuliah;
+
+        daftarNilai.value = filterNilai;
+        Swal.close();
+    } catch (error) {
+        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
+    }
 };
 
 onBeforeMount(() => {
     selectedFilter();
-    customer1.value = [
-        {
-            no: '1',
-            kodemk: '9876545678',
-            namamk: 'Kapita Selekta',
-            kelas: '2020',
-            sks: '2',
-            periode: '2023/2024  Genap',
-            prodi: '3S1 Teknik Informatika',
-            peserta: '30',
-            kuncinilai: '-',
-            aksi: ''
-        },
-        {
-            no: '2',
-            kodemk: '9876545678',
-            namamk: 'Kapita Selekta',
-            kelas: '2020',
-            sks: '2',
-            periode: '2023/2024  Genap',
-            prodi: '3S1 Teknik Informatika',
-            peserta: '30',
-            kuncinilai: '-',
-            aksi: ''
-        }
-    ];
 });
+
+const onPageChange = (event) => {
+    first.value = event.first;
+};
 
 const confirmDelete = (no) => {
     Swal.fire({
@@ -114,26 +130,27 @@ const deleteItem = (no) => {
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
+                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Periode</option>
-                            <option v-for="periode in periodes" :key="periode.id" :value="periode.id">{{ periode.periode_pelaporan }}</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
             <hr />
             <DataTable
                 v-model:filters="filters"
-                :globalFilterFields="['kodemk', 'namamk', 'prodi', 'kelas', 'sks', 'periode', 'peserta', 'kuncinilai']"
-                :value="customer1"
+                :globalFilterFields="['MataKuliah.kode_mata_kuliah', 'MataKuliah.nama_mata_kuliah', 'Prodi.nama_program_studi', 'nama_kelas_kuliah', 'sks', 'Semester.nama_semester', 'jumlah_mahasiswa']"
+                :value="daftarNilai"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
-                :loading="loading1"
+                :first="first"
+                @page="onPageChange"
                 showGridlines
             >
                 <template #header>
@@ -153,29 +170,28 @@ const deleteItem = (no) => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading customers data. Please wait. </template>
-                <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
+                <Column header="No" headerStyle="width:3rem">
+                    <template #body="slotProps">
+                        {{ first + slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column filterField="kodemk" header="Kode MK" style="min-width: 10rem">
+                <Column filterField="kode_mata_kuliah" header="Kode MK" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.kodemk }}</span>
+                            <span>{{ data.MataKuliah.kode_mata_kuliah }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="namamk" header="Nama MK" style="min-width: 10rem">
+                <Column filterField="nama_mata_kuliah" header="Nama MK" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.namamk }}</span>
+                            <span>{{ data.MataKuliah.nama_mata_kuliah }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="kelas" header="Kelas" style="min-width: 5rem">
+                <Column filterField="nama_kelas_kuliah" header="Kelas" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.kelas }}
+                        {{ data.nama_kelas_kuliah }}
                     </template>
                 </Column>
                 <Column filterField="sks" header="SKS" style="min-width: 5rem">
@@ -183,24 +199,19 @@ const deleteItem = (no) => {
                         {{ data.sks }}
                     </template>
                 </Column>
-                <Column filterField="periode" header="Periode" style="min-width: 10rem">
+                <Column filterField="nama_semester" header="Periode" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.periode }}
+                        {{ data.Semester.nama_semester }}
                     </template>
                 </Column>
-                <Column filterField="prodi" header="Program Studi" style="min-width: 10rem">
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.prodi }}
+                        {{ data.Prodi.nama_program_studi }}
                     </template>
                 </Column>
-                <Column filterField="peserta" header="Peserta" style="min-width: 5rem">
+                <Column filterField="jumlah_mahasiswa" header="Peserta" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.peserta }}
-                    </template>
-                </Column>
-                <Column filterField="kuncinilai" header="Kunci Nilai" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        {{ data.kuncinilai }}
+                        {{ data.jumlah_mahasiswa }}
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
