@@ -17,8 +17,9 @@
         "primeicons": "^6.0.1",
         "primevue": "3.49.1",
         "sweetalert": "^2.1.2",
-        "sweetalert2": "^11.12.0",
+        "sweetalert2": "^11.6.13",
         "vue": "^3.2.41",
+        "vue-cal": "^4.8.1",
         "vue-router": "^4.1.5",
         "vue-select": "^4.0.0-beta.6"
     },
