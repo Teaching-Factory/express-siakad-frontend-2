@@ -175,7 +175,7 @@ const router = createRouter({
                 },
 
                 {
-                    path: '/set-kolektif-dosenwali',
+                    path: '/set-kolektif-dosenwali/:id_dosen',
                     name: 'set-kolektif-dosenwali',
                     component: () => import('../views/dosenWali/setKolektifDosenWali/index.vue'),
                     meta: { requiredPermissions: ['set-kolektif-dosenwali'] }

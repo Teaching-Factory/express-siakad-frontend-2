@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { get } from '../../../utiils/request';
+import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -9,22 +11,63 @@ const filters = ref({
     total: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const semesters = ref([]);
+const selectedSemester = ref('');
+const kelasKuliah = ref([]);
+const first = ref(0);
+
+const fetchSemester = async () => {
+    try {
+        const response = await get('semester');
+        semesters.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const selectedFilter = async () => {
+    // loading1.value = true;
+    await Promise.all([fetchSemester()]);
+    // loading1.value = false;
+};
+
+const filterData = async () => {
+    const semesterId = selectedSemester.value;
+
+    if (!semesterId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        Swal.fire('Gagal', 'Data tidak ditemukan.', 'warning').then(() => {});
+        return;
+    }
+
+    console.log('Semester:', semesterId);
+
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`detail-kelas-kuliah/${semesterId}/get-kelas-kuliah-dosen`);
+        const filterKelas = response.data.data;
+
+        kelasKuliah.value = filterKelas;
+
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data mahasiswa:', error);
+        Swal.fire('Gagal', 'Data tidak ditemukan.', 'warning').then(() => {});
+    }
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
+};
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: 1,
-            periode: '2023/2024 Ganjil',
-            prodi: 'S1 Teknik Informasi',
-            matakuliah: 'Kapita Selekta',
-            ruang: 'B5.08',
-            hari: 'Senin',
-            waktu: '09.10 - 10.10',
-        }
-        // Add more dummy data here
-    ];
+    selectedFilter();
 });
 </script>
 
@@ -50,28 +93,25 @@ onBeforeMount(() => {
             <div class="row mt-3">
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Periode</option>
-                            <option value="1">2020</option>
-                            <option value="2">2021</option>
-                            <option value="3">2022</option>
-                            <option value="4">2023</option>
-                            <option value="5">2024</option>
+                        <label for="exampleFormControlInput1" class="form-label">Semester</label>
+                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Semester</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
                 </div>
             </div>
             <DataTable v-model:filters="filters" :globalFilterFields="['prodi', 'status', 'total']"
-                :value="customer1"
+                :value="kelasKuliah"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
-                :loading="loading1"
+                :first="first"
+                @page="onPageChange"
                 showGridlines
             >
                 <template #header>
@@ -86,32 +126,29 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading>
-                    Loading customers data. Please wait.
-                </template>
                 <Column field="no" header="No" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        {{ data.no }}
+                    <template #body="slotProps">
+                        {{ first + slotProps.index + 1 }}
                     </template>
                 </Column>
                 <Column filterField="periode" header="Periode" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.periode }}
+                        {{ data?.kelasKuliah?.id_semester }}
                     </template>
                 </Column>
                 <Column filterField="prodi" header="Program Studi" style="min-width: 12rem">
                     <template #body="{ data }">
-                        {{ data.prodi }}
+                        {{ data?.kelasKuliah?.id_prodi }}
                     </template>
                 </Column>
                 <Column filterField="matakuliah" header="Mata Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.matakuliah }}
+                        {{ data?.kelasKuliah?.id_matkul }}
                     </template>
                 </Column>
                 <Column filterField="ruang" header="Ruang" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.ruang }}
+                        {{ data.id_ruang_perkuliahan }}
                     </template>
                 </Column>
                 <Column filterField="hari" header="Hari" style="min-width: 5rem">
@@ -121,11 +158,11 @@ onBeforeMount(() => {
                 </Column>
                 <Column filterField="waktu" header="Waktu" style="min-width: 8rem">
                     <template #body="{ data }">
-                        {{ data.waktu }}
+                        {{ data.jam_mulai }} - {{ data.jam_selesai }}
                     </template>
                 </Column>
                 <Column filterField="aksi" field="aksi" header="Aksi" style="min-width: 10rem">
-                    <template #body="{ data }">
+                    <template #body="{  }">
                         <router-link to="/nilai-perkuliahan/create" class="btn btn-primary me-2 border-0" style="background-color: #FFE500;"> 
                             <i style="color: #000;" class="pi pi-file-edit"></i>
                         </router-link>
