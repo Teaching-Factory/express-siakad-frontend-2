@@ -31,7 +31,7 @@ const fetchDosen = async () => {
         dosens.value = dataDosen;
         Swal.close();
     } catch (error) {
-        Swal.fire('GAGAL', 'Gagal memuat data. Silakan coba lagi.', 'error');
+        Swal.fire('GAGAL', ' Data Dosen Tidak tersedia.', 'error');
     }
 };
 

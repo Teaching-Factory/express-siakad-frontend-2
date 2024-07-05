@@ -194,7 +194,7 @@ onBeforeMount(() => {
 
             <DataTable
             v-model:filters="filters"
-            :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa', 'Periode.Prodi.nama_program_studi', 'nama_periode_masuk']"
+            :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa', 'Prodi.nama_program_studi', 'nama_periode_masuk']"
             :value="mahasiswas"
             v-model:selection="selectedMahasiswa"
             :paginator="true"
@@ -241,7 +241,7 @@ onBeforeMount(() => {
             </Column>
             <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.Periode?.Prodi?.nama_program_studi || '-' }}
+                    {{ data.Prodi?.nama_program_studi || '-' }}
                 </template>
             </Column>
             <Column filterField="nama_status_mahasiswa" header="Status" style="min-width: 10rem">

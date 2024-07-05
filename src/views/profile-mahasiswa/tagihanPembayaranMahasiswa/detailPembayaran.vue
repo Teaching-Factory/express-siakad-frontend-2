@@ -3,7 +3,7 @@
         <h5><i class="pi pi-user me-2"></i>DETAIL PEMBAYARAN</h5>
         <div class="card">
             
-            <form @submit.prevent="create">
+            <form @submit.prevent="">
                 <div class="row">
                     <div class="col-3 col-md-6 col-lg-6">
                         <span>Panduan Pembayaran</span>
@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-6 col-md-6 col-lg-6">
                         <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02" @change="handleFileUpload" />
+                            <input type="file" class="form-control" id="inputGroupFile02"  />
                         </div>
                     </div>
                     <div class="col-3 col-md-6 col-lg-12">

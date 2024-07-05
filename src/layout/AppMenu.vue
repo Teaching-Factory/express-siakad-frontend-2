@@ -109,13 +109,18 @@ const model = ref([
                 label: 'Perkuliahan',
                 icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
-                    return ['kelas-jadwal-perkuliahan', 'nilai-perkuliahan', 'presensi-perkuliahan', 'aktivitas-mahasiswa', 'kelas-aktif'].some((permission) => permissions.includes(permission));
+                    return ['kelas-jadwal-perkuliahan', 'jadwal-kelas-perkuliahan-dosen', 'nilai-perkuliahan', 'presensi-perkuliahan', 'aktivitas-mahasiswa', 'kelas-aktif'].some((permission) => permissions.includes(permission));
                 }),
                 items: [
                     {
                         label: 'Kelas dan Jadwal',
                         to: '/kelas-jadwal-perkuliahan',
                         visible: computed(() => permissions.includes('kelas-jadwal-perkuliahan'))
+                    },
+                    {
+                        label: 'Jadwal Kelas Perkuliahan',
+                        to: '/jadwal-kelas-perkuliahan',
+                        visible: computed(() => permissions.includes('jadwal-kelas-perkuliahan-dosen'))
                     },
                     {
                         label: 'Nilai Perkuliahan',
@@ -177,7 +182,9 @@ const model = ref([
                 label: 'Referensi',
                 icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
-                    return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah'].some((permission) => permissions.includes(permission));
+                    return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah', 'daftar-tagihan', 'daftar-pembayaran', 'daftar-berita'].some((permission) =>
+                        permissions.includes(permission)
+                    );
                 }),
                 items: [
                     {
@@ -484,31 +491,31 @@ const model = ref([
                 ]
             }
         ]
-    },
-    {
-        label: 'AKADEMIK (DOSEN)',
-        visible: computed(() => {
-            return ['jadwal-kelas-perkuliahan-dosen', 'presensi-perkuliahan'].some((permission) => permissions.includes(permission));
-        }),
-        items: [
-            {
-                label: 'Perkuliahan',
-                icon: '',
-                items: [
-                    {
-                        label: 'Jadwal Kelas Perkuliahan',
-                        to: '/jadwal-kelas-perkuliahan',
-                        visible: computed(() => permissions.includes('jadwal-kelas-perkuliahan-dosen'))
-                    },
-                    {
-                        label: 'Presensi Perkuliahan',
-                        to: '/presensi-perkuliahan',
-                        visible: computed(() => permissions.includes('presensi-perkuliahan'))
-                    }
-                ]
-            }
-        ]
     }
+    // {
+    //     label: 'AKADEMIK (DOSEN)',
+    //     visible: computed(() => {
+    //         return ['jadwal-kelas-perkuliahan-dosen', 'presensi-perkuliahan'].some((permission) => permissions.includes(permission));
+    //     }),
+    //     items: [
+    //         {
+    //             label: 'Perkuliahan',
+    //             icon: '',
+    //             items: [
+    //                 {
+    //                     label: 'Jadwal Kelas Perkuliahan',
+    //                     to: '/jadwal-kelas-perkuliahan',
+    //                     visible: computed(() => permissions.includes('jadwal-kelas-perkuliahan-dosen'))
+    //                 },
+    //                 {
+    //                     label: 'Presensi Perkuliahan',
+    //                     to: '/presensi-perkuliahan',
+    //                     visible: computed(() => permissions.includes('presensi-perkuliahan'))
+    //                 }
+    //             ]
+    //         }
+    //     ]
+    // }
 ]);
 </script>
 

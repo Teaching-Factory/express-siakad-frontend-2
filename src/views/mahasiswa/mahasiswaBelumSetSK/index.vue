@@ -82,7 +82,7 @@ onBeforeMount(() => {
         <div class="card">
             <DataTable
                 v-model:filters="filters"
-                :globalFilterFields="['nim', 'nama_mahasiswa', 'Periode.Prodi.nama_program_studi', 'nama_periode_masuk']"
+                :globalFilterFields="['nim', 'nama_mahasiswa', 'Prodi.nama_program_studi', 'nama_periode_masuk']"
                 :value="belumSetSistemKuliahs"
                 :first="first"
                 @page="onPageChange"
@@ -119,7 +119,7 @@ onBeforeMount(() => {
                 </Column>
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.Periode?.Prodi?.nama_program_studi || '-' }}
+                        {{ data.Prodi?.nama_program_studi || '-' }}
                     </template>
                 </Column>
                 <Column filterField="nama_periode_masuk" header="Angkatan" style="min-width: 10rem">

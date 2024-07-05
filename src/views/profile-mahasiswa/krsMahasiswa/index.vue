@@ -1,8 +1,11 @@
 <script setup >
+import axios from 'axios';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { onBeforeMount, ref } from 'vue';
-import { get } from '../../../utiils/request';
+import { API_URL } from '../../../config/config';
+import { del, get } from '../../../utiils/request';
+import { getToken } from '../../../utiils/local_storage';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -15,6 +18,7 @@ const filters = ref({
 
 const viewKRS = ref([]);
 const selectedKHS = ref([]);
+const message = ref('');
 
 const fetchKRS = async () => {
     Swal.fire({
@@ -30,6 +34,55 @@ const fetchKRS = async () => {
     viewKRS.value = krs;
     Swal.close();
 };
+
+const createKrs = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // Periksa apakah ada data KHS yang dipilih
+        if (selectedKHS.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
+            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
+        }
+
+        // Kumpulkan id_kelas_kuliah dari elemen yang dipilih
+        const kelasKuliahs = selectedKHS.value.map((item) => ({
+            id_kelas_kuliah: item.id_kelas_kuliah
+        }));
+
+        const token = getToken();
+        const response = await axios.post(
+            `${API_URL}/krs-mahasiswa/create-krs-mahasiswa-active`,
+            {
+                kelas_kuliahs: kelasKuliahs
+            },
+            {
+                headers: {
+                    Authorization: token,
+                    'Content-Type': 'application/json' // Tambahkan header Content-Type
+                }
+            }
+        );
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Berhasil Menambahkan KRS.', 'success').then(() => {
+            window.location.href = '/profile-krs-mahasiswa';
+        });
+        console.log('Status berhasil diperbarui:', response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+        Swal.fire('GAGAL!', 'Gagal Menambahkan KRS.', 'error');
+    }
+};
+
+
 
 onBeforeMount(() => {
     fetchKRS();
@@ -64,10 +117,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button type="submit" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Simpan</button>
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>-->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <!-- <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Set Sistem Kuliah</button> -->
+                                <button @click="createKrs" type="submit" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Simpan</button>
                             </div>
                         </div>
                     </div>

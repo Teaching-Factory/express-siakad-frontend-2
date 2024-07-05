@@ -1,19 +1,24 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
+import { getUser } from '../utiils/local_storage';
 
+const user = ref([]);
+onMounted(() => {
+    user.value = getUser();
+});
 const events = ref([
     {
         start: new Date(),
         end: new Date(new Date().getTime() + 3600 * 1000), // 1 hour later
-        title: 'Sample Event 1',
+        title: 'Sample Event 1'
     },
     {
         start: new Date(new Date().setDate(new Date().getDate() + 1)),
         end: new Date(new Date().setDate(new Date().getDate() + 1) + 3600 * 1000), // 1 hour later, next day
-        title: 'Sample Event 2',
-    },
+        title: 'Sample Event 2'
+    }
 ]);
 
 const onEventClick = (event) => {
@@ -29,10 +34,9 @@ const onCellClick = (date) => {
     <div class="row">
         <div class="col-12 xl:col-4">
             <div class="card">
-                <h5>Hi, Aida Andinar</h5>
+                <h5>Hi,{{ user ? user : 'Guest' }}</h5>
                 <div class="mx-auto font-color mt-2">
-                    <span>Saat ini kamu berada di semester 8 dan telah berhasil menempuh sks dari 144 sks. Tetap
-                        semangat belajar, ya!</span>
+                    <span>Saat ini kamu berada di semester 8 dan telah berhasil menempuh sks dari 144 sks. Tetap semangat belajar, ya!</span>
                 </div>
                 <div class="mt-4">
                     <span class="font-color">IPK Anda</span>
@@ -53,8 +57,7 @@ const onCellClick = (date) => {
                 <div class="row">
                     <div class="col-12 xl:col-8 yl:col-8">
                         <div class="text-danger">
-                            <span>Saat ini Anda tidak memiliki jadwal kuliah yang harus diikuti, tetaplah semangat
-                                belajar dan menghasilkan karya - karya yang bermanfaat bagi nusa dan bangsa.</span>
+                            <span>Saat ini Anda tidak memiliki jadwal kuliah yang harus diikuti, tetaplah semangat belajar dan menghasilkan karya - karya yang bermanfaat bagi nusa dan bangsa.</span>
                         </div>
                         <div class="mt-3 text-danger">
                             <span>Atau Anda bisa akses halaman berikut : </span>
@@ -72,13 +75,7 @@ const onCellClick = (date) => {
             <div class="card">
                 <!-- <template> -->
                 <div id="cal">
-                    <vue-cal 
-                    class="vuecal--rounded-theme vuecal--blue-theme"
-                    hide-view-selector 
-                    :time="false" 
-                    active-view="month" 
-                    xsmall 
-                    :disable-views="['week']">
+                    <vue-cal class="vuecal--rounded-theme vuecal--blue-theme" hide-view-selector :time="false" active-view="month" xsmall :disable-views="['week']">
                         <template #arrow-prev>
                             <i class="pi pi-arrow-left"></i>
                         </template>
@@ -91,9 +88,9 @@ const onCellClick = (date) => {
             </div>
         </div>
         <div class="col-5">
-            <div class="card" style="height: calc(78vh - 200px);">
+            <div class="card" style="height: calc(78vh - 200px)">
                 <span><b>KELAS YANG DIBUKA PRESENSI HARI INI</b></span>
-                <hr>
+                <hr />
                 <div class="row bg-theme text-center" style="border-radius: 10px">
                     <div class="col-3">
                         <div class="text-secondary">
@@ -121,7 +118,7 @@ const onCellClick = (date) => {
         <div class="col-3">
             <div class="card">
                 <span><b>BUKA PRESENSI KELAS</b></span>
-                <hr>
+                <hr />
                 <div class="row">
                     <label for="exampleFormControlInput1" class="form-label">Mata Kuliah</label>
                     <div class="col-sm-12">
@@ -149,7 +146,7 @@ const onCellClick = (date) => {
                     <!-- <p>09.00 - 10.00</p> -->
                 </div>
                 <div class="row mt-2">
-                    <button class="btn btn-primary"> Buka Presensi</button>
+                    <button class="btn btn-primary">Buka Presensi</button>
                 </div>
             </div>
         </div>
@@ -158,7 +155,7 @@ const onCellClick = (date) => {
         <div class="col-12">
             <div class="card">
                 <span><b>INFORMASI TERBARU</b></span>
-                <hr>
+                <hr />
                 <div class="row bg-theme" style="border-radius: 10px">
                     <div class="col-12">
                         <div class="text-secondary text-center">
@@ -169,7 +166,6 @@ const onCellClick = (date) => {
             </div>
         </div>
     </div>
-
 </template>
 
 <style scoped>
@@ -185,5 +181,5 @@ const onCellClick = (date) => {
     background-color: #fbefea;
 }
 
-@import "~vue-cal/dist/vuecal.css";
+@import '~vue-cal/dist/vuecal.css';
 </style>

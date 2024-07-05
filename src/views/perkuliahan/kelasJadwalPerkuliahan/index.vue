@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import Modal from '../../../components/Modal.vue';
-import { get } from '../../../utiils/request';
+import { del, get } from '../../../utiils/request';
 import Swal from 'sweetalert2';
 
 const customer1 = ref([]);
@@ -16,6 +16,7 @@ const dosenpengajar = ref([]);
 const selectedKelasId = ref(null);
 const selectedPesertaId = ref(null);
 const pesertakelas = ref([]);
+const message = ref('');
 
 const fetchProdi = async () => {
     try {
@@ -134,6 +135,41 @@ const showPesertaKelas = async (id_kelas_kuliah) => {
     } catch (error) {
         Swal.fire('GAGAL!', 'Data Peserta Kelas tidak ditemukan.', 'warning').then(() => {});
     }
+};
+
+const deleteItem = async (id_kelas_kuliah) => {
+    try {
+        const response = await del(`kelas-kuliah/${id_kelas_kuliah}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+            // Menghapus item dari array sistemKuliahs yang memiliki id yang sesuai
+            // sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id !== id);
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
+
+const confirmDelete = (id_kelas_kuliah) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(id_kelas_kuliah);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            kelasjadwal.value = kelasjadwal.value.filter((data) => data.id_kelas_kuliah !== id_kelas_kuliah);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
+        }
+    });
 };
 
 onBeforeMount(() => {
@@ -381,7 +417,7 @@ function deleteDosen(index) {
                         </td>
                         <td class="text-end">
                             <button class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </button>
-                            <button class="btn  me-2 btn-danger"> <i class="pi pi-trash "></i> </button>
+                            <button @click="confirmDelete(detail.KelasKuliah.id_kelas_kuliah)" class="btn  me-2 btn-danger"> <i class="pi pi-trash "></i> </button>
                             <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </router-link>
                             <!-- <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
                             <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button> -->

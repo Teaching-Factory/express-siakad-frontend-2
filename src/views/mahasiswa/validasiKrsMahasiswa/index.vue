@@ -20,6 +20,7 @@ const filters = ref({
 const validasiKRS = ref([]);
 const loading1 = ref(false);
 const selectedValidasi = ref([]);
+const message = ref('');
 
 const fetchValidasi = async () => {
     try {
@@ -75,14 +76,25 @@ const updateValidasi = async () => {
         console.error('Gagal memperbarui status:', error);
     }
 };
-onBeforeMount(() => {
-    fetchValidasi();
-});
+const deleteItem = async (id_registrasi_mahasiswa) => {
+    try {
+        const response = await del(`krs-mahasiswa/${id_registrasi_mahasiswa}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+            // Menghapus item dari array validasiKRS yang memiliki id yang sesuai
+            // validasiKRS.value = validasiKRS.value.filter((data) => data.id !== id);
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
 
-const confirmDelete = (no) => {
+const confirmDelete = (id_registrasi_mahasiswa) => {
     Swal.fire({
-        title: 'Apa Kamu yakin',
-        text: 'Ini Aida Andinar Maulidiana',
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Ya, saya yakin!',
@@ -90,17 +102,17 @@ const confirmDelete = (no) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteItem(no);
-            Swal.fire('Berhasil!', 'Data berhasil dihapus.', 'success');
+            deleteItem(id_registrasi_mahasiswa);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            validasiKRS.value = validasiKRS.value.filter((data) => data.id_registrasi_mahasiswa !== id_registrasi_mahasiswa);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire('Berhasil', 'Data Anda Tidak Jadi Dihapus', 'error');
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
     });
 };
-
-const deleteItem = (no) => {
-    validasiKRS.value = validasiKRS.value.filter((item) => item.no !== no);
-};
+onBeforeMount(() => {
+    fetchValidasi();
+});
 </script>
 
 <template>
@@ -125,7 +137,7 @@ const deleteItem = (no) => {
                     </div>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['nama_mahasiswa', 'nim', 'Periode.Prodi.nama_program_studi', 'total_sks', 'nama_status_mahasiswa', 'statusvalidasi']"
+            <DataTable v-model:filters="filters" :globalFilterFields="['nama_mahasiswa', 'nim', 'Prodi.nama_program_studi', 'total_sks', 'nama_status_mahasiswa', 'statusvalidasi']"
                 :value="validasiKRS"
                 v-model:selection="selectedValidasi"
                 :paginator="true"
@@ -172,7 +184,7 @@ const deleteItem = (no) => {
                 </Column>
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.Periode.Prodi.nama_program_studi }}
+                        {{ data.Prodi.nama_program_studi }}
                     </template>
                 </Column>
                 <Column filterField="total_sks" header="Jumlah SKS" style="min-width: 10rem">
@@ -196,7 +208,7 @@ const deleteItem = (no) => {
                             <i class="pi pi-pencil"></i>
                         </router-link>
                         
-                        <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.no)">
+                        <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)">
                             <i class="pi pi-trash"></i>
                         </button>
                     </template>

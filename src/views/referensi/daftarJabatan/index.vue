@@ -73,7 +73,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR JABATAN</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :value="jabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" :globalFilterFields="['nama_jabatan']" showGridlines>
+            <DataTable v-model:filters="filters" :value="jabatans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :globalFilterFields="['nama_jabatan']" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">

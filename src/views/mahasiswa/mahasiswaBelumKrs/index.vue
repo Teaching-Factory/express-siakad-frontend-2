@@ -15,9 +15,9 @@ const filters = ref({
 
 const first = ref(0);
 const belumKrs = ref([]);
-const selectedPeriode = ref('');
+const selectedSemester = ref('');
 const selectedProdi = ref('');
-const periodes = ref([]);
+const semesters = ref([]);
 const prodis = ref([]);
 
 const fetchProdi = async () => {
@@ -28,27 +28,27 @@ const fetchProdi = async () => {
         console.error('Gagal mengambil data :', error);
     }
 };
-const fetchPeriode = async () => {
+const fetchSemester = async () => {
     try {
-        const response = await get('periode');
-        periodes.value = response.data.data;
+        const response = await get('semester');
+        semesters.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
 };
 
 const selectedFilter = async () => {
-    await Promise.all([fetchProdi(), fetchPeriode()]);
+    await Promise.all([fetchProdi(), fetchSemester()]);
 };
 
 const filterData = async () => {
-    const periodeId = selectedPeriode.value;
+    const semesterId = selectedSemester.value;
     const prodiId = selectedProdi.value;
 
-    console.log('Selected Periode:', periodeId);
+    console.log('Selected Periode:', semesterId);
     console.log('Selected Prodi:', prodiId);
 
-    if (!periodeId || !prodiId) {
+    if (!semesterId || !prodiId) {
         // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
         Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning').then(() => {});
         return;
@@ -63,7 +63,7 @@ const filterData = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`krs-mahasiswa/${periodeId}/${prodiId}/get-mahasiswa-belum-krs`);
+        const response = await get(`krs-mahasiswa/${semesterId}/${prodiId}/get-mahasiswa-belum-krs`);
         const filterbelumkrs = response.data.data;
 
         belumKrs.value = filterbelumkrs;
@@ -99,10 +99,10 @@ onBeforeMount(() => {
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Periode</option>
-                            <option v-for="periode in periodes" :key="periode.id_periode" :value="periode.id_periode">{{ periode.periode_pelaporan }}</option>
+                        <label for="exampleFormControlInput1" class="form-label">Semester</label>
+                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Semester</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
@@ -113,7 +113,7 @@ onBeforeMount(() => {
         </div>
         <DataTable
             v-model:filters="filters"
-            :globalFilterFields="['nama_mahasiswa', 'nim', 'Periode.Prodi.nama_program_studi', 'dosenwali', 'angkatan ']"
+            :globalFilterFields="['nama_mahasiswa', 'nim', 'Prodi.nama_program_studi', 'dosenwali', 'angkatan ']"
             :value="belumKrs"
             :paginator="true"
             :rows="10"
@@ -162,7 +162,7 @@ onBeforeMount(() => {
             </Column>
             <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.Periode?.Prodi?.nama_program_studi || '-' }}
+                    {{ data.Prodi?.nama_program_studi || '-' }}
                 </template>
             </Column>
 

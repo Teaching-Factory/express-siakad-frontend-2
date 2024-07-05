@@ -121,7 +121,7 @@ onBeforeMount(() => {
                             </template>
                         </Column>
                         <Column header="Aksi" style="min-width: 15rem">
-                            <template #body="{ data }">
+                            <template #body="{  }">
                                 <router-link to="/detail-pembayaran-mahasiswa" class="btn btn-outline-primary me-2">
                                     <i class="pi pi-eye"></i>
                                 </router-link>

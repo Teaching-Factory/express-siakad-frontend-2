@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, computed } from 'vue';
 import Swal from 'sweetalert2';
 import { FilterMatchMode } from 'primevue/api';
 import { get } from '../../../utiils/request';
@@ -80,6 +80,11 @@ const filterData = async () => {
         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
     }
 };
+const userPermissions = ref(JSON.parse(localStorage.getItem('permissions')) || []);
+
+const canCreateNilaiPerkuliahan = computed(() => {
+    return userPermissions.value.includes('create-nilai-perkuliahan');
+});
 
 onBeforeMount(() => {
     selectedFilter();
@@ -216,7 +221,7 @@ const deleteItem = (no) => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link to="/nilai-perkuliahan/create" class="btn btn-outline-primary me-2">
+                        <router-link :to="`/nilai-perkuliahan/form/${data.id_kelas_kuliah}/${data.id_prodi}`" class="btn btn-outline-primary me-2">
                             <i class="pi pi-pencil"></i>
                         </router-link>
                         <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
