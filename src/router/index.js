@@ -559,13 +559,18 @@ const router = createRouter({
                     meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
-                    path: '/pertemuan-perkuliahan',
+                    path: '/pertemuan-perkuliahan/:id_kelas_kuliah',
                     name: 'pertemuan-perkuliahan',
                     component: () => import('../views/perkuliahan-dosen/pertemuanKelas/index.vue')
                 },
                 {
-                    path: '/pertemuan-perkuliahan/create',
+                    path: '/pertemuan-perkuliahan/create/:id_kelas_kuliah',
                     name: 'pertemuan-perkuliahan-create',
+                    component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
+                },
+                {
+                    path: '/pertemuan-perkuliahan/update/:id',
+                    name: 'pertemuan-perkuliahan-update',
                     component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
                 }
             ]
