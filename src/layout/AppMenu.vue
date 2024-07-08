@@ -188,6 +188,11 @@ const model = ref([
                 }),
                 items: [
                     {
+                        label: 'Jenis Tagihan',
+                        to: '/jenis-tagihan',
+                        // visible: computed(() => permissions.includes('sistem-kuliah'))
+                    },
+                    {
                         label: 'Sistem Kuliah',
                         to: '/sistem-kuliah',
                         visible: computed(() => permissions.includes('sistem-kuliah'))
