@@ -6,9 +6,12 @@ import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
-    status: { value: null, matchMode: FilterMatchMode.EQUALS },
-    total: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_semester: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_kelas_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    hari: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const semesters = ref([]);
@@ -104,7 +107,7 @@ onBeforeMount(() => {
                     <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['prodi', 'status', 'total']"
+            <DataTable v-model:filters="filters" :globalFilterFields="['KelasKuliah.nama_kelas_kuliah','KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'RuangPerkuliahan.nama_ruang_perkuliahan', 'hari']"
                 :value="kelasKuliah"
                 :paginator="true"
                 :rows="10"
@@ -131,24 +134,29 @@ onBeforeMount(() => {
                         {{ first + slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column filterField="periode" header="Periode" style="min-width: 10rem">
+                <Column filterField="nama_semester" header="Periode" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data?.kelasKuliah?.id_semester }}
+                        {{ data.KelasKuliah.Semester.nama_semester }}
                     </template>
                 </Column>
-                <Column filterField="prodi" header="Program Studi" style="min-width: 12rem">
+                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 12rem">
                     <template #body="{ data }">
-                        {{ data?.kelasKuliah?.id_prodi }}
+                        {{ data.KelasKuliah.Prodi.nama_program_studi}}
                     </template>
                 </Column>
-                <Column filterField="matakuliah" header="Mata Kuliah" style="min-width: 10rem">
+                <Column filterField="nama_mata_kuliah" header="Mata Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data?.kelasKuliah?.id_matkul }}
+                        {{ data.KelasKuliah.MataKuliah.nama_mata_kuliah }}
                     </template>
                 </Column>
-                <Column filterField="ruang" header="Ruang" style="min-width: 5rem">
+                <Column filterField="nama_ruang_perkuliahan" header="Ruang" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.id_ruang_perkuliahan }}
+                        {{ data.RuangPerkuliahan.nama_ruang_perkuliahan }}
+                    </template>
+                </Column>
+                <Column filterField="nama_kelas_kuliah" header="Kelas" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        {{ data.KelasKuliah.nama_kelas_kuliah }}
                     </template>
                 </Column>
                 <Column filterField="hari" header="Hari" style="min-width: 5rem">
@@ -156,17 +164,17 @@ onBeforeMount(() => {
                         {{ data.hari }}
                     </template>
                 </Column>
-                <Column filterField="waktu" header="Waktu" style="min-width: 8rem">
+                <Column filterField="jam_mulai" header="Waktu" style="min-width: 8rem">
                     <template #body="{ data }">
                         {{ data.jam_mulai }} - {{ data.jam_selesai }}
                     </template>
                 </Column>
                 <Column filterField="aksi" field="aksi" header="Aksi" style="min-width: 10rem">
-                    <template #body="{  }">
-                        <router-link to="/nilai-perkuliahan/create" class="btn btn-primary me-2 border-0" style="background-color: #FFE500;"> 
+                    <template #body="{ data }">
+                        <router-link :to="`/nilai-perkuliahan/form/${data.id_kelas_kuliah}/${data.KelasKuliah.id_prodi}`" class="btn btn-primary me-2 border-0" style="background-color: #FFE500;"> 
                             <i style="color: #000;" class="pi pi-file-edit"></i>
                         </router-link>
-                        <router-link to="/pertemuan-perkuliahan" class="btn btn-primary border-0" style="background-color: #000;"> 
+                        <router-link :to="`/pertemuan-perkuliahan/${data.id_kelas_kuliah}`" class="btn btn-primary border-0" style="background-color: #000;"> 
                             <i class="pi pi-user-edit"></i>
                         </router-link>
                     </template>
