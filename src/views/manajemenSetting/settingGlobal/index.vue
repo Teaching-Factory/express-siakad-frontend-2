@@ -1,46 +1,27 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
+import { getData } from '../../../utiils/request';
+import { onMounted } from 'vue';
 
-const customer1 = ref([]);
 const loading1 = ref(false)
+const settingGlobal = ref([]);
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
-
-        case 'qualified':
-            return 'success';
-            
-        case 'new':
-            return 'info';
-
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
-    }
-};
-
-onBeforeMount(() => {
-    customer1.value = [
-        {
-            prodi: 'S1 Teknik Informatika',
-            krs: 'checkbox',
-            penilaian: 'checkbox',
-            khs: 'checkbox',
-            transkrip: 'checkbox',
-        },{
-            prodi: 'S1 Teknik Informatika',
-            krs: 'checkbox',
-            penilaian: 'checkbox',
-            khs: 'checkbox',
-            transkrip: 'checkbox',
+const getSettingGlobal = async () => {
+    try {
+        const res = await getData('setting-global');
+        console.log('setting-global', res.data.data);
+        if(res.status === 200){
+            settingGlobal.value = res.data.data;
         }
-        // Add more dummy data here
-    ];
-})
+    } catch (error){
+        throw error
+    }
+}
+
+
+onMounted(() => {
+    getSettingGlobal();
+});
 </script>
 
 <template>
@@ -62,15 +43,15 @@ onBeforeMount(() => {
             </div>
             <div class="card">
                 
-                    <DataTable
-                :value="customer1"
-                :paginator="true"
-                :rows="10"
-                dataKey="id"
-                :rowHover="true"
-                :loading="loading1"
-                showGridlines
-            >
+                <DataTable
+                    :value="settingGlobal"
+                    :paginator="true"
+                    :rows="10"
+                    dataKey="id"
+                    :rowHover="true"
+                    :loading="loading1"
+                    showGridlines
+                >
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -81,9 +62,6 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
-                                <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
-                                <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
                                 <button class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i> Edit</button>
                             </div>
                         </div>
@@ -99,36 +77,37 @@ onBeforeMount(() => {
                 
                 <Column field="no" header="Kode Prodi" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.kode }}
+                        {{ data.Prodi.kode_program_studi }}
                     </template>
                 </Column>
                 <Column header="Nama Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.prodi }}</span>
+                            <span>
+                                {{ data.Prodi.nama_program_studi }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column header="Buka KRS" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.krs }}</span>
+                            <input type="checkbox" :checked="data.open_khs">
                         </div>
                     </template>
                 </Column>
                 <Column header="Buka Penilaian" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.penilaian }}
+                        <input type="checkbox" :checked="data.open_assessment">
                     </template>
                 </Column>
                 <Column header="Buka KHS" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.khs }}
+                        <input type="checkbox" :checked="data.open_khs">
                     </template>
                 </Column>
                 <Column header="Buka Transkrip" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.transkrip }}
+                        <input type="checkbox" :checked="data.open_transcript">
                     </template>
                 </Column>
             </DataTable>

@@ -40,38 +40,6 @@ export const get = async (url, props = {}) => {
     }
 };
 
-export const postData = async (url, body, props = {}) => {
-    try {
-        const token = getToken(); // Pastikan Anda mendapatkan token dari suatu sumber yang sesuai
-
-        if (!token) {
-            throw new Error('No token found');
-        }
-
-        const headers = {
-            Authorization: token
-        };
-
-        if (body instanceof FormData) {
-            headers['Content-Type'] = 'multipart/form-data';
-        } else {
-            headers['Content-Type'] = 'application/json';
-        }
-
-        const res = await axios.post(`${API_URL}/${url}`, body, {
-            headers: headers
-        });
-
-        if (res.status < 200 || res.status >= 300) {
-            throw new Error(`Failed to add data to server with status ${res.status}`);
-        }
-
-        return { status: res.status, data: res.data };
-    } catch (err) {
-        throw err;
-    }
-};
-
 export const putData = async (url, body, props = {}) => {
     try {
         const token = getToken(); // Pastikan Anda mendapatkan token dari suatu sumber yang sesuai
@@ -126,28 +94,6 @@ export const del = async (url, props = {}) => {
 };
 
 
-export const delData = async (url) => {
-    try {
-        const token = getToken();
-        const res = await fetch(`${API_URL}/${url}`,{
-            method: 'DELETE',            
-            headers: {
-                'Accept': 'aplication/json',
-                'Authorization': `${token}`
-            }
-        });
-        
-        if (!res.ok) {
-            throw new Error('Network response was not oke');
-        }
-
-        const responseData = await res.json();
-        Swal.close();
-        return { status: res.status, data: responseData };
-    } catch (error) {
-        throw error
-    }
-}
 export const post = async (url, body, config = {}) => {
     try {
         const res = await fetch(`${API_URL}/${url}`, {
@@ -172,6 +118,36 @@ export const post = async (url, body, config = {}) => {
     }
 };
 
+
+
+export const createData = async (url, body) => {
+    try {
+        const token = getToken();
+        if (!token) {
+            throw new Error('No token found');
+        }
+        
+        const res = await fetch(`${API_URL}/${url}`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "aplication/json",
+                "Authorization": `${token}`,
+            },
+            body: body,
+            mode: 'cors'
+        });
+        const resData = await res.json()
+        Swal.close()
+        return { status: res.status, data: resData}
+    } catch (err) {
+        throw err
+    }   
+}
+
+
+
+
+// Services New
 
 export const getData = async (url, config = {}) => {
     try {
@@ -207,26 +183,59 @@ export const getData = async (url, config = {}) => {
     }   
 }
 
-export const createData = async (url, body) => {
+
+export const postData = async (url, body, props = {}) => {
     try {
-        const token = getToken();
+        const token = getToken(); // Pastikan Anda mendapatkan token dari suatu sumber yang sesuai
+
         if (!token) {
             throw new Error('No token found');
         }
-        
-        const res = await fetch(`${API_URL}/${url}`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "aplication/json",
-                "Authorization": `${token}`,
-            },
-            body: body,
-            mode: 'cors'
+
+        const headers = {
+            Authorization: token
+        };
+
+        if (body instanceof FormData) {
+            headers['Content-Type'] = 'multipart/form-data';
+        } else {
+            headers['Content-Type'] = 'application/json';
+        }
+
+        const res = await axios.post(`${API_URL}/${url}`, body, {
+            headers: headers
         });
-        const resData = await res.json()
-        Swal.close()
-        return { status: res.status, data: resData}
+
+        if (res.status < 200 || res.status >= 300) {
+            throw new Error(`Failed to add data to server with status ${res.status}`);
+        }
+
+        return { status: res.status, data: res.data };
     } catch (err) {
-        throw err
-    }   
+        throw err;
+    }
+};
+
+
+export const delData = async (url) => {
+    try {
+        const token = getToken();
+        const res = await fetch(`${API_URL}/${url}`,{
+            method: 'DELETE',            
+            headers: {
+                'Accept': 'aplication/json',
+                'Authorization': `${token}`
+            }
+        });
+        
+        if (!res.ok) {
+            throw new Error('Network response was not oke');
+        }
+
+        const responseData = await res.json();
+        Swal.close();
+        return { status: res.status, data: responseData };
+    } catch (error) {
+        throw error
+    }
 }

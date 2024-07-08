@@ -481,7 +481,7 @@ const router = createRouter({
                     path: '/setting-identitaspt',
                     name: 'setting-identitas-pt',
                     component: () => import('../views/manajemenSetting/settingIdentitasPT/index.vue'),
-                    meta: { requiredPermissions: ['setting-identitas-pt'] }
+                    meta: { requiredPermissions: ['identitas-pt'] }
                 },
 
                 //-----------role mahasiswa-------------------
