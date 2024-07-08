@@ -184,6 +184,24 @@ const router = createRouter({
                 //referensi
                 //sistem kuliah
                 {
+                    path: '/jenis-tagihan',
+                    name: 'jenis-tagihan',
+                    component: () => import('../views/referensi/jenisTagihan/index.vue'),
+                    // meta: { requiredPermissions: ['sistem-kuliah'] }
+                },
+                {
+                    path: '/jenis-tagihan/create',
+                    name: 'jenis-tagihan-create',
+                    component: () => import('../views/referensi/jenisTagihan/form.vue'),
+                    // meta: { requiredPermissions: ['sistem-kuliah'] }
+                },
+                {
+                    path: '/jenis-tagihan/edit/:id',
+                    name: 'jenis-tagihan-update',
+                    component: () => import('../views/referensi/jenisTagihan/form.vue'),
+                    // meta: { requiredPermissions: ['sistem-kuliah'] }
+                },
+                {
                     path: '/sistem-kuliah',
                     name: 'sistem-kuliah',
                     component: () => import('../views/referensi/sistemKuliah/index.vue'),
