@@ -72,13 +72,23 @@ const updateStatus = async (id_prodi, id_angkatan) => {
 };
 
 // Function to set mahasiswa status to non-aktif
-const setNonAktif = async () => {
-    for (const id_angkatan of selectedIds.value) {
-        await updateStatus(id_prodi, id_angkatan);
+// Function to set mahasiswa status to non-aktif
+const setNonAktif = async (id_prodi) => {
+    if (selectedIds.value.length === 0) {
+        Swal.fire('PERINGATAN!', 'Tidak ada data yang dipilih.', 'warning');
+        return; // Hentikan eksekusi jika tidak ada data yang dipilih
     }
-    Swal.fire('BERHASIL!', 'Data berhasil diUpdate.', 'success').then(() => {
-        window.location.href = `/status-mahasiswa/${id_prodi}`;
-    });
+
+    try {
+        for (const id_angkatan of selectedIds.value) {
+            await updateStatus(id_prodi, id_angkatan);
+        }
+        Swal.fire('BERHASIL!', 'Data berhasil diUpdate.', 'success').then(() => {
+            window.location.href = `/status-mahasiswa/${id_prodi}`;
+        });
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+    }
 };
 
 const onPageChange = (event) => {

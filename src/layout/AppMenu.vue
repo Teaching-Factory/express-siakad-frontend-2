@@ -151,21 +151,21 @@ const model = ref([
                     return [, 'daftar-dosen-wali', 'manajemen-mahasiswa-wali', 'set-kolektif-dosenwali'].some((permission) => permissions.includes(permission));
                 }),
                 items: [
-                    {
-                        label: 'Daftar Dosen Wali',
-                        to: '/daftar-dosen-wali',
-                        visible: computed(() => permissions.includes('daftar-dosen-wali'))
-                    },
+                    // {
+                    //     label: 'Daftar Dosen Wali',
+                    //     to: '/daftar-dosen-wali',
+                    //     visible: computed(() => permissions.includes('daftar-dosen-wali'))
+                    // },
                     {
                         label: 'Manajemen Mahasiswa Wali',
                         to: '/manajemen-mahasiswa-wali',
                         visible: computed(() => permissions.includes('manajemen-mahasiswa-wali'))
-                    },
-                    {
-                        label: 'Mahasiswa Wali (Kolektif)',
-                        to: '/set-kolektif-dosenwali',
-                        visible: computed(() => permissions.includes('set-kolektif-dosenwali'))
                     }
+                    // {
+                    //     label: 'Mahasiswa Wali (Kolektif)',
+                    //     to: '/set-kolektif-dosenwali',
+                    //     visible: computed(() => permissions.includes('set-kolektif-dosenwali'))
+                    // }
                 ]
             }
         ]
@@ -189,7 +189,7 @@ const model = ref([
                 items: [
                     {
                         label: 'Jenis Tagihan',
-                        to: '/jenis-tagihan',
+                        to: '/jenis-tagihan'
                         // visible: computed(() => permissions.includes('sistem-kuliah'))
                     },
                     {

@@ -89,7 +89,7 @@ const filterData = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`mahasiswa/${prodiId}/${angkatanId}/get`);
+        const response = await get(`dosen-wali//${prodiId}/${angkatanId}/get-mahasiswa-dont-have-dosen`);
         const filterMahasiswa = response.data.data;
 
         mahasiswas.value = filterMahasiswa;

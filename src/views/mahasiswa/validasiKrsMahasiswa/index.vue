@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, computed } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { get } from '../../../utiils/request';
@@ -13,16 +13,59 @@ const filters = ref({
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
     total_sks: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
-    statusvalidasi: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_status_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const validasiKRS = ref([]);
 const loading1 = ref(false);
 const selectedValidasi = ref([]);
+const prodis = ref([]);
+const semesters = ref([]);
+const selectedProdi = ref('');
+const selectedSemester = ref('');
 const message = ref('');
 
-const fetchValidasi = async () => {
+const fetchProdi = async () => {
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const fetchSemester = async () => {
+    try {
+        const response = await get('semester');
+        semesters.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const selectedFilter = async () => {
+    // loading1.value = true;
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    await Promise.all([fetchProdi(), fetchSemester()]);
+    Swal.close();
+};
+
+const filterData = async () => {
+    const prodiId = selectedProdi.value;
+    const semesterId = selectedSemester.value;
+
+    if (!prodiId || !semesterId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning').then(() => {});
+        return;
+    }
+
     try {
         Swal.fire({
             title: 'Loading...',
@@ -32,12 +75,12 @@ const fetchValidasi = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('krs-mahasiswa/get-mahasiswa-krs-belum-tervalidasi');
-        const validasi = response.data.data;
-        validasiKRS.value = validasi;
+        const response = await get(`krs-mahasiswa/${prodiId}/${semesterId}/get-mahasiswa-krs-belum-tervalidasi`);
+
+        validasiKRS.value = response.data.data;
         Swal.close();
     } catch (error) {
-        console.error('Gagal mengambil data:', error);
+        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
     }
 };
 const updateValidasi = async () => {
@@ -48,7 +91,16 @@ const updateValidasi = async () => {
         }
 
         const token = getToken();
-        const url = `${API_URL}/krs-mahasiswa/validasi-krs`;
+        const prodiId = selectedProdi.value;
+        const semesterId = selectedSemester.value;
+
+        // Periksa apakah prodiId dan semesterId sudah dipilih
+        if (!prodiId || !semesterId) {
+            Swal.fire('PERINGATAN!', 'Prodi atau Semester belum dipilih.', 'warning');
+            return;
+        }
+
+        const url = `${API_URL}/krs-mahasiswa/${prodiId}/${semesterId}/validasi-krs`;
 
         // Persiapkan data untuk permintaan PUT
         const data = {
@@ -76,6 +128,7 @@ const updateValidasi = async () => {
         console.error('Gagal memperbarui status:', error);
     }
 };
+
 const deleteItem = async (id_registrasi_mahasiswa) => {
     try {
         const response = await del(`krs-mahasiswa/${id_registrasi_mahasiswa}/delete`);
@@ -110,8 +163,16 @@ const confirmDelete = (id_registrasi_mahasiswa) => {
         }
     });
 };
+const validasiUrl = computed(() => {
+    const id_prodi = selectedProdi.value;
+    const id_semester = selectedSemester.value;
+    if (!id_prodi || !id_semester) {
+        return '';
+    }
+    return `/validasi-krs-mahasiswa/${id_prodi}/${id_semester}/tervalidasi`;
+});
 onBeforeMount(() => {
-    fetchValidasi();
+    selectedFilter();
 });
 </script>
 
@@ -127,6 +188,7 @@ onBeforeMount(() => {
                             <li>Fitur ini menampilkan seluruh daftar mahasiswa yang telah melakukan KRS. </li>
                             <li>Disarankan Mahasiswa sudah di set Dosen Wali terlebih dahulu.</li>
                             <li>Untuk melakukan validasi KRS Online, centang pada mahasiswa yang akan divalidasi KRS Online tanpa melalui dosen wali terlebih dahulu. kemudian klik tombol "PROSES VALIDASI"</li>
+                            <li>Dapat melihat status krs mahasiswa yang sudah tervalidasi pada button tervalidasi</li>
                             <li>Untuk membatalkan validasi KRS Online, klik tombol hapus pada mahasiswa yang diinginkan.</li>
                             <li>Fitur ini hanya digunakan untuk membantu proses validasi oleh admin, proses validasi sebenarnya terdapat pada login dosen wali.</li>
                             <li>KRS Mahasiswa yang dapat divalidasi ialah Mahasiswa yang memiliki status aktivitas perkuliahan AKTIF.</li>
@@ -135,7 +197,30 @@ onBeforeMount(() => {
                         </ol>
                         </p>
                     </div>
+                    <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
+                        </select>
+                    </div>
                 </div>
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Semester</label>
+                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Semester</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                </div>
+                <hr/>
+                </div>
+               
             </div>
             <DataTable v-model:filters="filters" :globalFilterFields="['nama_mahasiswa', 'nim', 'Prodi.nama_program_studi', 'total_sks', 'nama_status_mahasiswa', 'statusvalidasi']"
                 :value="validasiKRS"
@@ -144,7 +229,6 @@ onBeforeMount(() => {
                 :rows="10"
                 dataKey="id_registrasi_mahasiswa"
                 :rowHover="true"
-                :loading="loading1"
                 showGridlines
             >
                 <template #header>
@@ -157,6 +241,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
+                                <router-link :to="validasiUrl" class="btn btn-primary"> <i class="pi pi-eye me-2"></i> Tervalidasi</router-link>
                                 <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button>
                                 <button class="btn btn-primary" @click="updateValidasi"> <i class="pi pi-check me-2"></i> Proses Validasi</button>
                             </div>
@@ -195,11 +280,6 @@ onBeforeMount(() => {
                 <Column filterField="nama_status_mahasiswa" header="Status Mahasiswa" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.nama_status_mahasiswa }}
-                    </template>
-                </Column>
-                <Column filterField="statusvalidasi" header="Status Validasi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        {{ data.statusvalidasi}}
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
