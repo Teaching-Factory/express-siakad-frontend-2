@@ -151,7 +151,7 @@ const deleteItem = (no) => {
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <button class="btn btn-secondary"><i class="pi pi-plus me-2"></i> Tambah</button>
+                            <router-link to="/daftar-tagihan/create" class="btn btn-secondary"><i class="pi pi-plus me-2"></i> Tambah</router-link>
                         </div>
                     </div>
                 </div>
