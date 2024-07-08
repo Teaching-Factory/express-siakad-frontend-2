@@ -58,12 +58,21 @@ const create = async () => {
         const payload = {
             penilaians: dataMahasiswa.value.map((mahasiswa) => ({
                 id_registrasi_mahasiswa: mahasiswa.id_registrasi_mahasiswa,
-                nilai_bobot: mahasiswa.nilai_bobot.map((nilai) => ({
-                    id_bobot: nilai.id_bobot, // pastikan id_bobot disesuaikan dengan struktur API
-                    nilai: nilai.nilai
-                }))
+                nilai_bobot: mahasiswa.nilai_bobot.map((nilai) => {
+                    const bobot = bobotPenilaian.value.find((b) => b.someKey === nilai.someKey); // Sesuaikan kunci pencocokan
+                    if (!bobot) {
+                        throw new Error(`Bobot Penilaian with key ${nilai.someKey} not found`);
+                    }
+                    console.log('Nilai:', nilai, 'Bobot:', bobot); // Logging data nilai dan bobot
+                    return {
+                        id_bobot: bobot.id_bobot_penilaian, // Ambil id_bobot dari bobotPenilaian
+                        nilai: nilai.nilai
+                    };
+                })
             }))
         };
+
+        console.log('Payload:', JSON.stringify(payload, null, 2)); // Logging payload
 
         const response = await axios.post(`${API_URL}/nilai-perkuliahan/${id_kelas_kuliah}/penilaian-detail-perkuliahan-kelas`, payload, {
             headers: {
@@ -168,19 +177,19 @@ onMounted(() => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(nilai, index) in dataMahasiswa" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ nilai?.Mahasiswa?.nim }}</td>
-                            <td>{{ nilai?.Mahasiswa?.nama_mahasiswa }}</td>
-                            <td>{{ nilai?.angkatan }}</td>
-                            <td v-for="(nilai_bobot, bIndex) in nilai.nilai_bobot" :key="bIndex">
-                                <input type="text" class="form-control" v-model="nilai_bobot.nilai" />
+                        <tr v-for="(mahasiswa, mIndex) in dataMahasiswa" :key="mIndex">
+                            <td>{{ mIndex + 1 }}</td>
+                            <td>{{ mahasiswa?.Mahasiswa?.nim }}</td>
+                            <td>{{ mahasiswa?.Mahasiswa?.nama_mahasiswa }}</td>
+                            <td>{{ mahasiswa?.angkatan }}</td>
+                            <td v-for="(bobot, bIndex) in bobotPenilaian" :key="bIndex">
+                                <input type="text" class="form-control" />
                             </td>
                             <td>
-                                <input type="text" class="form-control" v-model="nilaiMahasiswa.nilai_angka" disabled />
+                                <input type="text" class="form-control" v-model="mahasiswa.nilai_angka" disabled />
                             </td>
                             <td>
-                                <input type="text" class="form-control" v-model="nilaiMahasiswa.nilai_huruf" disabled />
+                                <input type="text" class="form-control" v-model="mahasiswa.nilai_huruf" disabled />
                             </td>
                         </tr>
                     </tbody>
