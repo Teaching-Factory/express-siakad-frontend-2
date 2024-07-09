@@ -1,69 +1,64 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
+import { del, get } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
-    name: { value: null, matchMode: FilterMatchMode.EQUALS },
-    periode: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nominal: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    periode_pelaporan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlah_tagihan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    status_tagihan: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-import Swal from 'sweetalert2';
-const customer1 = ref([]);
-const loading1 = ref(false);
+const tagihans = ref([]);
+const first = ref(0);
+const message = ref('');
+const fetchTagihan = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get('tagihan-mahasiswa');
+        // console.log(response.data.data);
+        tagihans.value = response.data.data;
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data sistemKuliah:', error);
+    }
+};
+
+const onPageChange = (event) => {
+    first.value = event.first;
+};
 
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            id: '098765456789876',
-            nim: '12345678',
-            name: 'John Doe',
-            jenistagihan: 'SPP',
-            periode: '2020/2021 Genap',
-            nominal: 'Rp. 2.400.000,-',
-            statustagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Status Tagihan</option>
-                    <option value="option2">Lunas</option>
-                    <option value="option3">Belum Lunas</option>
-                    <option value="option3">Belum Bayar</option>
-                </select>
-            </div>`
-        },
-        {
-            no: '2',
-            nim: '12345678',
-            name: 'John Doe',
-            jenistagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Jenis Tagihan</option>
-                    <option value="option2">KKN</option>
-                    <option value="option3">MKI</option>
-                    <option value="option3">UKT</option>
-                </select>
-            </div>`,
-            periode: '2020/2021 Genap',
-            nominal: 'Rp. 2.400.000,-',
-            statustagihan: `
-            <div class="actions gap-2">
-                <select class="form-select" id="sistemkuliahDropdown">
-                    <option value="option1">--Pilih Status Tagihan</option>
-                    <option value="option2">Lunas</option>
-                    <option value="option3">Belum Lunas</option>
-                    <option value="option3">Belum Bayar</option>
-                </select>
-            </div>`
-        }
-        // Add more dummy data here
-    ];
+    fetchTagihan();
 });
 
-const confirmDelete = (no) => {
+const deleteItem = async (id_tagihan_mahasiswa) => {
+    try {
+        const response = await del(`tagihan-mahasiswa/${id_tagihan_mahasiswa}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+            // Menghapus item dari array sistemKuliahs yang memiliki id_tagihan_mahasiswa yang sesuai
+            // sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id_tagihan_mahasiswa !== id_tagihan_mahasiswa);
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
+
+const confirmDelete = (id_tagihan_mahasiswa) => {
     Swal.fire({
         title: 'Apa Kamu Yakin?',
         text: 'Data ini akan dihapus',
@@ -74,16 +69,13 @@ const confirmDelete = (no) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteItem(no);
+            deleteItem(id_tagihan_mahasiswa);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            tagihans.value = tagihans.value.filter((data) => data.id_tagihan_mahasiswa !== id_tagihan_mahasiswa);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
     });
-};
-
-const deleteItem = (no) => {
-    customer1.value = customer1.value.filter((item) => item.no !== no);
 };
 </script>
 
@@ -140,7 +132,18 @@ const deleteItem = (no) => {
                 </div>
             </div>
         </div>
-        <DataTable v-model:filters="filters" :globalFilterFields="['nim', 'name', 'periode', 'nominal']" :value="customer1" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+        <DataTable
+            v-model:filters="filters"
+            :globalFilterFields="['Mahasiswa.nim', 'Mahasiswa.nama_mahasiswa', 'Periode.periode_pelaporan', 'jumlah_tagihan', 'jenis-tagihan']"
+            :value="tagihans"
+            :paginator="true"
+            :rows="10"
+            dataKey="id"
+            :rowHover="true"
+            showGridlines
+            :first="first"
+            @page="onPageChange"
+        >
             <template #header>
                 <div class="row">
                     <div class="col-lg-6 d-flex justify-content-start">
@@ -160,44 +163,57 @@ const deleteItem = (no) => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            <template #loading> Loading customers data. Please wait. </template>
-            <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
+
+            <Column header="No" headerStyle="width:3rem">
+                <template #body="slotProps">
+                    {{ first + slotProps.index + 1 }}
                 </template>
             </Column>
             <Column filterField="nim" header="NIM" style="min-width: 10rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.nim }}</span>
+                        <span>{{ data.Mahasiswa.nim }}</span>
                     </div>
                 </template>
             </Column>
-            <Column filterField="name" header="Nama" style="min-width: 14rem">
+            <Column filterField="nama_mahasiswa" header="Nama" style="min-width: 14rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.name }}</span>
+                        <span>{{ data.Mahasiswa.nama_mahasiswa }}</span>
                     </div>
                 </template>
             </Column>
-            <Column header="Jenis Tagihan" style="min-width: 10rem">
+            <Column filterField="nama_jenis_tagihan" header="Jenis Tagihan" style="min-width: 10rem">
                 <template #body="{ data }">
-                    <div v-html="data.jenistagihan"></div>
+                    <div v-html="data.JenisTagihan.nama_jenis_tagihan"></div>
                 </template>
             </Column>
-            <Column filterField="periode" header="Periode" style="min-width: 10rem">
+            <Column filterField="periode_pelaporan" header="Periode" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.periode }}
+                    {{ data.Periode.periode_pelaporan }}
                 </template>
             </Column>
-            <Column filterField="nominal" header="Nominal" style="min-width: 10rem">
+            <Column filterField="jumlah_tagihan" header="Nominal" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.nominal }}
+                    {{ data.jumlah_tagihan }}
                 </template>
             </Column>
-            <Column header="Status Tagihan" style="min-width: 10rem">
+            <Column filterField="status_tagihan" header="Status Tagihan" style="min-width: 10rem">
                 <template #body="{ data }">
-                    <div v-html="data.statustagihan"></div>
+                    {{ data.status_tagihan }}
+                </template>
+            </Column>
+            <Column header="Aksi" style="min-width: 10rem">
+                <template #body="{ data }">
+                    <div class="flex gap-2">
+                        <router-link to="" class="btn btn-outline-primary">
+                            <i class="pi pi-pencil"></i>
+                            <!-- {{ console.log(data.id) }} -->
+                        </router-link>
+                        <button @click="confirmDelete(data.id_tagihan_mahasiswa)" class="btn btn-outline-danger">
+                            <i class="pi pi-trash"></i>
+                        </button>
+                    </div>
                 </template>
             </Column>
         </DataTable>
