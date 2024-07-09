@@ -28,17 +28,25 @@ onMounted(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>SETTING GLOBAL</h5>
             <div class="card" style="padding: 0rem 1rem 0rem 1rem">
+                <div class="row mt-3">
+                    <div class="col-lg-3">Semester Berlaku (Aktif)</div>
+                    <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
+                    <div class="col-lg-3">Semester KRS</div>
+                    <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
+                </div>
+                <hr />
                 <div class="row">
-                    <div class="col-12 col-md-6 col-lg-12">
-                        <h6 class="text-dark">Keterangan :</h6>
-                        <p class="lh-1 text-small">
-                            <ol>
-                                <li>AKM dapat diset Aktif ketika sudah pernah ditambahkan / set status Non-aktif</li>
-                                <li>Tidak Ada Jenis Tagihan yang menjadi syarat KRS, bila ingin meng-set tagihan yang menjadi flag KRS hubungi admin keuangan</li>
-                                <li>Data mahasiswa di bawah adalah mahasiswa yang belum terdaftar sebagai mahasiswa Lulus / Drop Out</li>
-                            </ol>
-                        </p>
-                    </div>
+                    <div class="col-lg-3">Semester Nilai</div>
+                    <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
+                    <div class="col-lg-3">Batas SKSnya KRS untuk Sarjana dan Diploma</div>
+                    <div class="col-lg-3"><span class="me-2"> :</span> 24</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-lg-3">Perhitungan Cetak Transkrip</div>
+                    <div class="col-lg-3"><span class="me-2">:</span> Nilai Tertinggi</div>
+                    <div class="col-lg-3">Wilayah Penandatanganan Laporan</div>
+                    <div class="col-lg-3"><span class="me-2"> :</span> Banyuwangi</div>
                 </div>
             </div>
             <div class="card">
@@ -62,7 +70,7 @@ onMounted(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i> Edit</button>
+                                <router-link to="/setting-global/edit" class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i> Edit</router-link>
                             </div>
                         </div>
                     </div>

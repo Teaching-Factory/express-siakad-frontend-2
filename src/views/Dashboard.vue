@@ -5,9 +5,12 @@ import 'vue-cal/dist/vuecal.css';
 import { getUser } from '../utiils/local_storage';
 
 const user = ref([]);
+const matkul = ref([]);
+
 onMounted(() => {
     user.value = getUser();
 });
+
 const events = ref([
     {
         start: new Date(),
@@ -20,6 +23,17 @@ const events = ref([
         title: 'Sample Event 2'
     }
 ]);
+
+const getMataKuliah = async () => {
+    try {
+        const res = getData('mata-kuliah');
+        if(res.status == 200) {
+            matkul.value = res.data.data
+        }
+    } catch(error) {
+        throw error
+    }
+}
 
 const onEventClick = (event) => {
     alert(`Event: ${event.title}`);

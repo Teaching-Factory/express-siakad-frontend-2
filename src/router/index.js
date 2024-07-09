@@ -472,6 +472,12 @@ const router = createRouter({
                     meta: { requiredPermissions: ['setting-global'] }
                 },
                 {
+                    path: '/setting-global/edit',
+                    name: 'setting-global-edit',
+                    component: () => import('../views/manajemenSetting/settingGlobal/form.vue'),
+                    // meta: { requiredPermissions: ['setting-global'] }
+                },
+                {
                     path: '/setting-ws',
                     name: 'setting-ws',
                     component: () => import('../views/manajemenSetting/settingWs/index.vue'),
