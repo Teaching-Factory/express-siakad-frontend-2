@@ -137,6 +137,8 @@ const showPesertaKelas = async (id_kelas_kuliah) => {
     }
 };
 
+
+
 const deleteItem = async (id_kelas_kuliah) => {
     try {
         const response = await del(`kelas-kuliah/${id_kelas_kuliah}/delete`);
@@ -354,66 +356,66 @@ function deleteDosen(index) {
                         <td class="text-end">
                             <button  @click="showPesertaKelas(detail.KelasKuliah.id_kelas_kuliah)" class="btn btn-primary me-2"><i class="pi pi-users me-2"></i>Detail Peserta</button>
                             <Modal
-                            v-if="showModal1"
-                            :show="showModal1"
-                            title="PESERTA KELAS"
-                            @close="showModal1 = false"
-                            >
-                            <table class="table table-bordered text-start">
-                                <tbody>
-                                    <tr>
-                                        <td class="table-header">Program Studi</td>
-                                        <td>{{ pesertakelas[0].KelasKuliah?.Prodi?.nama_program_studi ||'-' }}</td>
-                                        <td class="table-header">Periode</td>
-                                        <td>{{pesertakelas[0].KelasKuliah.Semester.nama_semester}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="table-header">Matakuliah</td>
-                                        <td>{{pesertakelas[0].KelasKuliah.MataKuliah.nama_mata_kuliah}} ({{pesertakelas[0].KelasKuliah.MataKuliah.sks_mata_kuliah}})</td>
-                                        <td class="table-header">Kelas</td>
-                                        <td>{{ pesertakelas[0].KelasKuliah.nama_kelas_kuliah }}</td>
-                                    </tr>
-                                    <!-- <tr>
-                                        <td class="table-header">Jumlah Peserta</td>
-                                        <td>1</td>
-                                        <td class="table-header"></td>
-                                        <td></td>
-                                    </tr> -->
-                                </tbody>
-                            </table>
-                            <div style="overflow-x: auto;">
-                                <table class="table table-bordered text-center">
-                                    <thead class="table-dark align-middle">
+                                v-if="showModal1"
+                                :show="showModal1"
+                                title="PESERTA KELAS"
+                                @close="showModal1 = false"
+                                >
+                                <table class="table table-bordered text-start">
+                                    <tbody>
                                         <tr>
-                                            <th rowspan="2">No</th>
-                                            <th rowspan="2">NIM</th>
-                                            <th rowspan="2">Nama Mahasiswa</th>
-                                            <th rowspan="2">Angkatan</th>
-                                            <th rowspan="2">Prodi</th>              
-                                            <th colspan="3">Nilai</th>              
+                                            <td class="table-header">Program Studi</td>
+                                            <td>{{ pesertakelas[0].KelasKuliah?.Prodi?.nama_program_studi ||'-' }}</td>
+                                            <td class="table-header">Periode</td>
+                                            <td>{{pesertakelas[0].KelasKuliah.Semester.nama_semester}}</td>
                                         </tr>
                                         <tr>
-                                            <th>Angka</th>
-                                            <th>Numerik</th>
-                                            <th>Huruf</th>  
+                                            <td class="table-header">Matakuliah</td>
+                                            <td>{{pesertakelas[0].KelasKuliah.MataKuliah.nama_mata_kuliah}} ({{pesertakelas[0].KelasKuliah.MataKuliah.sks_mata_kuliah}})</td>
+                                            <td class="table-header">Kelas</td>
+                                            <td>{{ pesertakelas[0].KelasKuliah.nama_kelas_kuliah }}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody >
-                                        <tr v-for="(mahasiswaKelas, index) in pesertakelas" :key="index">
-                                            <td>{{index + 1}}</td>
-                                            <td>{{mahasiswaKelas?.Mahasiswa?.nim || '-'}}</td>
-                                            <td>{{mahasiswaKelas.Mahasiswa.nama_mahasiswa}}</td>
-                                            <td>{{mahasiswaKelas.angkatan}}</td>
-                                            <td>{{mahasiswaKelas.KelasKuliah.Prodi.nama_program_studi}}</td>
-                                            <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_angka}}</td>
-                                            <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_indeks}}</td>
-                                            <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_huruf}}</td>
-                                        </tr>
+                                        <!-- <tr>
+                                            <td class="table-header">Jumlah Peserta</td>
+                                            <td>1</td>
+                                            <td class="table-header"></td>
+                                            <td></td>
+                                        </tr> -->
                                     </tbody>
                                 </table>
-                                
-                            </div>
-                        </Modal>
+                                <div style="overflow-x: auto;">
+                                    <table class="table table-bordered text-center">
+                                        <thead class="table-dark align-middle">
+                                            <tr>
+                                                <th rowspan="2">No</th>
+                                                <th rowspan="2">NIM</th>
+                                                <th rowspan="2">Nama Mahasiswa</th>
+                                                <th rowspan="2">Angkatan</th>
+                                                <th rowspan="2">Prodi</th>              
+                                                <th colspan="3">Nilai</th>              
+                                            </tr>
+                                            <tr>
+                                                <th>Angka</th>
+                                                <th>Numerik</th>
+                                                <th>Huruf</th>  
+                                            </tr>
+                                        </thead>
+                                        <tbody >
+                                            <tr v-for="(mahasiswaKelas, index) in pesertakelas" :key="index">
+                                                <td>{{index + 1}}</td>
+                                                <td>{{mahasiswaKelas?.Mahasiswa?.nim || '-'}}</td>
+                                                <td>{{mahasiswaKelas.Mahasiswa.nama_mahasiswa}}</td>
+                                                <td>{{mahasiswaKelas.angkatan}}</td>
+                                                <td>{{mahasiswaKelas.KelasKuliah.Prodi.nama_program_studi}}</td>
+                                                <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_angka}}</td>
+                                                <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_indeks}}</td>
+                                                <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_huruf}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </Modal>
                         </td>
                         <td class="text-end">
                             <button class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </button>

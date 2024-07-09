@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router';
 import { API_URL } from '../../../config/config';
 import { getToken } from '../../../service/auth';
 import { get } from '../../../utiils/request';
+import Modal from '../../../components/Modal.vue';
 
 const bobotPenilaian = ref([]);
 const getNilai = ref([]);
@@ -97,6 +98,14 @@ const create = async () => {
     }
 };
 
+
+const isUploadModalVisible = ref(false);
+
+const showUploadModal = () => {
+  isUploadModalVisible.value = true;
+};
+
+
 onMounted(() => {
     const id_prodi = route.params.id_prodi || route.query.id_prodi;
     const id_kelas_kuliah = route.params.id_kelas_kuliah || route.query.id_kelas_kuliah;
@@ -107,6 +116,7 @@ onMounted(() => {
         fetchGetNilai(id_kelas_kuliah);
     }
 });
+
 </script>
 
 <template>
@@ -119,12 +129,23 @@ onMounted(() => {
                 <div class="col-12 xl:col-6 d-flex justify-content-end">
                     <div class="flex justify-content-end gap-2">
                         <router-link to="/nilai-perkuliahan" class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Daftar</router-link>
-                        <button class="btn btn-success me-2"><i class="pi pi-upload mr-2"></i> Upload Excel</button>
+                        <button  @click="showUploadModal" class="btn btn-success me-2"><i class="pi pi-upload mr-2"></i> Upload Excel</button>
                         <button @click="create" class="btn btn-primary me-2"><i class="pi pi-save mr-2"></i> Simpan</button>
                         <button class="btn btn-danger"><i class="pi pi-times mr-2"></i> Batal</button>
                     </div>
                 </div>
             </div>
+            <Modal v-if="isUploadModalVisible" :show="isUploadModalVisible" title="Upload Excel" size="md" @close="isUploadModalVisible = false">
+            <form>
+                <p>Silahkan unduh template <a href="https://chatgpt.com/" target="_blank">Disini</a></p>
+                <div class="mb-3">
+                <label for="file" class="form-label">Upload File Excel</label>
+                <input type="file" class="form-control" id="file" @change="onFileChange">
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+            </Modal>
+
             <hr />
 
             <div class="card" style="border-radius: none !important">
