@@ -83,6 +83,7 @@ const filterData = async () => {
         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
     }
 };
+
 const updateValidasi = async () => {
     try {
         if (selectedValidasi.value.length === 0) {
