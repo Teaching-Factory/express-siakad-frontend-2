@@ -68,6 +68,12 @@ const router = createRouter({
                     name: 'validasi-krs-mahasiswa-detail-edit',
                     component: () => import('../views/mahasiswa/validasiKrsMahasiswa/editKRS.vue')
                 },
+                {
+                    path: '/validasi-krs-mahasiswa/:id_prodi/:id_semester/tervalidasi',
+                    name: 'validasi-krs-mahasiswa-tervalidasi',
+                    component: () => import('../views/mahasiswa/validasiKrsMahasiswa/tervalidasi.vue'),
+                    props: true
+                },
 
                 {
                     path: '/import-aktivitas-mahasiswa',
@@ -186,19 +192,19 @@ const router = createRouter({
                 {
                     path: '/jenis-tagihan',
                     name: 'jenis-tagihan',
-                    component: () => import('../views/referensi/jenisTagihan/index.vue'),
+                    component: () => import('../views/referensi/jenisTagihan/index.vue')
                     // meta: { requiredPermissions: ['sistem-kuliah'] }
                 },
                 {
                     path: '/jenis-tagihan/create',
                     name: 'jenis-tagihan-create',
-                    component: () => import('../views/referensi/jenisTagihan/form.vue'),
+                    component: () => import('../views/referensi/jenisTagihan/form.vue')
                     // meta: { requiredPermissions: ['sistem-kuliah'] }
                 },
                 {
                     path: '/jenis-tagihan/edit/:id',
                     name: 'jenis-tagihan-update',
-                    component: () => import('../views/referensi/jenisTagihan/form.vue'),
+                    component: () => import('../views/referensi/jenisTagihan/form.vue')
                     // meta: { requiredPermissions: ['sistem-kuliah'] }
                 },
                 {

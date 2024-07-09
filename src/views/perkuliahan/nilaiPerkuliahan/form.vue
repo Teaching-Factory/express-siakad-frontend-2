@@ -18,6 +18,10 @@ const fetchBobotPenilaian = async (id_prodi) => {
     try {
         const response = await get(`bobot-penilaian/prodi/${id_prodi}/get`);
         bobotPenilaian.value = response.data.data;
+        // Inisialisasi nilai_bobot pada setiap mahasiswa
+        dataMahasiswa.value.forEach((mahasiswa) => {
+            mahasiswa.nilai_bobot = bobotPenilaian.value.map(() => ({ nilai: '' }));
+        });
         console.log('Response data:', response.data.data);
     } catch (error) {
         console.error('Error fetching bobot penilaian:', error);
@@ -34,13 +38,15 @@ const fetchGetNilai = async (id_kelas_kuliah) => {
                 id_bobot_penilaian: bobot.id_bobot_penilaian,
                 nilai: ''
             })),
-            nilai_akhir: mahasiswa.nilai_angka || '',
-            nilai_huruf: mahasiswa.nilai_huruf || ''
+            nilai_angka: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_angka || '',
+            nilai_huruf: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_huruf || ''
         }));
+        console.log('Response data:', response.data.data);
     } catch (error) {
         console.error('Error fetching:', error);
     }
 };
+
 const create = async () => {
     try {
         Swal.fire({
@@ -58,14 +64,13 @@ const create = async () => {
         const payload = {
             penilaians: dataMahasiswa.value.map((mahasiswa) => ({
                 id_registrasi_mahasiswa: mahasiswa.id_registrasi_mahasiswa,
-                nilai_bobot: mahasiswa.nilai_bobot.map((nilai) => {
-                    const bobot = bobotPenilaian.value.find((b) => b.someKey === nilai.someKey); // Sesuaikan kunci pencocokan
+                nilai_bobot: mahasiswa.nilai_bobot.map((nilai, index) => {
+                    const bobot = bobotPenilaian.value[index];
                     if (!bobot) {
-                        throw new Error(`Bobot Penilaian with key ${nilai.someKey} not found`);
+                        throw new Error(`Bobot Penilaian at index ${index} not found`);
                     }
-                    console.log('Nilai:', nilai, 'Bobot:', bobot); // Logging data nilai dan bobot
                     return {
-                        id_bobot: bobot.id_bobot_penilaian, // Ambil id_bobot dari bobotPenilaian
+                        id_bobot: bobot.id_bobot_penilaian,
                         nilai: nilai.nilai
                     };
                 })
@@ -82,8 +87,9 @@ const create = async () => {
 
         nilaiMahasiswa.value = response.data.data;
         Swal.close();
-        Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-            window.location.href = `/nilai-perkuliahan/form/${id_kelas_kuliah}/${id_prodi}`;
+        Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(async () => {
+            await fetchGetNilai(id_kelas_kuliah); // Panggil fetchGetNilai setelah berhasil menambahkan data
+            //   window.location.href = `/nilai-perkuliahan/form/${id_kelas_kuliah}/${id_prodi}`;
         });
     } catch (error) {
         Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
@@ -183,7 +189,7 @@ onMounted(() => {
                             <td>{{ mahasiswa?.Mahasiswa?.nama_mahasiswa }}</td>
                             <td>{{ mahasiswa?.angkatan }}</td>
                             <td v-for="(bobot, bIndex) in bobotPenilaian" :key="bIndex">
-                                <input type="text" class="form-control" />
+                                <input type="text" class="form-control" v-model="mahasiswa.nilai_bobot[bIndex].nilai" />
                             </td>
                             <td>
                                 <input type="text" class="form-control" v-model="mahasiswa.nilai_angka" disabled />

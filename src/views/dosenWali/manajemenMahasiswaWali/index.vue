@@ -223,7 +223,7 @@ const confirmDelete = (id) => {
                 <Column filterField="prodi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_prodi }}</span>
+                            <span>{{ data.Mahasiswa.Prodi.nama_program_studi }}</span>
                         </div>
                     </template>
                 </Column>
