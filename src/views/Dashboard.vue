@@ -1,15 +1,23 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { onMounted, ref, watch } from 'vue';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
-import { getUser } from '../utiils/local_storage';
+import { API_URL } from '../config/config';
+import { getToken } from '../service/auth';
+import { getPermissions, getUser } from '../utiils/local_storage';
+import { get } from '../utiils/request';
 
 const user = ref([]);
-const matkul = ref([]);
-
-onMounted(() => {
-    user.value = getUser();
-});
+const semesters = ref([]);
+const matakuliah = ref([]);
+const permissions = ref([]);
+const pertemuanPerkuliahan = ref([]);
+const pertemuanAktif = ref([]);
+const selectedSemester = ref('');
+const selectedMataKuliah = ref('');
+const selectedPertemuan = ref('');
 
 const events = ref([
     {
@@ -42,6 +50,94 @@ const onEventClick = (event) => {
 const onCellClick = (date) => {
     alert(`Clicked on date: ${date}`);
 };
+
+const fetchSemester = async () => {
+    try {
+        const response = await get('semester');
+        semesters.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const fetchMatakuliah = async () => {
+    if (selectedSemester.value) {
+        try {
+            const response = await get(`detail-kelas-kuliah/${selectedSemester.value}/get-kelas-kuliah-dosen`);
+            matakuliah.value = response.data.data;
+        } catch (error) {
+            console.error('Gagal mengambil data kelas:', error);
+        }
+    }
+};
+const fetchPertemuan = async () => {
+    if (selectedMataKuliah.value) {
+        try {
+            const response = await get(`pertemuan-perkuliahan/kelas-kuliah/${selectedMataKuliah.value}/get`);
+            pertemuanPerkuliahan.value = response.data.data;
+        } catch (error) {
+            console.error('Gagal mengambil data kelas:', error);
+        }
+    }
+};
+watch(selectedSemester, fetchMatakuliah);
+watch(selectedMataKuliah, fetchPertemuan);
+
+const openPertemuan = async () => {
+    try {
+        const token = getToken();
+        const kelasKuliahId = selectedMataKuliah.value;
+        const pertemuanID = selectedPertemuan.value;
+
+        // Periksa apakah prodiId dan semesterId sudah dipilih
+        if (!kelasKuliahId || !pertemuanID) {
+            Swal.fire('PERINGATAN!', 'Mata Kuliah atau Pertemuan belum dipilih.', 'warning');
+            return;
+        }
+
+        const url = `${API_URL}/pertemuan-perkuliahan/open-pertemuan-perkuliahan`;
+
+        // Persiapkan data untuk permintaan PUT
+        const data = {
+            id_kelas_kuliah: kelasKuliahId,
+            id_pertemuan_perkuliahan: pertemuanID
+        };
+
+        const response = await axios.put(
+            url,
+            data, // Body permintaan
+            {
+                headers: {
+                    Authorization: token,
+                    'Content-Type': 'application/json' // Tambahkan header Content-Type
+                }
+            }
+        );
+
+        Swal.fire('BERHASIL!', 'KRS Berhasil di Validasi.', 'success').then(() => {
+            window.location.href = '/dashboard';
+        });
+        console.log('Status berhasil diperbarui:', response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+    }
+};
+
+const fetchPertemuanAktif = async () => {
+    try {
+        const response = await get('pertemuan-perkuliahan/get-pertemuan-perkuliahan-aktif-by-dosen');
+        pertemuanAktif.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+onMounted(() => {
+    user.value = getUser();
+    fetchSemester();
+    fetchPertemuanAktif();
+    permissions.value = getPermissions();
+});
 </script>
 
 <template>
@@ -101,66 +197,81 @@ const onCellClick = (date) => {
                 <!-- </template> -->
             </div>
         </div>
-        <div class="col-5">
+        <div v-if="permissions.includes('daftar-pertemuan-aktif')" class="col-5">
             <div class="card" style="height: calc(78vh - 200px)">
                 <span><b>KELAS YANG DIBUKA PRESENSI HARI INI</b></span>
                 <hr />
-                <div class="row bg-theme text-center" style="border-radius: 10px">
-                    <div class="col-3">
-                        <div class="text-secondary">
-                            <small> MATA KULIAH</small>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="text-secondary">
-                            <small> KELAS</small>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="text-secondary">
-                            <small> PERTEMUAN</small>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="text-secondary">
-                            <small> WAKTU</small>
-                        </div>
-                    </div>
-                </div>
+                <DataTable :value="pertemuanAktif" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+                    <template #empty>
+                        <div class="text-center">Tidak ada data</div>
+                    </template>
+                    <!-- <template #loading> Loading data. Please wait. </template> -->
+                    <Column header="Pertemuan" style="min-width: 5rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.pertemuan }}</span>
+                            </div>
+                        </template>
+                    </Column>
+
+                    <Column header="Mata Kuliah" style="min-width: 7rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.KelasKuliah.MataKuliah.nama_mata_kuliah }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Kelas" style="min-width: 7rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.KelasKuliah.nama_kelas_kuliah }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Waktu" style="min-width: 7rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.waktu_mulai }} - {{ data.waktu_selesai }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                </DataTable>
             </div>
         </div>
-        <div class="col-3">
+        <div v-if="permissions.includes('buka-presensi')" class="col-3">
             <div class="card">
                 <span><b>BUKA PRESENSI KELAS</b></span>
                 <hr />
                 <div class="row">
+                    <label for="exampleFormControlInput1" class="form-label">Semester</label>
+                    <div class="col-sm-12">
+                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Semester</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
                     <label for="exampleFormControlInput1" class="form-label">Mata Kuliah</label>
                     <div class="col-sm-12">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Mata Kuliah</option>
-                            <option value="1">Kapita Selekta</option>
-                            <option value="2">Pemrograman Web</option>
+                        <select v-model="selectedMataKuliah" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Mata Kuliah</option>
+                            <option v-for="matkul in matakuliah" :key="matkul.id_kelas_kuliah" :value="matkul.id_kelas_kuliah">{{ matkul.KelasKuliah.nama_kelas_kuliah }}- {{ matkul.KelasKuliah.MataKuliah.nama_mata_kuliah }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <label for="exampleFormControlInput1" class="form-label">Pertemuan ke-</label>
                     <div class="col-sm-12">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Pertemuan ke-</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
+                        <select v-model="selectedPertemuan" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Pertemuan</option>
+                            <option v-for="pertemuan in pertemuanPerkuliahan" :key="pertemuan.id" :value="pertemuan.id">{{ pertemuan.pertemuan }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <p>Waktu:</p>
-                    <p>-</p>
-                    <!-- <p>09.00 - 10.00</p> -->
-                </div>
+                <div class="row mt-3"></div>
                 <div class="row mt-2">
-                    <button class="btn btn-primary">Buka Presensi</button>
+                    <button @click="openPertemuan" class="btn btn-primary">Buka Presensi</button>
                 </div>
             </div>
         </div>
