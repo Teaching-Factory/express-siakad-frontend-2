@@ -206,7 +206,9 @@ const confirmDelete = (id_tagihan_mahasiswa) => {
             <Column header="Aksi" style="min-width: 10rem">
                 <template #body="{ data }">
                     <div class="flex gap-2">
-                        <router-link to="" class="btn btn-outline-primary">
+                        <router-link to="/detail-pembayaran" class="btn btn-outline-secondary">
+                            <i class="pi pi-eye"></i> </router-link>
+                        <router-link to="#" class="btn btn-outline-primary">
                             <i class="pi pi-pencil"></i>
                             <!-- {{ console.log(data.id) }} -->
                         </router-link>

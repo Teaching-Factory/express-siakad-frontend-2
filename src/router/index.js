@@ -334,6 +334,12 @@ const router = createRouter({
                     component: () => import('../views/keuangan/daftarPembayaran/index.vue'),
                     meta: { requiredPermissions: ['daftar-pembayaran'] }
                 },
+                {
+                    path: '/detail-pembayaran',
+                    name: 'detail-pembayaran',
+                    component: () => import('../views/keuangan/daftarPembayaran/detailPembayaran.vue'),
+                    // meta: { requiredPermissions: ['daftar-pembayaran'] }
+                },
 
                 //berita
                 {
