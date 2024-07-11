@@ -362,29 +362,24 @@ onMounted(() => {const presensiSekarang = async () => {
         </div>
         <div class="col-3">
             <div class="card">
-                <span><b>PRESENSI KELAS</b></span>
-                <hr />
-                <div class="row">
-                    <label for="exampleFormControlInput1" class="form-label">Mata Kuliah</label>
+                <span class="fw-bold">PRESENSI SEKARANG!</span>
+                <hr style="border-color: grey; margin-top: 5px;" />
+                <div class="">
+                    <label for="exampleFormControlInput1" class="form-label text-secondary">Mata Kuliah</label>
                     <div class="col-sm-12">
-                        <select v-model="selectedPresensi" class="form-select" aria-label="Default select example">
+                        <select v-model="selectedPresensi" class="form-select text-secondary" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Mata Kuliah</option>
                             <option v-for="absen in presensi" :key="absen.id" :value="absen.id">{{ absen.id_kelas_kuliah }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <label for="exampleFormControlInput1" class="form-label">Pertemuan ke-</label>
-                    <div class="col-sm-12">
-                        <select v-model="selectedPresensiPertemuan" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Pertemuan</option>
-                            <option v-for="absen in presensi" :key="absen.id" :value="absen.id">{{ absen.pertemuan }}</option>
-                        </select>
-                    </div>
+                <div class="my-4">
+                    <label for="" class="text-secondary">Dosen Pengampu</label>
+                    <p class="fw-bold text-secondary">Lukman Hakim</p>
                 </div>
-                <div class="row mt-3"></div>
-                <div class="row mt-2">
-                    <button @click="presensiSekarang" class="btn btn-primary">Presensi Sekarang</button>
+                <div class="my-1">
+                    <label for="" class="text-secondary">Status Anda</label>
+                    <button @click="presensiSekarang" class="btn btn-primary w-100">Presensi Disini</button>
                 </div>
             </div>
         </div>
