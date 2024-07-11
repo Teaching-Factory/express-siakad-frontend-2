@@ -13,11 +13,14 @@ const user = ref([]);
 const semesters = ref([]);
 const matakuliah = ref([]);
 const permissions = ref([]);
+const presensi = ref([]);
 const pertemuanPerkuliahan = ref([]);
 const pertemuanAktif = ref([]);
 const selectedSemester = ref('');
 const selectedMataKuliah = ref('');
 const selectedPertemuan = ref('');
+const selectedPresensi = ref('');
+const selectedPresensiPertemuan = ref('');
 
 const events = ref([
     {
@@ -132,10 +135,92 @@ const fetchPertemuanAktif = async () => {
     }
 };
 
-onMounted(() => {
+const fetchPresensiMahasiswa = async () => {
+    try {
+        const response = await get('pertemuan-perkuliahan/get-pertemuan-perkuliahan-aktif-by-mahasiswa');
+        presensi.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const presensiSekarang = async () => {
+    try {
+        const token = getToken();
+
+        const pertemuanID = selectedPresensiPertemuan.value;
+
+        // Periksa apakah pertemuanID sudah dipilih
+        if (!pertemuanID) {
+            Swal.fire('PERINGATAN!', 'Pertemuan belum dipilih.', 'warning');
+            return;
+        }
+
+        const url = `${API_URL}/presensi-perkuliahan/${pertemuanID}/absen-sekarang`;
+
+        const response = await axios.post(
+            url,
+            // Data yang dikirimkan harus berada di dalam objek 'data'
+            {},
+            {
+                headers: {
+                    Authorization: token,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        Swal.fire('BERHASIL!', 'Berhasil Melakukan Presensi.', 'success').then(() => {
+            window.location.href = '/dashboard';
+        });
+        console.log('Status berhasil diperbarui:', response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+        // Tampilkan pesan error menggunakan Swal atau pesan kustom lainnya
+        Swal.fire('GAGAL!', 'Gagal melakukan presensi. Silakan coba lagi.', 'error');
+    }
+};
+
+onMounted(() => {const presensiSekarang = async () => {
+    try {
+        const token = getToken();
+
+        const pertemuanID = selectedPresensiPertemuan.value;
+
+        // Periksa apakah pertemuanID sudah dipilih
+        if (!pertemuanID) {
+            Swal.fire('PERINGATAN!', 'Pertemuan belum dipilih.', 'warning');
+            return;
+        }
+
+        const url = `${API_URL}/presensi-perkuliahan/${pertemuanID}/absen-sekarang`;
+
+        const response = await axios.post(
+            url,
+            // Data yang dikirimkan harus berada di dalam objek 'data'
+            {},
+            {
+                headers: {
+                    Authorization: token,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        Swal.fire('BERHASIL!', 'Berhasil Melakukan Presensi.', 'success').then(() => {
+            window.location.href = '/dashboard';
+        });
+        console.log('Status berhasil diperbarui:', response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+        // Tampilkan pesan error menggunakan Swal atau pesan kustom lainnya
+        Swal.fire('GAGAL!', 'Gagal melakukan presensi. Silakan coba lagi.', 'error');
+    }
+};
+
     user.value = getUser();
     fetchSemester();
     fetchPertemuanAktif();
+    fetchPresensiMahasiswa();
     permissions.value = getPermissions();
 });
 </script>
@@ -272,6 +357,34 @@ onMounted(() => {
                 <div class="row mt-3"></div>
                 <div class="row mt-2">
                     <button @click="openPertemuan" class="btn btn-primary">Buka Presensi</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card">
+                <span><b>PRESENSI KELAS</b></span>
+                <hr />
+                <div class="row">
+                    <label for="exampleFormControlInput1" class="form-label">Mata Kuliah</label>
+                    <div class="col-sm-12">
+                        <select v-model="selectedPresensi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Mata Kuliah</option>
+                            <option v-for="absen in presensi" :key="absen.id" :value="absen.id">{{ absen.id_kelas_kuliah }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <label for="exampleFormControlInput1" class="form-label">Pertemuan ke-</label>
+                    <div class="col-sm-12">
+                        <select v-model="selectedPresensiPertemuan" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Pertemuan</option>
+                            <option v-for="absen in presensi" :key="absen.id" :value="absen.id">{{ absen.pertemuan }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3"></div>
+                <div class="row mt-2">
+                    <button @click="presensiSekarang" class="btn btn-primary">Presensi Sekarang</button>
                 </div>
             </div>
         </div>
