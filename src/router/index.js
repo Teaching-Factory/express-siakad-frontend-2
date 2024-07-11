@@ -579,7 +579,7 @@ const router = createRouter({
                     meta: { requiredPermissions: ['profile-tagihan-pembayaran-mahasiswa'] }
                 },
                 {
-                    path: '/detail-pembayaran-mahasiswa',
+                    path: '/detail-pembayaran-mahasiswa/:id_tagihan_mahasiswa',
                     name: 'detail-pembayaran-mahasiswa',
                     component: () => import('../views/profile-mahasiswa/tagihanPembayaranMahasiswa/detailPembayaran.vue'),
                     meta: { requiredPermissions: ['profile-tagihan-pembayaran-mahasiswa'] }

@@ -1,43 +1,59 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
-const customer1 = ref([]);
-const loading1 = ref(false);
-const getSeverity = (status) => {
-    switch (status) {
-        case 'unqualified':
-            return 'danger';
+import { get } from '../../../utiils/request';
+import Swal from 'sweetalert2';
+import { onMounted } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
 
-        case 'qualified':
-            return 'success';
+const filters = ref({
+    global: {
+        value: null,
+        matchMode: FilterMatchMode.CONTAINS
+    },
+    id_tagihan_mahasiswa: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS
+    },
+    jumlah_tagihan: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS
+    },
+    periode_pelaporan: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS
+    },
+    nama_jenis_tagihan: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS
+    },
+    status_tagihan: {
+        value: null,
+        matchMode: FilterMatchMode.EQUALS
+    },
+});
 
-        case 'new':
-            return 'info';
+const tagihanMahasiswa = ref([])
 
-        case 'negotiation':
-            return 'warning';
-
-        case 'renewal':
-            return null;
+const fetchTagihanMahasiswa = async () => {
+    try{
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get('tagihan-mahasiswa/get-tagihan-by-mahasiswa-active')
+        tagihanMahasiswa.value = response.data.data
+        Swal.close()
+    }catch(error){
+        console.error('Gagal mengambil data :', error);
     }
-};
+}
 
-onBeforeMount(() => {
-    customer1.value = [
-        {
-            id: '9876567',
-            jenistagihan: 'UKT',
-            periodetagihan: '2024',
-            jumlahtagihan: 'RP.2.400.000,-',
-            statustagihan: 'Lunas',
-        }, {
-            id: '20987566',
-            jenistagihan: 'MKI',
-            periodetagihan: '2024',
-            jumlahtagihan: 'RP.2.000.000,-',
-            statustagihan: 'Belum Lunas',
-        }
-        // Add more dummy data here
-    ];
+onMounted(() => {
+    fetchTagihanMahasiswa()
 })
 </script>
 
@@ -57,14 +73,14 @@ onBeforeMount(() => {
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="mt-3">
-                    <DataTable :value="customer1" :paginator="true" :rows="10" dataKey="id" :rowHover="true"
-                        :loading="loading1" showGridlines>
+                    <DataTable v-model:filters="filters" :globalFilterFields="['id_tagihan_mahasiswa', 'JenisTagihan.jenis_tagihan', 'Periode.periode_pelaporan','jumlah_tagihan', 'status_tagihan']" :value="tagihanMahasiswa" :paginator="true" :rows="10" dataKey="id" :rowHover="true"
+                         showGridlines>
                         <template #header>
                             <div class="row">
                                 <div class="col-lg-6 d-flex justify-content-start">
                                     <IconField iconPosition="left">
                                         <InputIcon class="pi pi-search" />
-                                        <InputText placeholder="Cari disini" style="width: 100%" />
+                                        <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
                                     </IconField>
                                 </div>
                             </div>
@@ -73,56 +89,38 @@ onBeforeMount(() => {
                         <template #empty>
                             <div class="text-center">Tidak ada data.</div>
                         </template>
-                        <template #loading>
-                            Loading cus
-                            
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>Info Tagihan Lunas</td>
-                                        <td>:</td>
-                                        <td>Rp. 0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Info Tagihan Lunas</td>
-                                        <td>:</td>
-                                        <td>Rp. 0</td>
-                                    </tr>
-                                </tbody>
-                            </table>tomers data. Please wait.
-                        </template>
-                        <Column field="id" header="ID Pembayaran" style="min-width: 8rem">
+                        <Column filterField="id_tagihan_mahasiswa" header="ID Pembayaran" style="min-width: 20rem">
                             <template #body="{ data }">
-                                {{ data.id }}
+                                {{ data.id_tagihan_mahasiswa }}
                             </template>
                         </Column>
-                        <Column header="Jenis Tagihan" style="min-width: 15rem">
+                        <Column filterField="jenis_tagihan" header="Jenis Tagihan" style="min-width: 13rem">
                             <template #body="{ data }">
-                                {{ data.jenistagihan }}
+                                {{ data.JenisTagihan.nama_jenis_tagihan }}
                             </template>
                         </Column>
-                        <Column header="Periode Tagihan" style="min-width: 10rem">
+                        <Column filterField="periode_pelaporan" header="Periode Tagihan" style="min-width: 10rem">
                             <template #body="{ data }">
-                                {{ data.periodetagihan }}
+                                {{ data.Periode.periode_pelaporan }}
                             </template>
                         </Column>
-                        <Column header="Jumlah Tagihan" style="min-width: 10rem">
+                        <Column filterField="jumlah_tagihan" header="Jumlah Tagihan" style="min-width: 10rem">
                             <template #body="{ data }">
                                 <div class="flex align-items-center gap-2">
-                                    <span>{{ data.jumlahtagihan }}</span>
+                                    <span>Rp. {{ data.jumlah_tagihan }}</span>
                                 </div>
                             </template>
                         </Column>
-                        <Column header="Status Tagihan" style="min-width: 14rem">
+                        <Column filterField="status_tagihan" header="Status Tagihan" style="min-width: 14rem">
                             <template #body="{ data }">
                                 <div class="flex align-items-center gap-2">
-                                    <span>{{ data.statustagihan }}</span>
+                                    <span>{{ data.status_tagihan }}</span>
                                 </div>
                             </template>
                         </Column>
-                        <Column header="Aksi" style="min-width: 15rem">
-                            <template #body="{  }">
-                                <router-link to="/detail-pembayaran-mahasiswa" class="btn btn-outline-primary me-2">
+                        <Column header="Aksi" style="min-width: 5rem">
+                            <template #body="{ data }">
+                                <router-link :to="`/detail-pembayaran-mahasiswa/${data.id_tagihan_mahasiswa}`" class="btn btn-outline-primary me-2">
                                     <i class="pi pi-eye"></i>
                                 </router-link>
                             </template>
