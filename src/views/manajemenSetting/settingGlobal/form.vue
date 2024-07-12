@@ -11,38 +11,93 @@
             </div>
         </div>
         <hr />
-        <div class="row d-flex justify-content-center mb-3 mt-4">
-            <div class="col-lg-2">
-                <label for="exampleFormControlInput1" class="form-label">Periode Tagihan</label>
-            </div>
-            <div class="col-lg-4">
-                <select  class="form-select" aria-label="Default select example">
-                    <option value="" selected disabled hidden>--Pilih Periode--</option>
-                    <option>pi</option>
-                </select>
-            </div>
-            
-        </div>
+        
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
-            <div class="row mt-3">
-                <div class="col-lg-3">Semester Berlaku (Aktif)</div>
-                <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
-                <div class="col-lg-3">Semester KRS</div>
-                <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
+            <div class="row d-flex justify-content-center mb-3 mt-4">
+                <div class="col-lg-3">
+                    <label for="exampleFormControlInput1" class="form-label">Semester Berlaku (Aktif)</label>
+                </div>
+                <div class="col-lg-3">
+                    <select  class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>2023/2024 Ganjil</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label for="exampleFormControlInput1" class="form-label">Semester KRS</label>
+                </div>
+                <div class="col-lg-3">
+                    <select  class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>2023/2024 Ganjil</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                    </select>
+                </div>
             </div>
-            <hr />
-            <div class="row">
-                <div class="col-lg-3">Semester Nilai</div>
-                <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
-                <div class="col-lg-3">Batas SKSnya KRS untuk Sarjana dan Diploma</div>
-                <div class="col-lg-3"><span class="me-2"> :</span> 24</div>
+            <div class="row d-flex justify-content-center mb-3">
+                <div class="col-lg-3">
+                    <label for="exampleFormControlInput1" class="form-label">Semester Nilai</label>
+                </div>
+                <div class="col-lg-3">
+                    <select  class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>2023/2024 Ganjil</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label for="exampleFormControlInput1" class="form-label">Batas SKSnya KRS untuk Sarjana dan Diploma</label>
+                </div>
+                <div class="col-lg-3">
+                    <select  class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>2023/2024 Ganjil</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                        <option>2023/2024 Genap</option>
+                    </select>
+                </div>
             </div>
-            <hr />
+            <div class="row d-flex justify-content-center mb-3">
+                <div class="col-lg-3">
+                    <label for="exampleFormControlInput1" class="form-label">Perhitungan Cetak Transkrip</label>
+                </div>
+                <div class="col-lg-3">
+                    <select  class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>Nilai Tertinggi</option>
+                        <option>Nilai Terbaru</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label for="exampleFormControlInput1" class="form-label">Wilayah Penandatanganan Laporan</label>
+                </div>
+                <div class="col-lg-3">
+                    <input type="text" class="form-control" id="inputPassword" placeholder="Banyuwangi">
+                </div>
+                
+            </div>
+            <div class="row d-flex justify-content-end mb-3">
+                <div class="col-lg-3">
+                    <label for="exampleFormControlInput1" class="form-label">Label Dosen Wali</label>
+                </div>
+                <div class="col-lg-3">
+                    <select  class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>Pembimbing Akademik</option>
+                        <option>Dosen Wali</option>
+                    </select>
+                </div>
+            </div>
             <div class="row">
-                <div class="col-lg-3">Perhitungan Cetak Transkrip</div>
-                <div class="col-lg-3"><span class="me-2">:</span> Nilai Tertinggi</div>
-                <div class="col-lg-3">Wilayah Penandatanganan Laporan</div>
-                <div class="col-lg-3"><span class="me-2"> :</span> Banyuwangi</div>
+                <div class="col-12 col-md-6 col-lg-12">
+                    <h6 class="text-dark">Keterangan :</h6>
+                    <ol class="lh-2 text-small">
+                        <li>Fitur ini digunakan untuk mengubah periode semester yang aktif.</li>
+                        <li>Fitur ini digunakan untuk mengubah status pembukaan penilaian, KRS & KHS.</li>
+                    </ol>
+                </div>
             </div>
         </div>
     </div>
