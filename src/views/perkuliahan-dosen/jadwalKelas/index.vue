@@ -151,7 +151,7 @@ onBeforeMount(() => {
                 </Column>
                 <Column filterField="nama_ruang_perkuliahan" header="Ruang" style="min-width: 5rem">
                     <template #body="{ data }">
-                        {{ data.RuangPerkuliahan.nama_ruang_perkuliahan }}
+                        {{ data?.RuangPerkuliahan?.nama_ruang_perkuliahan }}
                     </template>
                 </Column>
                 <Column filterField="nama_kelas_kuliah" header="Kelas" style="min-width: 5rem">

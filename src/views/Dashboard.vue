@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
 import { API_URL } from '../config/config';
@@ -20,8 +20,14 @@ const selectedSemester = ref('');
 const selectedMataKuliah = ref('');
 const selectedPertemuan = ref('');
 const selectedPresensi = ref('');
-const selectedPresensiPertemuan = ref('');
+const dosenPengampu = ref('-');
+const semesterAktif = ref([]);
+const hasPresensi = ref(false);
 
+const fetchSemesterAktif = async () => {
+    const response = await get('semester-aktif');
+    semesterAktif.value = response.data.data;
+};
 const events = ref([
     {
         start: new Date(),
@@ -38,13 +44,13 @@ const events = ref([
 const getMataKuliah = async () => {
     try {
         const res = getData('mata-kuliah');
-        if(res.status == 200) {
-            matkul.value = res.data.data
+        if (res.status == 200) {
+            matkul.value = res.data.data;
         }
-    } catch(error) {
-        throw error
+    } catch (error) {
+        throw error;
     }
-}
+};
 
 const onEventClick = (event) => {
     alert(`Event: ${event.title}`);
@@ -143,11 +149,20 @@ const fetchPresensiMahasiswa = async () => {
         console.error('Gagal mengambil data :', error);
     }
 };
+const updateDosenPengampu = () => {
+    const selected = presensi.value.find((absen) => absen.id === selectedPresensi.value);
+    dosenPengampu.value = selected?.KelasKuliah?.Dosen?.nama_dosen || '-';
+};
+const checkPresensiStatus = () => {
+    const selected = presensi.value.find((absen) => absen.id === selectedPresensi.value);
+    hasPresensi.value = selected?.presensi_hadir || false; // Asumsikan ada properti 'isPresensi' untuk mengecek status presensi
+};
+
 const presensiSekarang = async () => {
     try {
         const token = getToken();
 
-        const pertemuanID = selectedPresensiPertemuan.value;
+        const pertemuanID = selectedPresensi.value;
 
         // Periksa apakah pertemuanID sudah dipilih
         if (!pertemuanID) {
@@ -172,6 +187,8 @@ const presensiSekarang = async () => {
         Swal.fire('BERHASIL!', 'Berhasil Melakukan Presensi.', 'success').then(() => {
             window.location.href = '/dashboard';
         });
+        // Update status presensi setelah berhasil melakukan presensi
+        hasPresensi.value = true;
         console.log('Status berhasil diperbarui:', response.data);
     } catch (error) {
         console.error('Gagal memperbarui status:', error);
@@ -180,48 +197,17 @@ const presensiSekarang = async () => {
     }
 };
 
-onMounted(() => {const presensiSekarang = async () => {
-    try {
-        const token = getToken();
-
-        const pertemuanID = selectedPresensiPertemuan.value;
-
-        // Periksa apakah pertemuanID sudah dipilih
-        if (!pertemuanID) {
-            Swal.fire('PERINGATAN!', 'Pertemuan belum dipilih.', 'warning');
-            return;
-        }
-
-        const url = `${API_URL}/presensi-perkuliahan/${pertemuanID}/absen-sekarang`;
-
-        const response = await axios.post(
-            url,
-            // Data yang dikirimkan harus berada di dalam objek 'data'
-            {},
-            {
-                headers: {
-                    Authorization: token,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-
-        Swal.fire('BERHASIL!', 'Berhasil Melakukan Presensi.', 'success').then(() => {
-            window.location.href = '/dashboard';
-        });
-        console.log('Status berhasil diperbarui:', response.data);
-    } catch (error) {
-        console.error('Gagal memperbarui status:', error);
-        // Tampilkan pesan error menggunakan Swal atau pesan kustom lainnya
-        Swal.fire('GAGAL!', 'Gagal melakukan presensi. Silakan coba lagi.', 'error');
-    }
-};
-
+onMounted(() => {
     user.value = getUser();
     fetchSemester();
+    fetchSemesterAktif();
     fetchPertemuanAktif();
     fetchPresensiMahasiswa();
     permissions.value = getPermissions();
+});
+watchEffect(() => {
+    updateDosenPengampu();
+    checkPresensiStatus();
 });
 </script>
 
@@ -245,7 +231,7 @@ onMounted(() => {const presensiSekarang = async () => {
                     <span>Jadwal Hari Ini (Rabu, 06 Maret 2024)</span>
                 </div>
                 <div class="col-4 text-lg-right">
-                    <span>Semester 2023/2024 Ganjil</span>
+                    <span>Semester {{ semesterAktif[0]?.Semester?.nama_semester }}</span>
                 </div>
             </div>
             <div class="card bg-theme">
@@ -360,26 +346,69 @@ onMounted(() => {const presensiSekarang = async () => {
                 </div>
             </div>
         </div>
-        <div class="col-3">
+        <div v-if="permissions.includes('jadwal-perkuliahan-aktif')" class="col-5">
+            <div class="card" style="height: calc(60vh - 200px)">
+                <span><b>JADWAL PERKULIAHAN HARI INI</b></span>
+                <hr />
+                <DataTable :value="presensi" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+                    <template #empty>
+                        <div class="text-center">Tidak ada data</div>
+                    </template>
+                    <!-- <template #loading> Loading data. Please wait. </template> -->
+                    <Column header="Pertemuan" style="min-width: 5rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.pertemuan }}</span>
+                            </div>
+                        </template>
+                    </Column>
+
+                    <Column header="Mata Kuliah" style="min-width: 7rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.KelasKuliah?.MataKuliah?.nama_mata_kuliah }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Kelas" style="min-width: 7rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data?.KelasKuliah?.nama_kelas_kuliah }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                    <Column header="Waktu" style="min-width: 7rem">
+                        <template #body="{ data }">
+                            <div class="flex align-items-center gap-2">
+                                <span>{{ data.waktu_mulai }} - {{ data.waktu_selesai }}</span>
+                            </div>
+                        </template>
+                    </Column>
+                </DataTable>
+            </div>
+        </div>
+        <div v-if="permissions.includes('presensi-mahasiswa')" class="col-3">
             <div class="card">
                 <span class="fw-bold">PRESENSI SEKARANG!</span>
-                <hr style="border-color: grey; margin-top: 5px;" />
+                <hr style="border-color: grey; margin-top: 5px" />
                 <div class="">
                     <label for="exampleFormControlInput1" class="form-label text-secondary">Mata Kuliah</label>
                     <div class="col-sm-12">
                         <select v-model="selectedPresensi" class="form-select text-secondary" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Mata Kuliah</option>
-                            <option v-for="absen in presensi" :key="absen.id" :value="absen.id">{{ absen.id_kelas_kuliah }}</option>
+                            <option v-for="absen in presensi" :key="absen.id" :value="absen.id">{{ absen.KelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="my-4">
                     <label for="" class="text-secondary">Dosen Pengampu</label>
-                    <p class="fw-bold text-secondary">Lukman Hakim</p>
+                    <p class="fw-bold text-secondary">{{ dosenPengampu }}</p>
                 </div>
                 <div class="my-1">
                     <label for="" class="text-secondary">Status Anda</label>
-                    <button @click="presensiSekarang" class="btn btn-primary w-100">Presensi Disini</button>
+                    <button @click="presensiSekarang" class="btn btn-primary w-100" :disabled="hasPresensi">
+                        {{ hasPresensi ? 'Sudah Melakukan Presensi' : 'Presensi Disini' }}
+                    </button>
                 </div>
             </div>
         </div>

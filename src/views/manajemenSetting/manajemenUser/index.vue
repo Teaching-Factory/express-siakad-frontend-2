@@ -33,6 +33,7 @@ const user = async () => {
         user.value = [];
     }
 };
+
 const deleteItem = async (id) => {
     try {
         const response = await del(`user/${id}/delete`);
@@ -136,6 +137,13 @@ onBeforeMount(() => {
                 <Column filterField="nama_role" header="nama_role" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div v-html="data.UserRoles[0].Role.nama_role"></div>
+                    </template>
+                </Column>
+                <Column header="Login As" style="min-width: 5rem">
+                    <template #body="{}">
+                        <button class="btn btn-outline-primary me-2">
+                            <i class="pi pi-eye"></i>
+                        </button>
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 5rem">

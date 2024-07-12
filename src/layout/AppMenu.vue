@@ -188,11 +188,6 @@ const model = ref([
                 }),
                 items: [
                     {
-                        label: 'Jenis Tagihan',
-                        to: '/jenis-tagihan'
-                        // visible: computed(() => permissions.includes('sistem-kuliah'))
-                    },
-                    {
                         label: 'Sistem Kuliah',
                         to: '/sistem-kuliah',
                         visible: computed(() => permissions.includes('sistem-kuliah'))
@@ -211,6 +206,11 @@ const model = ref([
                         label: 'Bobot Penilaian',
                         to: '/bobot-penilaian',
                         visible: computed(() => permissions.includes('bobot-penilaian'))
+                    },
+                    {
+                        label: 'Jenis Tagihan',
+                        to: '/jenis-tagihan'
+                        // visible: computed(() => permissions.includes('sistem-kuliah'))
                     },
                     {
                         label: 'Jabatan',

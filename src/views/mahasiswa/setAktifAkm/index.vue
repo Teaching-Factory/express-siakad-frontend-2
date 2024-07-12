@@ -19,6 +19,12 @@ const selectedAngkatan = ref('');
 const selectedProdi = ref('');
 const prodis = ref([]);
 const angkatans = ref([]);
+const semesterAktif = ref([]);
+
+const fetchSemesterAktif = async () => {
+    const response = await get('semester-aktif');
+    semesterAktif.value = response.data.data;
+};
 
 const aktivitasKuliahMahasiswa = async () => {
     try {
@@ -71,12 +77,13 @@ const selectedFilter = async () => {
 onBeforeMount(() => {
     aktivitasKuliahMahasiswa();
     selectedFilter();
+    fetchSemesterAktif();
 });
 </script>
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>SET AKTIF AKTIVITAS KULIAH MAHASISWA PERIODE 2021/2022 GENAP</h5>
+        <h5><i class="pi pi-user me-2"></i>SET AKTIF AKTIVITAS KULIAH MAHASISWA PERIODE {{semesterAktif[0]?.Semester?.nama_semester}}</h5>
             <div class="card" style="padding: 0rem 1rem 0rem 1rem">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">

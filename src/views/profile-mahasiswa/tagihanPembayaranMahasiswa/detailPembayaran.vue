@@ -6,22 +6,22 @@ import { postData } from '../../../utiils/request';
 export default {
     data() {
         return {
-            file: null,
+            upload_bukti_tf: null,
             id_tagihan_mahasiswa: this.$route.params.id_tagihan_mahasiswa // Capture the ID from the URL
         };
     },
     methods: {
         handleFileUpload(event) {
-            this.file = event.target.files[0];
+            this.upload_bukti_tf = event.target.files[0];
         },
         async create() {
-            if (!this.file) {
+            if (!this.upload_bukti_tf) {
                 Swal.fire('GAGAL', 'Silakan pilih file untuk diupload.', 'error');
                 return;
             }
 
             const formData = new FormData();
-            formData.append('upload_bukti_tf', this.file); // Append the file with the correct key
+            formData.append('upload_bukti_tf', this.upload_bukti_tf); // Append the file with the correct key
 
             try {
                 Swal.fire({

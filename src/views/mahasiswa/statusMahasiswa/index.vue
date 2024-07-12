@@ -13,6 +13,12 @@ const filters = ref({
 
 const first = ref(0);
 const statusMahasiswa = ref([]);
+const semesterAktif = ref([]);
+
+const fetchSemesterAktif = async () => {
+    const response = await get('semester-aktif');
+    semesterAktif.value = response.data.data;
+};
 
 const fetchStatusMahasiswa = async () => {
     try {
@@ -39,12 +45,13 @@ const onPageChange = (event) => {
 
 onBeforeMount(() => {
     fetchStatusMahasiswa();
+    fetchSemesterAktif();
 });
 </script>
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>SET STATUS MAHASISWA - PERIODE 2022/2023 GANJIL</h5>
+        <h5><i class="pi pi-user me-2"></i>SET STATUS MAHASISWA - PERIODE {{semesterAktif[0]?.Semester?.nama_semester}}</h5>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
