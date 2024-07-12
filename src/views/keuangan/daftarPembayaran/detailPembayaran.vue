@@ -4,6 +4,9 @@ import { onMounted, ref } from 'vue';
 import Modal from '../../../components/Modal.vue';
 import { useRoute } from 'vue-router';
 import { get } from '../../../utiils/request';
+import axios from 'axios';
+import { getToken } from '../../../service/auth';
+import { API_URL } from '../../../config/config';
 
 const route = useRoute();
 const detailPembayaran = ref([]);
@@ -11,6 +14,7 @@ const id_tagihan_mahasiswa = route.params.id_tagihan_mahasiswa;
 const first = ref(0);
 const show = ref(false);
 const modalImage = ref('');
+const statusPembayaran = ref({}); // Track status pembayaran for each row
 
 const fetchDetailPembayaran = async (id_tagihan_mahasiswa) => {
     try {
@@ -24,18 +28,55 @@ const fetchDetailPembayaran = async (id_tagihan_mahasiswa) => {
         });
         const response = await get(`pembayaran-mahasiswa/tagihan-mahasiswa/${id_tagihan_mahasiswa}/get`);
         detailPembayaran.value = response.data.data;
-        // console.log(response.data.data);
+
+        // Initialize statusPembayaran state
+        response.data.data.forEach((item) => {
+            statusPembayaran.value[item.id_pembayaran_mahasiswa] = item.status_pembayaran;
+        });
+
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data :', error);
+        Swal.close();
     }
 };
 
 const showModal = (imagePath) => {
-    // Mengubah path dari C:\\xampp\\js-projects\\express-siakad-backend\\src\\storage\\bukti-tagihan-pembayaran menjadi /storage/bukti-tagihan-pembayaran/
     modalImage.value = imagePath.replace('C:\\xampp\\js-projects\\express-siakad-backend\\src\\storage\\bukti-tagihan-pembayaran', '/storage/bukti-tagihan-pembayaran');
     console.log('Path gambar:', modalImage.value); // Debug path gambar
     show.value = true;
+};
+
+const validasi = async (id_pembayaran_mahasiswa) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const dataToSubmit = {
+            status_pembayaran: statusPembayaran.value[id_pembayaran_mahasiswa]
+        };
+
+        const token = getToken();
+
+        const response = await axios.put(`${API_URL}/pembayaran-mahasiswa/${id_pembayaran_mahasiswa}/update-status-pembayaran`, dataToSubmit, {
+            headers: {
+                Authorization: token,
+                'Content-Type': 'application/json' // Tambahkan header Content-Type
+            }
+        });
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil Dikonfirmasi.', 'success').then(() => {
+            window.location.href = '';
+        });
+    } catch (error) {
+        console.error('Gagal menambahkan data:', error);
+    }
 };
 
 const onPageChange = (event) => {
@@ -98,19 +139,19 @@ onMounted(() => {
                     {{ data.tanggalbayar }}
                 </template>
             </Column>
-            <Column header="Status" style="min-width: 10rem">
+            <Column header="Status Pembayaran" style="min-width: 10rem">
                 <template #body="{ data }">
                     <!-- {{ data.tanggalbayar }} -->
-                    <select class="form-select" aria-label="Default select example">
+                    <select v-model="statusPembayaran[data.id_pembayaran_mahasiswa]" class="form-select" aria-label="Default select example">
                         <option selected disabled hidden>{{ data.status_pembayaran }}</option>
-                        <option value="1">Dikonfirmasi</option>
-                        <option value="2">Ditolak</option>
+                        <option value="Dikonfirmasi">Dikonfirmasi</option>
+                        <option value="Ditolak">Ditolak</option>
                     </select>
                 </template>
             </Column>
             <Column header="Aksi" style="min-width: 10rem">
-                <template #body="{}">
-                    <router-link to="#" class="btn btn-outline-danger me-2"> <i class="pi pi-check"></i></router-link>
+                <template #body="{ data }">
+                    <button @click="validasi(data.id_pembayaran_mahasiswa)" class="btn btn-outline-danger me-2"><i class="pi pi-check"></i></button>
                 </template>
             </Column>
         </DataTable>

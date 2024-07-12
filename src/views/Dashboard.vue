@@ -346,7 +346,7 @@ watchEffect(() => {
                 </div>
             </div>
         </div>
-        <div class="col-5">
+        <div v-if="permissions.includes('jadwal-perkuliahan-aktif')" class="col-5">
             <div class="card" style="height: calc(60vh - 200px)">
                 <span><b>JADWAL PERKULIAHAN HARI INI</b></span>
                 <hr />
@@ -387,7 +387,7 @@ watchEffect(() => {
                 </DataTable>
             </div>
         </div>
-        <div class="col-3">
+        <div v-if="permissions.includes('presensi-mahasiswa')" class="col-3">
             <div class="card">
                 <span class="fw-bold">PRESENSI SEKARANG!</span>
                 <hr style="border-color: grey; margin-top: 5px" />

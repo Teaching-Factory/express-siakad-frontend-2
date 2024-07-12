@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import Swal from 'sweetalert2';
+import { get } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -12,31 +14,33 @@ const filters = ref({
     tanggalbayar: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const pembayaran = ref([]);
+const first = ref(0);
 
+const fetchPembayaran = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get('pembayaran-mahasiswa/get-pembayaran-dikonfirmasi');
+        pembayaran.value = response.data.data;
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data Unit Jabatan:', error);
+
+        user.value = [];
+    }
+};
+const onPageChange = (event) => {
+    first.value = event.first;
+};
 onBeforeMount(() => {
-    customer1.value = [
-        {
-            no: '1',
-            nim: '12345678',
-            name: 'John Doe',
-            periodebayar: '2020/2021 Genap',
-            metodepembayaran: '2020/2021 Genap',
-            nominal: 'Rp. 2.400.000,-',
-            tanggalbayar: '12/12/2024'
-        },
-        {
-            no: '2',
-            nim: '12345678',
-            name: 'John Doe',
-            periodebayar: '2020/2021 Genap',
-            metodepembayaran: '2020/2021 Genap',
-            nominal: 'Rp. 2.400.000,-',
-            tanggalbayar: '12/12/2024'
-        }
-        // Add more dummy data here
-    ];
+    fetchPembayaran();
 });
 </script>
 
@@ -46,13 +50,14 @@ onBeforeMount(() => {
         <DataTable
             v-model:filters="filters"
             :globalFilterFields="['nim', 'name', 'periodepembayaran', 'nominal', 'metodepembayaran', 'tanggalbayar']"
-            :value="customer1"
+            :value="pembayaran"
             :paginator="true"
             :rows="10"
             dataKey="id"
             :rowHover="true"
-            :loading="loading1"
             showGridlines
+            :first="first"
+            @page="onPageChange"
         >
             <template #header>
                 <div class="row">
@@ -73,10 +78,9 @@ onBeforeMount(() => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            <template #loading> Loading customers data. Please wait. </template>
             <Column field="no" header="No" style="min-width: 5rem">
-                <template #body="{ data }">
-                    {{ data.no }}
+                <template #body="slotProps">
+                    {{ first + slotProps.index + 1 }}
                 </template>
             </Column>
             <Column filterField="nim" header="NIM" style="min-width: 10rem">
@@ -103,9 +107,9 @@ onBeforeMount(() => {
                     <div v-html="data.metodepembayaran"></div>
                 </template>
             </Column>
-            <Column filterField="nominal" header="Nominal" style="min-width: 10rem">
+            <Column filterField="jumlah_tagihan" header="Nominal" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.nominal }}
+                    {{ data.TagihanMahasiswa.jumlah_tagihan }}
                 </template>
             </Column>
             <Column filterField="tanggalbayar" header="Tanggal Bayar" style="min-width: 10rem">
