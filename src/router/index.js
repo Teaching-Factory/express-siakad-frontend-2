@@ -335,9 +335,9 @@ const router = createRouter({
                     meta: { requiredPermissions: ['daftar-pembayaran'] }
                 },
                 {
-                    path: '/detail-pembayaran',
+                    path: '/detail-pembayaran/:id_tagihan_mahasiswa',
                     name: 'detail-pembayaran',
-                    component: () => import('../views/keuangan/daftarPembayaran/detailPembayaran.vue'),
+                    component: () => import('../views/keuangan/daftarPembayaran/detailPembayaran.vue')
                     // meta: { requiredPermissions: ['daftar-pembayaran'] }
                 },
 
@@ -486,7 +486,7 @@ const router = createRouter({
                 {
                     path: '/setting-global/edit',
                     name: 'setting-global-edit',
-                    component: () => import('../views/manajemenSetting/settingGlobal/form.vue'),
+                    component: () => import('../views/manajemenSetting/settingGlobal/form.vue')
                     // meta: { requiredPermissions: ['setting-global'] }
                 },
                 {

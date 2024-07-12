@@ -11,8 +11,27 @@ import Modal from '../../../components/Modal.vue';
 const bobotPenilaian = ref([]);
 const getNilai = ref([]);
 const dataMahasiswa = ref([]);
+const getKelasKuliah = ref([]);
 const nilaiMahasiswa = ref([]);
 const route = useRoute();
+
+const fetchKelasKuliah = async (id_kelas_kuliah) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`kelas-kuliah/${id_kelas_kuliah}/get`);
+        getKelasKuliah.value = response.data.data;
+        Swal.close();
+    } catch (error) {
+        console.error('Error fetching:', error);
+    }
+};
 
 const fetchBobotPenilaian = async (id_prodi) => {
     console.log('Fetching bobot penilaian for id_prodi:', id_prodi);
@@ -98,13 +117,11 @@ const create = async () => {
     }
 };
 
-
 const isUploadModalVisible = ref(false);
 
 const showUploadModal = () => {
-  isUploadModalVisible.value = true;
+    isUploadModalVisible.value = true;
 };
-
 
 onMounted(() => {
     const id_prodi = route.params.id_prodi || route.query.id_prodi;
@@ -115,8 +132,10 @@ onMounted(() => {
     if (id_kelas_kuliah) {
         fetchGetNilai(id_kelas_kuliah);
     }
+    if (id_kelas_kuliah) {
+        fetchKelasKuliah(id_kelas_kuliah);
+    }
 });
-
 </script>
 
 <template>
@@ -129,21 +148,21 @@ onMounted(() => {
                 <div class="col-12 xl:col-6 d-flex justify-content-end">
                     <div class="flex justify-content-end gap-2">
                         <router-link to="/nilai-perkuliahan" class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Daftar</router-link>
-                        <button  @click="showUploadModal" class="btn btn-success me-2"><i class="pi pi-upload mr-2"></i> Upload Excel</button>
+                        <button @click="showUploadModal" class="btn btn-success me-2"><i class="pi pi-upload mr-2"></i> Upload Excel</button>
                         <button @click="create" class="btn btn-primary me-2"><i class="pi pi-save mr-2"></i> Simpan</button>
                         <button class="btn btn-danger"><i class="pi pi-times mr-2"></i> Batal</button>
                     </div>
                 </div>
             </div>
             <Modal v-if="isUploadModalVisible" :show="isUploadModalVisible" title="Upload Excel" size="md" @close="isUploadModalVisible = false">
-            <form>
-                <p>Silahkan unduh template <a href="https://chatgpt.com/" target="_blank">Disini</a></p>
-                <div class="mb-3">
-                <label for="file" class="form-label">Upload File Excel</label>
-                <input type="file" class="form-control" id="file" @change="onFileChange">
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
+                <form>
+                    <p>Silahkan unduh template <a href="https://chatgpt.com/" target="_blank">Disini</a></p>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Upload File Excel</label>
+                        <input type="file" class="form-control" id="file" @change="onFileChange" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
             </Modal>
 
             <hr />
@@ -151,21 +170,21 @@ onMounted(() => {
             <div class="card" style="border-radius: none !important">
                 <div class="row">
                     <div class="col-lg-2">Program Studi</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> {{ getNilai.KelasKuliah?.Prodi?.nama_program_studi || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ getKelasKuliah?.Prodi?.nama_program_studi || '-' }}</div>
                     <div class="col-lg-2">Periode</div>
-                    <div class="col-lg-4"><span class="me-2">:</span>{{ getNilai.KelasKuliah?.Semester?.nama_semester || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span>{{ getKelasKuliah?.Semester?.nama_semester || '-' }}</div>
                 </div>
                 <hr />
                 <div class="row">
                     <div class="col-lg-2">Mata Kuliah</div>
-                    <div class="col-lg-4"><span class="me-2">:</span>{{ getNilai.KelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span>{{ getKelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}</div>
                     <div class="col-lg-2">Nama Kelas</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{ getNilai?.KelasKuliah?.nama_kelas_kuliah }}</div>
                 </div>
                 <hr />
                 <div class="row">
                     <div class="col-lg-2">Dosen Pengajar</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> {{ getNilai.KelasKuliah?.Dosen?.nama_dosen || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ getKelasKuliah?.Dosen?.nama_dosen || '-' }}</div>
                     <div class="col-lg-2">Ruang Perkuliahan</div>
                     <div class="col-lg-4"><span class="me-2">:</span> -</div>
                 </div>
