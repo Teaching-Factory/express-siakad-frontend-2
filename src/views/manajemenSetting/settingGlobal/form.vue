@@ -11,6 +11,18 @@
             </div>
         </div>
         <hr />
+        <div class="row d-flex justify-content-center mb-3 mt-4">
+            <div class="col-lg-2">
+                <label for="exampleFormControlInput1" class="form-label">Periode Tagihan</label>
+            </div>
+            <div class="col-lg-4">
+                <select  class="form-select" aria-label="Default select example">
+                    <option value="" selected disabled hidden>--Pilih Periode--</option>
+                    <option>pi</option>
+                </select>
+            </div>
+            
+        </div>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row mt-3">
                 <div class="col-lg-3">Semester Berlaku (Aktif)</div>
