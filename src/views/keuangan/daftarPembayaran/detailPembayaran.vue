@@ -42,7 +42,7 @@ const fetchDetailPembayaran = async (id_tagihan_mahasiswa) => {
 };
 
 const showModal = (imagePath) => {
-    modalImage.value = imagePath.replace('C:\\xampp\\js-projects\\express-siakad-backend\\src\\storage\\bukti-tagihan-pembayaran', '/storage/bukti-tagihan-pembayaran');
+    modalImage.value = imagePath;
     console.log('Path gambar:', modalImage.value); // Debug path gambar
     show.value = true;
 };
@@ -157,7 +157,7 @@ onMounted(() => {
         </DataTable>
         <Modal :show="show" @close="show = false" title="Bukti Pembayaran">
             <template #body>
-                <img :src="modalImage" class="img-fluid" alt="Bukti Pembayaran" />
+                <img :src="imageSrc" class="img-fluid" alt="Bukti Pembayaran" />
             </template>
             <template #footer>
                 <button @click="show = false" class="btn btn-secondary">Close</button>

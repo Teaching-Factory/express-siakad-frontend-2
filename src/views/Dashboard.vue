@@ -227,10 +227,10 @@ watchEffect(() => {
         </div>
         <div class="col-12 xl:col-8">
             <div class="row">
-                <div class="col-8">
+                <div class="col-7">
                     <span>Jadwal Hari Ini (Rabu, 06 Maret 2024)</span>
                 </div>
-                <div class="col-4 text-lg-right">
+                <div class="col-5 text-lg-right">
                     <span>Semester {{ semesterAktif[0]?.Semester?.nama_semester }}</span>
                 </div>
             </div>

@@ -139,14 +139,14 @@ onBeforeMount(() => {
                         <div v-html="data.UserRoles[0].Role.nama_role"></div>
                     </template>
                 </Column>
-                <Column header="Login As" style="min-width: 5rem">
+                <Column header="Login As" style="min-width: 8rem">
                     <template #body="{}">
                         <button class="btn btn-outline-primary me-2">
                             <i class="pi pi-eye"></i>
                         </button>
                     </template>
                 </Column>
-                <Column header="Aksi" style="min-width: 5rem">
+                <Column header="Aksi" style="min-width: 8rem">
                     <template #body="{ data }">
                         <div class="actions gap-2">
                             <router-link :to="`/manajemen-user/${data.id}/update`" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>

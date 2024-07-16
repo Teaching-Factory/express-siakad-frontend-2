@@ -1,6 +1,31 @@
-<script setup>
+<!-- <script setup>
+import { onMounted } from 'vue';
+import {ref} from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const data = ref(null);
+
 const handlePrint = () => {
     window.print()
+}
+
+onMounted(() => {
+    console.log('oi', this);
+    if (route.state && route.state.data) {
+        data.value = route.state.data;
+        console.log('oi', this.$route);
+    } else {
+        console.error('No data passed to this route');
+    }
+});
+
+</script> -->
+<script>
+export default {
+    mounted() {
+        console.log(this.$route)
+    }
 }
 </script>
 <template>
