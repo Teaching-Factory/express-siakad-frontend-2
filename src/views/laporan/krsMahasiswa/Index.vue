@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
-// import { getData } from '../../../utiils/request.js'
-// import Swal from "sweetalert2";
+import { getData } from '../../../utiils/request.js'
+import Swal from "sweetalert2";
 
 const angkatans = ref([]);
 const prodis = ref([]);
@@ -44,65 +44,61 @@ const fetchAngkatan = async () => {
     }
 };
 
-// const filterData = async () => {
-//     const jenis_cetak = selectedJenisCetak.value;
-//     console.log('ini jenis cetak', jenis_cetak);
-//     let id_prodi = '';
-//     let id_angkatan = '';
-//     let nim = '';
-//     let formatExp = '';
+const filterData = async () => {
+    const jenis_cetak = selectedJenisCetak.value;
+    console.log('ini jenis cetak', jenis_cetak);
+    let id_prodi = '';
+    let id_angkatan = '';
+    let nim = '';
+    let formatExp = '';
     
-//     if (jenis_cetak === 'Mahasiswa') {
-//         nim = nimMahasiswa.value;
-//         formatExp = format.value;
-//     } else if (jenis_cetak === 'Angkatan') {
-//         id_prodi = selectedProdi.value;
-//         id_angkatan = selectedAngkatan.value;
-//     } else {
-//         console.error('Invalid jenis_cetak:', jenis_cetak);
-//     }
+    if (jenis_cetak === 'Mahasiswa') {
+        nim = nimMahasiswa.value;
+        formatExp = format.value;
+    } else if (jenis_cetak === 'Angkatan') {
+        id_prodi = selectedProdi.value;
+        id_angkatan = selectedAngkatan.value;
+    } else {
+        console.error('Invalid jenis_cetak:', jenis_cetak);
+    }
 
-//     const id_semester = selectedSemester.value;
-//     const tanggal_penandatanganan = tanggalPenandatanganan.value;
+    const id_semester = selectedSemester.value;
+    const tanggal_penandatanganan = tanggalPenandatanganan.value;
 
-//     console.log('jenis_cetak', jenis_cetak);
-//     console.log('id_prodi', id_prodi);
-//     console.log('id_angkatan', id_angkatan);
-//     console.log('id_semester', id_semester);
-//     console.log('tanggal_penandatangan', tanggal_penandatanganan);
-//     console.log('nim', nim);
-//     console.log('format', formatExp);
+    console.log('jenis_cetak', jenis_cetak);
+    console.log('id_prodi', id_prodi);
+    console.log('id_angkatan', id_angkatan);
+    console.log('id_semester', id_semester);
+    console.log('tanggal_penandatangan', tanggal_penandatanganan);
+    console.log('nim', nim);
+    console.log('format', formatExp);
 
-//     try {
-//         Swal.fire({
-//             title: 'Loading...',
-//             html: 'Sedang Memuat Data',
-//             allowOutsideClick: false,
-//             didOpen: () => {
-//                 Swal.showLoading();
-//             }
-//         });
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
-//         const requestBody = {
-//             jenis_cetak: jenis_cetak,
-//             nim: nim,
-//             id_semester: id_semester,
-//             tanggal_penandatanganan: tanggal_penandatanganan,
-//             format: formatExp
-//         };
-//         console.log('reqBody', requestBody);
-
-//         // const response = await getData(`rekap-krs-mahasiswa/get-rekap-krs-mahasiswa?jenis_cetak=${jenis_cetak}&nim=${nim}&id_semester=${id_semester}&tanggal_penandatanganan=${tanggal_penandatanganan}&format=${formatExp}`);
-//         // console.log('Response:', response.data);
-        
-//         router.push({
-//             name: 'cetak-krs-mahasiswa',
-//             state: { data: requestBody }
-//         });
-//     } catch (error) {
-//         console.error('Gagal mengirim data:', error);
-//     }
-// };
+        const requestBody = {
+            jenis_cetak: jenis_cetak,
+            nim: nim,
+            id_semester: id_semester,
+            tanggal_penandatanganan: tanggal_penandatanganan,
+            format: formatExp
+        };
+        Swal.close();
+        router.push({
+            name: 'cetak-krs-mahasiswa',
+            query: requestBody
+        });
+    } catch (error) {
+        console.error('Gagal mengirim data:', error);
+    }
+};
 
 onMounted(() => {
     fetchProdi();
@@ -112,20 +108,6 @@ onMounted(() => {
 
 </script>
 
-<script>
-export default {
-    methods: {
-        filterData: () => {
-            this.requestbody = {
-                jenis_cetak: 'Mahasiswa'
-            }
-            this.$router.push({
-                name:  'cetak-krs-mahasiswa'
-            })
-        }
-    }
-}
-</script>
 
 <template>
     <div class="card">

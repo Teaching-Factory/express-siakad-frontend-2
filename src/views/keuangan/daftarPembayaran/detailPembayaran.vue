@@ -121,7 +121,7 @@ onMounted(() => {
                 </template>
             </Column>
             <Column header="ID Pembayaran" style="min-width: 8rem">
-                <template #body="{ data }">
+                <template #body="{ data }"> {{ console.log('ini',data.upload_bukti_tf) }}
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.id_pembayaran_mahasiswa }}</span>
                     </div>
@@ -156,12 +156,7 @@ onMounted(() => {
             </Column>
         </DataTable>
         <Modal :show="show" @close="show = false" title="Bukti Pembayaran">
-            <template #body>
-                <img :src="imageSrc" class="img-fluid" alt="Bukti Pembayaran" />
-            </template>
-            <template #footer>
-                <button @click="show = false" class="btn btn-secondary">Close</button>
-            </template>
+            <img :src="modalImage" class="img-fluid" alt="Bukti Pembayaran" />
         </Modal>
     </div>
 </template>
