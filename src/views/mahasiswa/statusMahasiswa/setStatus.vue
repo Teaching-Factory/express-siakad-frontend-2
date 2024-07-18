@@ -23,7 +23,7 @@ const selectedIds = ref([]);
 const id_prodi = route.params.id_prodi; // Variable to store the id_prodi
 
 const fetchSetStatusMahasiswa = async (id_prodi) => {
-    console.log(id_prodi);
+    // console.log(id_prodi);
     try {
         Swal.fire({
             title: 'Loading...',
@@ -127,7 +127,7 @@ onMounted(() => {
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <button class="btn btn-secondary" @click="setNonAktif"><i class="pi pi-check me-2"></i> Set Non Aktif</button>
+                            <button class="btn btn-secondary" @click="setNonAktif(id_prodi)"><i class="pi pi-check me-2"></i> Set Non Aktif</button>
                         </div>
                     </div>
                 </div>

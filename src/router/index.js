@@ -328,6 +328,7 @@ const router = createRouter({
                     name: 'daftar-tagihan-create',
                     component: () => import('../views/keuangan/daftarTagihan/form.vue')
                 },
+                
                 {
                     path: '/daftar-pembayaran',
                     name: 'daftar-pembayaran',
@@ -420,6 +421,12 @@ const router = createRouter({
                     path: '/daftar-belum-krs',
                     name: 'daftar-belum-krs',
                     component: () => import('../views/laporan/daftarBelumKRS/index.vue'),
+                    meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
+                },
+                {
+                    path: '/cetak-daftar-belum-krs',
+                    name: 'cetak-daftar-belum-krs',
+                    component: () => import('../views/laporan/daftarBelumKRS/cetakBelumKrs.vue'),
                     meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
                 },
 

@@ -45,51 +45,46 @@ const fetchAngkatan = async () => {
 };
 
 const filterData = async () => {
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
     const jenis_cetak = selectedJenisCetak.value;
     console.log('ini jenis cetak', jenis_cetak);
-    let id_prodi = '';
-    let id_angkatan = '';
-    let nim = '';
-    let formatExp = '';
+    let requestBody = {};
     
     if (jenis_cetak === 'Mahasiswa') {
-        nim = nimMahasiswa.value;
-        formatExp = format.value;
-    } else if (jenis_cetak === 'Angkatan') {
-        id_prodi = selectedProdi.value;
-        id_angkatan = selectedAngkatan.value;
-    } else {
-        console.error('Invalid jenis_cetak:', jenis_cetak);
-    }
-
-    const id_semester = selectedSemester.value;
-    const tanggal_penandatanganan = tanggalPenandatanganan.value;
-
-    console.log('jenis_cetak', jenis_cetak);
-    console.log('id_prodi', id_prodi);
-    console.log('id_angkatan', id_angkatan);
-    console.log('id_semester', id_semester);
-    console.log('tanggal_penandatangan', tanggal_penandatanganan);
-    console.log('nim', nim);
-    console.log('format', formatExp);
-
-    try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        const requestBody = {
+        const nim = nimMahasiswa.value;
+        const formatExp = format.value;
+        requestBody = {
             jenis_cetak: jenis_cetak,
             nim: nim,
-            id_semester: id_semester,
-            tanggal_penandatanganan: tanggal_penandatanganan,
+            id_semester: selectedSemester.value,
+            tanggal_penandatanganan: tanggalPenandatanganan.value,
             format: formatExp
         };
+    } else if (jenis_cetak === 'Angkatan') {
+        const id_prodi = selectedProdi.value;
+        const id_angkatan = selectedAngkatan.value;
+        requestBody = {
+            jenis_cetak: jenis_cetak,
+            id_prodi: id_prodi,
+            id_angkatan: id_angkatan,
+            id_semester: selectedSemester.value,
+            tanggal_penandatanganan: tanggalPenandatanganan.value
+        };
+    } else {
+        console.error('Invalid jenis_cetak:', jenis_cetak);
+        return;
+    }
+
+    console.log('req', requestBody);
+    try {
         Swal.close();
         router.push({
             name: 'cetak-krs-mahasiswa',

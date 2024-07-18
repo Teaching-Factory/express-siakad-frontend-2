@@ -25,7 +25,14 @@ onMounted(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>SETTING GLOBAL</h5>
+        <div class="row">
+            <div class="col-lg-6 d-flex justify-content-start">
+                <h5><i class="pi pi-user me-2"></i>SETTING GLOBAL</h5>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-end mb-3">
+                <router-link to="/setting-global/edit" class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i>Edit</router-link>
+            </div>
+        </div>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row mt-3">
                 <div class="col-lg-3">Semester Berlaku (Aktif)</div>
@@ -49,7 +56,8 @@ onMounted(() => {
             </div>
         </div>
         <div class="card">
-            <DataTable :value="settingGlobal" :paginator="true" :rows="20" dataKey="id" :rowHover="true" :loading="loading1" showGridlines>
+            <DataTable :value="settingGlobal" :paginator="true" :rows="20" dataKey="id" :rowHover="true"
+                :loading="loading1" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -57,11 +65,6 @@ onMounted(() => {
                                 <InputIcon class="pi pi-search" />
                                 <InputText placeholder="Cari disini" style="width: 100%" />
                             </IconField>
-                        </div>
-                        <div class="col-lg-6 d-flex justify-content-end">
-                            <div class="flex justify-content-end gap-2">
-                                <router-link to="/setting-global/edit" class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i> Edit</router-link>
-                            </div>
                         </div>
                     </div>
                 </template>

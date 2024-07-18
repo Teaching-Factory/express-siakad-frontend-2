@@ -1,8 +1,72 @@
-<script setup>
-const handlePrint = () => {
-    window.print()
+<script>
+import { getData } from '../../../utiils/request.js'
+import Swal from "sweetalert2";
+
+export default {
+    data() {
+        return {
+            krsData: null,
+            getRekapKhsData: null,
+        };
+    },
+    methods: {
+        getDataKrs: async function(req) {
+            try {
+                Swal.fire({
+                    title: 'Loading...',
+                    html: 'Sedang Memuat Data',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                const response = await getData(`rekap-khs-mahasiswa/get-rekap-khs-mahasiswa?jenis_cetak=${req.jenis_cetak}&nim=${req.nim}&id_semester=${req.id_semester}&tanggal_penandatanganan=${req.tanggal_penandatanganan}&format=${req.format}`);
+                this.krsData = response.data;
+                this.getRekapKhsData = response.data.dataRekapKHSMahasiswaMahasiswa;
+                console.log('Response:', response.data)
+                console.log('Response2:', response.data.dataRekapKHSMahasiswaMahasiswa)
+            } catch (error) {
+                console.error('Gagal mengirim data:', error);
+            }
+        },
+        formatTime(time) {
+            if (!time) return '-';
+            const [hour, minute] = time.split(':');
+            return `${hour}:${minute}`;
+        },
+        handlePrint() {
+            window.print();
+        },
+        formatDate(date) {
+            if (!date) return '-';
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+
+            const parts = date.split('-');
+            const year = parts[0];
+            const month = parseInt(parts[1], 10) - 1;
+            const day = parts[2];
+
+            const formattedDate = `${day} ${months[month]} ${year}`;
+            return formattedDate;
+        }
+    },
+    mounted() {
+        this.getDataKrs(this.$route.query)
+    },
+    computed: {
+        totalSKS() {
+            return this.rekapKrsData.reduce((total, matkul) => {
+                return total + (Number(matkul.KelasKuliah?.sks) || 0);
+            }, 0);
+        }
+    }
 }
 </script>
+
 <template>
     <div class="card print border-0" style="width: 21cm; height: 29.7cm; font-family: Arial, Helvetica, sans-serif" >
         <div class="card-body">
@@ -11,11 +75,9 @@ const handlePrint = () => {
             </div>
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
+            <h5 class="text-center mb-3"><b>KARTU HASIL STUDI (KHS)</b></h5>
             <table class="table table-borderless mt-3">
                 <tbody>
-                    <tr>
-                        <h5 class="text-center mb-3"><b>KARTU HASIL STUDI (KHS)</b></h5>
-                    </tr>
                     <tr>
                         <td style="width: 50%;">
                             <div style="display: flex; align-items: flex-start;">
@@ -26,7 +88,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Aida Andinar Maulidiana
+                                    {{ krsData?.mahasiswa?.nama_mahasiswa }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -37,7 +99,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    S1 Teknik Informatika
+                                    {{ krsData?.mahasiswa?.Prodi?.nama_program_studi }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -48,7 +110,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    3
+                                    {{ krsData?.mahasiswa?.Semester?.semester }}
                                 </div>
                             </div>
                         </td>
@@ -61,7 +123,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    362055401012
+                                    {{ krsData?.mahasiswa?.nim }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -72,12 +134,11 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    2024/2025 Ganjil
+                                    {{ krsData?.mahasiswa?.Semester?.nama_semester }}
                                 </div>
                             </div>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
 
@@ -86,12 +147,10 @@ const handlePrint = () => {
                     <thead class="align-middle">
                         <tr>
                             <th rowspan="2">No</th>
-                            <th rowspan="2">Kode Mata Kuliah</th>
-                            <th rowspan="2">Nama Mata Kuliah</th>
+                            <th rowspan="3">Nama Mata Kuliah</th>
                             <th rowspan="2">SKS</th>
                             <th colspan="3">Nilai</th>
                             <th rowspan="2">SKS*Index</th>
-                            
                         </tr>
                         <tr>
                             <th>Angka</th>
@@ -100,34 +159,21 @@ const handlePrint = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>325325</td>
-                            <td>Kapita Selekta</td>
-                            <td>2</td>
-                            <td>4</td>
-                            <td>A</td>
-                            <td>4.0</td>
-                            <td>8.0</td>
-                            
+                        <tr v-for="(nilai, index) in getRekapKhsData" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ nilai.nama_mata_kuliah }}</td>
+                            <td>{{ nilai.sks_mata_kuliah }}</td>
+                            <td>{{ nilai.nilai_angka }}</td>
+                            <td>{{ nilai.nilai_huruf }}</td>
+                            <td>{{ nilai.nilai_indeks }}</td>
+                            <td>{{ nilai.sks_x_indeks }}</td>     
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>325325</td>
-                            <td>Kapita Selekta</td>
-                            <td>2</td>
-                            <td>4</td>
-                            <td>A</td>
-                            <td>4.0</td>
-                            <td>8.0</td>
-                            
-                        </tr>
-                        <tr>
-                            <td  class="text-center" colspan="7">IPS (Index Prestasi Semester )</td>
+                            <td  class="text-center" colspan="6">IPS (Index Prestasi Semester )</td>
                             <td>0</td>
                         </tr>
-                        <tr >
-                            <td class="text-center" colspan="7">IPK (Index Prestasi Kumulatif ) </td>
+                        <tr>
+                            <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif ) </td>
                             <td>12</td>
                         </tr>
                     </tbody>

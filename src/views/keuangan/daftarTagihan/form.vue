@@ -39,6 +39,7 @@ const fetchPeriode = async () => {
         console.error('Gagal mengambil data :', error);
     }
 };
+
 const fetchProdi = async () => {
     try {
         const response = await get('prodi');
@@ -47,6 +48,7 @@ const fetchProdi = async () => {
         console.error('Gagal mengambil data :', error);
     }
 };
+
 const fetchAngkatan = async () => {
     try {
         const response = await get('angkatan');
@@ -262,7 +264,7 @@ onMounted(() => {
                         <label for="exampleFormControlInput1" class="form-label">NIM</label>
                     </div>
                     <div class="col-lg-4">
-                        <v-select v-model="selectedMahasiswa" :options="mahasiswas" @blur="validateMahasiswa" label="label" placeholder="Ketikan Nim / Nama Mahasiswa"></v-select>
+                        <v-select multiple v-model="selectedMahasiswa" :options="mahasiswas" @blur="validateMahasiswa" label="label" placeholder="Ketikan Nim / Nama Mahasiswa"></v-select>
                     </div>
                     <div class="col-lg-2">
                         <label for="exampleFormControlInput1" class="form-label">Deadline Tagihan</label>

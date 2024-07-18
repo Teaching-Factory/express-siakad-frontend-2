@@ -24,7 +24,6 @@ export const get = async (url, props = {}) => {
         }
 
         const data = response.data;
-        console.log('Data yang diperoleh:', data);
         return { status: response.status, data };
     } catch (err) {
         if (err.response) {

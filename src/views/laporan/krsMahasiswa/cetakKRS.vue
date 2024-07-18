@@ -27,7 +27,6 @@ export default {
                 this.krsData = response.data;
                 this.rekapKrsData = response.data.dataRekapKRSByMahasiswa;
                 console.log('Response:', response.data)
-                console.log('Response 2:', response.data.dataRekapKRSByMahasiswa)
             } catch (error) {
                 console.error('Gagal mengirim data:', error);
             }
@@ -46,14 +45,13 @@ export default {
                 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
                 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
             ];
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
             const parts = date.split('-');
             const year = parts[0];
             const month = parseInt(parts[1], 10) - 1; // January is 0
             const day = parts[2];
 
-            const formattedDate = `${days[new Date(date).getDay()]}, ${day} ${months[month]} ${year}`;
+            const formattedDate = `${day} ${months[month]} ${year}`;
             return formattedDate;
         }
     },
@@ -166,7 +164,7 @@ export default {
                 <tbody>
                     <tr v-for="(matkul, index) in rekapKrsData" :key="index">
                         <td>{{ index + 1 }}</td>
-                        <td>{{ matkul.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
+                        <td width="10%">{{ matkul.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
                         <td>{{ matkul.KelasKuliah.MataKuliah.nama_mata_kuliah }}</td>
                         <td>{{ matkul.KelasKuliah.Dosen.nama_dosen }}</td>
                         <td>{{ matkul.KelasKuliah.sks }}</td>
@@ -187,20 +185,52 @@ export default {
                 </tbody>
             </table>
 
-            <div class="page-break"></div>
-            <div class="" style="margin-left: 470px;">
+            <!-- <div class="page-break"></div> -->
+            <!-- <div class="printing" style="margin-left: 470px;">
                 <p class="m-0">{{ formatDate(krsData?.tanggalPenandatanganan) }}</p>
                 <p class="m-0">{{ krsData?.unitJabatan?.Jabatan?.nama_jabatan }}</p>
                 <p style="height: 70px;"></p>
                 <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ krsData?.unitJabatan?.nama_penandatanganan }}</p>
                 <p class="m-0">NIP. {{ krsData?.unitJabatan?.Dosen?.nip ?? '-' }}</p>
-            </div>
+            </div> -->
+            <table class="table table-borderless">
+                <tbody class="text-center">
+                    <tr>
+                        <td width="50%">
+                            <p class="mb-4"></p>
+                            <p class="m-0">Mahasiswa</p>
+                            <p style="height: 70px;"></p>
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;"> {{ krsData?.mahasiswa?.nama_mahasiswa ?? '-'}}</p>
+                            <p class="m-0">{{ krsData?.mahasiswa?.nim ?? '-'}}</p>
+                        </td >
+                        <td width="50%">
+                            <p class="m-0">Banyuwangi, {{ formatDate(krsData?.tanggalPenandatanganan) }}</p>
+                            <p class="m-0">Pembimbing Akademik</p>
+                            <p style="height: 70px;"></p>
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;"> {{ krsData?.dosen_wali?.Dosen?.nama_dosen ?? '-'}}</p>
+                            <p class="m-0">08976768757</p></td>
+                        </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="m-0">{{ krsData?.unitJabatan?.Jabatan?.nama_jabatan ?? '-' }}</p>
+                            <p style="height: 70px;"></p>
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ krsData?.unitJabatan?.nama_penandatanganan ?? '-'}}</p>
+                            <p class="m-0">{{ krsData?.unitJabatan?.Dosen?.nip ?? '-' }}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
+@media print {
+    .printing {
+        margin-top: 2cm;
+    }
+}
 .page-break {
     page-break-after: always;
 }
-</style>
+</style> -->
