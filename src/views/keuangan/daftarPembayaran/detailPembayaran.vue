@@ -10,6 +10,7 @@ import { API_URL } from '../../../config/config';
 
 const route = useRoute();
 const detailPembayaran = ref([]);
+const tagihanMahasiswa = ref([]);
 const id_tagihan_mahasiswa = route.params.id_tagihan_mahasiswa;
 const first = ref(0);
 const show = ref(false);
@@ -33,6 +34,32 @@ const fetchDetailPembayaran = async (id_tagihan_mahasiswa) => {
         response.data.data.forEach((item) => {
             statusPembayaran.value[item.id_pembayaran_mahasiswa] = item.status_pembayaran;
         });
+
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+        Swal.close();
+    }
+};
+
+const fetchTagihanMahasiswa = async (id_tagihan_mahasiswa) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`tagihan-mahasiswa/${id_tagihan_mahasiswa}/get`);
+        tagihanMahasiswa.value = response.data.data;
+
+        console.log(tagihanMahasiswa);
+        // // Initialize statusPembayaran state
+        // response.data.data.forEach((item) => {
+        //     statusPembayaran.value[item.id_pembayaran_mahasiswa] = item.status_pembayaran;
+        // });
 
         Swal.close();
     } catch (error) {
@@ -86,6 +113,7 @@ const onPageChange = (event) => {
 onMounted(() => {
     if (id_tagihan_mahasiswa) {
         fetchDetailPembayaran(id_tagihan_mahasiswa);
+        fetchTagihanMahasiswa(id_tagihan_mahasiswa);
     } else {
         Swal.fire({
             title: 'Error',
@@ -99,7 +127,7 @@ onMounted(() => {
 
 <template>
     <div class="card mt-3">
-        <h5><i class="pi pi-user me-2"></i>DETAIL PEMBAYARAN</h5>
+        <h5><i class="pi pi-user me-2"></i>DETAIL PEMBAYARAN - {{ tagihanMahasiswa.Mahasiswa.nama_mahasiswa }}</h5>
         <DataTable :value="detailPembayaran" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
             <template #header>
                 <div class="row">
@@ -121,7 +149,8 @@ onMounted(() => {
                 </template>
             </Column>
             <Column header="ID Pembayaran" style="min-width: 8rem">
-                <template #body="{ data }"> {{ console.log('ini',data.upload_bukti_tf) }}
+                <template #body="{ data }">
+                    {{ console.log('ini', data.upload_bukti_tf) }}
                     <div class="flex align-items-center gap-2">
                         <span>{{ data.id_pembayaran_mahasiswa }}</span>
                     </div>

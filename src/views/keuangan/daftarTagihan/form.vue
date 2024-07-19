@@ -14,8 +14,7 @@ const mahasiswas = ref([]);
 const jenisTagihans = ref([]);
 const selectedProdi = ref('');
 const selectedAngkatan = ref('');
-const selectedMahasiswa = ref('');
-const id_registrasi_mahasiswa = computed(() => (selectedMahasiswa.value ? selectedMahasiswa.value.id : ''));
+const selectedMahasiswa = ref([]);
 const jumlah_tagihan = ref('');
 const tanggal_tagihan = ref('');
 const deadline_tagihan = ref('');
@@ -31,6 +30,7 @@ const errors = ref({
     id_registrasi_mahasiswa: '',
     id_jenis_tagihan: ''
 });
+
 const fetchPeriode = async () => {
     try {
         const response = await get('periode');
@@ -57,6 +57,7 @@ const fetchAngkatan = async () => {
         console.error('Gagal mengambil data :', error);
     }
 };
+
 const fetchJenisTagihan = async () => {
     try {
         const response = await get('jenis-tagihan');
@@ -71,9 +72,9 @@ const fetchClasses = async () => {
         try {
             const response = await get(`mahasiswa/${selectedProdi.value}/${selectedAngkatan.value}/get`);
             mahasiswas.value = response.data.data.map((mahasiswa) => ({
-                id: mahasiswa.id_registrasi_mahasiswa, // Properti 'id' atau 'value' sesuai dengan library v-select
+                id: mahasiswa.id_registrasi_mahasiswa,
                 nama_mahasiswa: mahasiswa.nama_mahasiswa,
-                label: `${mahasiswa.nim} - ${mahasiswa.nama_mahasiswa}` // Properti 'label' untuk menampilkan nama dosen
+                label: `${mahasiswa.nim} - ${mahasiswa.nama_mahasiswa}`
             }));
         } catch (error) {
             console.error('Gagal mengambil data :', error);
@@ -91,6 +92,7 @@ const validateJumlahTagihan = () => {
         errors.value.jumlah_tagihan = '';
     }
 };
+
 const validateTanggalTagihan = () => {
     if (!tanggal_tagihan.value) {
         errors.value.tanggal_tagihan = 'Tanggal tagihan wajib Diisi.';
@@ -98,6 +100,7 @@ const validateTanggalTagihan = () => {
         errors.value.tanggal_tagihan = '';
     }
 };
+
 const validateDeadlineTagihan = () => {
     if (!deadline_tagihan.value) {
         errors.value.deadline_tagihan = 'Deadline Tagihan Wajib Diisi.';
@@ -105,6 +108,7 @@ const validateDeadlineTagihan = () => {
         errors.value.deadline_tagihan = '';
     }
 };
+
 const validateStatusTagihan = () => {
     if (!status_tagihan.value) {
         errors.value.status_tagihan = 'Status Tagihan Wajib Diisi.';
@@ -112,6 +116,7 @@ const validateStatusTagihan = () => {
         errors.value.status_tagihan = '';
     }
 };
+
 const validatePeriode = () => {
     if (!id_periode.value) {
         errors.value.id_periode = 'Periode Wajib Diisi.';
@@ -119,13 +124,15 @@ const validatePeriode = () => {
         errors.value.id_periode = '';
     }
 };
+
 const validateMahasiswa = () => {
-    if (!id_registrasi_mahasiswa.value) {
+    if (selectedMahasiswa.value.length === 0) {
         errors.value.id_registrasi_mahasiswa = 'Mahasiswa Wajib Diisi.';
     } else {
         errors.value.id_registrasi_mahasiswa = '';
     }
 };
+
 const validateJenisTagihan = () => {
     if (!id_jenis_tagihan.value) {
         errors.value.id_jenis_tagihan = 'Jenis Tagihan Wajib Diisi.';
@@ -161,13 +168,15 @@ const create = async () => {
             deadline_tagihan: deadline_tagihan.value,
             id_periode: id_periode.value,
             id_jenis_tagihan: id_jenis_tagihan.value,
-            id_registrasi_mahasiswa: id_registrasi_mahasiswa.value,
-            status_tagihan: status_tagihan.value
+            status_tagihan: status_tagihan.value,
+            mahasiswas: selectedMahasiswa.value.map((mahasiswa) => ({
+                id_registrasi_mahasiswa: mahasiswa.id
+            }))
         };
 
-        console.log('Payload:', payload); // Log payload for debugging
+        console.log('Payload:', payload);
 
-        const response = await axios.post(`${API_URL}/tagihan-mahasiswa/create`, payload, {
+        const response = await axios.post(`${API_URL}/tagihan-mahasiswa/create-tagihan-mahasiswa-kolektif`, payload, {
             headers: {
                 Authorization: token
             }
@@ -179,7 +188,7 @@ const create = async () => {
         });
     } catch (error) {
         Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
-        console.error('Error:', error.response.data); // Log error response for debugging
+        console.error('Error:', error.response.data);
     }
 };
 
@@ -190,6 +199,7 @@ onMounted(() => {
     fetchJenisTagihan();
 });
 </script>
+
 <template>
     <form @submit.prevent="create">
         <div class="card">
