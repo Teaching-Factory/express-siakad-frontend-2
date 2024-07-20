@@ -63,7 +63,7 @@ const handleSubmit = async () => {
 <template>
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="flex flex-column align-items-center justify-content-center">
-            <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
+            <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, #343434 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
                         <img :src="logoUrl" alt="Image" height="100" class="mb-3" />
@@ -82,11 +82,11 @@ const handleSubmit = async () => {
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
                                 <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
-                                <label for="rememberme1">Remember me</label>
+                                <label for="rememberme1" >Remember me</label>
                             </div>
-                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
+                            <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: #343434">Forgot password?</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl" type="submit"></Button>
+                        <Button label="Sign In" class="w-full p-3 text-xl" style="background-color: #343434;" type="submit"></Button>
                     </form>
                 </div>
             </div>

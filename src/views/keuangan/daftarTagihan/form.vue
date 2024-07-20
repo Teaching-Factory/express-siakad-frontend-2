@@ -15,7 +15,7 @@ const jenisTagihans = ref([]);
 const selectedProdi = ref('');
 const selectedAngkatan = ref('');
 const selectedMahasiswa = ref('');
-const id_registrasi_mahasiswa = computed(() => (selectedMahasiswa.value ? selectedMahasiswa.value.id : ''));
+const id_registrasi_mahasiswa = computed(() => (selectedMahasiswa.value ? selectedMahasiswa.value.id :''));
 const jumlah_tagihan = ref('');
 const tanggal_tagihan = ref('');
 const deadline_tagihan = ref('');
