@@ -127,7 +127,7 @@ onMounted(() => {
 
 <template>
     <div class="card mt-3">
-        <h5><i class="pi pi-user me-2"></i>DETAIL PEMBAYARAN - {{ tagihanMahasiswa.Mahasiswa.nama_mahasiswa }}</h5>
+        <h5><i class="pi pi-user me-2"></i>DETAIL PEMBAYARAN - {{ tagihanMahasiswa?.Mahasiswa?.nama_mahasiswa }}</h5>
         <DataTable :value="detailPembayaran" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
             <template #header>
                 <div class="row">

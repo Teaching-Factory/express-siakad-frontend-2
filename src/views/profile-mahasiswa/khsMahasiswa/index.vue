@@ -1,4 +1,58 @@
+ <script setup>
+import Swal from 'sweetalert2';
+import { onMounted, ref } from 'vue';
+import { get, getData } from '../../../utiils/request';
 
+const periodes = ref([]);
+const selectedPeriode = ref('');
+const mahasiswa = ref([]);
+const khsMahasiswa = ref([]);
+const total = ref([]);
+
+const getPeriode = async () => {
+    try {
+        const response = await getData('semester');
+        periodes.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const filterData = async () => {
+    const periodeId = selectedPeriode.value;
+
+    if (!periodeId) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning').then(() => {});
+        return;
+    }
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`rekap-khs-mahasiswa/${periodeId}/get-khs-mahasiswa`);
+        mahasiswa.value = response.data.mahasiswa;
+        khsMahasiswa.value = response.data.dataRekapKHSMahasiswa;
+        total.value = response.data;
+
+        console.log('mahasiswa', response.data.mahasiswa);
+        console.log('khs', response.data.dataRekapKHSMahasiswa);
+        Swal.close();
+    } catch (error) {
+        // console.error('Gagal mengambil data :', error);
+        Swal.fire('Gagal mengambil data. Silakan coba lagi nanti.');
+    }
+};
+
+onMounted(() => {
+    getPeriode();
+});
+</script>           
 <template>
     <div class="card">
         <div class="card-body">
@@ -8,29 +62,25 @@
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Periode</option>
-                            <option value="1">2020</option>
-                            <option value="2">2021</option>
-                            <option value="3">2022</option>
-                            <option value="4">2023</option>
-                            <option value="5">2024</option>
+                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>--Pilih Periode--</option>
+                            <option v-for="periode in periodes" :key="periode.id_semester" :value="periode.id_semester">{{ periode.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
             <div style="overflow-x: auto">
-                <table class="table table-bordered text-center">
+                <table class="table table-bordered">
                     <thead class="table-dark align-middle">
                         <tr>
                             <th rowspan="2">No</th>
-                            <th rowspan="2">Kode Mata Kuliah</th>
                             <th rowspan="2">Nama Mata Kuliah</th>
                             <th rowspan="2">SKS</th>
                             <th colspan="3">Nilai</th>
+                            <th rowspan="2">SKS*Index</th>
                         </tr>
                         <tr>
                             <th>Angka</th>
@@ -39,41 +89,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>325325</td>
-                            <td>Kapita Selekta</td>
-                            <td>2</td>
-                            <td>4</td>
-                            <td>A</td>
-                            <td>4.0</td>
+                        <tr v-for="(khs, index) in khsMahasiswa" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ khs?.nama_mata_kuliah || '-' }}</td>
+                            <td>{{ khs?.sks_mata_kuliah || '-' }}</td>
+                            <td>{{ khs?.nilai_angka || '-' }}</td>
+                            <td>{{ khs?.nilai_huruf || '-' }}</td>
+                            <td>{{ khs?.nilai_indeks || '-' }}</td>
+                            <td>{{ khs?.sks_x_indeks || '-' }}</td>
                         </tr>
                         <tr>
-                            <td>2</td>
-                            <td>325325</td>
-                            <td>Kapita Selekta</td>
-                            <td>2</td>
-                            <td>4</td>
-                            <td>A</td>
-                            <td>4.0</td>
+                            <td class="text-center" colspan="6">Total (Total SKS Indeks )</td>
+                            <td>{{ total?.total_sks_indeks || '-' }}</td>
                         </tr>
                         <tr>
-                            <td colspan="3">Total SKS</td>
-                            <td colspan="1">0</td>
-                            <td colspan="3">0</td>
+                            <td class="text-center" colspan="6">IPS (Index Prestasi Semester )</td>
+                            <td>{{ total?.ips || '-' }}</td>
                         </tr>
                         <tr>
-                            <td colspan="4">IPS (Index Prestasi Semester)</td>
-                            <td colspan="3">00.00</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">IPK (Index Prestasi Kumulatif)</td>
-                            <td colspan="3">00.00</td>
+                            <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif )</td>
+                            <td>{{ total?.ipk || '-' }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            
         </div>
     </div>
 </template>
