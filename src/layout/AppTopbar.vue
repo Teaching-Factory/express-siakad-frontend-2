@@ -94,7 +94,10 @@ const isOutsideClicked = (event) => {
     <div class="layout-topbar">
         <router-link to="/" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
-            <span class="text-white">SIAKAD</span>
+            <div class="text-container text-icon" style="display: flex; flex-direction: column; margin-left: 10px;">
+                <span class="text-white title" style="font-size: 1.2rem; font-weight: bold;">Sistem Informasi Akademik</span>
+                <span class="text-white subtitle" style="font-size: 1rem;">Universitas Bakti Indonesia</span>
+            </div>
         </router-link>
 
         <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()">
@@ -108,19 +111,31 @@ const isOutsideClicked = (event) => {
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
             <div class="dropdown">
                 <button class="dropdown-toggle border-0" style="background: none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="pi pi-user text-white me-3 fs-4"></i>
-                    <span class="text-white">Hi, {{ user ? user : 'Guest' }}</span>
+                    <i class="pi pi-user icon-text me-3 fs-4"></i>
+                    <span class="user-text">Hi, {{ user ? user : 'Guest' }}</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="#" @click="handleLogout">Logout</a></li>
                 </ul>
             </div>
-            <!-- <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-user text-white"></i>
-                <span class="text-white">Profile</span>
-            </button> -->
         </div>
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.user-text, .icon-text {
+  color: white;
+}
+@media (max-width: 1021px) {
+
+  .user-text, .icon-text {
+    color: black;
+  }
+}
+
+@media (max-width: 500px) {
+  .text-icon {
+    display: none !important;
+  }
+}
+</style>
