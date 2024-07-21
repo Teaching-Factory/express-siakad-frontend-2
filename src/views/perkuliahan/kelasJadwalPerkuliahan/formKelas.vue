@@ -91,13 +91,7 @@ const validateJamSelesai = () => {
         errors.value.jam_selesai = '';
     }
 };
-const validateModeKuliah = () => {
-    if (!mode_kuliah.value) {
-        errors.value.mode_kuliah = 'Mode Kuliah Wajib Diisi.';
-    } else {
-        errors.value.mode_kuliah = '';
-    }
-};
+
 const validateTanggalMulai = () => {
     if (!tanggal_mulai_efektif.value) {
         errors.value.tanggal_mulai_efektif = 'Tanggal Mulai Efektif Wajib Diisi.';
@@ -169,7 +163,6 @@ const create = async () => {
         validateJamMulai();
         validateJamSelesai();
         validateKapasitasPeserta();
-        validateModeKuliah();
         validateNamaKelas();
         validateRuangPerkuliahan();
         validateTanggalMulai();
@@ -305,7 +298,7 @@ onMounted(() => {
                     </div>
                     <label for="inputPassword" class="col-sm-3 col-form-label">Mode Kuliah</label>
                     <div class="col-sm-3">
-                        <select name="" class="form-select" @blur="validateModeKuliah" v-model="mode_kuliah" id="mode_kuliah">
+                        <select name="" class="form-select" v-model="mode_kuliah" id="mode_kuliah">
                             <option value="" selected disabled hidden>Mode Kuliah</option>
                             <option value="O">Online</option>
                             <option value="F">Offline</option>

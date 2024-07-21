@@ -19,7 +19,7 @@ const detailKrs = async (id_registrasi_mahasiswa) => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`krs-mahasiswa/mahasiswa/semester/${id_registrasi_mahasiswa}/get`);
+        const response = await get(`krs-mahasiswa/mahasiswa/${id_registrasi_mahasiswa}/get`);
         const krs = response.data.data;
         // Memastikan pengajar memiliki nilai sebelum diassign
         if (krs !== null && krs.length !== 0) {
@@ -28,6 +28,8 @@ const detailKrs = async (id_registrasi_mahasiswa) => {
             // Jika pengajar kosong, assign nilai default atau kosong
             details.value = []; // atau null, atau nilai default lainnya
         }
+
+        console.log(krs);
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
@@ -120,10 +122,10 @@ onMounted(() => {
                             <td>{{ krs?.MataKuliah.nama_mata_kuliah || '' }}</td>
                             <td>{{ krs?.KelasKuliah?.nama_kelas_kuliah || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.Dosen?.nama_dosen || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.hari || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_mulai || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_selesai || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.RuangPerkuliahan?.nama_ruang_perkuliahan || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.hari || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_mulai || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_selesai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.sks }}</td>
                             <td>-</td>
                         </tr>

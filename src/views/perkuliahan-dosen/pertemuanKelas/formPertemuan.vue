@@ -72,13 +72,6 @@ const validateWaktuSelesai = () => {
         errors.value.waktu_selesai = '';
     }
 };
-const validateMateri = () => {
-    if (!materi.value) {
-        errors.value.materi = 'Materi Wajib Diisi.';
-    } else {
-        errors.value.materi = '';
-    }
-};
 
 const validateRuangPerkuliahan = () => {
     if (!id_ruang_perkuliahan.value) {
@@ -112,7 +105,6 @@ const create = async () => {
         validateTanggal();
         validateWaktuMulai();
         validateWaktuSelesai();
-        validateMateri();
         validateRuangPerkuliahan();
 
         const token = getToken();
@@ -141,7 +133,7 @@ const create = async () => {
             window.location.href = `/pertemuan-perkuliahan/${id_kelas_kuliah}`;
         });
     } catch (error) {
-        swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
+        Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
         console.error('Error:', error.response.data); // Log error response for debugging
     }
 };
@@ -240,7 +232,7 @@ onMounted(() => {
                         <label for="exampleFormControlInput1" class="form-label">Materi</label>
                     </div>
                     <div class="col-lg-9">
-                        <textarea name="" id="materi" v-model="materi" @blur="validateMateri" class="form-control" rows="10"></textarea>
+                        <textarea name="" id="materi" v-model="materi" class="form-control" rows="10"></textarea>
                     </div>
                 </div>
             </div>
