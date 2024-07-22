@@ -269,7 +269,7 @@ export default {
 <template>
     <!-- role super admin dan admin prodi (belum dipermission) -->
     <!-- <div v-if="permissions.includes('alur-menu-admin')" class="row"> -->
-    <div class="row">
+    <div v-if="permissions.includes('dashboard-admin')" class="row">
         <div class="col-md-3 col-sm-3 mb-3">
             <div class="card mb-0 p-3 position-relative">
                 <p class="top-right-number">1</p>
@@ -388,7 +388,7 @@ export default {
                     <span>Semester {{ semesterAktif[0]?.Semester?.nama_semester }}</span>
                 </div>
             </div>
-            <div class="card bg-theme">
+            <div v-if="permissions.includes('dashboard-info')"  class="card bg-theme">
                 <div class="text-danger">
                     <span>Selamat Datang!!! tetaplah semangat belajar dan menghasilkan karya - karya yang bermanfaat bagi nusa dan bangsa.</span>
                 </div>
@@ -397,23 +397,27 @@ export default {
                 </div>
 
                 <!-- role mahasiswa -->
-                <router-link to="/profile-data-mahasiswa" target="_blank">
-                    <li class="text-dark mt-3 font-medium">Profile Mahasiswa</li>
-                </router-link>
-                <router-link to="/tagihan-pembayaran-mahasiswa" target="_blank">
-                    <li class="text-dark mt-3 font-medium">Pembayaran Mahasiswa</li>
-                </router-link>
-                <router-link to="/perkuliahan-krs-mahasiswa" target="_blank">
-                    <li class="text-dark mt-3 font-medium">KRS Online Mahasiswa</li>
-                </router-link>
+                 <div  v-if="permissions.includes('dashboard-mahasiswa')">
+                     <router-link to="/profile-data-mahasiswa" target="_blank">
+                         <li class="text-dark mt-3 font-medium">Profile Mahasiswa</li>
+                     </router-link>
+                     <router-link to="/tagihan-pembayaran-mahasiswa" target="_blank">
+                         <li class="text-dark mt-3 font-medium">Pembayaran Mahasiswa</li>
+                     </router-link>
+                     <router-link to="/perkuliahan-krs-mahasiswa" target="_blank">
+                         <li class="text-dark mt-3 font-medium">KRS Online Mahasiswa</li>
+                     </router-link>
+                 </div>
 
                 <!-- role dosen -->
+                <div  v-if="permissions.includes('dashboard-dosen')">
                 <router-link to="/pertemuan-perkuliahan/:id_kelas_kuliah" target="_blank">
                     <li class="text-dark mt-3 font-medium">Pertemuan Kelas</li>
                 </router-link>
                 <router-link to="/presensi-perkuliahan" target="_blank">
                     <li class="text-dark mt-3 font-medium">Presensi Kelas</li>
                 </router-link>
+            </div>
             </div>
         </div>
 
@@ -593,7 +597,7 @@ export default {
     <!-- role mahasiswa (belum di permission) -->
     <div class="row mt-3">
         <!-- <div v-if="permissions.includes('diagram-ipk-mahasiswa')" class="col-lg-8"> -->
-        <div class="col-lg-8">
+        <div v-if="permissions.includes('dashboard-mahasiswa')" class="col-lg-8">
             <div class="card">
                 <div class="card-body">
                     <apexchart

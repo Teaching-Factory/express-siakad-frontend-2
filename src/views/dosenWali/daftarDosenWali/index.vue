@@ -87,7 +87,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button class="btn btn-primary"><i class="pi pi-plus me-2"></i> Set Dosen Wali</button>
+                                <router-link to="/manajemen-mahasiswa-wali" class="btn btn-primary"><i class="pi pi-plus me-2"></i> Set Dosen Wali</router-link>
                             </div>
                         </div>
                     </div>

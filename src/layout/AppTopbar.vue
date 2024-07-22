@@ -95,8 +95,9 @@ const isOutsideClicked = (event) => {
         <router-link to="/" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
             <div class="text-container text-icon" style="display: flex; flex-direction: column; margin-left: 10px;">
-                <span class="text-white title" style="font-size: 1.2rem; font-weight: bold;">Sistem Informasi Akademik</span>
-                <span class="text-white subtitle" style="font-size: 1rem;">Universitas Bakti Indonesia</span>
+                <span class="text-white subtitle" style="font-size: 1rem;">Sistem Informasi Akademik</span>
+                <span class="text-white title" style="font-size: 1.1rem; font-weight: bold;">Universitas Bakti Indonesia</span>
+                
             </div>
         </router-link>
 
