@@ -25,6 +25,7 @@ const permissions = ref([]);
 const presensi = ref([]);
 const pertemuanPerkuliahan = ref([]);
 const pertemuanAktif = ref([]);
+const ipsSemester = ref([]);
 const selectedSemester = ref('');
 const selectedMataKuliah = ref('');
 const selectedPertemuan = ref('');
@@ -141,6 +142,33 @@ const openPertemuan = async () => {
     }
 };
 
+const closePertemuan = async (id) => {
+    try {
+        const token = getToken();
+
+        const url = `${API_URL}/pertemuan-perkuliahan/${id}/close-pertemuan-perkuliahan`;
+
+
+        const response = await axios.put(
+            url,
+           {},
+            {
+                headers: {
+                    Authorization: token,
+                    'Content-Type': 'application/json' // Tambahkan header Content-Type
+                }
+            }
+        );
+
+        Swal.fire('BERHASIL!', 'Pertemuan Berhasil Ditutup.', 'success').then(() => {
+            window.location.href = '/dashboard';
+        });
+        console.log('Status berhasil diperbarui:', response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
+    }
+};
+
 const fetchPertemuanAktif = async () => {
     try {
         const response = await get('pertemuan-perkuliahan/get-pertemuan-perkuliahan-aktif-by-dosen');
@@ -206,11 +234,12 @@ const presensiSekarang = async () => {
     }
 };
 
+
 const series = ref([
   {
     name: 'Semester IPK',
     type: 'column',
-    data: [3.4, 2.9, 3.1, 4.0, 2.3, 2.8, 3.2, 3.6],
+    data: [],
   }
 ]);
 
@@ -227,7 +256,7 @@ const chartOptions = ref({
   },
   dataLabels: {
     enabled: true,
-    enabledOnSeries: [1],
+    enabledOnSeries: [2],
   },
   labels: [
     'Sem 1',
@@ -242,12 +271,31 @@ const chartOptions = ref({
   colors: ['#F7EA06']
 });
 
+const getIPSSemester = async () =>{
+    try {
+    const response = await get('mahasiswa/get-ips-mahasiswa-active');
+    const ipsSemester = response.data.daftar_ips;
+
+    // Clear existing data (optional, depending on your logic)
+    series.value[0].data = [];
+
+    // Loop through ipsSemester and push each value to series
+    ipsSemester.forEach((ipsValue) => {
+      series.value[0].data.push(ipsValue);
+    });
+
+  } catch (error) {
+    console.error('Gagal mengambil data :', error);
+  }
+}
+
 onMounted(() => {
     user.value = getUser();
     fetchSemester();
     fetchSemesterAktif();
     fetchPertemuanAktif();
     fetchPresensiMahasiswa();
+    getIPSSemester()
     permissions.value = getPermissions();
 });
 watchEffect(() => {
@@ -379,7 +427,7 @@ export default {
     <div class="row mt-3">
         <!-- role mahasiswa dan dosen (belum dipermission) -->
         <!-- <div v-if="permissions.includes('informasi-dosen-mahasiswa')" class="col-lg-8 col-md-8"> -->
-        <div class="col-lg-8 col-md-8">
+        <div v-if="permissions.includes('dashboard-info')"  class="col-lg-8 col-md-8">
             <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-start">
                     <h5>Hi,{{ user ? user : 'Guest' }}</h5>
@@ -388,7 +436,7 @@ export default {
                     <span>Semester {{ semesterAktif[0]?.Semester?.nama_semester }}</span>
                 </div>
             </div>
-            <div v-if="permissions.includes('dashboard-info')"  class="card bg-theme">
+            <div  class="card bg-theme">
                 <div class="text-danger">
                     <span>Selamat Datang!!! tetaplah semangat belajar dan menghasilkan karya - karya yang bermanfaat bagi nusa dan bangsa.</span>
                 </div>
@@ -480,6 +528,11 @@ export default {
                             <div class="flex align-items-center gap-2">
                                 <span>{{ data.waktu_mulai }} - {{ data.waktu_selesai }}</span>
                             </div>
+                        </template>
+                    </Column>
+                    <Column header="Tutup Kelas" style="min-width: 10rem">
+                        <template #body="{ data }">
+                            <button @click="closePertemuan(data.id)" class="btn btn-outline-danger me-2"><i class="pi pi-check"></i></button>
                         </template>
                     </Column>
                 </DataTable>
@@ -600,12 +653,12 @@ export default {
         <div v-if="permissions.includes('dashboard-mahasiswa')" class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                    <apexchart
+                     <apexchart
                         width="100%"
                         type="line"
                         :options="chartOptions"
                         :series="series"
-                    ></apexchart>
+                        ></apexchart>
                 </div>
             </div>
         </div>

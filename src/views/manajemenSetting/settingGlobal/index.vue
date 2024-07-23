@@ -72,7 +72,6 @@ onMounted(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading customers data. Please wait. </template>
 
                 <Column field="no" header="Kode Prodi" style="min-width: 5rem">
                     <template #body="{ data }">
@@ -89,23 +88,23 @@ onMounted(() => {
                 <Column header="Buka KRS" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <input type="checkbox" :checked="data.open_khs" />
+                            <input type="checkbox" :checked="data.open_khs === true" />
                         </div>
                     </template>
                 </Column>
                 <Column header="Buka Penilaian" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <input type="checkbox" :checked="data.open_assessment" />
+                        <input type="checkbox" :checked="data.open_assessment === true" />
                     </template>
                 </Column>
                 <Column header="Buka KHS" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <input type="checkbox" :checked="data.open_khs" />
+                        <input type="checkbox" :checked="data.open_khs === true" />
                     </template>
                 </Column>
                 <Column header="Buka Transkrip" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <input type="checkbox" :checked="data.open_transcript" />
+                        <input type="checkbox" :checked="data.open_transcript === true" />
                     </template>
                 </Column>
             </DataTable>

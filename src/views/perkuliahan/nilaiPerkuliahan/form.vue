@@ -5,7 +5,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { API_URL } from '../../../config/config';
 import { getToken } from '../../../service/auth';
-import { get } from '../../../utiils/request';
+import { get, postData } from '../../../utiils/request';
 import Modal from '../../../components/Modal.vue';
 
 const bobotPenilaian = ref([]);
@@ -13,6 +13,7 @@ const getNilai = ref([]);
 const dataMahasiswa = ref([]);
 const getKelasKuliah = ref([]);
 const nilaiMahasiswa = ref([]);
+const file = ref(null);
 const route = useRoute();
 
 const fetchKelasKuliah = async (id_kelas_kuliah) => {
@@ -119,9 +120,47 @@ const create = async () => {
 
 const isUploadModalVisible = ref(false);
 
+const handleFileUpload = (event) => {
+  file.value = event.target.files[0];
+};
+
 const showUploadModal = () => {
     isUploadModalVisible.value = true;
 };
+
+const id_kelas_kuliah = route.params.id_kelas_kuliah || route.query.id_kelas_kuliah;
+const uploadNilai = async (id_kelas_kuliah) => {
+    if (!file.value) {
+        Swal.fire('GAGAL', 'Silakan pilih file untuk diupload.', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file.value);
+
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await postData(`nilai-perkuliahan/${id_kelas_kuliah}/import-nilai-perkuliahan`, formData);
+        console.log(response);
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
+            // Tindakan tambahan setelah unggah berhasil jika diperlukan
+            isUploadModalVisible.value = false;
+        });
+    } catch (error) {
+        Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
+    }
+};
+
 
 onMounted(() => {
     const id_prodi = route.params.id_prodi || route.query.id_prodi;
@@ -155,15 +194,16 @@ onMounted(() => {
                 </div>
             </div>
             <Modal v-if="isUploadModalVisible" :show="isUploadModalVisible" title="Upload Excel" size="md" @close="isUploadModalVisible = false">
-                <form>
-                    <p>Silahkan unduh template <a href="https://chatgpt.com/" target="_blank">Disini</a></p>
+                <form @submit.prevent="uploadNilai(id_kelas_kuliah)">
+                    <p>Silahkan unduh template <a href="../../../../public/file/template_nilai.xlsx" download target="_blank">Disini</a></p>
                     <div class="mb-3">
                         <label for="file" class="form-label">Upload File Excel</label>
-                        <input type="file" class="form-control" id="file" @change="onFileChange" />
+                        <input type="file" class="form-control" id="file" @change="handleFileUpload" />
                     </div>
                     <button type="submit" class="btn btn-primary">Upload</button>
                 </form>
             </Modal>
+
 
             <hr />
 

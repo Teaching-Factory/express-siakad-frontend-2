@@ -1,8 +1,81 @@
-<script setup>
-const handlePrint = () => {
-    window.print()
+<script>
+import { getData } from '../../../utiils/request.js'
+import Swal from "sweetalert2";
+
+export default {
+    data() {
+        return {
+            dataNilai: null,
+            rekapDataNilai: [],
+            bobotNilai:[],
+            data:[]
+        };
+    },
+    methods: {
+        getDataNilai: async function(req) {
+            try {
+                Swal.fire({
+                    title: 'Loading...',
+                    html: 'Sedang Memuat Data',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                const encodedNamaKelas = encodeURIComponent(req.nama_kelas_kuliah);
+
+                const response = await getData(`nilai-perkuliahan/get-nilai-perkuliahan-by-filter?id_semester=${req.id_semester}&id_prodi=${req.id_prodi}&nama_kelas_kuliah=${encodedNamaKelas}&format=${req.format}&tanggal_penandatanganan=${req.tanggal_penandatanganan}`);
+                this.data = response.data;
+                this.dataNilai = response.data.kelas_kuliah;
+                this.bobotNilai = response.data.bobot_penilaian_prodi;
+                this.rekapDataNilai = response.data.dataRekapNilaiPerkuliahan;
+                console.log('Response:', response.data)
+            } catch (error) {
+                console.error('Gagal mengirim data:', error);
+            }
+        },
+        formatTime(time) {
+            if (!time) return '-';
+            const [hour, minute] = time.split(':');
+            return `${hour}:${minute}`;
+        },
+        handlePrint() {
+            window.print();
+        },
+        formatDate(date) {
+            if (!date) return '-';
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+
+            const parts = date.split('-');
+            const year = parts[0];
+            const month = parseInt(parts[1], 10) - 1; // January is 0
+            const day = parts[2];
+
+            const formattedDate = `${day} ${months[month]} ${year}`;
+            return formattedDate;
+        },
+        findNilaiByIdUnsurPenilaian(data, idUnsurPenilaian) {
+        const nilai = data.find(item => item.id_unsur_penilaian === idUnsurPenilaian);
+        return nilai ? nilai.nilai : '-';
+    }
+    },
+    mounted() {
+        this.getDataNilai(this.$route.query)
+    },
+    // computed: {
+    //     totalSKS() {
+    //         return this.rekapDataNilai.reduce((total, matkul) => {
+    //             return total + (Number(matkul.KelasKuliah?.sks) || 0);
+    //         }, 0);
+    //     }
+    // }
 }
 </script>
+
 <template>
     <div class="card print border-0" style="width: 21cm; height: 29.7cm; font-family: Arial, Helvetica, sans-serif" >
         <div class="card-body">
@@ -26,7 +99,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    S1 Teknik Informatika
+                                    {{dataNilai?.Prodi?.nama_program_studi}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -37,7 +110,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Kapita Selekta
+                                    {{dataNilai?.MataKuliah?.nama_mata_kuliah}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -48,7 +121,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Sudarmono
+                                    {{dataNilai?.Dosen?.nama_dosen}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -59,7 +132,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Gedung A
+                                    {{dataNilai?.DetailKelasKuliahs[0]?.RuangPerkuliahan?.lokasi || '-'}}
                                 </div>
                             </div>
                         </td>
@@ -72,7 +145,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    2023/2024 Ganjil
+                                    {{dataNilai?.Semester?.nama_semester}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -83,7 +156,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    A
+                                   {{dataNilai?.nama_kelas_kuliah}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -94,7 +167,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                     Ruang A 728
+                                    {{dataNilai?.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan || '-'}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -105,7 +178,7 @@ const handlePrint = () => {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                     01.00 - 02.30
+                                    {{dataNilai?.DetailKelasKuliahs[0]?.jam_mulai || '00:00'}} -  {{dataNilai?.DetailKelasKuliahs[0]?.jam_selesai || '00:00'}}
                                 </div>
                             </div>
                         </td>
@@ -129,40 +202,46 @@ const handlePrint = () => {
                             
                         </tr>
                         <tr>
-                            <th>Presensi</th>
+                            <th v-for="(bobot, index) in bobotNilai" :key="index">{{ bobot?.UnsurPenilaian?.nama_unsur_penilaian }}</th>
+                            <!-- <th>Presensi</th>
                             <th>Tugas</th>
                             <th>UTS</th>
-                            <th>UAS</th>
+                            <th>UAS</th> -->
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>325325987</td>
-                            <td>Aida Andinar</td>
-                            <td>2020</td>
-                            <td>85.00</td>
-                            <td>90.00</td>
-                            <td>95.00</td>
-                            <td>98.00</td>
-                            <td>99.00</td>
-                            <td>A (4.00)</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>325325987</td>
-                            <td>Aida Andinar</td>
-                            <td>2020</td>
-                            <td>85.00</td>
-                            <td>90.00</td>
-                            <td>95.00</td>
-                            <td>98.00</td>
-                            <td>99.00</td>
-                            <td>A (4.00)</td>
+                        <tr v-for="(rekapNilai, index) in rekapDataNilai" :key="index">
+                            <td>{{index + 1}}</td>
+                            <td>{{rekapNilai?.Mahasiswa?.nim}}</td>
+                            <td>{{rekapNilai?.Mahasiswa?.nama_mahasiswa}}</td>
+                            <td>{{rekapNilai?.angkatan}}</td>
+                            <td v-for="(bobot, index) in bobotNilai" :key="index">
+                                {{ findNilaiByIdUnsurPenilaian(rekapNilai.NilaiPerkuliahans, bobot.id_unsur_penilaian) || '-' }}
+                            </td>
+                            <td>{{rekapNilai?.nilai_angka || '0'}}</td>
+                            <td>{{rekapNilai?.nilai_huruf || '-'}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            
+            <div class="col-lg-12 d-flex justify-content-end">
+                    <div class="flex justify-content-end gap-2">
+                        <table class="table table-borderless" style="width: 100%;">
+                            <tbody class="" style="display: block; text-align: left;">
+                                <tr>
+                                    <td colspan="2">
+                                        <p class="m-0">Banyuwangi, {{ formatDate(data?.tanggalPenandatanganan) }}</p>
+                                        <p class="m-0">Dosen Pengajar</p>
+                                        <p style="height: 70px;"></p>
+                                        <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ dataNilai?.Dosen?.nama_dosen ?? '-' }}</p>
+                                        <p class="m-0">nidn.{{ dataNilai?.Dosen?.nidn ?? '-' }}</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
         </div>
     </div>
 </template>

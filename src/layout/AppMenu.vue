@@ -1,8 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue';
 import AppMenuItem from './AppMenuItem.vue';
-import { getPermissions } from '../utiils/local_storage';
+import { getPermissions, getSettingGlobal } from '../utiils/local_storage';
+
 const permissions = getPermissions();
+const settingGlobal = getSettingGlobal();
 
 const model = ref([
     {
@@ -449,7 +451,8 @@ const model = ref([
                     {
                         label: 'Kartu Rencana Studi Online',
                         to: '/perkuliahan-krs-mahasiswa',
-                        visible: computed(() => permissions.includes('perkuliahan-krs-mahasiswa'))
+                        visible: computed(() => settingGlobal.open_krs === true && permissions.includes('perkuliahan-krs-mahasiswa')),
+                        // visible: computed(() => settingGlobal.includes('open_krs'))
                     },
                     {
                         label: 'Kartu Hasil Studi',

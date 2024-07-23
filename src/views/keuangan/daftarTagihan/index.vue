@@ -2,7 +2,10 @@
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
-import { del, get } from '../../../utiils/request';
+import { del, get, getData } from '../../../utiils/request';
+import { getToken } from '../../../service/auth';
+import { API_URL } from '../../../config/config';
+import axios from 'axios';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -14,9 +17,42 @@ const filters = ref({
 });
 
 const tagihans = ref([]);
+const periodes = ref([]);
+const prodis = ref([]);
+const jenisTagihans = ref([]);
+const statusPembayarans = ref([]);
 const first = ref(0);
 const message = ref('');
-const fetchTagihan = async () => {
+const selectedProdi = ref('')
+const selectedPeriode = ref('')
+const selectedJenisTagihan = ref('')
+const selectedStatusPembayaran = ref ('')
+
+const getPeriode = async()=>{
+    try {
+        const response = await get('periode');
+        periodes.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data sistemKuliah:', error);
+    }
+}
+const getProdi = async()=>{
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data sistemKuliah:', error);
+    }
+}
+const getJenisTagihan = async()=>{
+    try {
+        const response = await get('jenis-tagihan');
+        jenisTagihans.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data sistemKuliah:', error);
+    }
+}
+const filterData = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -26,21 +62,54 @@ const fetchTagihan = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('tagihan-mahasiswa');
-        // console.log(response.data.data);
-        tagihans.value = response.data.data;
+
+        const id_periode = selectedPeriode.value;
+        const id_prodi = selectedProdi.value;
+        const id_jenis_tagihan = selectedJenisTagihan.value;
+        const status_tagihan = selectedStatusPembayaran.value;
+
+        // Menggunakan axios untuk GET request dengan query parameters
+        const response = await getData(`tagihan-mahasiswa/get-tagihan-mahasiswa-by-filter?id_periode=${id_periode}&id_prodi=${id_prodi}&id_jenis_tagihan=${id_jenis_tagihan}&status_tagihan=${status_tagihan}`);
+
+        const filterMahasiswa = response.data.data;
+        tagihans.value = filterMahasiswa;
+
         Swal.close();
     } catch (error) {
-        console.error('Gagal mengambil data sistemKuliah:', error);
+        console.error('Gagal mengambil data mahasiswa:', error);
+        Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
     }
 };
+
+// const fetchTagihan = async () => {
+//     try {
+//         Swal.fire({
+//             title: 'Loading...',
+//             html: 'Sedang Memuat Data',
+//             allowOutsideClick: false,
+//             didOpen: () => {
+//                 Swal.showLoading();
+//             }
+//         });
+//         const response = await get('tagihan-mahasiswa');
+//         // console.log(response.data.data);
+//         tagihans.value = response.data.data;
+//         Swal.close();
+//     } catch (error) {
+//         console.error('Gagal mengambil data sistemKuliah:', error);
+//     }
+// };
 
 const onPageChange = (event) => {
     first.value = event.first;
 };
 
 onBeforeMount(() => {
-    fetchTagihan();
+    // fetchTagihan();
+    getPeriode()
+    getProdi()
+    getJenisTagihan()
+
 });
 
 const deleteItem = async (id_tagihan_mahasiswa) => {
@@ -87,48 +156,43 @@ const confirmDelete = (id_tagihan_mahasiswa) => {
                 <div class="col-lg-2 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Periode Tagihan</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Periode Tagihan</option>
-                            <option value="1">2020/2021 Genap</option>
-                            <option value="2">2020/2021 Ganjil</option>
+                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Periode</option>
+                            <option v-for="periode in periodes" :key="periode.id_periode" :value="periode.id_periode">{{ periode.periode_pelaporan }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Program Studi</option>
-                            <option value="1">S1 Teknik Informatika</option>
-                            <option value="2">S1 Teknologi Basis Data</option>
-                            <option value="3">S1 Perikanan</option>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Jenis Tagihan</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Jenis Tagihan</option>
-                            <option value="1">KKN</option>
-                            <option value="2">Wisuda</option>
-                            <option value="3">MKI</option>
+                        <select v-model="selectedJenisTagihan" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Jenis Tagihan</option>
+                            <option v-for="tagihan in jenisTagihans" :key="tagihan.id_jenis_tagihan" :value="tagihan.id_jenis_tagihan">{{ tagihan.nama_jenis_tagihan }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="">
                         <label for="exampleFormControlInput1" class="form-label">Status Pembayaran</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected disabled hidden>Status Pembayaran</option>
-                            <option value="1">Lunas</option>
-                            <option value="2">Belum Lunas</option>
-                            <option value="3">Belum Bayar</option>
+                        <select v-model="selectedStatusPembayaran" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Status Pembayaran</option>
+                            <option value="Lunas">Lunas</option>
+                            <option value="Belum Lunas">Belum Lunas</option>
+                            <option value="Belum Bayar">Belum Bayar</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
         </div>
