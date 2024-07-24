@@ -536,6 +536,16 @@ const router = createRouter({
                     component: () => import('../views/profile-mahasiswa/khsMahasiswa/index.vue'),
                     meta: { requiredPermissions: ['profile-khs-mahasiswa'] }
                 },
+                {
+                    path: '/cetak-khs',
+                    name: 'cetak-khs',
+                    component: () => import('../views/laporan-mahasiswa/khsMahasiswa/cetakKhsMahasiswa.vue')
+                },
+                {
+                    path: '/cetak-krs',
+                    name: 'cetak-krs',
+                    component: () => import('../views/laporan-mahasiswa/krsMahasiswa/cetakKrsMahasiswa.vue')
+                },
 
                 //kegiatan
                 //perkuliahan
