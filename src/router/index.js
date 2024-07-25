@@ -147,7 +147,7 @@ const router = createRouter({
                     meta: { requiredPermissions: ['presensi-perkuliahan'] }
                 },
                 {
-                    path: '/presensi-perkuliahan/detail',
+                    path: '/presensi-perkuliahan/:id/detail',
                     name: 'presensi-perkuliahan-detail',
                     component: () => import('../views/perkuliahan/presensiPerkuliahan/detail.vue')
                 },

@@ -7,6 +7,7 @@ const periodes = ref([]);
 const selectedPeriode = ref('');
 const mahasiswa = ref([]);
 const khsMahasiswa = ref([]);
+const dataMahasiswa = ref([]);
 const total = ref([]);
 
 const getPeriode = async () => {
@@ -16,6 +17,14 @@ const getPeriode = async () => {
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
+};
+
+const getMahasiswa = async () => {
+   
+   const response = await get('mahasiswa/get-mahasiswa-active');
+   const krs = response.data.data;
+   dataMahasiswa.value = krs;
+   console.log(response.data.data);
 };
 
 const filterData = async () => {
@@ -51,6 +60,7 @@ const filterData = async () => {
 
 onMounted(() => {
     getPeriode();
+    getMahasiswa()
 });
 </script>
 
@@ -76,23 +86,23 @@ onMounted(() => {
             <div class="card" style="border-radius: none !important">
                 <div class="row">
                     <div class="col-lg-2">NIM</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> {{ mahasiswa?.nim || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.nim || '-' }}</div>
                     <div class="col-lg-2">Jurusan</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> {{ mahasiswa?.Prodi?.nama_program_studi || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.Prodi?.nama_program_studi || '-' }}</div>
                 </div>
                 <hr style="border: 1px solid #000" />
                 <div class="row">
                     <div class="col-lg-2">Nama</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> {{ mahasiswa?.nama_mahasiswa || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.nama_mahasiswa || '-' }}</div>
                     <div class="col-lg-2">Jenis Kelamin</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> {{ mahasiswa?.jenis_kelamin || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.jenis_kelamin || '-' }}</div>
                 </div>
                 <hr style="border: 1px solid #000" />
                 <div class="row">
                     <div class="col-lg-2">Status Mahasiswa</div>
-                    <div class="col-lg-4"><span class="me-2">:</span>{{ mahasiswa?.nama_status_mahasiswa || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span>{{ dataMahasiswa?.nama_status_mahasiswa || '-' }}</div>
                     <div class="col-lg-2">Agama</div>
-                    <div class="col-lg-4"><span class="me-2">:</span> {{ mahasiswa?.Agama?.nama_agama || '-' }}</div>
+                    <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.Agama?.nama_agama || '-' }}</div>
                 </div>
             </div>
 

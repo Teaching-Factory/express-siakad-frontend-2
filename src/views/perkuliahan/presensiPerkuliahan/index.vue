@@ -196,7 +196,7 @@ onBeforeMount(() => {
                 </Column>
                 <Column filterField="dosen" header="Dosen" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.KelasKuliah.id_dosen }}
+                        {{ data.KelasKuliah.Dosen.nama_dosen }}
                     </template>
                 </Column>
                 <Column filterField="materi" header="Materi" style="min-width: 10rem">
@@ -215,8 +215,8 @@ onBeforeMount(() => {
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
-                    <template #body="{}">
-                        <router-link to="/presensi-perkuliahan/detail" class="btn btn-outline-primary me-2">
+                    <template #body="{data}">
+                        <router-link :to="`/presensi-perkuliahan/${data.id}/detail`" class="btn btn-outline-primary me-2">
                             <i class="pi pi-pencil"></i>
                         </router-link>
                     </template>

@@ -1,48 +1,85 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
+import { get, getData } from '../../../utiils/request';
+import { onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { getToken } from '../../../service/auth';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { API_URL } from '../../../config/config';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     pertemuan: { value: null, matchMode: FilterMatchMode.EQUALS },
-    tanggal: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    tanggal_pertemuan: { value: null, matchMode: FilterMatchMode.EQUALS },
     waktu: { value: null, matchMode: FilterMatchMode.EQUALS },
-    ruang: { value: null, matchMode: FilterMatchMode.EQUALS },
-    dosen: { value: null, matchMode: FilterMatchMode.EQUALS },
-    materi: { value: null, matchMode: FilterMatchMode.EQUALS },
-    jumlahmhs: { value: null, matchMode: FilterMatchMode.EQUALS },
-    statuspresensi: { value: null, matchMode: FilterMatchMode.EQUALS }
+    waktu_presensi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    
 });
 
-const customer1 = ref([]);
-const loading1 = ref(false);
+const detailPresensi = ref([]);
+const route = useRoute();
+const id = route.params.id;
 
-onBeforeMount(() => {
-    customer1.value = [
-        {
-            pertemuan: '1',
-            tanggal: '18/05/2024',
-            waktu: '09.10 - 10.10',
-            ruang: 'G4.08',
-            dosen: 'Lukman Hakim',
-            materi: 'Sitasi Ilmiah',
-            jumlahmhs: '30',
-            statuspresensi: 'Aktif',
-            aksi: '-'
-        },
-        {
-            pertemuan: '2',
-            tanggal: '18/05/2024',
-            waktu: '09.10 - 10.10',
-            ruang: 'G4.08',
-            dosen: 'Lukman Hakim',
-            materi: 'Sitasi Ilmiah',
-            jumlahmhs: '30',
-            statuspresensi: 'Aktif',
-            aksi: '-'
-        }
-        // Add more dummy data here
-    ];
+const getDetailPresensi = async (id) => {
+    try {
+        const response = await get(`presensi-perkuliahan/${id}/get`);
+        detailPresensi.value = response.data.data;
+        console.log('Response:', response.data)
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const update = async (statusPresensi) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const dataToSubmit = {
+            presensiMahasiswa: [{
+                id: id,
+                status_presensi: statusPresensi
+            }]
+        };
+
+        const token = getToken(); 
+
+        const response = await axios.put(`${API_URL}/presensi-perkuliahan/${id}/update`, dataToSubmit, {
+            headers: {
+                Authorization: token,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil Dikonfirmasi.', 'success').then(() => {
+            window.location.href = ''; 
+        });
+    } catch (error) {
+        console.error('Gagal menambahkan data:', error);
+        Swal.fire('GAGAL!', 'Terjadi kesalahan saat memproses data.', 'error');
+    }
+};
+
+
+const onStatusChange = (id, selectedStatus) => {
+    update(selectedStatus);
+};
+
+onMounted(() => {
+    
+        getDetailPresensi(id);
+    
 });
 </script>
 
@@ -52,13 +89,12 @@ onBeforeMount(() => {
         <div class="card">
             <DataTable
                 v-model:filters="filters"
-                :globalFilterFields="['pertemuan', 'tanggal', 'waktu', 'ruang', 'dosen', 'materi', 'jumlahmhs', 'statuspresensi']"
-                :value="customer1"
+                :globalFilterFields="['PertemuanPerkuliahan.pertemuan','Mahasiswa.nama_mahasiswa', 'tanggal_pertemuan', 'waktu_presensi', 'Mahasiswa.nim']"
+                :value="detailPresensi"
                 :paginator="true"
                 :rows="10"
                 dataKey="id"
                 :rowHover="true"
-                :loading="loading1"
                 showGridlines
             >
                 <template #header>
@@ -70,7 +106,9 @@ onBeforeMount(() => {
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
-                            <div class="flex justify-content-end gap-2"></div>
+                            <div class="flex justify-content-end gap-2">
+                                <!-- <button  type="submit" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Update</button> -->
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -78,62 +116,52 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
-                <template #loading> Loading customers data. Please wait. </template>
                 <Column filterField="pertemuan" field="no" header="Pertemuan" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.pertemuan }}
+                        {{ data.PertemuanPerkuliahan.pertemuan }}
                     </template>
                 </Column>
-                <Column filterField="tanggal" header="Tanggal Pertemuan" style="min-width: 10rem">
+                <Column filterField="nim" header="NIM" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ data.Mahasiswa.nim }}
+                    </template>
+                </Column>
+                <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        {{ data.Mahasiswa.nama_mahasiswa }}
+                    </template>
+                </Column>
+                <Column filterField="tanggal_pertemuan" header="Tanggal Pertemuan" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.tanggal }}</span>
+                            <span>{{ data.PertemuanPerkuliahan.tanggal_pertemuan }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="waktu" header="Waktu" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.waktu }}</span>
+                            <span>{{ data.PertemuanPerkuliahan.waktu_mulai }} - {{ data.PertemuanPerkuliahan.waktu_selesai }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="ruang" header="Ruang" style="min-width: 10rem">
+                
+                <Column filterField="waktu_presensi" header="Waktu Presensi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.ruang }}
+                        {{ data.waktu_presensi }}
                     </template>
                 </Column>
-                <Column filterField="dosen" header="Dosen" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        {{ data.dosen }}
-                    </template>
-                </Column>
-                <Column filterField="materi" header="Materi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        {{ data.materi }}
-                    </template>
-                </Column>
-                <Column filterField="jumlahmhs" header="Jumlah Mahasiswa" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        {{ data.jumlahmhs }}
-                    </template>
-                </Column>
-                <Column filterField="statuspresensi" header="Status Presensi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        {{ data.statuspresensi }}
-                    </template>
-                </Column>
-                <Column header="Aksi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <select class="form-select" style="width: 60px;">
-                            <option value="">-</option>
-                            <option value="">H</option>
-                            <option value="">I</option>
-                            <option value="">S</option>
-                            <option value="">A</option>
-                        </select>
-                    </template>
-                </Column>
+                
+                <Column header="Status Presensi" style="min-width: 10rem">
+        <template #body="{ data }">
+            <select class="form-select" style="width: 100px;" @change="onStatusChange(data.id, $event.target.value)">
+                <option :value="data.status_presensi">{{ data.status_presensi }}</option>
+                <option value="Izin">Izin</option>
+                <option value="Sakit">Sakit</option>
+                <option value="Alfa">Alfa</option>
+            </select>
+        </template>
+    </Column>
             </DataTable>
         </div>
     </div>

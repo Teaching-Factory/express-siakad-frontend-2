@@ -6,6 +6,7 @@ export default {
     data() {
         return {     
             dataPresensi: [],
+            rekapPresensi:[]
         };
     },
     methods: {
@@ -24,6 +25,7 @@ export default {
 
                 const response = await getData(`rekap-presensi-kelas/get-rekap-presensi-kelas-by-filter?id_semester=${req.id_semester}&id_prodi=${req.id_prodi}&nama_kelas_kuliah=${encodedNamaKelas}&format=${req.format}&tanggal_penandatanganan=${req.tanggal_penandatanganan}`);
                 this.dataPresensi = response.data;
+                this.rekapPresensi = response.data.data;
                
                 console.log('Response:', response.data)
             } catch (error) {
@@ -69,11 +71,9 @@ export default {
             </div>
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
+            <h5 class="text-center mb-3"><b>REKAP PRESENSI KELAS PERKULIAHAN</b></h5>
             <table class="table table-borderless mt-3">
                 <tbody>
-                    <tr>
-                        <h5 class="text-center mb-3"><b>REKAP PRESENSI KELAS PERKULIAHAN</b></h5>
-                    </tr>
                     <tr>
                         <td style="width: 50%;">
                             <div style="display: flex; align-items: flex-start;">
@@ -84,7 +84,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    2023/2024 Ganjil
+                                    {{dataPresensi?.kelas_kuliah?.Semester?.nama_semester}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -95,7 +95,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    S1 Teknik Informatika
+                                    {{dataPresensi?.kelas_kuliah?.Prodi?.nama_program_studi}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -106,7 +106,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Kapita Selekta
+                                   {{dataPresensi?.kelas_kuliah?.MataKuliah?.nama_mata_kuliah}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -117,7 +117,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Sudarmono
+                                    {{dataPresensi?.kelas_kuliah?.Dosen?.nama_dosen}}
                                 </div>
                             </div>
                         </td>
@@ -131,7 +131,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    A
+                                    {{dataPresensi?.kelas_kuliah?.nama_kelas_kuliah}}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -142,7 +142,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                     17
+                                     {{ dataPresensi?.jumlah_peserta }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -153,7 +153,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                     1
+                                     {{ dataPresensi?.jumlah_pertemuan }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
@@ -164,7 +164,7 @@ export default {
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                     10098756789987
+                                     {{dataPresensi?.kelas_kuliah?.Dosen?.nidn}}
                                 </div>
                             </div>
                         </td>
@@ -188,25 +188,15 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>325325987</td>
-                            <td>Aida Andinar</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>325325987</td>
-                            <td>Aida Andinar</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
+                        <tr v-for="(presensi, index) in rekapPresensi" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{presensi?.Mahasiswa?.nim}}</td>
+                            <td>{{presensi?.Mahasiswa?.nama_mahasiswa}}</td>
+                            <td>{{ presensi?.jumlah_kehadiran }}</td>
+                            <td>{{ presensi?.jumlah_izin }}</td>
+                            <td>{{ presensi?.jumlah_sakit }}</td>
+                            <td> {{ presensi?.jumlah_alfa }}</td>
+                            <td>{{ presensi?.presentase_kehadiran }} %</td>
                         </tr>
                     </tbody>
                 </table>
