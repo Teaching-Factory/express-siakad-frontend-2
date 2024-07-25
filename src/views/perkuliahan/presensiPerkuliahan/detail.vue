@@ -34,7 +34,7 @@ const getDetailPresensi = async (id) => {
     }
 };
 
-const update = async (statusPresensi) => {
+const update = async (id, statusPresensi) => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -53,8 +53,8 @@ const update = async (statusPresensi) => {
         };
 
         const token = getToken(); 
-
-        const response = await axios.put(`${API_URL}/presensi-perkuliahan/${id}/update`, dataToSubmit, {
+        const pertemuanID = route.params.id;
+        const response = await axios.put(`${API_URL}/presensi-perkuliahan/${pertemuanID}/update`, dataToSubmit, {
             headers: {
                 Authorization: token,
                 'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ const update = async (statusPresensi) => {
 
 
 const onStatusChange = (id, selectedStatus) => {
-    update(selectedStatus);
+    update(id,selectedStatus);
 };
 
 onMounted(() => {

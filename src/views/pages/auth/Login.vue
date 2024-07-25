@@ -9,12 +9,17 @@ const username = ref('');
 const password = ref('');
 import { login } from '../../../service/login';
 import Swal from 'sweetalert2';
+import { onMounted } from 'vue';
+import axios from 'axios';
+import { API_URL } from '../../../config/config';
 
 const logoUrl = computed(() => {
     return `/layout/images/ubi.jpg`;
 });
 const usernameError = ref('');
 const passwordError = ref('');
+const profilePT = ref([]);
+
 const handleSubmit = async () => {
     usernameError.value = '';
     passwordError.value = '';
@@ -57,6 +62,20 @@ const handleSubmit = async () => {
         passwordError.value = 'Invalid username or password';
     }
 };
+
+const getProfilePT = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/perguruan-tinggi-guest/get-pt-active`);
+        profilePT.value = response.data.data;
+        console.log('Response:', response.data)
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+onMounted(()=>{
+    getProfilePT();
+});
 </script>
 
 
@@ -67,7 +86,7 @@ const handleSubmit = async () => {
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
                         <img :src="logoUrl" alt="Image" height="100" class="mb-3" />
-                        <div class="text-900 text-3xl font-medium mb-3">Nama Instansi</div>
+                        <div class="text-900 text-3xl font-medium mb-3">{{profilePT?.PerguruanTinggi?.nama_perguruan_tinggi || 'Nama Instansi'}}</div>
                     </div>
 
                     <form @submit.prevent="handleSubmit">
