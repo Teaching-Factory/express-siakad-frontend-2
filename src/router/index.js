@@ -418,6 +418,12 @@ const router = createRouter({
                     meta: { requiredPermissions: ['cetak-jadwal-kuliah'] }
                 },
                 {
+                    path: '/cetak-jadwal-kuliah',
+                    name: 'cetak-jadwal-kuliah',
+                    component: () => import('../views/laporan/jadwalKuliah/cetakJadwalKuliah.vue'),
+                    meta: { requiredPermissions: ['cetak-jadwal-kuliah'] }
+                },
+                {
                     path: '/daftar-belum-krs',
                     name: 'daftar-belum-krs',
                     component: () => import('../views/laporan/daftarBelumKRS/index.vue'),

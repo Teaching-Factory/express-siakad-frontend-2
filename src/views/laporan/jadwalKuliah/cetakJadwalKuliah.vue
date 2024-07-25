@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 export default {
     data() {
         return {
-            belumKrs: null,
+            rekapJadwal: null,
             getBelumKrs: []
         };
     },
@@ -21,9 +21,8 @@ export default {
                     }
                 });
                 
-                const response = await getData(`rekap-mahasiswa-belum-krs/get-rekap-mahasiswa-belum-krs?id_angkatan=${req.id_angkatan}&id_prodi=${req.id_prodi}&tanggal_penandatanganan=${req.tanggal_penandatanganan}&format=${req.format}`);
-                this.belumKrs = response.data;
-                this.getBelumKrs = response.data.dataRekapMahasiswaBelumKRS;
+                const response = await getData(`rekap-jadwal-kuliah/get-rekap-jadwal-kuliah-by-filter?id_prodi=${req.id_prodi}&id_kurikulum=${req.id_kurikulum}&id_semester=${req.id_semester}&semester=${req.semester}&tanggal_penandatanganan=${req.tanggal_penandatanganan}`);
+                this.rekapJadwal = response.data.data;
                 console.log('Response:', response.data)
             } catch (error) {
                 console.error('Gagal mengirim data:', error);
@@ -61,58 +60,32 @@ export default {
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
             </div>
             <button @click="handlePrint" class="btn-print">Cetak</button>
-            <table class="table table-borderless m-0">
-                <tbody>
-                    <tr>
-                        <td style="width: 50%;">
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 110px;">
-                                   Periode KRS
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ belumKrs?.semesterAktif?.Semester?.nama_semester }}
-                                </div>
-                            </div>
-                        </td>
-                        <td style="width: 50%;">
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 110px;">
-                                    Tanggal Cetak
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ formatDate(belumKrs?.tanggal_penandatanganan)}}
-                                </div>
-                            </div>
-                          
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <h5 class="text-center mb-3"><b>JADWAL PERKULIAHAN</b></h5>
+            <h5 class="text-center"><b>S1 TEKNIK INFORMATIKA</b></h5>
+            <h5 class="text-center"><b>PERIODE  2023/2024 GENAP SEMESTER 1</b></h5>
+            
             <table class="table-bordered" width="100%">
                 <thead class="text-center">
                     <tr>
                         <th>No</th>
-                        <th>NIM</th>
-                        <th>Nama Mahasiswa</th>
-                        <th>Program Studi</th>
-                        <th>Dosen Wali</th>
-                        <th>Angkatan</th>
+                        <th>Mata Kuliah</th>
+                        <th>Hari</th>
+                        <th>Waktu</th>
+                        <th>Kelas</th>
+                        <th>Ruang</th>
+                        <th>Dosen</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(getBelumKrs, index) in getBelumKrs" :key="index">
-                        <td style="padding: 5px;">{{ index + 1 }}</td>
-                        <td style="padding: 5px;">{{ getBelumKrs.nim ?? '-'}}</td>
-                        <td style="padding: 5px;">{{ getBelumKrs.nama_mahasiswa ?? '-'}}</td>
-                        <td style="padding: 5px;">{{ getBelumKrs.Prodi.nama_program_studi ?? '-' }}</td>
-                        <td style="padding: 5px;">{{ getBelumKrs.dosen_wali.Dosen.nama_dosen ?? '-' }}</td>
-                        <td style="padding: 5px;">{{ belumKrs?.angkatan.tahun ?? '-' }}</td>
+                    <tr v-for="(jadwal, index) in rekapJadwal" :key="index">
+                        <td style="padding: 5px; font-size: 14px;">{{ index + 1 }}</td>
+                        <td style="padding: 5px; font-size: 14px;">{{ jadwal.KelasKuliah?.MataKuliah?.nama_mata_kuliah ?? '-'}}</td>
+                        <td style="padding: 5px; font-size: 14px;">{{ jadwal?.hari ?? '-'}}</td>
+                        <td style="padding: 5px; font-size: 14px;">{{ jadwal?.jam_mulai ?? '-' }} - {{ jadwal?.jam_selesai ?? '-' }}</td>
+                        <td style="padding: 5px; font-size: 14px;">{{ jadwal.KelasKuliah.nama_kelas_kuliah ?? '-' }}</td>
+                        <td style="padding: 5px; font-size: 14px;">{{ jadwal.RuangPerkuliahan?.nama_ruang_perkuliahan ?? '-' }}</td>
+                        <td style="padding: 5px; font-size: 14px;">{{ jadwal?.KelasKuliah?.Dosen?.nama_dosen ?? '-' }}</td>
                     </tr>
                 </tbody>
             </table>
