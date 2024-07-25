@@ -84,11 +84,9 @@ export default {
             </div>
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
+            <h5 class="text-center mb-3"><b>REKAP NILAI KELAS PERKULIAHAN</b></h5>
             <table class="table table-borderless mt-3">
                 <tbody>
-                    <tr>
-                        <h5 class="text-center mb-3"><b>REKAP NILAI KELAS PERKULIAHAN</b></h5>
-                    </tr>
                     <tr>
                         <td style="width: 50%;">
                             <div style="display: flex; align-items: flex-start;">

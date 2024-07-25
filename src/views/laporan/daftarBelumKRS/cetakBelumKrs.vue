@@ -111,7 +111,7 @@ export default {
                         <td style="padding: 5px;">{{ getBelumKrs.nim ?? '-'}}</td>
                         <td style="padding: 5px;">{{ getBelumKrs.nama_mahasiswa ?? '-'}}</td>
                         <td style="padding: 5px;">{{ getBelumKrs.Prodi.nama_program_studi ?? '-' }}</td>
-                        <td style="padding: 5px;">{{ getBelumKrs.dosen_wali ?? '-' }}</td>
+                        <td style="padding: 5px;">{{ getBelumKrs.dosen_wali.Dosen.nama_dosen ?? '-' }}</td>
                         <td style="padding: 5px;">{{ belumKrs?.angkatan.tahun ?? '-' }}</td>
                     </tr>
                 </tbody>

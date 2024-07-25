@@ -324,7 +324,7 @@ const model = ref([
             },
             {
                 label: 'KRS',
-                icon: '',
+                icon: 'pi pi-fw pi-print',
                 visible: computed(() => {
                     return ['cetak-daftar-belum-krs'].some((permission) => permissions.includes(permission));
                 }),
@@ -375,7 +375,7 @@ const model = ref([
             },
             {
                 label: 'Setting',
-                icon: '',
+                icon: 'pi pi-fw pi-settings',
                 visible: computed(() => {
                     return ['setting-global', 'setting-ws', 'identitas-pt'].some((permission) => permissions.includes(permission));
                 }),
