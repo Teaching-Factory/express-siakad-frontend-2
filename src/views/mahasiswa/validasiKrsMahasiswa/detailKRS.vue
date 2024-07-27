@@ -51,7 +51,7 @@ onMounted(() => {
                     <h5><i class="pi pi-user me-2"></i>KARTU RENCANA STUDI</h5>
                 </div>
                 <div class="col-md-6 text-end">
-                    <router-link to="/validasi-krs-mahasiswa/detailKRS/edit" class="btn btn-secondary"><i class="pi pi-plus me-2"></i>Tambah</router-link>
+                    <!-- <router-link to="/validasi-krs-mahasiswa/detailKRS/edit" class="btn btn-secondary"><i class="pi pi-plus me-2"></i>Tambah</router-link> -->
                 </div>
             </div>
 
@@ -127,7 +127,9 @@ onMounted(() => {
                             <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_mulai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_selesai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.sks }}</td>
-                            <td>-</td>
+                            <td> <button class="btn btn-outline-danger">
+                                <i class="pi pi-trash"></i>
+                            </button></td>
                         </tr>
 
                         <tr>

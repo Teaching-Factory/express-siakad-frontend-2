@@ -29,6 +29,7 @@ const fetchPembayaran = async () => {
         });
         const response = await get('pembayaran-mahasiswa/get-pembayaran-dikonfirmasi');
         pembayaran.value = response.data.data;
+        console.log('responns: ', response.data.data);
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data Unit Jabatan:', error);
@@ -69,7 +70,7 @@ onBeforeMount(() => {
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <button class="btn btn-danger"><i class="pi pi-print me-2"></i>Export</button>
+                            <!-- <button class="btn btn-danger"><i class="pi pi-print me-2"></i>Export</button> -->
                         </div>
                     </div>
                 </div>
@@ -86,25 +87,25 @@ onBeforeMount(() => {
             <Column filterField="nim" header="NIM" style="min-width: 10rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.nim }}</span>
+                        <span>{{ data.TagihanMahasiswa.Mahasiswa.nim }}</span>
                     </div>
                 </template>
             </Column>
             <Column filterField="name" header="Nama" style="min-width: 14rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.name }}</span>
+                        <span>{{ data.TagihanMahasiswa.Mahasiswa.nama_mahasiswa }}</span>
                     </div>
                 </template>
             </Column>
             <Column filterField="periodebayar" header="Periode Bayar" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.periodebayar }}
+                    {{ data.TagihanMahasiswa.tanggal_tagihan }} -{{data.TagihanMahasiswa.deadline_tagihan}}
                 </template>
             </Column>
-            <Column filterField="metodepembayaran" header="Metode Pembayaran" style="min-width: 10rem">
+            <Column filterField="jenis_tagihan" header="Jenis Tagihan" style="min-width: 10rem">
                 <template #body="{ data }">
-                    <div v-html="data.metodepembayaran"></div>
+                    <div v-html="data.TagihanMahasiswa.JenisTagihan.nama_jenis_tagihan"></div>
                 </template>
             </Column>
             <Column filterField="jumlah_tagihan" header="Nominal" style="min-width: 10rem">

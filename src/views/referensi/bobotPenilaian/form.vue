@@ -120,7 +120,7 @@ const update = async () => {
             });
         });
     } catch (error) {
-        Swal.fire('GAGAL', 'Gagal memperbarui data. Silakan coba lagi.', 'error');
+        swal.fire('GAGAL', 'Gagal memperbarui data. Silakan coba lagi.', 'error');
     }
 };
 

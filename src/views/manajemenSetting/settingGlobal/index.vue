@@ -2,17 +2,48 @@
 import { ref, onBeforeMount } from 'vue';
 import { getData } from '../../../utiils/request';
 import { onMounted } from 'vue';
+import Swal from 'sweetalert2';
 
-const loading1 = ref(false);
 const settingGlobal = ref([]);
+const semesterAktif = ref([])
+
+const getSemesterAktif = async () =>{
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const res = await getData('semester-aktif');
+        console.log('semester-aktif', res.data.data);
+        if (res.status === 200) {
+            semesterAktif.value = res.data.data;
+        }
+        Swal.close()
+    } catch (error) {
+        throw error;
+    }
+}
 
 const getSettingGlobal = async () => {
     try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
         const res = await getData('setting-global');
         console.log('setting-global', res.data.data);
         if (res.status === 200) {
             settingGlobal.value = res.data.data;
         }
+        Swal.close()
     } catch (error) {
         throw error;
     }
@@ -20,6 +51,7 @@ const getSettingGlobal = async () => {
 
 onMounted(() => {
     getSettingGlobal();
+    getSemesterAktif()
 });
 </script>
 
@@ -29,19 +61,20 @@ onMounted(() => {
             <div class="col-lg-6 d-flex justify-content-start">
                 <h5><i class="pi pi-user me-2"></i>SETTING GLOBAL</h5>
             </div>
-            <div class="col-lg-6 d-flex justify-content-end mb-3">
-                <router-link to="/setting-global/edit" class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i>Edit</router-link>
-            </div>
+           
         </div>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row mt-3">
                 <div class="col-lg-3">Semester Berlaku (Aktif)</div>
-                <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
-                <div class="col-lg-3">Semester KRS</div>
-                <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
+                <div class="col-lg-3"><span class="me-2">:</span> {{semesterAktif[0]?.Semester?.nama_semester}}</div>
+                <div class="col-lg-6 d-flex justify-content-end mb-3">
+                <router-link :to="`/setting-global/${semesterAktif[0]?.id}/edit`" class="btn btn-secondary"> <i class="pi pi-pencil me-2"></i>Edit</router-link>
+            </div>
+                <!-- <div class="col-lg-3">Semester KRS</div>
+                <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div> -->
             </div>
             <hr />
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-3">Semester Nilai</div>
                 <div class="col-lg-3"><span class="me-2">:</span> 2023/2024 Ganjil</div>
                 <div class="col-lg-3">Batas SKSnya KRS untuk Sarjana dan Diploma</div>
@@ -53,12 +86,12 @@ onMounted(() => {
                 <div class="col-lg-3"><span class="me-2">:</span> Nilai Tertinggi</div>
                 <div class="col-lg-3">Wilayah Penandatanganan Laporan</div>
                 <div class="col-lg-3"><span class="me-2"> :</span> Banyuwangi</div>
-            </div>
+            </div> -->
         </div>
         <div class="card">
             <DataTable :value="settingGlobal" :paginator="true" :rows="20" dataKey="id" :rowHover="true"
-                :loading="loading1" showGridlines>
-                <template #header>
+                 showGridlines>
+                <!-- <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
@@ -67,7 +100,7 @@ onMounted(() => {
                             </IconField>
                         </div>
                     </div>
-                </template>
+                </template> -->
 
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>

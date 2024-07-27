@@ -39,7 +39,7 @@ const model = ref([
         items: [
             {
                 label: 'Mahasiswa',
-                icon: 'pi pi-fw pi-user',
+                // icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
                     return [
                         'import-mahasiswa',
@@ -109,7 +109,7 @@ const model = ref([
             },
             {
                 label: 'Perkuliahan',
-                icon: 'pi pi-fw pi-user',
+                // icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
                     return ['kelas-jadwal-perkuliahan', 'jadwal-kelas-perkuliahan-dosen', 'nilai-perkuliahan', 'presensi-perkuliahan', 'aktivitas-mahasiswa', 'kelas-aktif'].some((permission) => permissions.includes(permission));
                 }),
@@ -148,7 +148,7 @@ const model = ref([
             },
             {
                 label: 'Dosen Wali',
-                icon: 'pi pi-fw pi-user',
+                // icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
                     return [, 'daftar-dosen-wali', 'manajemen-mahasiswa-wali', 'set-kolektif-dosenwali'].some((permission) => permissions.includes(permission));
                 }),
@@ -182,7 +182,7 @@ const model = ref([
         items: [
             {
                 label: 'Referensi',
-                icon: 'pi pi-fw pi-user',
+                // icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
                     return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah', 'daftar-tagihan', 'jenis-tagihan', 'daftar-pembayaran'].some((permission) =>
                         permissions.includes(permission)
@@ -233,7 +233,7 @@ const model = ref([
             },
             {
                 label: 'Keuangan',
-                icon: 'pi pi-fw pi-user',
+                // icon: 'pi pi-fw pi-user',
                  visible: computed(() => {
                     return ['daftar-tagihan', 'daftar-pembayaran'].some((permission) => permissions.includes(permission));
                 }),
@@ -252,7 +252,7 @@ const model = ref([
             },
             {
                 label: 'Daftar Berita',
-                icon: 'pi pi-fw pi-user',
+                // icon: 'pi pi-fw pi-user',
                  visible: computed(() => {
                     return ['daftar-berita'].some((permission) => permissions.includes(permission));
                 }),
@@ -324,7 +324,7 @@ const model = ref([
             },
             {
                 label: 'KRS',
-                icon: 'pi pi-fw pi-print',
+                // icon: 'pi pi-fw pi-print',
                 visible: computed(() => {
                     return ['cetak-daftar-belum-krs'].some((permission) => permissions.includes(permission));
                 }),
@@ -375,7 +375,7 @@ const model = ref([
             },
             {
                 label: 'Setting',
-                icon: 'pi pi-fw pi-settings',
+                // icon: 'pi pi-fw pi-settings',
                 visible: computed(() => {
                     return ['setting-global', 'setting-ws', 'identitas-pt'].some((permission) => permissions.includes(permission));
                 }),

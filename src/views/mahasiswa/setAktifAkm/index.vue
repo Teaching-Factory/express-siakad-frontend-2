@@ -20,6 +20,7 @@ const selectedProdi = ref('');
 const prodis = ref([]);
 const angkatans = ref([]);
 const semesterAktif = ref([]);
+const first = ref(0)
 
 const fetchSemesterAktif = async () => {
     const response = await get('semester-aktif');
@@ -74,6 +75,11 @@ const selectedFilter = async () => {
     await Promise.all([fetchProdi(), fetchAngkatan()]);
     Swal.close();
 };
+
+const onPageChange = (event) => {
+    first.value = event.first;
+};
+
 onBeforeMount(() => {
     aktivitasKuliahMahasiswa();
     selectedFilter();
@@ -131,6 +137,7 @@ onBeforeMount(() => {
                 dataKey="id_aktivitas_kuliah_mahasiswa"
                 :rowHover="true"
                 showGridlines
+                :first="first" @page="onPageChange"
             >
                 <template #header>
                     <div class="row">
@@ -145,7 +152,7 @@ onBeforeMount(() => {
                                 <!-- <button class="btn btn-outline-primary"> <i class="pi pi-print me-2"></i>Export</button>
                                 <button class="btn btn-success"> <i class="pi pi-plus me-2"></i> Tambah</button> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Set Aktif</button>
+                                <!-- <button class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Set Aktif</button> -->
                             </div>
                         </div>
                     </div>
@@ -157,7 +164,12 @@ onBeforeMount(() => {
                 <!-- <template #loading>
                     Loading customers data. Please wait.
                 </template> -->
-                <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
+                <!-- <Column selectionMode="multiple" headerStyle="width: 3em"></Column> -->
+                <Column field="no" header="No" style="min-width: 5rem">
+                    <template #body="slotProps">
+                        {{ first + slotProps.index + 1 }}
+                    </template>
+                </Column>
                 <Column filterField="nim" header="NIM" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">

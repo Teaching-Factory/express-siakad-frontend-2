@@ -139,13 +139,13 @@ onBeforeMount(() => {
                         <div v-html="data.UserRoles[0].Role.nama_role"></div>
                     </template>
                 </Column>
-                <Column header="Login As" style="min-width: 8rem">
+                <!-- <Column header="Login As" style="min-width: 8rem">
                     <template #body="{}">
                         <button class="btn btn-outline-primary me-2">
                             <i class="pi pi-eye"></i>
                         </button>
                     </template>
-                </Column>
+                </Column> -->
                 <Column header="Aksi" style="min-width: 8rem">
                     <template #body="{ data }">
                         <div class="actions gap-2">
