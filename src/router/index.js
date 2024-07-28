@@ -122,6 +122,11 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formKelas.vue')
                 },
                 {
+                    path: '/kelas-jadwal-perkuliahan/update-kelas/:id_matkul/:id_detail_kelas_kuliah/:id_kelas_kuliah',
+                    name: 'kelas-jadwal-perkuliahan-update-kelas',
+                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formKelas.vue')
+                },
+                {
                     path: '/kelas-jadwal-perkuliahan/create-pesertakelas',
                     name: 'kelas-jadwal-perkuliahan-create-peserta-kelas',
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formPesertaKelas.vue')

@@ -16,6 +16,7 @@ const route = useRoute();
 // const selectedRuang = ref('');
 const selectedDosen = ref('');
 const dosens = ref([]);
+const detailKelasKuliah = ref([]);
 const nama_kelas_kuliah = ref('');
 const kapasitas_peserta_kelas = ref('');
 const hari = ref('');
@@ -27,6 +28,7 @@ const lingkup = ref('');
 const mode_kuliah = ref('');
 const tanggal_mulai_efektif = ref('');
 const tanggal_akhir_efektif = ref('');
+const isEdit = ref(false);
 
 const errors = ref({
     nama_kelas_kuliah: '',
@@ -201,16 +203,125 @@ const create = async () => {
             window.location.href = '/kelas-jadwal-perkuliahan';
         });
     } catch (error) {
-        swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
+        swal.fire('GAGAL', `Gagal Menambahkan data: ${error.response ? error.response.data.message : error.message}`, 'error');
         console.error('Error:', error.response.data); // Log error response for debugging
     }
 };
 
+// Update function
+const update = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        validateDosen();
+        validateHari();
+        validateJamMulai();
+        validateJamSelesai();
+        validateKapasitasPeserta();
+        validateNamaKelas();
+        validateRuangPerkuliahan();
+        validateTanggalMulai();
+        validateTanggalSelesai();
+        const token = getToken();
+        const id_kelas_kuliah = route.params.id_kelas_kuliah;// Use id_kelas_kuliah from detailKelasKuliah
+
+        const payload = {
+            nama_kelas_kuliah: nama_kelas_kuliah.value,
+            kapasitas_peserta_kelas: kapasitas_peserta_kelas.value,
+            hari: hari.value,
+            id_ruang_perkuliahan: id_ruang_perkuliahan.value,
+            id_dosen: id_dosen.value,
+            jam_mulai: jam_mulai.value,
+            jam_selesai: jam_selesai.value,
+            lingkup: lingkup.value,
+            mode_kuliah: mode_kuliah.value,
+            tanggal_mulai_efektif: tanggal_mulai_efektif.value,
+            tanggal_akhir_efektif: tanggal_akhir_efektif.value
+        };
+
+        const response = await axios.put(`${API_URL}/kelas-kuliah/${id_kelas_kuliah}/update`, payload, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        Swal.close();
+        swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.href = '/kelas-jadwal-perkuliahan';
+        });
+    } catch (error) {
+        Swal.close();
+        console.error('Error updating data:', error.response ? error.response.data : error.message);
+        swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+    }
+};
+
+
+const getDetailKelasKuliah = async (id_detail_kelas_kuliah) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await get(`detail-kelas-kuliah/${id_detail_kelas_kuliah}/get`);
+        const data = response.data.data;
+
+        nama_kelas_kuliah.value = data.KelasKuliah.nama_kelas_kuliah;
+        kapasitas_peserta_kelas.value = data.kapasitas;
+        hari.value = data.hari.toLowerCase();
+        id_ruang_perkuliahan.value = data.id_ruang_perkuliahan;
+        jam_mulai.value = data.jam_mulai;
+        jam_selesai.value = data.jam_selesai;
+        lingkup.value = data.lingkup;
+        mode_kuliah.value = data.mode_kuliah;
+        tanggal_mulai_efektif.value = data.tanggal_mulai_efektif;
+        tanggal_akhir_efektif.value = data.tanggal_akhir_efektif;
+
+        selectedDosen.value = dosens.value.find(dosen => dosen.id_dosen === data.id_dosen) || null;
+        detailKelasKuliah.value = data; // Store detail data for use in update
+
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data:', error);
+    }
+};
+
+const submit = async () => {
+    if (isEdit.value) {
+        update();
+    } else {
+        create();
+    }
+};
+
+
+
 onMounted(() => {
     const id_matkul = route.params.id_matkul;
+    const id_detail_kelas_kuliah = route.params.id_detail_kelas_kuliah;
+   
     fetchMataKuliah(id_matkul);
     fetchRuangPerkuliahan();
-    fetchDosen();
+     fetchMataKuliah(id_matkul);
+     fetchRuangPerkuliahan();
+     fetchDosen();
+
+    if (id_detail_kelas_kuliah) {
+        isEdit.value = true;
+         getDetailKelasKuliah(id_detail_kelas_kuliah);
+    }
 });
 </script>
 
@@ -222,7 +333,7 @@ onMounted(() => {
                     <h5><i class="pi pi-user me-2"></i>DETAIL KELAS DAN JADWAL MINGGUAN</h5>
                 </div>
                 <div class="col-lg-6 text-end">
-                    <button class="btn btn-secondary" @click="create"><i class="pi pi-check me-2"></i> Simpan</button>
+                    <button class="btn btn-secondary"@click="submit"><i class="pi pi-check me-2"></i> Simpan</button>
                 </div>
             </div>
 

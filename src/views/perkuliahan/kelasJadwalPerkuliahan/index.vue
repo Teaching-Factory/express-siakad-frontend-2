@@ -71,6 +71,7 @@ const filterData = async () => {
         const response = await get(`detail-kelas-kuliah/filter/${prodiId}/${semesterId}/get`);
         const filterKelasJadwal = response.data.data;
 
+        console.log('response :', filterKelasJadwal);
         kelasjadwal.value = filterKelasJadwal;
         Swal.close();
     } catch (error) {
@@ -418,9 +419,9 @@ function deleteDosen(index) {
                             </Modal>
                         </td>
                         <td class="text-end">
-                            <button class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </button>
+                            <router-link :to="`/kelas-jadwal-perkuliahan/update-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}`" class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </router-link>
                             <button @click="confirmDelete(detail.KelasKuliah.id_kelas_kuliah)" class="btn  me-2 btn-danger"> <i class="pi pi-trash "></i> </button>
-                            <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </router-link>
+                            <!-- <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </router-link> -->
                             <!-- <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
                             <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button> -->
                         </td>

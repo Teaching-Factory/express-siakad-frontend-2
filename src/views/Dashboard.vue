@@ -35,7 +35,7 @@ const semesterAktif = ref([]);
 const hasPresensi = ref(false);
 
 const fetchSemesterAktif = async () => {
-    const response = await get('semester-aktif');
+    const response = await get('semester-aktif-now');
     semesterAktif.value = response.data.data;
 };
 const events = ref([

@@ -50,7 +50,7 @@ export default {
                     });
                 });
             } catch (error) {
-                Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
+                Swal.fire('GAGAL', `Gagal menambahkan data: ${error.response ? error.response.data.message : error.message}`, 'error');
             }
         },
         async update() {
@@ -75,7 +75,7 @@ export default {
                     });
                 });
             } catch (error) {
-                Swal.fire('GAGAL', 'Gagal memperbarui data. Silakan coba lagi.', 'error');
+                Swal.fire('GAGAL',`Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
             }
         }
     }

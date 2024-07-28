@@ -37,7 +37,7 @@ const create = async () => {
             window.location.href = '/unit-jabatan';
         });
     } catch (error) {
-        swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
+        swal.fire('GAGAL', `Gagal menambahkan data: ${error.response ? error.response.data.message : error.message}`, 'error');
     }
 };
 

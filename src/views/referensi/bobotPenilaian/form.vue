@@ -94,7 +94,7 @@ const create = async () => {
             window.location.href = '/bobot-penilaian';
         });
     } catch (error) {
-        swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
+        swal.fire('GAGAL', `Gagal Menambahkan data: ${error.response ? error.response.data.message : error.message}`, 'error');
     }
 };
 
@@ -120,7 +120,7 @@ const update = async () => {
             });
         });
     } catch (error) {
-        swal.fire('GAGAL', 'Gagal memperbarui data. Silakan coba lagi.', 'error');
+        swal.fire('GAGAL',`Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
     }
 };
 
