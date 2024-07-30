@@ -230,7 +230,7 @@ const update = async () => {
         validateTanggalMulai();
         validateTanggalSelesai();
         const token = getToken();
-        const id_kelas_kuliah = route.params.id_kelas_kuliah;// Use id_kelas_kuliah from detailKelasKuliah
+        const id_kelas_kuliah = route.params.id_kelas_kuliah; // Use id_kelas_kuliah from detailKelasKuliah
 
         const payload = {
             nama_kelas_kuliah: nama_kelas_kuliah.value,
@@ -263,7 +263,6 @@ const update = async () => {
     }
 };
 
-
 const getDetailKelasKuliah = async (id_detail_kelas_kuliah) => {
     try {
         Swal.fire({
@@ -289,7 +288,7 @@ const getDetailKelasKuliah = async (id_detail_kelas_kuliah) => {
         tanggal_mulai_efektif.value = data.tanggal_mulai_efektif;
         tanggal_akhir_efektif.value = data.tanggal_akhir_efektif;
 
-        selectedDosen.value = dosens.value.find(dosen => dosen.id_dosen === data.id_dosen) || null;
+        selectedDosen.value = dosens.value.find((dosen) => dosen.id_dosen === data.id_dosen) || null;
         detailKelasKuliah.value = data; // Store detail data for use in update
 
         Swal.close();
@@ -306,21 +305,19 @@ const submit = async () => {
     }
 };
 
-
-
 onMounted(() => {
     const id_matkul = route.params.id_matkul;
     const id_detail_kelas_kuliah = route.params.id_detail_kelas_kuliah;
-   
+
     fetchMataKuliah(id_matkul);
     fetchRuangPerkuliahan();
-     fetchMataKuliah(id_matkul);
-     fetchRuangPerkuliahan();
-     fetchDosen();
+    fetchMataKuliah(id_matkul);
+    fetchRuangPerkuliahan();
+    fetchDosen();
 
     if (id_detail_kelas_kuliah) {
         isEdit.value = true;
-         getDetailKelasKuliah(id_detail_kelas_kuliah);
+        getDetailKelasKuliah(id_detail_kelas_kuliah);
     }
 });
 </script>
@@ -333,7 +330,7 @@ onMounted(() => {
                     <h5><i class="pi pi-user me-2"></i>DETAIL KELAS DAN JADWAL MINGGUAN</h5>
                 </div>
                 <div class="col-lg-6 text-end">
-                    <button class="btn btn-secondary"@click="submit"><i class="pi pi-check me-2"></i> Simpan</button>
+                    <button class="btn btn-secondary" @click="submit"><i class="pi pi-check me-2"></i> Simpan</button>
                 </div>
             </div>
 

@@ -633,7 +633,7 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
                 },
                 {
-                    path: '/pertemuan-perkuliahan/update/:id',
+                    path: '/pertemuan-perkuliahan/:id/:id_kelas_kuliah/update',
                     name: 'pertemuan-perkuliahan-update',
                     component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
                 }

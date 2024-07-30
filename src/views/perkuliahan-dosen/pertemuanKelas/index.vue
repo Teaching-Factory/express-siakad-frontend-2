@@ -207,7 +207,7 @@ const confirmDelete = (id) => {
             </Column>
             <Column header="Aksi" style="min-width: 10rem">
                 <template #body="{ data }">
-                    <router-link :to="`/pertemuan-perkuliahan/update/${data.id}`" class="btn btn-outline-primary me-2 py-1 px-2">
+                    <router-link :to="`/pertemuan-perkuliahan/${data.id}/${getKelasKuliah.id_kelas_kuliah}/update`" class="btn btn-outline-primary me-2 py-1 px-2">
                         <i class="pi pi-pencil"></i>
                     </router-link>
 
