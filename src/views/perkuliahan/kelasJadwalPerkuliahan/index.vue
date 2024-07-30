@@ -138,8 +138,6 @@ const showPesertaKelas = async (id_kelas_kuliah) => {
     }
 };
 
-
-
 const deleteItem = async (id_kelas_kuliah) => {
     try {
         const response = await del(`kelas-kuliah/${id_kelas_kuliah}/delete`);
@@ -405,12 +403,12 @@ function deleteDosen(index) {
                                             <tr v-for="(mahasiswaKelas, index) in pesertakelas" :key="index">
                                                 <td>{{index + 1}}</td>
                                                 <td>{{mahasiswaKelas?.Mahasiswa?.nim || '-'}}</td>
-                                                <td>{{mahasiswaKelas.Mahasiswa.nama_mahasiswa}}</td>
-                                                <td>{{mahasiswaKelas.angkatan}}</td>
-                                                <td>{{mahasiswaKelas.KelasKuliah.Prodi.nama_program_studi}}</td>
-                                                <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_angka}}</td>
-                                                <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_indeks}}</td>
-                                                <td>{{mahasiswaKelas.DetailNilaiPerkuliahanKelas.nilai_huruf}}</td>
+                                                <td>{{mahasiswaKelas?.Mahasiswa?.nama_mahasiswa}}</td>
+                                                <td>{{mahasiswaKelas?.angkatan}}</td>
+                                                <td>{{mahasiswaKelas?.KelasKuliah?.Prodi?.nama_program_studi || '-'}}</td>
+                                                <td>{{mahasiswaKelas?.DetailNilaiPerkuliahanKelas?.nilai_angka || '0'}}</td>
+                                                <td>{{mahasiswaKelas?.DetailNilaiPerkuliahanKelas?.nilai_indeks || '0'}}</td>
+                                                <td>{{mahasiswaKelas?.DetailNilaiPerkuliahanKelas?.nilai_huruf || '-'}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
