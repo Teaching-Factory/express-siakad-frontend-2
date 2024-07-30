@@ -53,15 +53,30 @@ const fetchGetNilai = async (id_kelas_kuliah) => {
     try {
         const response = await get(`nilai-perkuliahan/${id_kelas_kuliah}/get-peserta-kelas`);
         getNilai.value = response.data.dataKelasKuliah;
-        dataMahasiswa.value = response.data.data.map((mahasiswa) => ({
-            ...mahasiswa,
-            nilai_bobot: bobotPenilaian.value.map((bobot) => ({
+
+        dataMahasiswa.value = response.data.data.map((mahasiswa) => {
+            // Initialize nilai_bobot with empty values
+            const nilai_bobot = bobotPenilaian.value.map((bobot) => ({
                 id_bobot_penilaian: bobot.id_bobot_penilaian,
                 nilai: ''
-            })),
-            nilai_angka: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_angka || '',
-            nilai_huruf: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_huruf || ''
-        }));
+            }));
+
+            // Fill nilai_bobot with actual values from detailNilaiPerkuliahanKelas
+            mahasiswa?.detailNilaiPerkuliahanKelas?.NilaiPerkuliahans.forEach((nilaiPerkuliahan) => {
+                const index = bobotPenilaian.value.findIndex((bobot) => bobot.id_unsur_penilaian === nilaiPerkuliahan.id_unsur_penilaian);
+                if (index !== -1) {
+                    nilai_bobot[index].nilai = nilaiPerkuliahan.nilai;
+                }
+            });
+
+            return {
+                ...mahasiswa,
+                nilai_bobot,
+                nilai_angka: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_angka || '',
+                nilai_huruf: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_huruf || ''
+            };
+        });
+
         console.log('Response data:', response.data.data);
     } catch (error) {
         console.error('Error fetching:', error);
@@ -121,7 +136,7 @@ const create = async () => {
 const isUploadModalVisible = ref(false);
 
 const handleFileUpload = (event) => {
-  file.value = event.target.files[0];
+    file.value = event.target.files[0];
 };
 
 const showUploadModal = () => {
@@ -160,7 +175,6 @@ const uploadNilai = async (id_kelas_kuliah) => {
         Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
     }
 };
-
 
 onMounted(() => {
     const id_prodi = route.params.id_prodi || route.query.id_prodi;
@@ -203,7 +217,6 @@ onMounted(() => {
                     <button type="submit" class="btn btn-primary">Upload</button>
                 </form>
             </Modal>
-
 
             <hr />
 
@@ -269,7 +282,7 @@ onMounted(() => {
                             <td>{{ mahasiswa?.Mahasiswa?.nama_mahasiswa }}</td>
                             <td>{{ mahasiswa?.angkatan }}</td>
                             <td v-for="(bobot, bIndex) in bobotPenilaian" :key="bIndex">
-                                <input type="text" class="form-control" v-model="mahasiswa.nilai_bobot[bIndex].nilai" />
+                                <input type="number" class="form-control" v-model="mahasiswa.nilai_bobot[bIndex].nilai" />
                             </td>
                             <td>
                                 <input type="text" class="form-control" v-model="mahasiswa.nilai_angka" disabled />

@@ -333,7 +333,12 @@ const router = createRouter({
                     name: 'daftar-tagihan-create',
                     component: () => import('../views/keuangan/daftarTagihan/form.vue')
                 },
-                
+                {
+                    path: '/daftar-tagihan/:id_tagihan_mahasiswa/update',
+                    name: 'daftar-tagihan-update',
+                    component: () => import('../views/keuangan/daftarTagihan/update.vue')
+                },
+
                 {
                     path: '/daftar-pembayaran',
                     name: 'daftar-pembayaran',

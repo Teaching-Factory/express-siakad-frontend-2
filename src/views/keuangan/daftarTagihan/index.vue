@@ -23,35 +23,35 @@ const jenisTagihans = ref([]);
 const statusPembayarans = ref([]);
 const first = ref(0);
 const message = ref('');
-const selectedProdi = ref('')
-const selectedPeriode = ref('')
-const selectedJenisTagihan = ref('')
-const selectedStatusPembayaran = ref ('')
+const selectedProdi = ref('');
+const selectedPeriode = ref('');
+const selectedJenisTagihan = ref('');
+const selectedStatusPembayaran = ref('');
 
-const getPeriode = async()=>{
+const getPeriode = async () => {
     try {
         const response = await get('periode');
         periodes.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data sistemKuliah:', error);
     }
-}
-const getProdi = async()=>{
+};
+const getProdi = async () => {
     try {
         const response = await get('prodi');
         prodis.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data sistemKuliah:', error);
     }
-}
-const getJenisTagihan = async()=>{
+};
+const getJenisTagihan = async () => {
     try {
         const response = await get('jenis-tagihan');
         jenisTagihans.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data sistemKuliah:', error);
     }
-}
+};
 const filterData = async () => {
     try {
         Swal.fire({
@@ -106,10 +106,9 @@ const onPageChange = (event) => {
 
 onBeforeMount(() => {
     // fetchTagihan();
-    getPeriode()
-    getProdi()
-    getJenisTagihan()
-
+    getPeriode();
+    getProdi();
+    getJenisTagihan();
 });
 
 const deleteItem = async (id_tagihan_mahasiswa) => {
@@ -271,7 +270,7 @@ const confirmDelete = (id_tagihan_mahasiswa) => {
                 <template #body="{ data }">
                     <div class="flex gap-2">
                         <router-link :to="`/detail-pembayaran/${data.id_tagihan_mahasiswa}`" class="btn btn-outline-secondary"> <i class="pi pi-eye"></i> </router-link>
-                        <router-link to="#" class="btn btn-outline-primary">
+                        <router-link :to="`/daftar-tagihan/${data.id_tagihan_mahasiswa}/update`" class="btn btn-outline-primary">
                             <i class="pi pi-pencil"></i>
                             <!-- {{ console.log(data.id) }} -->
                         </router-link>
