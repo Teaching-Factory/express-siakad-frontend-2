@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router';
 import { API_URL } from '../../../config/config';
 import { getToken } from '../../../service/auth';
 import { get } from '../../../utiils/request';
+import router from '../../../router';
 
 const getKelasKuliah = ref([]);
 const route = useRoute();
@@ -16,6 +17,8 @@ const waktu_mulai = ref('');
 const waktu_selesai = ref('');
 const materi = ref('');
 const id_ruang_perkuliahan = ref('');
+const isEdit = ref(false);
+const dataPertemuan = ref([]);
 
 const errors = ref({
     pertemuan: '',
@@ -133,16 +136,98 @@ const create = async () => {
             window.location.href = `/pertemuan-perkuliahan/${id_kelas_kuliah}`;
         });
     } catch (error) {
-        Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
-        console.error('Error:', error.response.data); // Log error response for debugging
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+    }
+};
+
+const getPertemuan = async (id) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`pertemuan-perkuliahan/${id}/get`);
+        const data = response.data.data;
+        pertemuan.value = data.pertemuan;
+        tanggal_pertemuan.value = data.tanggal_pertemuan;
+        waktu_mulai.value = data.waktu_mulai;
+        waktu_selesai.value = data.waktu_selesai;
+        materi.value = data.materi;
+        id_ruang_perkuliahan.value = data.id_ruang_perkuliahan;
+        Swal.close();
+    } catch (error) {
+        console.error('Error fetching:', error);
+    }
+};
+
+const update = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        validatePertemuan();
+        validateTanggal();
+        validateWaktuMulai();
+        validateWaktuSelesai();
+        validateRuangPerkuliahan();
+
+        const token = getToken();
+        const id = route.params.id;
+        const id_kelas_kuliah = route.params.id_kelas_kuliah || route.query.id_kelas_kuliah;
+
+        const payload = {
+            pertemuan: pertemuan.value,
+            tanggal_pertemuan: tanggal_pertemuan.value,
+            waktu_mulai: waktu_mulai.value,
+            waktu_selesai: waktu_selesai.value,
+            materi: materi.value,
+            id_ruang_perkuliahan: id_ruang_perkuliahan.value
+        };
+
+        await axios.put(`${API_URL}/pertemuan-perkuliahan/${id}/update`, payload, {
+            headers: {
+                Authorization: token
+            }
+        });
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.href = `/pertemuan-perkuliahan/${id_kelas_kuliah}`;
+        });
+    } catch (error) {
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+        console.error('Error fetching:', error);
+    }
+};
+
+const submit = async () => {
+    if (isEdit.value) {
+        update();
+    } else {
+        create();
     }
 };
 
 onMounted(() => {
     const id_kelas_kuliah = route.params.id_kelas_kuliah || route.query.id_kelas_kuliah;
+    const id = route.params.id || route.query.id;
 
     if (id_kelas_kuliah) {
         fetchKelasKuliah(id_kelas_kuliah);
+    }
+
+    if (id) {
+        isEdit.value = true;
+        getPertemuan(id);
     }
     fetchRuangPerkuliahan();
 });
@@ -153,10 +238,10 @@ onMounted(() => {
         <div class="card-body">
             <div class="row">
                 <div class="col-lg-6">
-                    <h5><i class="pi pi-user me-2"></i>TAMBAH PERTEMUAN BARU</h5>
+                    <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} PERTEMUAN BARU</h5>
                 </div>
                 <div class="col-lg-6 text-end">
-                    <button @click="create" class="btn btn-primary"><i class="pi pi-save me-2"></i> Simpan</button>
+                    <button @click="submit" class="btn btn-primary"><i class="pi pi-save me-2"></i> Simpan</button>
                 </div>
             </div>
             <hr />

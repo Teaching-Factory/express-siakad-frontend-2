@@ -27,7 +27,7 @@ const message = ref('');
 const semesterAktif = ref([]);
 
 const fetchSemesterAktif = async () => {
-    const response = await get('semester-aktif');
+    const response = await get('semester-aktif/get-semester-aktif-now');
     semesterAktif.value = response.data.data;
 };
 

@@ -16,8 +16,7 @@ const filters = ref({
     tanggal_pertemuan: { value: null, matchMode: FilterMatchMode.EQUALS },
     waktu: { value: null, matchMode: FilterMatchMode.EQUALS },
     waktu_presensi: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
-    
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const detailPresensi = ref([]);
@@ -28,7 +27,7 @@ const getDetailPresensi = async (id) => {
     try {
         const response = await get(`presensi-perkuliahan/${id}/get`);
         detailPresensi.value = response.data.data;
-        console.log('Response:', response.data)
+        console.log('Response:', response.data);
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
@@ -46,13 +45,15 @@ const update = async (id, statusPresensi) => {
         });
 
         const dataToSubmit = {
-            presensiMahasiswa: [{
-                id: id,
-                status_presensi: statusPresensi
-            }]
+            presensiMahasiswa: [
+                {
+                    id: id,
+                    status_presensi: statusPresensi
+                }
+            ]
         };
 
-        const token = getToken(); 
+        const token = getToken();
         const pertemuanID = route.params.id;
         const response = await axios.put(`${API_URL}/presensi-perkuliahan/${pertemuanID}/update`, dataToSubmit, {
             headers: {
@@ -63,7 +64,7 @@ const update = async (id, statusPresensi) => {
 
         Swal.close();
         Swal.fire('BERHASIL!', 'Data berhasil Dikonfirmasi.', 'success').then(() => {
-            window.location.href = ''; 
+            window.location.href = '';
         });
     } catch (error) {
         console.error('Gagal menambahkan data:', error);
@@ -71,15 +72,12 @@ const update = async (id, statusPresensi) => {
     }
 };
 
-
 const onStatusChange = (id, selectedStatus) => {
-    update(id,selectedStatus);
+    update(id, selectedStatus);
 };
 
 onMounted(() => {
-    
-        getDetailPresensi(id);
-    
+    getDetailPresensi(id);
 });
 </script>
 
@@ -89,7 +87,7 @@ onMounted(() => {
         <div class="card">
             <DataTable
                 v-model:filters="filters"
-                :globalFilterFields="['PertemuanPerkuliahan.pertemuan','Mahasiswa.nama_mahasiswa', 'tanggal_pertemuan', 'waktu_presensi', 'Mahasiswa.nim']"
+                :globalFilterFields="['PertemuanPerkuliahan.pertemuan', 'Mahasiswa.nama_mahasiswa', 'tanggal_pertemuan', 'waktu_presensi', 'Mahasiswa.nim']"
                 :value="detailPresensi"
                 :paginator="true"
                 :rows="10"
@@ -145,24 +143,24 @@ onMounted(() => {
                         </div>
                     </template>
                 </Column>
-                
+
                 <Column filterField="waktu_presensi" header="Waktu Presensi" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.waktu_presensi }}
                     </template>
                 </Column>
-                
+
                 <Column header="Status Presensi" style="min-width: 10rem">
-        <template #body="{ data }">
-            <select class="form-select" style="width: 100px;" @change="onStatusChange(data.id, $event.target.value)">
-                <option :value="data.status_presensi">{{ data.status_presensi }}</option>
-                <option value="Hadir">Hadir</option>
-                <option value="Izin">Izin</option>
-                <option value="Sakit">Sakit</option>
-                <option value="Alfa">Alfa</option>
-            </select>
-        </template>
-    </Column>
+                    <template #body="{ data }">
+                        <select class="form-select" style="width: 100px" @change="onStatusChange(data.id, $event.target.value)">
+                            <option :value="data.status_presensi">{{ data.status_presensi }}</option>
+                            <option value="Hadir">Hadir</option>
+                            <option value="Izin">Izin</option>
+                            <option value="Sakit">Sakit</option>
+                            <option value="Alfa">Alfa</option>
+                        </select>
+                    </template>
+                </Column>
             </DataTable>
         </div>
     </div>

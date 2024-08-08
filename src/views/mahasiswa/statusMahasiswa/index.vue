@@ -8,6 +8,7 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nama_prodi: { value: null, matchMode: FilterMatchMode.EQUALS },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlahMahasiswaBelumSetSK: { value: null, matchMode: FilterMatchMode.EQUALS },
     jumlahMahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
@@ -16,7 +17,7 @@ const statusMahasiswa = ref([]);
 const semesterAktif = ref([]);
 
 const fetchSemesterAktif = async () => {
-    const response = await get('semester-aktif');
+    const response = await get('semester-aktif/get-semester-aktif-now');
     semesterAktif.value = response.data.data;
 };
 
@@ -68,7 +69,7 @@ onBeforeMount(() => {
                 </div>
             </div>
         </div>
-        <DataTable v-model:filters="filters" :globalFilterFields="['nama_prodi', 'status', 'jumlahMahasiswa']"
+        <DataTable v-model:filters="filters" :globalFilterFields="['nama_prodi', 'status', 'jumlahMahasiswaBelumSetSK', 'jumlahMahasiswa']"
             :value="statusMahasiswa"
             :paginator="true"
             :rows="10"
@@ -104,9 +105,14 @@ onBeforeMount(() => {
                     {{ data.status }}
                 </template>
             </Column>
-            <Column filterField="jumlahMahasiswa" header="Total Mahasiswa Belum di SET" style="min-width: 10rem">
+            <Column filterField="jumlahMahasiswa" header="Jumlah Mahasiswa" style="min-width: 10rem">
                 <template #body="{ data }">
                     {{ data.jumlahMahasiswa }}
+                </template>
+            </Column>
+            <Column filterField="jumlahMahasiswaBelumSetSK" header="Total Mahasiswa Belum di SET" style="min-width: 10rem">
+                <template #body="{ data }">
+                    {{ data.jumlahMahasiswaBelumSetSK }}
                 </template>
             </Column>
             <Column filterField="aksi" field="aksi" header="Aksi" style="min-width: 12rem">

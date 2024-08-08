@@ -333,7 +333,12 @@ const router = createRouter({
                     name: 'daftar-tagihan-create',
                     component: () => import('../views/keuangan/daftarTagihan/form.vue')
                 },
-                
+                {
+                    path: '/daftar-tagihan/:id_tagihan_mahasiswa/update',
+                    name: 'daftar-tagihan-update',
+                    component: () => import('../views/keuangan/daftarTagihan/update.vue')
+                },
+
                 {
                     path: '/daftar-pembayaran',
                     name: 'daftar-pembayaran',
@@ -633,7 +638,7 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
                 },
                 {
-                    path: '/pertemuan-perkuliahan/update/:id',
+                    path: '/pertemuan-perkuliahan/:id/:id_kelas_kuliah/update',
                     name: 'pertemuan-perkuliahan-update',
                     component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
                 }
