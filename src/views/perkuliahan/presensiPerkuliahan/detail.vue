@@ -156,6 +156,7 @@ onMounted(() => {
         <template #body="{ data }">
             <select class="form-select" style="width: 100px;" @change="onStatusChange(data.id, $event.target.value)">
                 <option :value="data.status_presensi">{{ data.status_presensi }}</option>
+                <option value="Hadir">Hadir</option>
                 <option value="Izin">Izin</option>
                 <option value="Sakit">Sakit</option>
                 <option value="Alfa">Alfa</option>
