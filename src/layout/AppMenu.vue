@@ -38,6 +38,67 @@ const model = ref([
         }),
         items: [
             {
+                label: 'PMB',
+                // icon: 'pi pi-fw pi-user',
+                // visible: computed(() => {
+                //     return [
+                //         'import-mahasiswa',
+                //         'daftar-mahasiswa',
+                //         'set-status-mahasiswa',
+                //         'set-sistem-kuliah-mahasiswa',
+                //         'validasi-krs-mahasiswa',
+                //         'import-aktivitas-mahasiswa',
+                //         'mahasiswa-belum-krs',
+                //         'perhitungan-transkrip',
+                //         'set-aktif-akm',
+                //         'belum-set-sk'
+                //     ].some((permission) => permissions.includes(permission));
+                // }),
+                items: [
+                    {
+                        label: 'Pengaturan PMB',
+                        to: '/pengaturan-pmb',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
+                        label: 'Jenis Tes',
+                        to: '/jenis-tes',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
+                        label: 'Jenis Berkas',
+                        to: '/jenis-berkas',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
+                        label: 'Periode Pendaftaran',
+                        to: '/periode-pendaftaran',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
+                        label: 'Daftar Calon Mahasiswa Baru',
+                        to: '/daftar-camaba',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
+                        label: 'Set NIM Pendaftar Kolektif',
+                        to: '/set-nim-pendaftar-kolektif',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
+                        label: 'Export ke Daftar Mahasiswa',
+                        to: '/export-daftar-mahasiswa',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
+                        label: 'User Guide',
+                        to: '/user-guide',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    
+                ]
+            },
+            {
                 label: 'Mahasiswa',
                 // icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
@@ -169,7 +230,33 @@ const model = ref([
                     //     visible: computed(() => permissions.includes('set-kolektif-dosenwali'))
                     // }
                 ]
+            },
+            {
+                label: 'Kelulusan dan Yudisium',
+                // icon: 'pi pi-fw pi-user',
+                // visible: computed(() => {
+                //     return [, 'daftar-dosen-wali', 'manajemen-mahasiswa-wali', 'set-kolektif-dosenwali'].some((permission) => permissions.includes(permission));
+                // }),
+                items: [
+                    
+                    {
+                        label: 'Import Kelulusan Mahasiswa',
+                        to: '/import-kelulusan-mahasiswa',
+                        // visible: computed(() => permissions.includes('manajemen-mahasiswa-wali'))
+                    },
+                    {
+                        label: 'Setting Yudisium Mahasiswa',
+                        to: '/setting-yudisium-mahasiswa',
+                        // visible: computed(() => permissions.includes('manajemen-mahasiswa-wali'))
+                    },
+                    {
+                        label: 'Daftar Mahasiswa Yudisium',
+                        to: '/daftar-mahasiswa-yudisium',
+                        // visible: computed(() => permissions.includes('manajemen-mahasiswa-wali'))
+                    }
+                ]
             }
+            
         ]
     },
     {
@@ -333,6 +420,25 @@ const model = ref([
                         label: 'Daftar Mahasiswa Belum KRS',
                         to: '/daftar-belum-krs',
                         visible: computed(() => permissions.includes('cetak-daftar-belum-krs'))
+                    }
+                ]
+            },
+            {
+                label: 'PMB',
+                // icon: 'pi pi-fw pi-print',
+                // visible: computed(() => {
+                //     return ['cetak-daftar-belum-krs'].some((permission) => permissions.includes(permission));
+                // }),
+                items: [
+                    {
+                        label: 'Rekap Pendaftar PMB',
+                        to: '/rekap-pendaftar-pmb'
+                        // visible: computed(() => permissions.includes('cetak-daftar-belum-krs'))
+                    },
+                    {
+                        label: 'Rekap Pembayaran PMB',
+                        to: '/rekap-pembayaran-pmb'
+                        // visible: computed(() => permissions.includes('cetak-daftar-belum-krs'))
                     }
                 ]
             }

@@ -10,6 +10,11 @@ const router = createRouter({
             component: () => import('../views/pages/auth/Login.vue')
         },
         {
+            path: '/pendaftaran-pmb',
+            name: 'pendaftaran-pmb',
+            component: () => import('../views/guest-camaba/index.vue')
+        },
+        {
             path: '/',
             component: AppLayout,
             meta: { requiresAuth: true },
@@ -20,6 +25,71 @@ const router = createRouter({
                     component: () => import('@/views/Dashboard.vue'),
                     meta: { requiredPermissions: ['dashboard'] }
                 },
+
+                //penerimaan mahasiswa baru
+                {
+                    path: '/pengaturan-pmb',
+                    name: 'pengaturan-pmb',
+                    component: () => import('../views/admin-pmb/pengaturanPMB/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/jenis-tes',
+                    name: 'jenis-tes',
+                    component: () => import('../views/admin-pmb/jenisTes/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/jenis-tes/create',
+                    name: 'jenis-tes-create',
+                    component: () => import('../views/admin-pmb/jenisTes/form.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/jenis-berkas',
+                    name: 'jenis-berkas',
+                    component: () => import('../views/admin-pmb/jenisBerkas/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/jenis-berkas/create',
+                    name: 'jenis-berkas-create',
+                    component: () => import('../views/admin-pmb/jenisBerkas/form.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/periode-pendaftaran',
+                    name: 'periode-pendaftaran',
+                    component: () => import('../views/admin-pmb/periodePendaftaran/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/periode-pendaftaran/create',
+                    name: 'periode-pendaftaran-create',
+                    component: () => import('../views/admin-pmb/periodePendaftaran/form.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/daftar-camaba',
+                    name: 'daftar-camaba',
+                    component: () => import('../views/admin-pmb/daftarCamaba/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/set-nim-pendaftar-kolektif',
+                    name: 'set-nim-pendaftar-kolektif',
+                    component: () => import('../views/admin-pmb/setNimPendaftarKolektif/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/export-daftar-mahasiswa',
+                    name: 'export-daftar-mahasiswa',
+                    component: () => import('../views/admin-pmb/exportDaftarMahasiswa/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+               
+
+
                 //mahasiswa
                 {
                     path: '/import-mahasiswa',
@@ -190,6 +260,26 @@ const router = createRouter({
                     name: 'set-kolektif-dosenwali',
                     component: () => import('../views/dosenWali/setKolektifDosenWali/index.vue'),
                     meta: { requiredPermissions: ['set-kolektif-dosenwali'] }
+                },
+
+                //Kelulusan dan Yudisium
+                {
+                    path: '/import-kelulusan-mahasiswa',
+                    name: 'import-kelulusan-mahasiswa',
+                    component: () => import('../views/kelulusanYudisium/importKelulusan/index.vue'),
+                    // meta: { requiredPermissions: ['set-kolektif-dosenwali'] }
+                },
+                {
+                    path: '/setting-yudisium-mahasiswa',
+                    name: 'setting-yudisium-mahasiswa',
+                    component: () => import('../views/kelulusanYudisium/settingYudisium/index.vue'),
+                    // meta: { requiredPermissions: ['set-kolektif-dosenwali'] }
+                },
+                {
+                    path: '/daftar-mahasiswa-yudisium',
+                    name: 'daftar-mahasiswa-yudisium',
+                    component: () => import('../views/kelulusanYudisium/daftarMahasiswaYudisium/index.vue'),
+                    // meta: { requiredPermissions: ['set-kolektif-dosenwali'] }
                 },
 
                 //referensi
@@ -445,7 +535,19 @@ const router = createRouter({
                     component: () => import('../views/laporan/daftarBelumKRS/cetakBelumKrs.vue'),
                     meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
                 },
-
+                {
+                    path: '/rekap-pendaftar-pmb',
+                    name: 'rekap-pendaftar-pmb',
+                    component: () => import('../views/laporan/rekapPendaftarPMB/index.vue'),
+                    // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
+                },
+                {
+                    path: '/rekap-pembayaran-pmb',
+                    name: 'rekap-pembayaran-pmb',
+                    component: () => import('../views/laporan/rekapPembayaranPMB/index.vue'),
+                    // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
+                },
+                
                 //setting
                 //manajemen
                 {
