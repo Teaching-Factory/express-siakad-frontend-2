@@ -12,6 +12,63 @@ const model = ref([
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard' }],
         visible: computed(() => permissions.includes('dashboard'))
     },
+
+    {
+        label: 'Admin Camaba',
+        items: [
+        { 
+            label: 'Status Pendaftaran', 
+            to: '/status-pendaftaran' 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Biodata Pendaftar', 
+            to: '/biodata-pendaftar', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Upload Foto', 
+            to: '/status-pendaftaran', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Program Studi', 
+            to: '/pilihan-prodi', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Upload Berkas', 
+            to: '/upload-berkas', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Pembayaran Tagihan', 
+            to: '/status-pendaftaran', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Finalisasi Data', 
+            to: '/status-pendaftaran', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Cetak Kartu Ujian', 
+            to: '/status-pendaftaran', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Jadwal Seleksi Tes', 
+            to: '/status-pendaftaran', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        },
+        { 
+            label: 'Cetak Form Pendaftaran', 
+            to: '/status-pendaftaran', 
+            // visible: computed(() => permissions.includes('import-mahasiswa'))
+        }
+    ],
+        // visible: computed(() => permissions.includes('dashboard'))
+    },
     {
         label: 'Akademik',
         visible: computed(() => {

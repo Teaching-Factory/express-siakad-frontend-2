@@ -743,7 +743,48 @@ const router = createRouter({
                     path: '/pertemuan-perkuliahan/:id/:id_kelas_kuliah/update',
                     name: 'pertemuan-perkuliahan-update',
                     component: () => import('../views/perkuliahan-dosen/pertemuanKelas/formPertemuan.vue')
-                }
+                },
+
+
+                //--------------admin camaba-----------------
+                {
+                    path: '/status-pendaftaran',
+                    name: 'status-pendaftaran',
+                    // component: () => import('../views/perkuliahan-dosen/jadwalKelas/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/biodata-pendaftar',
+                    name: 'biodata-pendaftar',
+                    component: () => import('../views/admin-camaba/biodataPendaftar/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                // {
+                //     path: '/upload-foto',
+                //     name: 'upload-foto',
+                //     component: () => import('../views/admin-camaba/uploadFoto/index.vue'),
+                //     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                // },
+                {
+                    path: '/pilihan-prodi',
+                    name: 'pilihan-prodi',
+                    component: () => import('../views/admin-camaba/pilihanProdi/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                
+                {
+                    path: '/upload-berkas',
+                    name: 'upload-berkas',
+                    component: () => import('../views/admin-camaba/uploadBerkas/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/upload-berkas/create',
+                    name: 'upload-berkas-create',
+                    component: () => import('../views/admin-camaba/uploadBerkas/form.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+
             ]
         },
         //notfound
