@@ -11,7 +11,7 @@ import { ref } from 'vue';
         <div class="card-body">
             <div class="row">
                 <div class="col-10 xl:col-6">
-                    <h5><i class="pi pi-user me-2"></i>USER GUIDE PMB</h5>
+                    <h5><i class="pi pi-user me-2"></i>UPLOAD FOTO PROFIL</h5>
                 </div>
                 <div class="col-12 xl:col-6 d-flex justify-content-end">
                     <div class="flex justify-content-end gap-2">
@@ -22,10 +22,10 @@ import { ref } from 'vue';
             <hr>
             <div class="row mb-3">
                 <div class="col-12">
-                    <label for="profileImage" class="form-label">File</label>
+                    <label for="profileImage" class="form-label">Gambar</label>
                     <input type="file" class="form-control" id="profileImage" @change="previewImage" accept=".png,.jpg,.jpeg">
                     <small class="text-danger d-block mt-1">
-                        * File yang dapat diupload adalah pdf; dengan ukuran maksimal file sebesar 20MB.
+                        * File yang dapat diupload adalah .png, .jpg, dan .jpeg; dengan ukuran maksimal file sebesar 1MB.
                     </small>
                 </div>
             </div>

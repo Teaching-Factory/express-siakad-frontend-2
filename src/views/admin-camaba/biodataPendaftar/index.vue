@@ -121,6 +121,19 @@ onMounted(()=> {
             <h5><i class="pi pi-user me-2"></i>BIODATA DIRI</h5>
             <hr>
             <div class="row">
+                <div class="col-md-12 ">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <img class="rounded-circle" alt="User Image" src="../../../../public/ubi.png" width="10%">
+                    </div>
+                    <div class="text-center">
+                        <h4>AIDA ANDINAR MAULIDIANA</h4>
+                        <h6>9897654345678989</h6>
+                        <h6>UMUM | REGULER</h6>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-12">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">

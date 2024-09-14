@@ -28,7 +28,7 @@ const model = ref([
         },
         { 
             label: 'Upload Foto', 
-            to: '/status-pendaftaran', 
+            to: '/upload-foto', 
             // visible: computed(() => permissions.includes('import-mahasiswa'))
         },
         { 
@@ -43,22 +43,22 @@ const model = ref([
         },
         { 
             label: 'Pembayaran Tagihan', 
-            to: '/status-pendaftaran', 
+            to: '/pembayaran-tagihan', 
             // visible: computed(() => permissions.includes('import-mahasiswa'))
         },
         { 
             label: 'Finalisasi Data', 
-            to: '/status-pendaftaran', 
+            to: '/finalisasi-data', 
             // visible: computed(() => permissions.includes('import-mahasiswa'))
         },
         { 
             label: 'Cetak Kartu Ujian', 
-            to: '/status-pendaftaran', 
+            to: '/cetak-kartu-ujian', 
             // visible: computed(() => permissions.includes('import-mahasiswa'))
         },
         { 
             label: 'Jadwal Seleksi Tes', 
-            to: '/status-pendaftaran', 
+            to: '/jadwal-seleksi-tes', 
             // visible: computed(() => permissions.includes('import-mahasiswa'))
         },
         { 

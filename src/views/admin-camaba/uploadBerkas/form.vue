@@ -103,7 +103,7 @@ export default {
                     <router-link to="/upload-berkas" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</router-link>
                 </div>
             </div>
-            <hr />
+            <hr />~
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="kodeSK" class="col-sm-2 col-form-label">Nama Berkas</label>
                 <div class="col-md-8">

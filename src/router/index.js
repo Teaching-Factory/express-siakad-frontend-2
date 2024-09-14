@@ -87,6 +87,12 @@ const router = createRouter({
                     component: () => import('../views/admin-pmb/exportDaftarMahasiswa/index.vue')
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
+                {
+                    path: '/user-guide',
+                    name: 'user-guide',
+                    component: () => import('../views/admin-pmb/userGuide/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
                
 
 
@@ -750,7 +756,7 @@ const router = createRouter({
                 {
                     path: '/status-pendaftaran',
                     name: 'status-pendaftaran',
-                    // component: () => import('../views/perkuliahan-dosen/jadwalKelas/index.vue'),
+                    component: () => import('../views/admin-camaba/statusPendaftaran/index.vue'),
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
@@ -759,12 +765,12 @@ const router = createRouter({
                     component: () => import('../views/admin-camaba/biodataPendaftar/index.vue'),
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
-                // {
-                //     path: '/upload-foto',
-                //     name: 'upload-foto',
-                //     component: () => import('../views/admin-camaba/uploadFoto/index.vue'),
-                //     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
-                // },
+                {
+                    path: '/upload-foto',
+                    name: 'upload-foto',
+                    component: () => import('../views/admin-camaba/uploadFoto/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
                 {
                     path: '/pilihan-prodi',
                     name: 'pilihan-prodi',
@@ -782,6 +788,30 @@ const router = createRouter({
                     path: '/upload-berkas/create',
                     name: 'upload-berkas-create',
                     component: () => import('../views/admin-camaba/uploadBerkas/form.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/pembayaran-tagihan',
+                    name: 'pembayaran-tagihan',
+                    component: () => import('../views/admin-camaba/pembayaranTagihan/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/finalisasi-data',
+                    name: 'finalisasi-data',
+                    component: () => import('../views/admin-camaba/finalisasiData/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                // {
+                //     path: '/cetak-kartu-ujian',
+                //     name: 'cetak-kartu-ujian',
+                //     component: () => import('../views/admin-camaba/cetakKartuUjian/index.vue'),
+                //     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                // },
+                {
+                    path: '/jadwal-seleksi-tes',
+                    name: 'jadwal-seleksi-tes',
+                    component: () => import('../views/admin-camaba/jadwalSeleksiTes/index.vue'),
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
 
