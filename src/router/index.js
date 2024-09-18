@@ -416,6 +416,46 @@ const router = createRouter({
                     meta: { requiredPermissions: ['data-wilayah'] }
                 },
 
+
+                //kuesioner dosen
+                {
+                    path: '/aspek-penilaian-dosen',
+                    name: 'aspek-penilaian-dosen',
+                    component: () => import('../views/kuesioner/aspekPenilaianDosen/index.vue'),
+                    // meta: { requiredPermissions: ['unit-jabatan'] }
+                },
+                {
+                    path: '/aspek-penilaian-dosen/create',
+                    name: 'aspek-penilaian-dosen-create',
+                    component: () => import('../views/kuesioner/aspekPenilaianDosen/form.vue'),
+                    // meta: { requiredPermissions: ['unit-jabatan'] }
+                },
+                {
+                    path: '/skala-penilaian-dosen',
+                    name: 'skala-penilaian-dosen',
+                    component: () => import('../views/kuesioner/skalaPenilaianDosen/index.vue'),
+                    // meta: { requiredPermissions: ['data-wilayah'] }
+                },
+                {
+                    path: '/skala-penilaian-dosen/create',
+                    name: 'skala-penilaian-dosen-create',
+                    component: () => import('../views/kuesioner/skalaPenilaianDosen/form.vue'),
+                    // meta: { requiredPermissions: ['unit-jabatan'] }
+                },
+                {
+                    path: '/hasil-kuesioner-dosen',
+                    name: 'hasil-kuesioner-dosen',
+                    component: () => import('../views/kuesioner/hasilKuesionerDosen/index.vue'),
+                    meta: { requiredPermissions: ['data-wilayah'] }
+                },
+                {
+                    path: '/hasil-kuesioner-perkelas',
+                    name: 'hasil-kuesioner-perkelas',
+                    component: () => import('../views/kuesioner/hasilKuesionerPerKelas/index.vue'),
+                    // meta: { requiredPermissions: ['data-wilayah'] }
+                },
+                
+
                 //keuangan
 
                 {

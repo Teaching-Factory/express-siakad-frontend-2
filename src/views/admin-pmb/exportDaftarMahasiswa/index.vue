@@ -165,11 +165,7 @@ onBeforeMount(() => {
             </template>
             
             <!-- <template #loading>Loading data. Please wait.</template> -->
-            <Column header="No" headerStyle="width:3rem">
-                <template #body="slotProps">
-                    {{ first + slotProps.index + 1 }}
-                </template>
-            </Column>
+            <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
             <Column filterField="nim" header="Nomor Pendaftaran" style="min-width: 12rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">

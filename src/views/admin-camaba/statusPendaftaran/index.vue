@@ -80,6 +80,7 @@ onBeforeMount(() => {
     sistemKuliah();
 });
 </script>
+
 <template>
     <div class="card">
         <div class="row mb-4">
@@ -116,7 +117,7 @@ onBeforeMount(() => {
                         </router-link>
                     </div>
 
-                    <div class="text-center"~>
+                    <div class="text-center">
                         <router-link to="/upload-berkas" class="d-block">
                             <i class="pi pi-upload" style="font-size: 24px;"></i>
                             <p>UPLOAD BERKAS</p>
@@ -253,7 +254,7 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data</div>
                 </template>
-                <!-- <template #loading> Loading data. Please wait. </template> -->
+                
                 <Column header="No" headerStyle="width:3rem">
                     <template #body="slotProps">
                         {{ slotProps.index + 1 }}
@@ -307,7 +308,6 @@ onBeforeMount(() => {
                         <div class="flex gap-2">
                             <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
-                                <!-- {{ console.log(data.id) }} -->
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>
@@ -316,7 +316,6 @@ onBeforeMount(() => {
                     </template>
                 </Column>
             </DataTable>
-        
         </div>
     </div>
 </template>

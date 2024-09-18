@@ -376,6 +376,35 @@ const model = ref([
                 ]
             },
             {
+                label: 'Kuesioner',
+                // icon: 'pi pi-fw pi-user',
+                //  visible: computed(() => {
+                //     return ['daftar-tagihan', 'daftar-pembayaran'].some((permission) => permissions.includes(permission));
+                // }),
+                items: [
+                    {
+                        label: 'Aspek Penilaian Dosen',
+                        to: '/aspek-penilaian-dosen',
+                        // visible: computed(() => permissions.includes('daftar-tagihan'))
+                    },
+                    {
+                        label: 'Skala Penilaian Dosen',
+                        to: '/skala-penilaian-dosen',
+                        // visible: computed(() => permissions.includes('daftar-pembayaran'))
+                    },
+                    {
+                        label: 'Hasil Kuesioner Dosen',
+                        to: '/hasil-kuesioner-dosen',
+                        // visible: computed(() => permissions.includes('daftar-pembayaran'))
+                    },
+                    {
+                        label: 'Hasil Kuesioner Per Kelas',
+                        to: '/hasil-kuesioner-perkelas',
+                        // visible: computed(() => permissions.includes('daftar-pembayaran'))
+                    }
+                ]
+            },
+            {
                 label: 'Keuangan',
                 // icon: 'pi pi-fw pi-user',
                  visible: computed(() => {
