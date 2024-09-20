@@ -133,6 +133,11 @@ const model = ref([
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
+                        label: 'Tagihan Calon Mahasiswa Baru',
+                        to: '/tagihan-camaba',
+                        // visible: computed(() => permissions.includes('import-mahasiswa'))
+                    },
+                    {
                         label: 'Daftar Calon Mahasiswa Baru',
                         to: '/daftar-camaba',
                         // visible: computed(() => permissions.includes('import-mahasiswa'))

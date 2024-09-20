@@ -70,6 +70,12 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
+                    path: '/tagihan-camaba',
+                    name: 'tagihan-camaba',
+                    component: () => import('../views/admin-pmb/tagihanCamaba/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
                     path: '/daftar-camaba',
                     name: 'daftar-camaba',
                     component: () => import('../views/admin-pmb/daftarCamaba/index.vue')
@@ -185,6 +191,7 @@ const router = createRouter({
                     component: () => import('../views/mahasiswa/mahasiswaBelumSetSK/index.vue'),
                     meta: { requiredPermissions: ['belum-set-sk'] }
                 },
+
                 //perkuliahan
                 {
                     path: '/kelas-jadwal-perkuliahan',
@@ -246,6 +253,7 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan/kelasAktif/index.vue'),
                     meta: { requiredPermissions: ['kelas-aktif'] }
                 },
+
                 //dosenwali
                 {
                     path: '/daftar-dosen-wali',
