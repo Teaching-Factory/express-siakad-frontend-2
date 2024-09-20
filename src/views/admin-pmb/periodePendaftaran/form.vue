@@ -85,6 +85,18 @@ export default {
         }
     }
 };
+
+// Fungsi untuk mengubah status input biaya pendaftaran
+document.getElementById("berbayarCheckbox").addEventListener("change", function() {
+        var biayaInput = document.getElementById("biayaPendaftaran");
+        // Mengubah status input berdasarkan status checkbox
+        if (this.checked) {
+            biayaInput.removeAttribute("disabled");
+        } else {
+            biayaInput.setAttribute("disabled", "disabled");
+            biayaInput.value = ''; // Mengosongkan input ketika tidak dicentang
+        }
+    });
 </script>
 
 <template>
@@ -155,16 +167,17 @@ export default {
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Berbayar?</label>
                 <div class="col-md-7">
-                    <input type="checkbox" />
+                    <input type="checkbox" id="berbayarCheckbox" />
                 </div>
             </div>
+
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Tanggal Pembayaran</label>
+                <label class="col-sm-3 col-form-label">Biaya Pendaftaran</label>
                 <div class="col-md-7">
                     <div class="input-group">
                         <span class="input-group-text">Rp</span>
-                        <input type="text" class="form-control" placeholder="Masukkan Biaya Pendaftaran" />
-                </div>
+                        <input type="text" class="form-control" id="biayaPendaftaran" placeholder="Masukkan Biaya Pendaftaran" disabled />
+                    </div>
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
@@ -177,8 +190,9 @@ export default {
                 <label for="status" class="col-sm-3 col-form-label">Jumlah Pilihan Prodi</label>
                 <div class="col-md-7">
                 <select class="form-select" id="status" v-model="status">
-                    <option value="true">Aktif</option>
-                    <option value="false">Tidak Aktif</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
                 </select>
                 </div>
             </div>
@@ -189,21 +203,82 @@ export default {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="status" class="col-sm-3 col-form-label">Prodi yang dibuka</label>
+                <label class="col-sm-3 col-form-label">Prodi yang dibuka</label>
                 <div class="col-md-7">
-                <select class="form-select" id="status" v-model="status">
-                    <option value="true">Aktif</option>
-                    <option value="false">Tidak Aktif</option>
-                </select>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="agribisnis">
+                        <label class="form-check-label" for="agribisnis">
+                            Agribisnis
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="teknikSipil">
+                        <label class="form-check-label" for="teknikSipil">
+                            Teknik Sipil
+                        </label>
+                    </div>
+                    <!-- Tambahkan lebih banyak checkbox sesuai kebutuhan -->
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="status" class="col-sm-3 col-form-label">Syarat Berkas</label>
+                <label class="col-sm-3 col-form-label">Syarat Berkas</label>
                 <div class="col-md-7">
-                <select class="form-select" id="status" v-model="status">
-                    <option value="true">Aktif</option>
-                    <option value="false">Tidak Aktif</option>
-                </select>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="agribisnis">
+                        <label class="form-check-label" for="agribisnis">
+                            KTP
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="teknikSipil">
+                        <label class="form-check-label" for="teknikSipil">
+                            Kartu Keluarga
+                        </label>
+                    </div>
+                    <!-- Tambahkan lebih banyak checkbox sesuai kebutuhan -->
+                </div>
+            </div>
+            <div class="mb-3 row d-flex justify-content-center">
+                <label class="col-sm-3 col-form-label">Tahap Tes</label>
+                <div class="col-md-7">
+                    <p><i>*Beri nomor urut tahapan tes. Pilih kosong bila bukan merupakan tahapan tes.</i></p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Urutan</th>
+                                    <th>Jenis Tes</th>
+                                    <th>Tanggal Awal</th>
+                                    <th>Tanggal Akhir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><select class="form-select">
+                                        <option value=""></option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select></td>
+                                    <td>Test TPA</td>
+                                    <td><input type="date" class="form-control datepicker"></td>
+                                    <td><input type="date" class="form-control datepicker"></td>
+                                </tr>
+                                <tr>
+                                    <td><select class="form-select">
+                                        <option value=""></option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select></td>
+                                    <td>Test Kesehatan</td>
+                                    <td><input type="date" class="form-control datepicker"></td>
+                                    <td><input type="date" class="form-control datepicker"></td>
+                                </tr>
+                                <!-- Duplicate the <tr> for more entries -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             
