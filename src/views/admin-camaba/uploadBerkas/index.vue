@@ -161,10 +161,10 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary">
-                                <i class="pi pi-pencil"></i>
-                                <!-- {{ console.log(data.id) }} -->
-                            </router-link>
+                            <label class="btn btn-outline-primary">
+                                <i class="pi pi-upload"></i>
+                                <input type="file" class="form-control d-none" id="profileImage" @change="previewImage" accept=".png,.jpg,.jpeg">
+                            </label>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>
                             </button>
@@ -255,7 +255,6 @@ onBeforeMount(() => {
                         <div class="flex gap-2">
                             <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
-                                <!-- {{ console.log(data.id) }} -->
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>

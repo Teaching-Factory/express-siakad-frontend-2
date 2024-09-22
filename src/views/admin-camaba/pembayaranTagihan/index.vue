@@ -198,7 +198,7 @@ import { ref } from 'vue';
                         <div class="tab-pane fade show active" id="home" role="tabpanel"
                             aria-labelledby="data-user">
 
-                            <!-- laporan PMB -->
+                            <!-- Info Tagihan -->
                             <div class="mb-3 mt-4 row">
                                 <div class="col-lg-12 d-flex justify-content-end">
                                     <table class="table">
@@ -248,7 +248,7 @@ import { ref } from 'vue';
                         </div>
                         
 
-                        <!-- contact person-->
+                        <!-- Info Pembayaran-->
                         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="data-wali">
                             <div class="row mt-3">
                                 <div class="col-lg-12">

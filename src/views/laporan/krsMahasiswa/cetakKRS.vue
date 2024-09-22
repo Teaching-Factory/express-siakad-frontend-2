@@ -58,6 +58,7 @@ export default {
     mounted() {
         this.getDataKrs(this.$route.query)
     },
+    
     computed: {
         totalSKS() {
             return this.rekapKrsData.reduce((total, matkul) => {

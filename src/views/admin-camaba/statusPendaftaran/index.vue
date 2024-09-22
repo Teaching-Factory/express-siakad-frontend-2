@@ -136,186 +136,206 @@ onBeforeMount(() => {
                 </div>
             </div>
         </div>
+
         <div class="card">
-            <div class="row">
-                <div class="col-12 col-md-6 col-lg-12">
-                    <h6 class="text-dark">Keterangan :</h6>
-                    <ol class="lh-2 text-small">
-                        <li>Tipe File yang dibolehkan PDF, JPG, PNG, GIF</li>
-                        <li>Maksimal ukuran setiap file adalah 5 MB</li>
-                        
-                    </ol>
+            <div class="row d-flex">
+                <div class="col-lg-2">
+                <h6><b>IDENTITAS DIRI</b></h6>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['kode_sk', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
-                <template #header>
-                    <div class="row">
-                        <div class="col-lg-6 d-flex justify-content-start">
-                            <IconField iconPosition="left">
-                                <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
-                            </IconField>
-                        </div>
-                    </div>
-                </template>
-
-                <template #empty>
-                    <div class="text-center">Tidak ada data</div>
-                </template>
-                <!-- <template #loading> Loading data. Please wait. </template> -->
-                <Column header="No" headerStyle="width:3rem">
-                    <template #body="slotProps">
-                        {{ slotProps.index + 1 }}
-                    </template>
-                </Column>
-                <Column filterField="kode_sk" header="Nama Berkas" style="min-width: 15rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.kode_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Deskripsi" style="min-width: 20rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Wajib" style="min-width: 5rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="File Berkas" style="min-width: 18rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Status Validasi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Keterangan Validasi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                
-                <Column header="Aksi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex gap-2">
-                            <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary">
-                                <i class="pi pi-pencil"></i>
-                                <!-- {{ console.log(data.id) }} -->
-                            </router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
-                                <i class="pi pi-trash"></i>
-                            </button>
-                        </div>
-                    </template>
-                </Column>
-            </DataTable>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Nomor Pendaftaran</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: 4353776787664</label>
+                </div>
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Nama Lengkap</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: Aida Andinar Maulidiana</label>
+                </div>               
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Tanggal Daftar</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: 8 Januari 2024</label>
+                </div>
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Sistem Kuliah</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: Reguler (1)</label>
+                </div> 
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Periode Pendaftaran</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: 2023/2024 Ganjil</label>
+                </div>
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Jalur</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: UMUM - Reguler</label>
+                </div> 
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Pilihan 1</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: Teknologi Rekayasa Perangkat Lunak</label>
+                </div>
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Pilihan 2</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">: Bisnis Digital</label>
+                </div>
+            </div>
+            <div class="row d-flex">
+                <div class="col-lg-2">
+                <h6><b>LAINNYA</b></h6>
+                </div>
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Status Pembayaran</label>
+                </div>
+                <div class="col-lg-10">
+                    <label class="form-label">: Tidak ada biaya pembayaran</label>
+                </div>               
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Seleksi Berkas</label>
+                </div>
+                <div class="col-lg-10">
+                    <label class="form-label">: Anda lulus pada tahap ini</label>
+                </div>               
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Seleksi Tes dan Kelulusan</label>
+                </div>
+                <div class="col-lg-10">
+                    <label class="form-label">: Belum ditentukan</label>
+                </div>               
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Diterima pada Program Studi</label>
+                </div>
+                <div class="col-lg-10">
+                    <label class="form-label">: Belum ditentukan</label>
+                </div>               
+            </div>
+            <div class="row d-flex mb-3">
+                <div class="col-lg-2">
+                    <label for="exampleFormControlInput1" class="form-label">Berkas Tidak Valid</label>
+                </div>
+                <div class="col-lg-10">
+                    <label class="form-label">: 0 Berkas tidak lolos validasi</label>
+                </div>               
+            </div>
+            
         </div>
-
         <div class="card">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
-                    <h6><b>DOKUMEN TAMBAHAN</b></h6>
-                    <p class="text-dark">Upload disini untuk melampirkan data sertifikasi, prestasi, atau dokumen penting lainnya.</p>
+                    <h6><b>TAGIHAN DAN PEMBAYARAN</b></h6>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-lg-12 d-flex justify-content-end">
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Jenis Tagihan</th>
+                                    <th>Periode Tagihan</th>
+                                    <th>Jumlah Tagihan</th>
+                                    <th>Tanggal Akhir Tagihan</th>
+                                    <th>Tanggal Lunas</th>
+                                    <th>Status Tagihan</th>
+                                    <th>Aksi</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>         
+                                    <td>-</td>         
+                                    <td>-</td>         
+                                    <td>-</td>         
+                                    <td>-</td>         
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td width="30%">Info Tagihan Lunas</td>
+                            <td width="10%">:</td>
+                            <td width="50%">Rp. 0</td>
+                        </tr>
+                        <tr>
+                            <td>Info Tagihan Belum Bayar</td>
+                            <td>:</td>
+                            <td>Rp. 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-12">
+                    <h6><b>JADWAL DAN HASIL TES</b></h6>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-lg-12 d-flex justify-content-end">
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Tahapan Tes</th>
+                                    <th>Jenis Tes</th>
+                                    <th>Tanggal Tes</th>
+                                    <th>Keterangan Tes</th>
+                                    <th>Status Kelulusan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Tes TPA</td>
+                                    <td>27 Juni 2022 - 27 Juni 2022</td>
+                                    <td>-</td>         
+                                    <td>Belum dilakukan penilaian</td>         
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Tes Buta Warna</td>
+                                    <td>27 Juni 2022 - 27 Juni 2022</td>
+                                    <td>-</td>         
+                                    <td>Belum dilakukan penilaian</td>         
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['kode_sk', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
-                <template #header>
-                    <div class="row">
-                        <div class="col-lg-6 d-flex justify-content-start">
-                            <IconField iconPosition="left">
-                                <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
-                            </IconField>
-                        </div>
-                        <div class="col-lg-6 d-flex justify-content-end">
-                            <div class="flex justify-content-end gap-2">
-                                <router-link to="/upload-berkas/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah </router-link>
-                            </div>
-                        </div>
-                    </div>
-                </template>
-
-                <template #empty>
-                    <div class="text-center">Tidak ada data</div>
-                </template>
-                
-                <Column header="No" headerStyle="width:3rem">
-                    <template #body="slotProps">
-                        {{ slotProps.index + 1 }}
-                    </template>
-                </Column>
-                <Column filterField="kode_sk" header="Nama Berkas" style="min-width: 15rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.kode_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="kode_sk" header="File Berkas" style="min-width: 15rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.kode_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Deskripsi Singkat" style="min-width: 20rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Jenis Berkas" style="min-width: 18rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Status Validasi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Keterangan Validasi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                
-                <Column header="Aksi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex gap-2">
-                            <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary">
-                                <i class="pi pi-pencil"></i>
-                            </router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
-                                <i class="pi pi-trash"></i>
-                            </button>
-                        </div>
-                    </template>
-                </Column>
-            </DataTable>
         </div>
     </div>
 </template>
