@@ -850,12 +850,12 @@ const router = createRouter({
                     component: () => import('../views/admin-camaba/finalisasiData/index.vue'),
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
-                // {
-                //     path: '/cetak-kartu-ujian',
-                //     name: 'cetak-kartu-ujian',
-                //     component: () => import('../views/admin-camaba/cetakKartuUjian/index.vue'),
-                //     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
-                // },
+                {
+                    path: '/cetak-kartu-ujian',
+                    name: 'cetak-kartu-ujian',
+                    component: () => import('../views/admin-camaba/cetakKartuUjian/index.vue'),
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
                 {
                     path: '/jadwal-seleksi-tes',
                     name: 'jadwal-seleksi-tes',
