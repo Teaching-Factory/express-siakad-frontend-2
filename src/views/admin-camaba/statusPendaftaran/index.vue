@@ -86,15 +86,15 @@ onBeforeMount(() => {
             <div class="col-12 text-center">
                 <h3 class="fw-bold">Selamat Datang, AIDA ANDINAR MAULIDIANA!!</h3>
                 <p>Lanjutkan proses pendaftaran dengan mengisi data diri Anda secara lengkap dan melakukan upload berkas.</p>
-                <hr>
+                <hr />
             </div>
         </div>
         <div class="row mb-4">
             <div class="col-12 d-flex justify-content-center">
-                <div class="d-flex justify-content-between w-100" style="max-width: 600px;">
+                <div class="d-flex justify-content-between w-100" style="max-width: 600px">
                     <div class="text-center">
                         <router-link to="/biodata-pendaftar" class="d-block">
-                            <i class="pi pi-user" style="font-size: 24px;"></i>
+                            <i class="pi pi-user" style="font-size: 24px"></i>
                             <p>BIODATA PENDAFTAR</p>
                             <i class="pi pi-check-circle text-success"></i>
                         </router-link>
@@ -102,7 +102,7 @@ onBeforeMount(() => {
 
                     <div class="text-center">
                         <router-link to="/upload-foto" class="d-block">
-                            <i class="pi pi-image" style="font-size: 24px;"></i>
+                            <i class="pi pi-image" style="font-size: 24px"></i>
                             <p>UPLOAD FOTO</p>
                             <i class="pi pi-check-circle text-success"></i>
                         </router-link>
@@ -110,15 +110,15 @@ onBeforeMount(() => {
 
                     <div class="text-center">
                         <router-link to="/pilihan-prodi" class="d-block">
-                            <i class="pi pi-book" style="font-size: 24px;"></i>
+                            <i class="pi pi-book" style="font-size: 24px"></i>
                             <p>PROGRAM STUDI</p>
                             <i class="pi pi-check-circle text-success"></i>
                         </router-link>
                     </div>
 
-                    <div class="text-center"~>
+                    <div class="text-center">
                         <router-link to="/upload-berkas" class="d-block">
-                            <i class="pi pi-upload" style="font-size: 24px;"></i>
+                            <i class="pi pi-upload" style="font-size: 24px"></i>
                             <p>UPLOAD BERKAS</p>
                             <i class="pi pi-check-circle text-success"></i>
                         </router-link>
@@ -126,12 +126,11 @@ onBeforeMount(() => {
 
                     <div class="text-center">
                         <router-link to="/finalisasi-data" class="d-block">
-                            <i class="pi pi-file" style="font-size: 24px;"></i>
+                            <i class="pi pi-file" style="font-size: 24px"></i>
                             <p>FINALISASI</p>
                             <i class="pi pi-check-circle text-success"></i>
                         </router-link>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -142,7 +141,6 @@ onBeforeMount(() => {
                     <ol class="lh-2 text-small">
                         <li>Tipe File yang dibolehkan PDF, JPG, PNG, GIF</li>
                         <li>Maksimal ukuran setiap file adalah 5 MB</li>
-                        
                     </ol>
                 </div>
             </div>
@@ -209,7 +207,7 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                
+
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
@@ -301,7 +299,7 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                
+
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
@@ -316,7 +314,6 @@ onBeforeMount(() => {
                     </template>
                 </Column>
             </DataTable>
-        
         </div>
     </div>
 </template>

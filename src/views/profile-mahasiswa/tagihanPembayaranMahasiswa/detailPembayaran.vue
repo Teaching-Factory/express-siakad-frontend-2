@@ -12,7 +12,23 @@ export default {
     },
     methods: {
         handleFileUpload(event) {
-            this.upload_bukti_tf = event.target.files[0];
+            const file = event.target.files[0];
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            const maxSize = 1 * 1024 * 1024; // 1MB in bytes
+
+            if (!validTypes.includes(file.type)) {
+                Swal.fire('GAGAL', 'File harus berjenis jpg, jpeg, atau png.', 'error');
+                this.upload_bukti_tf = null;
+                return;
+            }
+
+            if (file.size > maxSize) {
+                Swal.fire('GAGAL', 'Ukuran file tidak boleh lebih dari 1MB.', 'error');
+                this.upload_bukti_tf = null;
+                return;
+            }
+
+            this.upload_bukti_tf = file;
         },
         async create() {
             if (!this.upload_bukti_tf) {
@@ -48,12 +64,10 @@ export default {
 };
 </script>
 
-
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DETAIL PEMBAYARAN</h5>
         <div class="card">
-            
             <form @submit.prevent="create">
                 <div class="row">
                     <div class="col-3 col-md-6 col-lg-6">
@@ -73,14 +87,13 @@ export default {
                     </div>
                     <div class="col-6 col-md-6 col-lg-6">
                         <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile02" @change="handleFileUpload"  />
+                            <input type="file" class="form-control" id="inputGroupFile02" @change="handleFileUpload" />
                         </div>
                     </div>
                     <div class="col-3 col-md-6 col-lg-12">
                         <button type="submit" class="btn btn-primary">Upload</button>
                     </div>
                 </div>
-                
             </form>
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
@@ -92,7 +105,6 @@ export default {
                             <li>Tekan upload untuk memastikan bukti pembayaran Anda sudah berhasil di unggah</li>
                             <li>Bukti pembayaran akan divalidasi oleh admin</li>
                             <li>Status pembayaran akan berubah apabila bukti pembayaran di terima</li>
-                            
                         </ol>
                     </p>
                 </div>
