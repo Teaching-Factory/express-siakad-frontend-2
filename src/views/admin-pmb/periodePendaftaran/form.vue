@@ -86,17 +86,17 @@ export default {
     }
 };
 
-// Fungsi untuk mengubah status input biaya pendaftaran
-document.getElementById("berbayarCheckbox").addEventListener("change", function() {
-        var biayaInput = document.getElementById("biayaPendaftaran");
-        // Mengubah status input berdasarkan status checkbox
-        if (this.checked) {
-            biayaInput.removeAttribute("disabled");
-        } else {
-            biayaInput.setAttribute("disabled", "disabled");
-            biayaInput.value = ''; // Mengosongkan input ketika tidak dicentang
-        }
-    });
+// // Fungsi untuk mengubah status input biaya pendaftaran
+// document.getElementById("berbayarCheckbox").addEventListener("change", function() {
+//         var biayaInput = document.getElementById("biayaPendaftaran");
+//         // Mengubah status input berdasarkan status checkbox
+//         if (this.checked) {
+//             biayaInput.removeAttribute("disabled");
+//         } else {
+//             biayaInput.setAttribute("disabled", "disabled");
+//             biayaInput.value = ''; // Mengosongkan input ketika tidak dicentang
+//         }
+//     });
 </script>
 
 <template>

@@ -205,12 +205,13 @@ import { ref } from 'vue';
                                         <thead class="table-dark">
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Jenis Tagihan</th>
-                                                <th>Periode Tagihan</th>
-                                                <th>Jumlah Tagihan</th>
-                                                <th>Tanggal Akhir Tagihan</th>
+                                                <th>Jenis</th>
+                                                <th>Periode</th>
+                                                <th>Jumlah</th>
+                                                <th>Tanggal Akhir</th>
                                                 <th>Tanggal Lunas</th>
-                                                <th>Status Tagihan</th>
+                                                <th>Status</th>
+                                                <th>Bukti Pembayaran</th>
                                                 <th>Aksi</th>
                                                 
                                             </tr>
@@ -225,6 +226,18 @@ import { ref } from 'vue';
                                                 <td>-</td>         
                                                 <td>-</td>         
                                                 <td>-</td>         
+                                                <td>
+                                                    <label class="btn btn-outline-warning me-2">
+                                                        <i class="pi pi-upload"></i>
+                                                        <input type="file" class="form-control d-none" id="profileImage" @change="previewImage" accept=".png,.jpg,.jpeg">
+                                                    </label>
+                                                    <button class="btn btn-outline-primary me-2">
+                                                        <i class="pi pi-check"></i>
+                                                    </button>
+                                                    <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
+                                                        <i class="pi pi-trash"></i>
+                                                    </button>
+                                                </td>         
                                             </tr>
                                         </tbody>
                                     </table>

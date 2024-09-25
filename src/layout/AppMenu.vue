@@ -63,7 +63,7 @@ const model = ref([
         },
         { 
             label: 'Cetak Form Pendaftaran', 
-            to: '/status-pendaftaran', 
+            to: '/cetak-form-pendaftaran', 
             // visible: computed(() => permissions.includes('import-mahasiswa'))
         }
     ],

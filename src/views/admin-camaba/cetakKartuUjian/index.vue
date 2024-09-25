@@ -77,26 +77,32 @@ export default {
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
             </div>
             <button @click="handlePrint" class="btn-print">Cetak</button>
-            <h5 class="text-center mb-3"><b>KARTU UJIAN</b></h5>
+            <h5 class="text-center mb-5"><b>KARTU UJIAN CALON MAHASISWA BARU</b></h5>
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <td width="65%" style="padding: 10px">
-                            <div class="row d-flex">
-                                <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Nomor Pendaftaran</label>
+                        <td style="width: 60%;">
+                            <div style="display: flex; align-items: flex-start;">
+                                <div style="margin-left: 15px;width: 130px;">
+                                    Nomor Pendaftaran
                                 </div>
-                                <div class="col-lg-8">
-                                    <label class="form-label">: 4353776787664</label>
-                                </div>          
+                                <div style="margin-right: 6px;">
+                                    :
+                                </div>
+                                <div style="margin-right: 10px;">
+                                    987654356789876543
+                                </div>
                             </div>
-                            <div class="row d-flex">
-                                <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Nama </label>
+                            <div style="display: flex; align-items: flex-start;">
+                                <div style="margin-left: 15px;width: 130px;">
+                                    Nama 
                                 </div>
-                                <div class="col-lg-8">
-                                    <label class="form-label">: Aida Andinar Maulidiana</label>
-                                </div>          
+                                <div style="margin-right: 6px;">
+                                    :
+                                </div>
+                                <div style="margin-right: 10px;">
+                                    Aida Andinar Maulidiana
+                                </div>
                             </div>
                         </td>
                         <td>
@@ -112,47 +118,53 @@ export default {
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding: 10px">
-                            <div class="row d-flex">
-                                <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Alamat</label>
+                        <td style="width: 60%;">
+                            <div style="display: flex; align-items: flex-start;">
+                                <div style="margin-left: 15px;width: 130px;">
+                                    Alamat
                                 </div>
-                                <div class="col-lg-8">
-                                    <p>: Banjar Dinas Sumberklampok 01 / 00 Banjar Dinas Sumberklampok Kec. Gerokgak - Kab. Buleleng - Prov. Bali - SUMBERKLAMPOK</p>
+                                <div style="margin-right: 6px;">
+                                    :
+                                </div>
+                                <div style="margin-right: 10px;">
+                                    Kebaman - Srono
                                 </div>
                             </div>
-                            <div class="row d-flex">
-                                <div class="col-lg-4">
-                                    <label for="exampleFormControlInput1" class="form-label">Nomor Telepon</label>
+                            <div style="display: flex; align-items: flex-start;">
+                                <div style="margin-left: 15px;width: 130px;">
+                                    Nomor Telephon
                                 </div>
-                                <div class="col-lg-8">
-                                    <label class="form-label">: 0863436564367</label>
-                                </div>          
+                                <div style="margin-right: 6px;">
+                                    :
+                                </div>
+                                <div style="margin-right: 10px;">
+                                    087544534376566
+                                </div>
                             </div>
                         </td>
-                        <td style="padding: 10px">
+                        <td>
                             <div class="row d-flex">
-                                <div class="col-lg-12">
-                                    <div>
+                                <div>
                                     <p><b>Lokasi Ujian:</b></p>
                                     <p>Universitas Bakti Indonesia</p>
-                                </div>  
-                                </div>
-                                       
+                                </div>         
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" style="padding: 10px">
-                            <div class="row d-flex">
-                                <div class="col-lg-4">
-                                    <div class="heading-section" style="width: 100%;">
-                                        <img src="../../../assets/images/ttd.png" alt="" style="width: 100%;">
+                            <div class="row d-flex align-items-center">
+                                <!-- Bagian untuk Gambar -->
+                                <div class="col-lg-4 col-md-6 col-4 text-center">
+                                    <div class="heading-section" style="width: 100%; display: flex; justify-content: center;">
+                                        <img src="../../../assets/images/ttd.png" alt="Tanda Tangan" class="img-fluid" style="max-width: 100px; height: auto;">
                                     </div>
                                 </div>
-                                <div class="col-lg-8 text-center">
-                                    <table class="table">
-                                        <thead class="table-dark">
+
+                                <!-- Bagian untuk Tabel -->
+                                <div class="col-lg-8 col-md-6 col-8 text-center">
+                                    <table class="table table-bordered">
+                                        <thead>
                                             <tr>
                                                 <th>Tahapan Tes</th>
                                                 <th>Jenis Tes</th>
@@ -163,17 +175,17 @@ export default {
                                             <tr>
                                                 <td>1</td>
                                                 <td>Tes TPA</td>
-                                                <td>27 Juni 2022 - 27 Juni 2022</td>      
+                                                <td>27 Juni 2022 - 27 Juni 2022</td>
                                             </tr>
                                             <tr>
                                                 <td>2</td>
                                                 <td>Tes Buta Warna</td>
-                                                <td>27 Juni 2022 - 27 Juni 2022</td>      
+                                                <td>27 Juni 2022 - 27 Juni 2022</td>
                                             </tr>
                                             <tr>
                                                 <td>3</td>
-                                                <td>Tes Buta Kesehatan</td>
-                                                <td>27 Juni 2022 - 27 Juni 2022</td>      
+                                                <td>Tes Kesehatan</td>
+                                                <td>27 Juni 2022 - 27 Juni 2022</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -181,6 +193,7 @@ export default {
                             </div>
                         </td>
                     </tr>
+
                     <tr>
                         <td colspan="2" style="padding: 10px">
                             <div class="row d-flex">
