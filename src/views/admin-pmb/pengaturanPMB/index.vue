@@ -13,20 +13,25 @@ import { ref } from 'vue';
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="data-user" data-bs-toggle="tab"
-                                data-bs-target="#home" type="button" role="tab" aria-controls="home"
+                                data-bs-target="#laporanpmb" type="button" role="tab" aria-controls="home"
                                 aria-selected="true">Laporan PMB</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="data-wali" data-bs-toggle="tab"
-                                data-bs-target="#profile" type="button" role="tab" aria-controls="profile"
+                                data-bs-target="#contactperson" type="button" role="tab" aria-controls="profile"
                                 aria-selected="false">Contact Person</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="data-wali" data-bs-toggle="tab"
+                                data-bs-target="#pembayaranpmb" type="button" role="tab" aria-controls="profile"
+                                aria-selected="false">Pembayaran PMB</button>
                         </li>
                         
                     </ul>
 
 
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel"
+                        <div class="tab-pane fade show active" id="laporanpmb" role="tabpanel"
                             aria-labelledby="data-user">
 
                             <!-- laporan PMB -->
@@ -97,7 +102,7 @@ import { ref } from 'vue';
                         
 
                         <!-- contact person-->
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="data-wali">
+                        <div class="tab-pane fade" id="contactperson" role="tabpanel" aria-labelledby="data-wali">
                             <div class="mb-3 mt-4 row">
                                 <div class="col-lg-12 d-flex justify-content-end">
                                     <div   div class="flex justify-content-end gap-2">
@@ -115,6 +120,42 @@ import { ref } from 'vue';
                                 <label for="inputPassword" class="col-sm-4 col-form-label">Whatsapp Contact Person PMB</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="nama_ayah" id="inputPassword" placeholder="contoh : 628123456789">
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <!-- pembayaran PMB-->
+                        <div class="tab-pane fade" id="pembayaranpmb" role="tabpanel" aria-labelledby="data-wali">
+                            <div class="mb-3 mt-4 row">
+                                <div class="col-lg-12 d-flex justify-content-end">
+                                    <div   div class="flex justify-content-end gap-2">
+                                        <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Simpan</button>
+                                        <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Reset</button>
+                                    </div>
+                                </div>
+                                <p><b>Pembayaran PMB</b></p>
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Aktifkan Upload Bukti Transfer PMB</label>
+                                <div class="col-sm-8">
+                                    <input type="checkbox">
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-2 row">
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Nama BANK</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" v-model="nama_ayah" id="inputPassword" placeholder="masukkan nama bank">
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-2 row">
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Nomor Rekening</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" v-model="nama_ayah" id="inputPassword" placeholder="contoh : 123456789">
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-2 row">
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Nama Pemilik Rekening</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" v-model="nama_ayah" id="inputPassword" placeholder="contoh : Andi">
                                 </div>
                             </div>
                             

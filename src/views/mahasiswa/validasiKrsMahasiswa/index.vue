@@ -27,7 +27,7 @@ const message = ref('');
 const semesterAktif = ref([]);
 
 const fetchSemesterAktif = async () => {
-    const response = await get('semester-aktif/get-semester-aktif-now');
+    const response = await get('setting-global-semester');
     semesterAktif.value = response.data.data;
 };
 
@@ -186,7 +186,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>VALIDASI KRS MAHASISWA - {{semesterAktif[0]?.Semester?.nama_semester}}</h5>
+        <h5><i class="pi pi-user me-2"></i>VALIDASI KRS MAHASISWA - Periode {{semesterAktif[0]?.SemesterAktif?.nama_semester}}</h5>
             <div class="card" style="padding: 0rem 1rem 0rem 1rem">
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-12">

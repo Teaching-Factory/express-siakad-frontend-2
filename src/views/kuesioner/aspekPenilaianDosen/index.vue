@@ -7,13 +7,14 @@ import Swal from 'sweetalert2';
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     id_ruang: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    lokasi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const jenis_berkas = ref([]);
+const ruangPerkuliahans = ref([]);
 const message = ref('');
 
-const jenisBerkas = async () => {
+const ruangPerkuliahan = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -23,9 +24,9 @@ const jenisBerkas = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('jenis-berkas/'); // Memanggil fungsi get dengan endpoint 'jenisBerkas'
+        const response = await get('ruang-perkuliahan'); // Memanggil fungsi get dengan endpoint 'ruangPerkuliahan'
         console.log(response.data.data);
-        jenis_berkas.value = response.data.data;
+        ruangPerkuliahans.value = response.data.data;
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data ruang Perkuliahan:', error);
@@ -34,7 +35,7 @@ const jenisBerkas = async () => {
 
 const deleteItem = async (id) => {
     try {
-        const response = await del(`jenis-berkas/${id}/delete`);
+        const response = await del(`ruang-perkuliahan/${id}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
         } else {
@@ -58,7 +59,7 @@ const confirmDelete = (id) => {
         if (result.isConfirmed) {
             deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
-            jenis_berkas.value = jenis_berkas.value.filter((data) => data.id !== id);
+            ruangPerkuliahans.value = ruangPerkuliahans.value.filter((data) => data.id !== id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
@@ -66,15 +67,15 @@ const confirmDelete = (id) => {
 };
 
 onBeforeMount(() => {
-    jenisBerkas();
+    ruangPerkuliahan();
 });
 </script>
 
     <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>JENIS BERKAS</h5>
+        <h5><i class="pi pi-user me-2"></i>DAFTAR ASPEK PENILAIAN</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan']" :value="jenis_berkas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan', 'lokasi']" :value="ruangPerkuliahans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -85,7 +86,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="/jenis-berkas/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
+                                <router-link to="/aspek-penilaian-dosen/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                             </div>
                         </div>
                     </div>
@@ -95,50 +96,53 @@ onBeforeMount(() => {
                     <div class="text-center">Tidak ada data.</div>
                 </template>
                 <!-- <template #loading> Loading customers data. Please wait. </template> -->
-                <Column header="No" headerStyle="width:3rem">
-                    <template #body="slotProps">
-                        {{ slotProps.index + 1 }}
-                    </template>
-                </Column>
-                <Column filterField="nama_berkas" header="Nama Syarat" style="min-width: 10rem">
+                
+                <Column filterField="id_ruang" header="Nomor" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_berkas }}</span>
+                            <span>{{ data.id_ruang }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="keterangan_singkat" header="Keterangan Singkat" style="min-width: 20`rem">
+                <Column filterField="id_ruang" header="Aspek Penilaian" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.keterangan_singkat }}</span>
+                            <span>{{ data.id_ruang }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="jumlah" header="Jumlah" style="min-width: 5rem">
+                <Column filterField="nama_ruang_perkuliahan" header="Deskripsi Pendek" style="min-width: 25rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.jumlah }}</span>
+                            <span>{{ data.nama_ruang_perkuliahan }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="wajib" header="Wajib" style="min-width: 5rem">
+                <Column filterField="nama_ruang_perkuliahan" header="Tipe Aspek" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.wajib ? 'Wajib' : 'Tidak Wajib' }}</span>
+                            <span>{{ data.nama_ruang_perkuliahan }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="upload" header="Upload" style="min-width: 5rem">
+                <Column filterField="nama_ruang_perkuliahan" header="Periode" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.upload ? 'Wajib' : 'Tidak Wajib' }}</span>
+                            <span>{{ data.nama_ruang_perkuliahan }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nama_ruang_perkuliahan" header="Tanggal Pembuatan" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.nama_ruang_perkuliahan }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/jenis-berkas/${data.id}/edit`" class="btn btn-outline-primary">
+                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">

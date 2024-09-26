@@ -35,7 +35,7 @@ const semesterAktif = ref([]);
 const hasPresensi = ref(false);
 
 const fetchSemesterAktif = async () => {
-    const response = await get('semester-aktif/get-semester-aktif-now');
+    const response = await get('setting-global-semester');
     semesterAktif.value = response.data.data;
     console.log('res', response.data.data);
 };
@@ -421,7 +421,7 @@ export default {
                     <h5>Hi,{{ user ? user : 'Guest' }}</h5>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <span>Semester {{ semesterAktif?.Semester?.nama_semester }}</span>
+                    <span>Semester {{ semesterAktif?.SemesterAktif?.nama_semester }}</span>
                 </div>
             </div>
             <div class="card bg-theme">

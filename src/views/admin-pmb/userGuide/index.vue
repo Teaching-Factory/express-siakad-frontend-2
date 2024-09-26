@@ -21,8 +21,10 @@ import { ref } from 'vue';
             </div>
             <hr>
             <div class="row mb-3">
-                <div class="col-12">
+                <div class="col-2">
                     <label for="profileImage" class="form-label">File</label>
+                </div>
+                <div class="col-10">
                     <input type="file" class="form-control" id="profileImage" @change="previewImage" accept=".png,.jpg,.jpeg">
                     <small class="text-danger d-block mt-1">
                         * File yang dapat diupload adalah pdf; dengan ukuran maksimal file sebesar 20MB.

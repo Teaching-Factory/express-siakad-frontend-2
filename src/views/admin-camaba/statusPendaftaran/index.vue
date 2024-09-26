@@ -80,6 +80,7 @@ onBeforeMount(() => {
     sistemKuliah();
 });
 </script>
+
 <template>
     <div class="card">
         <div class="row mb-4">
@@ -134,6 +135,7 @@ onBeforeMount(() => {
                 </div>
             </div>
         </div>
+
         <div class="card">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
@@ -223,12 +225,93 @@ onBeforeMount(() => {
                 </Column>
             </DataTable>
         </div>
-
         <div class="card">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
-                    <h6><b>DOKUMEN TAMBAHAN</b></h6>
-                    <p class="text-dark">Upload disini untuk melampirkan data sertifikasi, prestasi, atau dokumen penting lainnya.</p>
+                    <h6><b>TAGIHAN DAN PEMBAYARAN</b></h6>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-lg-12 d-flex justify-content-end">
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Jenis Tagihan</th>
+                                    <th>Periode Tagihan</th>
+                                    <th>Jumlah Tagihan</th>
+                                    <th>Tanggal Akhir Tagihan</th>
+                                    <th>Tanggal Lunas</th>
+                                    <th>Status Tagihan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr />
+                <table>
+                    <tbody>
+                        <tr>
+                            <td width="30%">Info Tagihan Lunas</td>
+                            <td width="10%">:</td>
+                            <td width="50%">Rp. 0</td>
+                        </tr>
+                        <tr>
+                            <td>Info Tagihan Belum Bayar</td>
+                            <td>:</td>
+                            <td>Rp. 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-12">
+                    <h6><b>JADWAL DAN HASIL TES</b></h6>
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-lg-12 d-flex justify-content-end">
+                        <table class="table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Tahapan Tes</th>
+                                    <th>Jenis Tes</th>
+                                    <th>Tanggal Tes</th>
+                                    <th>Keterangan Tes</th>
+                                    <th>Status Kelulusan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Tes TPA</td>
+                                    <td>27 Juni 2022 - 27 Juni 2022</td>
+                                    <td>-</td>
+                                    <td>Belum dilakukan penilaian</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Tes Buta Warna</td>
+                                    <td>27 Juni 2022 - 27 Juni 2022</td>
+                                    <td>-</td>
+                                    <td>Belum dilakukan penilaian</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <DataTable v-model:filters="filters" :globalFilterFields="['kode_sk', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>

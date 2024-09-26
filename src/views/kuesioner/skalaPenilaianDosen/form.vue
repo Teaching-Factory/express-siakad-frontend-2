@@ -8,11 +8,10 @@ import { API_URL } from '../../../config/config';
 export default {
     data() {
         return {
-            nama_tes: '',
-            keterangan_singkat: '',
-            message: '',
-            isEdit: false,
-            id: null
+            id_ruang: '',
+            nama_ruang_perkuliahan: '',
+            lokasi: '',
+            message: ''
         };
     },
     async created() {
@@ -32,22 +31,25 @@ export default {
         },
         async fetchData(id) {
             try {
-                const response = await get(`jenis-tes/${id}/get`);
+                const response = await get(`ruang-perkuliahan/${id}/get`);
                 const data = response.data.data;
-                this.nama_tes = data.nama_tes;
-                this.keterangan_singkat = data.keterangan_singkat;
+                this.id_ruang = data.id_ruang;
+                this.nama_ruang_perkuliahan = data.nama_ruang_perkuliahan;
+                this.lokasi = data.lokasi;
             } catch (error) {
                 Swal.fire('GAGAL', 'Gagal memuat data. Silakan coba lagi.', 'error');
             }
         },
         async create() {
             try {
-                const response = await postData('jenis-tes/create', {
-                    nama_tes: this.nama_tes,
-                    keterangan_singkat: this.keterangan_singkat
+                const response = await postData('ruang-perkuliahan/create', {
+                    id_ruang: this.id_ruang,
+                    nama_ruang_perkuliahan: this.nama_ruang_perkuliahan,
+                    lokasi: this.lokasi
                 });
+                const data = response.data;
                 Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-                    this.$router.push('/jenis-tes').catch((err) => {
+                    this.$router.push('/ruang-perkuliahan').catch((err) => {
                         console.error('Redirect error:', err);
                     });
                 });
@@ -58,11 +60,12 @@ export default {
         async update() {
             try {
                 const token = getToken();
-                await axios.put(
-                    `${API_URL}/jenis-tes/${this.id}/update`,
+                const response = await axios.put(
+                    `${API_URL}/ruang-perkuliahan/${this.id}/update`,
                     {
-                        nama_tes: this.nama_tes,
-                        keterangan_singkat: this.keterangan_singkat
+                        id_ruang: this.id_ruang,
+                        nama_ruang_perkuliahan: this.nama_ruang_perkuliahan,
+                        lokasi: this.lokasi
                     },
                     {
                         headers: {
@@ -70,8 +73,9 @@ export default {
                         }
                     }
                 );
+                const data = response.data;
                 Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
-                    this.$router.push('/jenis-tes').catch((err) => {
+                    this.$router.push('/ruang-perkuliahan').catch((err) => {
                         console.error('Redirect error:', err);
                     });
                 });
@@ -85,29 +89,28 @@ export default {
 
 <template>
     <div class="card">
-        <form @submit.prevent="submit">
-            <!-- Panggil submit method di sini -->
+        <form @submit.prevent="create">
             <div class="row">
                 <div class="col-lg-4">
-                    <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} JENIS TES</h5>
+                    <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} DAFTAR SKALA PENILAIAN</h5>
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
-                    <router-link to="/jenis-tes" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
+                    <router-link to="/skala-penilaian-dosen" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
                     <button type="submit" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Simpan</button>
-                    <router-link to="/jenis-tes" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</router-link>
+                    <router-link to="/skala-penilaian-dosen" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</router-link>
                 </div>
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaTes" class="col-sm-3 col-form-label">Nama Tes</label>
+                <label for="namaRuangPerkuliahan" class="col-sm-3 col-form-label">Poin Skala Penilaian (Angka)</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" placeholder="Nama Jenis Tes" id="nama_tes" v-model="nama_tes" />
+                    <input type="text" class="form-control" placeholder="Masukkan poin skala penilaian dosen" id="namaRuangPerkuliahan" v-model="nama_ruang_perkuliahan" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="keteranganSingkat" class="col-sm-3 col-form-label">Keterangan Singkat</label>
+                <label for="namaRuangPerkuliahan" class="col-sm-3 col-form-label">Keterangan Skala Penilaian</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" placeholder="Keterangan Singkat Jenis Tes" id="keterangan_singkat" v-model="keterangan_singkat" />
+                    <input type="text" class="form-control" placeholder="keterangan skala penilaian dosen" id="namaRuangPerkuliahan" v-model="nama_ruang_perkuliahan" />
                 </div>
             </div>
         </form>

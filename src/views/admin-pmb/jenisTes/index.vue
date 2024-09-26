@@ -6,15 +6,15 @@ import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id_ruang: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jenis_tes: { value: null, matchMode: FilterMatchMode.EQUALS },
+    keterangan_singkat: { value: null, matchMode: FilterMatchMode.EQUALS },
     lokasi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const ruangPerkuliahans = ref([]);
+const jenisTests = ref([]);
 const message = ref('');
 
-const ruangPerkuliahan = async () => {
+const JenisTes = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -24,18 +24,18 @@ const ruangPerkuliahan = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('ruang-perkuliahan'); // Memanggil fungsi get dengan endpoint 'ruangPerkuliahan'
+        const response = await get('jenis-tes/'); // Memanggil fungsi get dengan endpoint 'JenisTes'
         console.log(response.data.data);
-        ruangPerkuliahans.value = response.data.data;
+        jenisTests.value = response.data.data;
         Swal.close();
     } catch (error) {
-        console.error('Gagal mengambil data ruang Perkuliahan:', error);
+        console.error('Gagal mengambil data :', error);
     }
 };
 
 const deleteItem = async (id) => {
     try {
-        const response = await del(`ruang-perkuliahan/${id}/delete`);
+        const response = await del(`jenis-tes/${id}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
         } else {
@@ -59,7 +59,7 @@ const confirmDelete = (id) => {
         if (result.isConfirmed) {
             deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
-            ruangPerkuliahans.value = ruangPerkuliahans.value.filter((data) => data.id !== id);
+            jenisTests.value = jenisTests.value.filter((data) => data.id !== id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
@@ -67,7 +67,7 @@ const confirmDelete = (id) => {
 };
 
 onBeforeMount(() => {
-    ruangPerkuliahan();
+    JenisTes();
 });
 </script>
 
@@ -75,7 +75,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>JENIS TES</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan', 'lokasi']" :value="ruangPerkuliahans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['jenis_tes', 'keterangan_singkat', 'lokasi']" :value="jenisTests" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -101,24 +101,24 @@ onBeforeMount(() => {
                         {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Nama Tes" style="min-width: 10rem">
+                <Column filterField="nama_tes" header="Nama Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.nama_tes }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Keterangan Singkat" style="min-width: 25rem">
+                <Column filterField="keterangan_singkat" header="Keterangan Singkat" style="min-width: 25rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
+                            <span>{{ data.keterangan_singkat }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-primary">
+                            <router-link :to="`/jenis-tes/${data.id}/edit`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
