@@ -224,22 +224,22 @@ export default {
             </div>
             
             <div class="col-lg-12 d-flex justify-content-end">
-                    <div class="flex justify-content-end gap-2">
-                        <table class="table table-borderless" style="width: 100%;">
-                            <tbody class="" style="display: block; text-align: left;">
-                                <tr>
-                                    <td colspan="2">
-                                        <p class="m-0">Banyuwangi, {{ formatDate(data?.tanggalPenandatanganan) }}</p>
-                                        <p class="m-0">Dosen Pengajar</p>
-                                        <p style="height: 70px;"></p>
-                                        <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ dataNilai?.Dosen?.nama_dosen ?? '-' }}</p>
-                                        <p class="m-0">nidn.{{ dataNilai?.Dosen?.nidn ?? '-' }}</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="flex justify-content-end gap-2">
+                    <table class="table table-borderless" style="width: 100%;">
+                        <tbody class="" style="display: block; text-align: left;">
+                            <tr>
+                                <td colspan="2">
+                                    <p class="m-0">Banyuwangi, {{ formatDate(data?.tanggalPenandatanganan) }}</p>
+                                    <p class="m-0">Dosen Pengajar</p>
+                                    <p style="height: 70px;"></p>
+                                    <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ dataNilai?.Dosen?.nama_dosen ?? '-' }}</p>
+                                    <p class="m-0">nidn.{{ dataNilai?.Dosen?.nidn ?? '-' }}</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
         </div>
     </div>
 </template>

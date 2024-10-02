@@ -293,7 +293,7 @@ import { useToast } from 'primevue/usetoast';
                                             <h5>Identitas Diri</h5>
                                         </div>
                                         <div class=" col-lg-4 d-flex justify-content-end">
-                                            <button class="btn btn-primary me-2"> <i class="pi pi-print mr-2"></i> Cetak Formulir</button>
+                                            <router-link to="/pendaftaran-pmb/cetak-formulir" class="btn btn-primary me-2"> <i class="pi pi-print mr-2"></i> Cetak Formulir</router-link>
                                         </div>
                                     </div>
                                     <div class="row d-flex mb-3">

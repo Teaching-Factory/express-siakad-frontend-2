@@ -15,6 +15,11 @@ const router = createRouter({
             component: () => import('../views/guest-camaba/index.vue')
         },
         {
+            path: '/pendaftaran-pmb/cetak-formulir',
+            name: 'pendaftaran-pmb-cetak-formulir',
+            component: () => import('../views/guest-camaba/cetakFormulir.vue')
+        },
+        {
             path: '/',
             component: AppLayout,
             meta: { requiresAuth: true },
@@ -596,9 +601,21 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
                 },
                 {
+                    path: '/cetak-rekap-pendaftar-pmb',
+                    name: 'cetak-rekap-pendaftar-pmb',
+                    component: () => import('../views/laporan/rekapPendaftarPMB/cetakRekapPendaftar.vue'),
+                    // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
+                },
+                {
                     path: '/rekap-pembayaran-pmb',
                     name: 'rekap-pembayaran-pmb',
                     component: () => import('../views/laporan/rekapPembayaranPMB/index.vue'),
+                    // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
+                },
+                {
+                    path: '/cetak-rekap-pembayaran-pmb',
+                    name: 'cetak-rekap-pembayaran-pmb',
+                    component: () => import('../views/laporan/rekapPembayaranPMB/cetakRekapPembayaran.vue'),
                     // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
                 },
                 

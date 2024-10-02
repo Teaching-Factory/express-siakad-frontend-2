@@ -10,10 +10,10 @@ const filters = ref({
     nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 
-const ruangPerkuliahans = ref([]);
+const periodePendaftarans = ref([]);
 const message = ref('');
 
-const ruangPerkuliahan = async () => {
+const periodePendaftaran = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -23,9 +23,9 @@ const ruangPerkuliahan = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('ruang-perkuliahan'); // Memanggil fungsi get dengan endpoint 'ruangPerkuliahan'
+        const response = await get('periode-pendaftaran/'); // Memanggil fungsi get dengan endpoint 'periodePendaftarans'
         console.log(response.data.data);
-        ruangPerkuliahans.value = response.data.data;
+        periodePendaftarans.value = response.data.data;
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data ruang Perkuliahan:', error);
@@ -34,7 +34,7 @@ const ruangPerkuliahan = async () => {
 
 const deleteItem = async (id) => {
     try {
-        const response = await del(`ruang-perkuliahan/${id}/delete`);
+        const response = await del(`periode-pendaftaran/${id}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
         } else {
@@ -58,7 +58,7 @@ const confirmDelete = (id) => {
         if (result.isConfirmed) {
             deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
-            ruangPerkuliahans.value = ruangPerkuliahans.value.filter((data) => data.id !== id);
+            periodePendaftarans.value = periodePendaftarans.value.filter((data) => data.id !== id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
@@ -66,7 +66,7 @@ const confirmDelete = (id) => {
 };
 
 onBeforeMount(() => {
-    ruangPerkuliahan();
+    periodePendaftaran();
 });
 </script>
 
@@ -74,7 +74,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>PERIODE PENDAFTARAN</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan']" :value="ruangPerkuliahans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan']" :value="periodePendaftarans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -99,65 +99,65 @@ onBeforeMount(() => {
                         {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Nama Periode Pendaftaran" style="min-width: 20rem">
+                <Column filterField="nama_periode_pendaftaran" header="Nama Periode Pendaftaran" style="min-width: 20rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.nama_periode_pendaftaran }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Periode Dibuka" style="min-width: 10rem">
+                <Column filterField="tanggal_awal_pendaftaran" header="Periode Dibuka" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
+                            <span>{{ data.tanggal_awal_pendaftaran }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Jalur Pendaftaran" style="min-width: 15rem">
+                <Column filterField="JalurMasuk.nama_jalur_masuk" header="Jalur Pendaftaran" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.JalurMasuk.nama_jalur_masuk }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Sistem Kuliah" style="min-width: 10rem">
+                <Column filterField="SistemKuliah.nama_sk" header="Sistem Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.SistemKuliah.nama_sk }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Tanggal Pendaftaran" style="min-width: 15rem">
+                <Column filterField="tanggal_awal_pendaftaran" header="Tanggal Pendaftaran" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.tanggal_awal_pendaftaran }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Berbayar" style="min-width: 8rem">
+                <Column filterField="berbayar" header="Berbayar" style="min-width: 8rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.berbayar ? 'Wajib' : 'Tidak Wajib' }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Dibuka" style="min-width: 8rem">
+                <Column filterField="dibuka" header="Dibuka" style="min-width: 8rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.dibuka ? 'Wajib' : 'Tidak Wajib' }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-secondary">
+                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-secondary">
                                 <i class="pi pi-list"></i>
                             </router-link>
-                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-warning">
+                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-warning">
                                 <i class="pi pi-eye"></i>
                             </router-link>
-                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-primary">
+                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
