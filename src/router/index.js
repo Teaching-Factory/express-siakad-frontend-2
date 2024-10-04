@@ -611,7 +611,7 @@ const router = createRouter({
                 {
                     path: '/cetak-rekap-pendaftar-pmb',
                     name: 'cetak-rekap-pendaftar-pmb',
-                    component: () => import('../views/laporan/rekapPendaftarPMB/cetakRekapPendaftar.vue'),
+                    component: () => import('../views/laporan/rekapPendaftarPMB/cetakRekapPendaftar.vue')
                     // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
                 },
                 {
@@ -904,7 +904,7 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/'];
+    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/cetak-formulir'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');
@@ -914,6 +914,11 @@ router.beforeEach((to, from, next) => {
     const hasPermission = requiredPermissions.every((permission) => userPermissions.includes(permission));
     if (requiredPermissions.length && !hasPermission) {
         next({ name: 'NotFound' });
+    }
+
+    // Jika pengguna sudah login dan mencoba mengakses halaman pendaftaran-pmb atau cetak-formulir, arahkan ke dashboard
+    if (loggedIn && userIN && (to.path === '/pendaftaran-pmb' || to.path === '/pendaftaran-pmb/cetak-formulir')) {
+        return next('/dashboard');
     }
 
     if (authRequired && !loggedIn && !userIN) {

@@ -3,7 +3,21 @@ import { onMounted } from 'vue';
 import { getData } from '../../../utiils/request';
 import { ref } from 'vue';
 
+const prodis = ref([]);
+const selectedProdi = ref('');
 
+const getProdi = async () => {
+    try {
+        const response = await getData('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data prodi:', error);
+    }
+};
+
+onMounted(() => {
+    getProdi();
+});
 </script>
 
 <template>
@@ -15,26 +29,24 @@ import { ref } from 'vue';
                 </div>
                 <div class="col-12 xl:col-6 d-flex justify-content-end">
                     <div class="flex justify-content-end gap-2">
-                        <button class="btn btn-primary me-2"> <i class="pi pi-save mr-2"></i> Simpan</button>
+                        <button class="btn btn-primary me-2"><i class="pi pi-save mr-2"></i> Simpan</button>
                     </div>
                 </div>
             </div>
-            <hr>
+            <hr />
             <div class="row">
-                <div class="col-lg-12 mb-4">
-                    <label for="inputPassword" class="col-sm-4 col-form-label">Pilihan 1</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected disabled hidden>-- Pilih Program Studi--</option>
-                        <option value="1">D4 - Teknologi Rekayasa Perangkat Lunak</option>
-                        <option value="2">D4 - Bisnis Digital</option>
+                <div class="col-lg-12 mb-2">
+                    <label for="inputProdi" class="col-sm-4 col-form-label">Pilihan 1</label>
+                    <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>Pilih Program Studi</option>
+                        <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                     </select>
                 </div>
-                <div class="col-sm-12 mt-4">
-                    <label for="inputPassword" class="col-sm-4 col-form-label">Pilihan 2</label>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected disabled hidden>-- Pilih Program Studi--</option>
-                        <option value="1">D4 - Teknologi Rekayasa Perangkat Lunak</option>
-                        <option value="2">D4 - Bisnis Digital</option>
+                <div class="col-sm-12 mt-2">
+                    <label for="inputProdi" class="col-sm-4 col-form-label">Pilihan 2</label>
+                    <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>Pilih Program Studi</option>
+                        <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                     </select>
                 </div>
             </div>
