@@ -1,6 +1,6 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue';
-import { get } from '../../../utiils/request';
+import { ref, onBeforeMount, watch } from 'vue';
+import { get, getData } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 
@@ -12,51 +12,62 @@ const filters = ref({
     nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
-
 const first = ref(0);
-const mahasiswas = ref([]);
-const angkatans = ref([]);
-const prodis = ref([]);
-const selectedProdi = ref('');
-const selectedAngkatan = ref('');
-// const loading1 = ref(true);
+const camabas = ref([]);
+const semesters = ref([]);
+const periodePendaftarans = ref([]); // Data untuk dropdown periode pendaftaran
+const selectedSemester = ref('');   // Semester yang dipilih
+const selectedPeriodePendaftaran = ref(''); // Periode pendaftaran yang dipilih
+const selectedBerkas = ref(''); // Periode pendaftaran yang dipilih
+const selectedTes = ref(''); // Periode pendaftaran yang dipilih
 
-const fetchProdi = async () => {
+// Ambil data semester
+const getSemester = async () => {
     try {
-        const response = await get('prodi');
-        prodis.value = response.data.data;
+        const response = await get('semester');
+        semesters.value = response.data.data;
     } catch (error) {
-        console.error('Gagal mengambil data prodi:', error);
-    }
-};
-const fetchAngkatan = async () => {
-    try {
-        const response = await get('angkatan');
-        angkatans.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data angkatan mahasiswa:', error);
+        console.error('Gagal mengambil data semester:', error);
     }
 };
 
+// Ambil data periode pendaftaran berdasarkan semester yang dipilih
+const fetchClasses = async () => {
+    console.log("fungsi class terpangil");
+    if (selectedSemester.value) {
+    console.log("fungsi class terpangil 2");
+
+        try {
+            const response = await get(`periode-pendaftaran/semester/${selectedSemester.value}/get`);
+            periodePendaftarans.value = response.data.data; // Isi dropdown dengan data periode
+            console.log(periodePendaftarans.value);
+    console.log("fungsi class terpangil 3");
+
+        } catch (error) {
+            console.error('Gagal mengambil data periode pendaftaran:', error);
+        }
+    }
+};
+watch(
+    selectedSemester, 
+    fetchClasses
+);
+
+// Loading data setelah memilih semester
 const selectedFilter = async () => {
-    // loading1.value = true;
-    await Promise.all([fetchProdi(), fetchAngkatan()]);
-    // loading1.value = false;
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    await Promise.all([getSemester(), fetchClasses()]);
+    Swal.close();
 };
 
 const filterData = async () => {
-    const prodiId = selectedProdi.value;
-    const angkatanId = selectedAngkatan.value;
-
-    if (!prodiId || !angkatanId) {
-        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
-        Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
-        return;
-    }
-
-    console.log('Prodi:', prodiId);
-    console.log('Angkatan:', angkatanId);
-
     try {
         Swal.fire({
             title: 'Loading...',
@@ -66,10 +77,16 @@ const filterData = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`mahasiswa/${prodiId}/${angkatanId}/get`);
-        const filterMahasiswa = response.data.data;
 
-        mahasiswas.value = filterMahasiswa;
+        const id_periode_pendaftaran = selectedPeriodePendaftaran.value;
+        const status_berkas = selectedBerkas.value;
+        const status_tes = selectedTes.value;
+
+        // Menggunakan axios untuk GET request dengan query parameters
+        const response = await getData(`camaba/get-camaba-by-filter?id_periode_pendaftaran=${id_periode_pendaftaran}&status_berkas=${status_berkas}&status_tes=${status_tes}`);
+
+        const filterCamaba = response.data.data;
+        camabas.value = filterCamaba;
 
         Swal.close();
     } catch (error) {
@@ -95,36 +112,39 @@ onBeforeMount(() => {
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="">
                         <label for="exampleFormControlInput1" class="form-label">Semester Pendaftaran</label>
-                        <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
+                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Semester</option>
-                            <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="">
-                        <label for="exampleFormControlInput1" class="form-label">Kelulusan Berkas</label>
-                        <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
-                            <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="">
                         <label for="exampleFormControlInput1" class="form-label">Periode Pendaftaran</label>
-                        <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
+                        <select v-model="selectedPeriodePendaftaran" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Periode</option>
-                            <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
+                            <option v-for="periodePendaftaran in periodePendaftarans" :key="periodePendaftaran.id" :value="periodePendaftaran.id">{{ periodePendaftaran.nama_periode_pendaftaran }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6">
+                    <div class="">
+                        <label for="exampleFormControlInput1" class="form-label">Kelulusan Berkas</label>
+                        <select v-model="selectedBerkas" class="form-select" aria-label="Default select example">
+                             <option value="" selected disabled hidden>All</option>
+                            <option value="true">Lulus</option>
+                            <option value="false">Tidak Lulus</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6">
                     <div class="">
                         <label for="exampleFormControlInput1" class="form-label">Kelulusan Tes</label>
-                        <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
+                        <select v-model="selectedTes" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>All</option>
-                            <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
+                            <option value="true" >Lulus</option>
+                            <option value="false">Tidak Lulus</option>
+                           
                         </select>
                     </div>
                 </div>
@@ -137,7 +157,7 @@ onBeforeMount(() => {
         <DataTable
             v-model:filters="filters"
             :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa', 'Prodi.nama_program_studi', 'nama_periode_masuk']"
-            :value="mahasiswas"
+            :value="camabas"
             :paginator="true"
             :rows="10"
             dataKey="id_registrasi_mahasiswa"
@@ -165,55 +185,55 @@ onBeforeMount(() => {
                     {{ first + slotProps.index + 1 }}
                 </template>
             </Column>
-            <Column filterField="nim" header="Nomor Daftar" style="min-width: 12rem">
+            <Column filterField="nomor_daftar" header="Nomor Daftar" style="min-width: 12rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.nim }}</span>
+                        <span>{{ data.nomor_daftar }}</span>
                     </div>
                 </template>
             </Column>
-            <Column filterField="nama_mahasiswa" header="Nama Pendaftar" style="min-width: 14rem">
+            <Column filterField="nama_lengkap" header="Nama Pendaftar" style="min-width: 14rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.nama_mahasiswa }}</span>
+                        <span>{{ data.nama_lengkap }}</span>
                     </div>
                 </template>
             </Column>
-            <Column filterField="nama_mahasiswa" header="Semester Pendaftaran" style="min-width: 14rem">
+            <Column filterField="nama_semester" header="Semester Pendaftaran" style="min-width: 14rem">
                 <template #body="{ data }">
                     <div class="flex align-items-center gap-2">
-                        <span>{{ data.nama_mahasiswa }}</span>
+                        <span>{{ data.PeriodePendaftaran.Semester.nama_semester }}</span>
                     </div>
                 </template>
             </Column>
             <Column filterField="nama_program_studi" header="Pilihan Prodi 1" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.Prodi?.nama_program_studi || '-' }}
+                    {{ data.ProdiCamaba?.Prodi?.nama_program_studi || '-' }}
                 </template>
             </Column>
-            <Column filterField="nama_status_mahasiswa" header="Tanggal Pendaftaran" style="min-width: 15rem">
+            <Column filterField="tanggal_pendaftaran" header="Tanggal Pendaftaran" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.nama_status_mahasiswa }}
+                    {{ data.tanggal_pendaftaran }}
                 </template>
             </Column>
-            <Column filterField="nama_periode_masuk" header="Finalisasi" style="min-width: 12rem">
+            <Column filterField="finalisasi" header="Finalisasi" style="min-width: 12rem">
                 <template #body="{ data }">
-                    {{ data.nama_periode_masuk }}
+                   {{ data.finalisasi ? 'Sudah' : 'Belum' }}
                 </template>
             </Column>
-            <Column filterField="nama_periode_masuk" header="Kelulusan Berkas" style="min-width: 12rem">
+            <Column filterField="status_berkas" header="Kelulusan Berkas" style="min-width: 12rem">
                 <template #body="{ data }">
-                    {{ data.nama_periode_masuk }}
+                   {{ data.status_berkas ? 'Lulus' : 'Tidak Lulus' }}
                 </template>
             </Column>
-            <Column filterField="nama_periode_masuk" header="Kelulusan Tes" style="min-width: 12rem">
+            <Column filterField="status_tes" header="Kelulusan Tes" style="min-width: 12rem">
                 <template #body="{ data }">
-                    {{ data.nama_periode_masuk }}
+                   {{ data.status_tes ? 'Lulus' : 'Tidak Lulus' }}
                 </template>
             </Column>
-            <Column filterField="nama_periode_masuk" header="Hints" style="min-width: 8rem">
+            <Column filterField="hints" header="Hints" style="min-width: 8rem">
                 <template #body="{ data }">
-                    {{ data.nama_periode_masuk }}
+                   {{ data.hints }}
                 </template>
             </Column>
             <Column header="Aksi" style="min-width: 10rem">

@@ -77,155 +77,146 @@ export default {
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
             </div>
             <button @click="handlePrint" class="btn-print">Cetak</button>
-            <h5 class="text-center mb-5"><b>KARTU UJIAN CALON MAHASISWA BARU</b></h5>
-            <table class="table table-bordered">
+
+            <h5 class="text-center mb-3"><b>KARTU RENCANA STUDI (KRS)</b></h5>
+            <table class="table table-borderless mt-3">
                 <tbody>
                     <tr>
-                        <td style="width: 60%;">
+                        <td style="width: 50%;">
                             <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 130px;">
-                                    Nomor Pendaftaran
+                                <div style="margin-left: 15px;width: 110px;">
+                                    Nama
                                 </div>
                                 <div style="margin-right: 6px;">
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    987654356789876543
+                                    {{ krsData?.mahasiswa.nama_mahasiswa }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 130px;">
-                                    Nama 
+                                <div style="margin-left: 15px;width: 110px;">
+                                    Program Studi
                                 </div>
                                 <div style="margin-right: 6px;">
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Aida Andinar Maulidiana
+                                    {{ krsData?.mahasiswa.Prodi.nama_program_studi }}
                                 </div>
                             </div>
-                        </td>
-                        <td>
-                            <div class="row d-flex">
-                                <div>
-                                    <p><b>Pilihan Prodi:</b></p>
-                                    <ol>
-                                        <li>S1 - Kesehatan Masyarakat</li>
-                                        <li>S1 - Ilmu Keperawatan</li>
-                                    </ol>
-                                </div>         
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 60%;">
                             <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 130px;">
-                                    Alamat
+                                <div style="margin-left: 15px;width: 110px;">
+                                    Semester
                                 </div>
                                 <div style="margin-right: 6px;">
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    Kebaman - Srono
+                                    {{ krsData?.mahasiswa.Semester.semester }}
                                 </div>
                             </div>
+                        </td>
+                        <td style="width: 50%;">
                             <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 130px;">
-                                    Nomor Telephon
+                                <div style="margin-left: 15px;width: 110px;">
+                                    NIM
                                 </div>
                                 <div style="margin-right: 6px;">
                                     :
                                 </div>
                                 <div style="margin-right: 10px;">
-                                    087544534376566
+                                    {{ krsData?.mahasiswa.nim }}
                                 </div>
                             </div>
-                        </td>
-                        <td>
-                            <div class="row d-flex">
-                                <div>
-                                    <p><b>Lokasi Ujian:</b></p>
-                                    <p>Universitas Bakti Indonesia</p>
-                                </div>         
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="padding: 10px">
-                            <div class="row d-flex align-items-center">
-                                <!-- Bagian untuk Gambar -->
-                                <div class="col-lg-4 col-md-6 col-4 text-center">
-                                    <div class="heading-section" style="width: 100%; display: flex; justify-content: center;">
-                                        <img src="../../../assets/images/ttd.png" alt="Tanda Tangan" class="img-fluid" style="max-width: 100px; height: auto;">
-                                    </div>
+                            <div style="display: flex; align-items: flex-start;">
+                                <div style="margin-left: 15px;width: 110px;">
+                                    Periode
                                 </div>
-
-                                <!-- Bagian untuk Tabel -->
-                                <div class="col-lg-8 col-md-6 col-8 text-center">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Tahapan Tes</th>
-                                                <th>Jenis Tes</th>
-                                                <th>Tanggal Tes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Tes TPA</td>
-                                                <td>27 Juni 2022 - 27 Juni 2022</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Tes Buta Warna</td>
-                                                <td>27 Juni 2022 - 27 Juni 2022</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Tes Kesehatan</td>
-                                                <td>27 Juni 2022 - 27 Juni 2022</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div style="margin-right: 6px;">
+                                    :
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" style="padding: 10px">
-                            <div class="row d-flex">
-                                <div class="col-lg-12">
-                                    <div>
-                                    <p><b>Pernyataan</b></p>
-                                    <p>Dengan ini saya menyatakan bahwa data yang saya isikan dalam borang pendaftaran adalah benar. Saya bersedia menerima sanksi pembatalan penerimaan di jurusan yang saya pilih apabila melanggar pernyataan ini</p>
-                                    <p>Tanda Tangan Nama Peserta:.....................................</p>
-                                </div>  
+                                <div style="margin-right: 10px;">
+                                    {{ krsData?.mahasiswa.Semester.nama_semester }}
                                 </div>
-                                       
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
+
+            <table class="table table-bordered text-center">
+                <thead class="align-middle">
+                    <tr>
+                        <th rowspan="2">No</th>
+                        <th rowspan="2">Kode MK</th>
+                        <th rowspan="2">Nama MK</th>
+                        <th rowspan="2">Dosen Pengajar</th>
+                        <th rowspan="2">SKS</th>
+                        <th rowspan="2">Kelas</th>
+                        <th colspan="3">Jadwal Perkuliahan</th>
+                    </tr>
+                    <tr>
+                        <th>Ruang</th>
+                        <th>Hari</th>
+                        <th>Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(matkul, index) in rekapKrsData" :key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td width="10%">{{ matkul.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
+                        <td>{{ matkul.KelasKuliah.MataKuliah.nama_mata_kuliah }}</td>
+                        <td>{{ matkul.KelasKuliah.Dosen.nama_dosen }}</td>
+                        <td>{{ matkul.KelasKuliah.sks }}</td>
+                        <td>{{ matkul.KelasKuliah.nama_kelas_kuliah }}</td>
+                        <td>{{ matkul.KelasKuliah.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan ?? '-' }}</td>
+                        <td>{{ matkul.KelasKuliah.DetailKelasKuliahs[0]?.hari ?? '-' }}</td>
+                        <td>{{ 
+                            matkul.KelasKuliah.DetailKelasKuliahs.length > 0 ? 
+                            `${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_mulai)} - ${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_selesai)}` : 
+                            '-' 
+                        }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="4">Jumlah</td>
+                        <td class="text-center" colspan="1">{{ totalSKS }}</td>
+                        <td class="text-center" colspan="4"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- <div class="page-break"></div> -->
+            <!-- <div class="printing" style="margin-left: 470px;">
+                <p class="m-0">{{ formatDate(krsData?.tanggalPenandatanganan) }}</p>
+                <p class="m-0">{{ krsData?.unitJabatan?.Jabatan?.nama_jabatan }}</p>
+                <p style="height: 70px;"></p>
+                <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ krsData?.unitJabatan?.nama_penandatanganan }}</p>
+                <p class="m-0">NIP. {{ krsData?.unitJabatan?.Dosen?.nip ?? '-' }}</p>
+            </div> -->
             <table class="table table-borderless">
                 <tbody class="text-center">
                     <tr>
                         <td width="50%">
                             <p class="mb-4"></p>
-                            <p class="m-0">Tanda Tangan Peserta</p>
+                            <p class="m-0">Mahasiswa</p>
                             <p style="height: 70px;"></p>
                             <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;"> {{ krsData?.mahasiswa?.nama_mahasiswa ?? '-'}}</p>
                             <p class="m-0">{{ krsData?.mahasiswa?.nim ?? '-'}}</p>
                         </td >
                         <td width="50%">
                             <p class="m-0">Banyuwangi, {{ formatDate(krsData?.tanggalPenandatanganan) }}</p>
-                            <p class="m-0">Petugas</p>
+                            <p class="m-0">Pembimbing Akademik</p>
                             <p style="height: 70px;"></p>
-                            <p>-------------------------</p>
-        
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;"> {{ krsData?.dosen_wali?.Dosen?.nama_dosen ?? '-'}}</p>
+                            <p class="m-0">08976768757</p></td>
+                        </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="m-0">{{ krsData?.unitJabatan?.Jabatan?.nama_jabatan ?? '-' }}</p>
+                            <p style="height: 70px;"></p>
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ krsData?.unitJabatan?.nama_penandatanganan ?? '-'}}</p>
+                            <p class="m-0">{{ krsData?.unitJabatan?.Dosen?.nip ?? '-' }}</p>
                         </td>
                     </tr>
                 </tbody>

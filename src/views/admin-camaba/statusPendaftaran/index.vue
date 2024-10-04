@@ -242,13 +242,11 @@ onBeforeMount(() => {
                                     <th>Tanggal Akhir Tagihan</th>
                                     <th>Tanggal Lunas</th>
                                     <th>Status Tagihan</th>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>1</td>
-                                    <td>-</td>
                                     <td>-</td>
                                     <td>-</td>
                                     <td>-</td>

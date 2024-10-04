@@ -34,6 +34,14 @@ const handleSubmit = async () => {
     if (!username.value || !password.value) {
         return;
     }
+
+    // Pastikan reCAPTCHA sudah dimuat sebelum mengambil token
+    const captchaToken = grecaptcha.getResponse();
+    if (!captchaToken) {
+        Swal.fire('Error', 'Please complete the CAPTCHA', 'error');
+        return;
+    }
+
     try {
         Swal.fire({
             title: 'Loading...',
@@ -44,7 +52,7 @@ const handleSubmit = async () => {
                 Swal.showLoading();
             }
         });
-        const res = await login(username.value, password.value);
+        const res = await login(username.value, password.value, captchaToken);
         Swal.close();
         if (res.status === 200) {
             console.log('login berhasil');
@@ -67,17 +75,22 @@ const getProfilePT = async () => {
     try {
         const response = await axios.get(`${API_URL}/perguruan-tinggi-guest/get-pt-active`);
         profilePT.value = response.data.data;
-        console.log('Response:', response.data)
+        console.log('Response:', response.data);
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
 };
 
-onMounted(()=>{
+onMounted(() => {
     getProfilePT();
+
+    if (window.grecaptcha) {
+        window.grecaptcha.render('chapta', {
+            sitekey: '6LfWOU4qAAAAAAvkEGv0-z9QlKMqqC2-GN748h4z'
+        });
+    }
 });
 </script>
-
 
 <template>
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
@@ -86,7 +99,7 @@ onMounted(()=>{
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
                         <img :src="logoUrl" alt="Image" height="100" class="mb-3" />
-                        <div class="text-900 text-3xl font-medium mb-3">{{profilePT?.PerguruanTinggi?.nama_perguruan_tinggi || 'Nama Instansi'}}</div>
+                        <div class="text-900 text-3xl font-medium mb-3">{{ profilePT?.PerguruanTinggi?.nama_perguruan_tinggi || 'Nama Instansi' }}</div>
                     </div>
 
                     <form @submit.prevent="handleSubmit">
@@ -101,18 +114,22 @@ onMounted(()=>{
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
                                 <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
-                                <label for="rememberme1" >Remember me</label>
+                                <label for="rememberme1">Remember me</label>
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: #343434">Forgot password?</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl" style="background-color: #343434;" type="submit"></Button>
+
+                        <div class="flex align-items-center justify-content-between mb-5 gap-5">
+                            <div id="chapta" class="g-recaptcha" data-sitekey="6LfWOU4qAAAAAAvkEGv0-z9QlKMqqC2-GN748h4z"></div>
+                        </div>
+
+                        <Button label="Sign In" class="w-full p-3 text-xl" style="background-color: #343434" type="submit"></Button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
 
 <style scoped>
 .pi-eye {
@@ -128,5 +145,3 @@ onMounted(()=>{
     color: #f56565;
 }
 </style>
-
-
