@@ -90,8 +90,14 @@ onBeforeMount(() => {
                     <ol class="lh-2 text-small">
                         <li>Tipe File yang dibolehkan PDF, JPG, PNG, GIF</li>
                         <li>Maksimal ukuran setiap file adalah 5 MB</li>
+                        <li>Dapat menambahkan dokumen tambahan pada form dibawahnya</li>
                         
                     </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-12">
+                    <h6><b>DOKUMEN YANG WAJIB DILAMPIRKAN</b></h6>
                 </div>
             </div>
             <DataTable v-model:filters="filters" :globalFilterFields="['kode_sk', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>

@@ -135,7 +135,9 @@ onMounted(()=> {
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <div class="row">
+                        <div class="col-8">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="data-user" data-bs-toggle="tab"
                                 data-bs-target="#home" type="button" role="tab" aria-controls="home"
@@ -147,6 +149,14 @@ onMounted(()=> {
                                 aria-selected="false">Data Orangtua</button>
                         </li>
                     </ul>
+                    </div>
+                    <div class="col-4">
+                        <div   div class="flex justify-content-end gap-2">
+                            <router-link to="/biodata-pendaftar-cetak" class="btn btn-secondary"> <i class="pi pi-print me-2"></i> Cetak Biodata</router-link>
+                        </div>
+                    </div>
+                    </div>
+                    
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel"
                             aria-labelledby="data-user">

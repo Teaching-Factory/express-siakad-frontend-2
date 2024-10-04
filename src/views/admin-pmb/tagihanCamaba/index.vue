@@ -268,7 +268,7 @@ const confirmDelete = (id_tagihan_mahasiswa) => {
                     {{ data.status_tagihan }}
                 </template>
             </Column>
-            <Column header="Bukti Pembayaran" style="min-width: 12rem">
+            <Column header="Bukti Pembayaran" style="min-width: 10rem">
                 <template #body="{ data }">
                     <button @click="showModal(data.upload_bukti_tf)" class="btn btn-outline-primary me-2">
                         <i class="pi pi-eye"></i>

@@ -76,7 +76,7 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
-                    path: '/periode-pendaftaran/create',
+                    path: '/periode-pendaftaran-create',
                     name: 'periode-pendaftaran-create',
                     component: () => import('../views/admin-pmb/periodePendaftaran/form.vue')
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
@@ -821,6 +821,12 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/biodata-pendaftar-cetak',
+                    name: 'biodata-pendaftar-cetak',
+                    component: () => import('../views/admin-camaba/biodataPendaftar/cetakBiodata.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
                     path: '/upload-foto',
                     name: 'upload-foto',
                     component: () => import('../views/admin-camaba/uploadFoto/index.vue')
@@ -857,16 +863,22 @@ const router = createRouter({
                     component: () => import('../views/admin-camaba/finalisasiData/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
-                // {
-                //     path: '/cetak-kartu-ujian',
-                //     name: 'cetak-kartu-ujian',
-                //     component: () => import('../views/admin-camaba/cetakKartuUjian/index.vue'),
-                //     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
-                // },
+                {
+                    path: '/cetak-kartu-ujian',
+                    name: 'cetak-kartu-ujian',
+                    component: () => import('../views/admin-camaba/cetakKartuUjian/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
                 {
                     path: '/jadwal-seleksi-tes',
                     name: 'jadwal-seleksi-tes',
                     component: () => import('../views/admin-camaba/jadwalSeleksiTes/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/cetak-form-pendaftaran',
+                    name: 'cetak-form-pendaftaran',
+                    component: () => import('../views/admin-camaba/cetakFormPendaftaran/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 }
             ]

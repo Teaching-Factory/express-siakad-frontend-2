@@ -85,12 +85,11 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="/periode-pendaftaran/create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
+                                <router-link to="/periode-pendaftaran-create" class="btn btn-primary"> <i class="pi pi-plus me-2"></i> Tambah</router-link>
                             </div>
                         </div>
                     </div>
                 </template>
-
                 <template #empty>
                     <div class="text-center">Tidak ada data.</div>
                 </template>
@@ -173,7 +172,7 @@ onBeforeMount(() => {
 </template>
 
 
-    <style scoped>
+<style scoped>
 .card-theme {
     background-color: rgba(154, 160, 172, 0.5);
 }

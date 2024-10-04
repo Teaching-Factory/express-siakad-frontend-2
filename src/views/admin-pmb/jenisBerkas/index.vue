@@ -6,8 +6,11 @@ import Swal from 'sweetalert2';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id_ruang: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nama_berkas: { value: null, matchMode: FilterMatchMode.EQUALS },
+    keterangan_singkat: { value: null, matchMode: FilterMatchMode.EQUALS },
+    wajib: { value: null, matchMode: FilterMatchMode.EQUALS },
+    upload: { value: null, matchMode: FilterMatchMode.EQUALS },
+    jumlah: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const jenis_berkas = ref([]);
@@ -74,7 +77,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>JENIS BERKAS</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan']" :value="jenis_berkas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['nama_berkas', 'keterangan_singkat', 'jumlah', 'wajib', 'upload']" :value="jenis_berkas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
