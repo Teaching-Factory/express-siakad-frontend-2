@@ -11,10 +11,10 @@ const filters = ref({
     lokasi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const ruangPerkuliahans = ref([]);
+const aspekPenilaians = ref([]);
 const message = ref('');
 
-const ruangPerkuliahan = async () => {
+const aspekPenilaian = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -24,9 +24,9 @@ const ruangPerkuliahan = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('ruang-perkuliahan'); // Memanggil fungsi get dengan endpoint 'ruangPerkuliahan'
+        const response = await get('aspek-penilaian-dosen/'); // Memanggil fungsi get dengan endpoint 'aspekPenilaian'
         console.log(response.data.data);
-        ruangPerkuliahans.value = response.data.data;
+        aspekPenilaians.value = response.data.data;
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data ruang Perkuliahan:', error);
@@ -35,7 +35,7 @@ const ruangPerkuliahan = async () => {
 
 const deleteItem = async (id) => {
     try {
-        const response = await del(`ruang-perkuliahan/${id}/delete`);
+        const response = await del(`aspek-penilaian-dosen/${id}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
         } else {
@@ -59,7 +59,7 @@ const confirmDelete = (id) => {
         if (result.isConfirmed) {
             deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
-            ruangPerkuliahans.value = ruangPerkuliahans.value.filter((data) => data.id !== id);
+            aspekPenilaians.value = aspekPenilaians.value.filter((data) => data.id !== id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
@@ -67,7 +67,7 @@ const confirmDelete = (id) => {
 };
 
 onBeforeMount(() => {
-    ruangPerkuliahan();
+    aspekPenilaian();
 });
 </script>
 
@@ -75,7 +75,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR ASPEK PENILAIAN</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan', 'lokasi']" :value="ruangPerkuliahans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan', 'lokasi']" :value="aspekPenilaians" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -97,45 +97,45 @@ onBeforeMount(() => {
                 </template>
                 <!-- <template #loading> Loading customers data. Please wait. </template> -->
                 
-                <Column filterField="id_ruang" header="Nomor" style="min-width: 5rem">
+                <Column filterField="nomor_urut_aspek" header="Nomor" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.nomor_urut_aspek }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Aspek Penilaian" style="min-width: 10rem">
+                <Column filterField="aspek_penilaian" header="Aspek Penilaian" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.aspek_penilaian }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Deskripsi Pendek" style="min-width: 25rem">
+                <Column filterField="deskripsi_pendek" header="Deskripsi Pendek" style="min-width: 25rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
+                            <span>{{ data.deskripsi_pendek }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Tipe Aspek" style="min-width: 10rem">
+                <Column filterField="tipe_aspek_penilaian" header="Tipe Aspek" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
+                            <span>{{ data.tipe_aspek_penilaian }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Periode" style="min-width: 10rem">
+                <Column filterField="nama_semester" header="Periode" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
+                            <span>{{ data.Semester.nama_semester }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Tanggal Pembuatan" style="min-width: 10rem">
+                <Column filterField="tanggal_pembuatan" header="Tanggal Pembuatan" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
+                            <span>{{ data.tanggal_pembuatan }}</span>
                         </div>
                     </template>
                 </Column>

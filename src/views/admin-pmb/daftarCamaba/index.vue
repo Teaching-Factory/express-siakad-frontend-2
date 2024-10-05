@@ -243,7 +243,7 @@ onBeforeMount(() => {
                         </router-link>
                         
                         <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)">
-                            <i class="pi pi-trash"></i>
+                            <i class="pi pi-trxash"></i>
                         </button>
                     </template>
                 </Column>

@@ -83,6 +83,7 @@ import { useToast } from 'primevue/usetoast';
                                     <p><strong>Sistem Kuliah:</strong> Reguler</p>
                                     <p><strong>Jalur Seleksi:</strong> Seleksi Mandiri</p>
                                     <p><strong>Semester:</strong> 2023/2024 Ganjil</p>
+                                    <p><strong>Biaya Pendaftaran:</strong> -</p>
                                     <button class="btn btn-primary">
                                         Pilih
                                     </button>
