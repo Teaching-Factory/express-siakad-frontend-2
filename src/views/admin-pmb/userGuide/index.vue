@@ -15,7 +15,7 @@ import { ref } from 'vue';
                 </div>
                 <div class="col-12 xl:col-6 d-flex justify-content-end">
                     <div class="flex justify-content-end gap-2">
-                        <button class="btn btn-primary me-2"> <i class="pi pi-save mr-2"></i> Simpan</button>
+                        <button class="btn btn-primary me-2"> <i class="pi pi-save mr-2"></i> Simpan</button>``
                     </div>
                 </div>
             </div>

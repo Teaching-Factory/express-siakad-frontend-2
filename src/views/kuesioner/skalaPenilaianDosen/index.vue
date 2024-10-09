@@ -123,17 +123,17 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Tanggal Pembuatan" style="min-width: 10rem">
+                <!-- <Column filterField="nama_ruang_perkuliahan" header="Tanggal Pembuatan" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.nama_ruang_perkuliahan }}</span>
                         </div>
                     </template>
-                </Column>
+                </Column> -->
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-primary">
+                            <router-link :to="`/skala-penilaian-dosen/${data.id}/edit`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
