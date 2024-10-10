@@ -769,6 +769,12 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan-mahasiswa/jadwalPerkuliahan/index.vue'),
                     meta: { requiredPermissions: ['perkuliahan-jadwal-perkuliahan'] }
                 },
+                {
+                    path: '/kuesioner-penilaian-dosen',
+                    name: 'kuesioner-penilaian-dosen',
+                    component: () => import('../views/perkuliahan-mahasiswa/kuesionerPenilaianDosen/index.vue'),
+                    // meta: { requiredPermissions: ['kuesioner-penilaian-dosen'] }
+                },
 
                 //laporan
                 {

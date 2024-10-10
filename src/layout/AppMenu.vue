@@ -660,6 +660,11 @@ const model = ref([
                         label: 'Jadwal Perkuliahan',
                         to: '/perkuliahan-jadwal-perkuliahan',
                         visible: computed(() => permissions.includes('perkuliahan-jadwal-perkuliahan'))
+                    },
+                    {
+                        label: 'Kuesioner Penilaian Dosen',
+                        to: '/kuesioner-penilaian-dosen',
+                        // visible: computed(() => permissions.includes('kuesioner-penilaian-dosen'))
                     }
                 ]
             },
