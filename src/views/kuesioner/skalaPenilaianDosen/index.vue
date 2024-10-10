@@ -11,10 +11,10 @@ const filters = ref({
     lokasi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const ruangPerkuliahans = ref([]);
+const skalaPenilaians = ref([]);
 const message = ref('');
 
-const ruangPerkuliahan = async () => {
+const skalaPenilaian = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -24,9 +24,9 @@ const ruangPerkuliahan = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('ruang-perkuliahan'); // Memanggil fungsi get dengan endpoint 'ruangPerkuliahan'
+        const response = await get('skala-penilaian-dosen/'); // Memanggil fungsi get dengan endpoint 'skalaPenilaian'
         console.log(response.data.data);
-        ruangPerkuliahans.value = response.data.data;
+        skalaPenilaians.value = response.data.data;
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data ruang Perkuliahan:', error);
@@ -35,7 +35,7 @@ const ruangPerkuliahan = async () => {
 
 const deleteItem = async (id) => {
     try {
-        const response = await del(`ruang-perkuliahan/${id}/delete`);
+        const response = await del(`skala-penilaian-dosen/${id}/delete`);
         if (response.status === 200) {
             message.value = 'Data berhasil dihapus!';
         } else {
@@ -59,7 +59,7 @@ const confirmDelete = (id) => {
         if (result.isConfirmed) {
             deleteItem(id);
             Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
-            ruangPerkuliahans.value = ruangPerkuliahans.value.filter((data) => data.id !== id);
+            skalaPenilaians.value = skalaPenilaians.value.filter((data) => data.id !== id);
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
         }
@@ -67,7 +67,7 @@ const confirmDelete = (id) => {
 };
 
 onBeforeMount(() => {
-    ruangPerkuliahan();
+    skalaPenilaian();
 });
 </script>
 
@@ -75,7 +75,7 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR SKALA PENILAIAN</h5>
         <div class="card">
-            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan', 'lokasi']" :value="ruangPerkuliahans" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['id_ruang', 'nama_ruang_perkuliahan', 'lokasi']" :value="skalaPenilaians" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -102,38 +102,38 @@ onBeforeMount(() => {
                         {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column filterField="id_ruang" header="Skala Penilaian" style="min-width: 10rem">
+                <Column filterField="keterangan_skala_penilaian" header="Skala Penilaian" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.id_ruang }}</span>
+                            <span>{{ data.keterangan_skala_penilaian }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Poin Penilaian" style="min-width: 15rem">
+                <Column filterField="poin_skala_penilaian" header="Poin Penilaian" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.poin_skala_penilaian }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nama_semester" header="Periode" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.Semester.nama_semester }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <!-- <Column filterField="nama_ruang_perkuliahan" header="Tanggal Pembuatan" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.nama_ruang_perkuliahan }}</span>
                         </div>
                     </template>
-                </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Periode" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_ruang_perkuliahan" header="Tanggal Pembuatan" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_ruang_perkuliahan }}</span>
-                        </div>
-                    </template>
-                </Column>
+                </Column> -->
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-primary">
+                            <router-link :to="`/skala-penilaian-dosen/${data.id}/edit`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">

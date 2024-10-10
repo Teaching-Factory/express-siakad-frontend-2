@@ -8,13 +8,15 @@ import { API_URL } from '../../../config/config';
 export default {
     data() {
         return {
-            id_ruang: '',
-            nama_ruang_perkuliahan: '',
-            lokasi: '',
+            poin_skala_penilaian: '',
+            keterangan_skala_penilaian: '',
+            id_semester: '',
+            semesters: [],
             message: ''
         };
     },
     async created() {
+        await this.getSemester(); // Pastikan ini terpanggil
         this.id = this.$route.params.id;
         if (this.id) {
             this.isEdit = true;
@@ -22,7 +24,16 @@ export default {
         }
     },
     methods: {
+        async getSemester() {
+            try {
+                const response = await get('semester/');
+                this.semesters = response.data.data; // Simpan data semester ke dalam state
+            } catch (error) {
+                Swal.fire('GAGAL', 'Gagal memuat data. Silakan coba lagi.', 'error');
+            }
+        },
         async submit() {
+            
             if (this.isEdit) {
                 this.update();
             } else {
@@ -31,25 +42,25 @@ export default {
         },
         async fetchData(id) {
             try {
-                const response = await get(`ruang-perkuliahan/${id}/get`);
+                const response = await get(`aspek-penilaian-dosen/${id}/get`);
                 const data = response.data.data;
-                this.id_ruang = data.id_ruang;
-                this.nama_ruang_perkuliahan = data.nama_ruang_perkuliahan;
-                this.lokasi = data.lokasi;
+                this.poin_skala_penilaian = data.poin_skala_penilaian;
+                this.keterangan_skala_penilaian = data.keterangan_skala_penilaian;
+                this.id_semester = data.id_semester;
             } catch (error) {
                 Swal.fire('GAGAL', 'Gagal memuat data. Silakan coba lagi.', 'error');
             }
         },
         async create() {
             try {
-                const response = await postData('ruang-perkuliahan/create', {
-                    id_ruang: this.id_ruang,
-                    nama_ruang_perkuliahan: this.nama_ruang_perkuliahan,
-                    lokasi: this.lokasi
+                const response = await postData('aspek-penilaian-dosen/create', {
+                    poin_skala_penilaian: this.poin_skala_penilaian,
+                    keterangan_skala_penilaian: this.keterangan_skala_penilaian,
+                    id_semester: this.id_semester
                 });
                 const data = response.data;
                 Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-                    this.$router.push('/ruang-perkuliahan').catch((err) => {
+                    this.$router.push('/skala-penilaian-dosen').catch((err) => {
                         console.error('Redirect error:', err);
                     });
                 });
@@ -61,11 +72,11 @@ export default {
             try {
                 const token = getToken();
                 const response = await axios.put(
-                    `${API_URL}/ruang-perkuliahan/${this.id}/update`,
+                    `${API_URL}/skala-penilaian-dosen/${this.id}/update`,
                     {
-                        id_ruang: this.id_ruang,
-                        nama_ruang_perkuliahan: this.nama_ruang_perkuliahan,
-                        lokasi: this.lokasi
+                        poin_skala_penilaian: this.poin_skala_penilaian,
+                        keterangan_skala_penilaian: this.keterangan_skala_penilaian,
+                        id_semester: this.id_semester
                     },
                     {
                         headers: {
@@ -75,7 +86,7 @@ export default {
                 );
                 const data = response.data;
                 Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
-                    this.$router.push('/ruang-perkuliahan').catch((err) => {
+                    this.$router.push('/skala-penilaian-dosen').catch((err) => {
                         console.error('Redirect error:', err);
                     });
                 });
@@ -89,7 +100,7 @@ export default {
 
 <template>
     <div class="card">
-        <form @submit.prevent="create">
+        <form @submit.prevent="submit">
             <div class="row">
                 <div class="col-lg-4">
                     <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} DAFTAR SKALA PENILAIAN</h5>
@@ -102,15 +113,24 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaRuangPerkuliahan" class="col-sm-3 col-form-label">Poin Skala Penilaian (Angka)</label>
+                <label for="poin_skala_penilaian" class="col-sm-3 col-form-label">Poin Skala Penilaian (Angka)</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" placeholder="Masukkan poin skala penilaian dosen" id="namaRuangPerkuliahan" v-model="nama_ruang_perkuliahan" />
+                    <input type="text" class="form-control" placeholder="Masukkan poin skala penilaian dosen" id="poin_skala_penilaian" v-model="poin_skala_penilaian" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaRuangPerkuliahan" class="col-sm-3 col-form-label">Keterangan Skala Penilaian</label>
+                <label for="id_semester" class="col-sm-3 col-form-label">Periode</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" placeholder="keterangan skala penilaian dosen" id="namaRuangPerkuliahan" v-model="nama_ruang_perkuliahan" />
+                    <select class="form-select" aria-label="Default select example" v-model="id_semester">
+                        <option selected disabled hidden>-- Pilih Periode--</option>
+                        <option v-for="periode in semesters" :key="periode.id_semester" :value="periode.id_semester">{{ periode.nama_semester }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row d-flex justify-content-center">
+                <label for="keterangan_skala_penilaian" class="col-sm-3 col-form-label">Keterangan Skala Penilaian</label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" placeholder="keterangan skala penilaian dosen" id="keterangan_skala_penilaian" v-model="keterangan_skala_penilaian" />
                 </div>
             </div>
         </form>

@@ -453,6 +453,12 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['unit-jabatan'] }
                 },
                 {
+                    path: '/aspek-penilaian-dosen/:id/edit',
+                    name: 'aspek-penilaian-dosen-edit',
+                    component: () => import('../views/kuesioner/aspekPenilaianDosen/form.vue')
+                    // meta: { requiredPermissions: ['unit-jabatan'] }
+                },
+                {
                     path: '/skala-penilaian-dosen',
                     name: 'skala-penilaian-dosen',
                     component: () => import('../views/kuesioner/skalaPenilaianDosen/index.vue')
@@ -461,6 +467,12 @@ const router = createRouter({
                 {
                     path: '/skala-penilaian-dosen/create',
                     name: 'skala-penilaian-dosen-create',
+                    component: () => import('../views/kuesioner/skalaPenilaianDosen/form.vue')
+                    // meta: { requiredPermissions: ['unit-jabatan'] }
+                },
+                {
+                    path: '/skala-penilaian-dosen/:id/edit',
+                    name: 'skala-penilaian-dosen-edit',
                     component: () => import('../views/kuesioner/skalaPenilaianDosen/form.vue')
                     // meta: { requiredPermissions: ['unit-jabatan'] }
                 },

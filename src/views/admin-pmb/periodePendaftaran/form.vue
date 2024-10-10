@@ -281,6 +281,30 @@ export default {
                     </div>
                 </div>
             </div>
+            <div class="mb-3 row d-flex justify-content-center">
+                <label class="col-sm-3 col-form-label">Prodi yang dibuka</label>
+                <div class="col-md-7">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="agribisnis">
+                        <label class="form-check-label" for="agribisnis">
+                            Google
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="teknikSipil">
+                        <label class="form-check-label" for="teknikSipil">
+                            Instagram
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="teknikSipil">
+                        <label class="form-check-label" for="teknikSipil">
+                            Lainnya
+                        </label>
+                    </div>
+                    <!-- apabila di klik "lainnya" maka tidak bisa memilih checkbox yang lain -->
+                </div>
+            </div>
             
         </form>
     </div>
