@@ -33,7 +33,6 @@ export default {
             }
         },
         async submit() {
-            
             if (this.isEdit) {
                 this.update();
             } else {
@@ -42,7 +41,7 @@ export default {
         },
         async fetchData(id) {
             try {
-                const response = await get(`aspek-penilaian-dosen/${id}/get`);
+                const response = await get(`skala-penilaian-dosen/${id}/get`);
                 const data = response.data.data;
                 this.poin_skala_penilaian = data.poin_skala_penilaian;
                 this.keterangan_skala_penilaian = data.keterangan_skala_penilaian;
@@ -53,7 +52,7 @@ export default {
         },
         async create() {
             try {
-                const response = await postData('aspek-penilaian-dosen/create', {
+                const response = await postData('skala-penilaian-dosen/create', {
                     poin_skala_penilaian: this.poin_skala_penilaian,
                     keterangan_skala_penilaian: this.keterangan_skala_penilaian,
                     id_semester: this.id_semester

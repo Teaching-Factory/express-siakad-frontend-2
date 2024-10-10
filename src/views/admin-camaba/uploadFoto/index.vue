@@ -57,7 +57,7 @@ export default {
                 console.log(response);
                 Swal.close();
                 Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-                    this.$router.push('/tagihan-pembayaran-mahasiswa').catch((err) => {
+                    this.$router.push('/upload-foto').catch((err) => {
                         console.error('Redirect error:', err);
                     });
                 });

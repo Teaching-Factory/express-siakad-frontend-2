@@ -11,6 +11,7 @@ const selectedSekolah = ref('');
 const nama_wilayah = ref('');
 const nama_sekolah = ref('');
 const profil = ref([]);
+const fotoProfile = ref([]);
 
 const nama_lengkap = ref([]);
 const tempat_lahir = ref([]);
@@ -60,6 +61,10 @@ const agamas = ref([]);
 const sekolahs = ref([]);
 
 const jenis_tinggal = ref([]);
+
+const logoUrl = computed(() => {
+    return `/layout/images/ubi.jpg`;
+});
 
 const getJenjang = async () => {
     try {
@@ -119,6 +124,17 @@ const getAgama = async () => {
         }
     } catch (error) {
         throw error;
+    }
+};
+
+const getFotoProfile = async () => {
+    try {
+        const response = await getData('camaba/get-camaba-aktif');
+        fotoProfile.value = response.data.data;
+
+        console.log('Response:', response.data);
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
     }
 };
 
@@ -277,6 +293,7 @@ const updateBiodataOrtu = async () => {
 };
 
 onMounted(() => {
+    getFotoProfile();
     getBiodata();
     getJenjang();
     getPekerjaan();
@@ -294,9 +311,9 @@ onMounted(() => {
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-flex align-items-center justify-content-center">
-                        <img class="rounded-circle" alt="User Image" src="../../../../public/ubi.png" width="10%" />
+                        <img class="rounded-circle" alt="User Image" :src="`${fotoProfile?.foto_profil}`" width="10%" />
                     </div>
-                    <div class="text-center">
+                    <div class="text-center mt-3">
                         <h4>{{ profil?.Camaba?.nama_lengkap }}</h4>
                         <h6>{{ profil?.Camaba?.nomor_daftar }}</h6>
                         <h6>UMUM | REGULER</h6>
