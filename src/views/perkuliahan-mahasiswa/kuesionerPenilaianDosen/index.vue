@@ -5,59 +5,39 @@ import { get, getData } from '../../../utiils/request';
 
 const periodes = ref([]);
 const selectedPeriode = ref('');
-const mahasiswa = ref([]);
+const kelasKuliahs = ref([]);
 const jadwalKuliah = ref([]);
 const dataMahasiswa = ref([]);
 const total = ref([]);
 
-const getPeriode = async () => {
-    try {
-        const response = await get('semester');
-        periodes.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data :', error);
-    }
-};
-
 const getMahasiswa = async () => {
-   
-   const response = await get('mahasiswa/get-krs-mahasiswa-by-semester-active');
-   const krs = response.data.data;
-   dataMahasiswa.value = krs;
-   console.log(response.data.data);
+    const response = await getData('mahasiswa/get-mahasiswa-active');
+    const krs = response.data.data;
+    dataMahasiswa.value = krs;
+    console.log('response', krs);
 };
 
-const filterData = async () => {
-    const periodeId = selectedPeriode.value;
-
-    if (!periodeId) {
-        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
-        Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning').then(() => {});
-        return;
-    }
+const getKelasKuliah = async () => {
     try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        })
-        const response = await get(`kuesioner/kelas-kuliah/${periodeId}/get`);
-        jadwalKuliah.value = response.data.data;
-        total.value = response.data;
-        console.log('jadwal', response.data.data);
-        Swal.close();
+        const response = await getData('mahasiswa/get-krs-mahasiswa-by-semester-active');
+        const data = response.data.dataKRSMahasiswa; // Adjust based on actual response
+
+        // Check if there's any data returned
+        if (data && data.length > 0) {
+            kelasKuliahs.value = data;
+        } else {
+            console.log('No KRS data available.');
+        }
+
+        console.log('Kelas Kuliah:', kelasKuliahs.value);
     } catch (error) {
-        // console.error('Gagal mengambil data :', error);
-        Swal.fire('GAGAL!', 'Gagal mengambil data. Silakan coba lagi nanti.', 'warning');
+        console.error('Gagal mengambil data Kelas Kuliah:', error);
     }
 };
 
 onMounted(() => {
-    getPeriode();
-    getMahasiswa()
+    getMahasiswa();
+    getKelasKuliah();
 });
 </script>
 
@@ -65,21 +45,7 @@ onMounted(() => {
     <div class="card">
         <div class="card-body">
             <h5><i class="pi pi-user me-2"></i>KUESIONER PENILAIAN DOSEN</h5>
-            <hr>
-            <div class="row mt-3">
-                <div class="col-lg-10 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>--Pilih Periode--</option>
-                            <option v-for="periode in periodes" :key="periode.id_semester" :value="periode.id_semester">{{ periode.nama_semester }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
-                </div>
-            </div>
+            <hr />
             <div class="card" style="border-radius: none !important">
                 <div class="row">
                     <div class="col-lg-2">NIM</div>
@@ -102,7 +68,7 @@ onMounted(() => {
                     <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.Agama?.nama_agama || '-' }}</div>
                 </div>
             </div>
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto">
                 <table class="table table-bordered text-center">
                     <thead class="table-dark align-middle">
                         <tr>
@@ -110,33 +76,21 @@ onMounted(() => {
                             <th>Kode Mata Kuliah</th>
                             <th>Nama Mata Kuliah</th>
                             <th>Kelas</th>
-                            <th>Dosen Pengajar</th>              
-                            <th>Aksi</th>              
+                            <th>Dosen Pengajar</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>325325</td>
-                            <td>Kapita Selekta</td>
-                            <td>2</td>
-                            <td>4</td>
+                        <tr v-for="(krsMahasiswa, index) in kelasKuliahs" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ krsMahasiswa.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
+                            <td>{{ krsMahasiswa.KelasKuliah.MataKuliah.nama_mata_kuliah }}</td>
+                            <td>{{ krsMahasiswa.KelasKuliah.nama_kelas_kuliah }}</td>
+                            <td>{{ krsMahasiswa.KelasKuliah.Dosen.nama_dosen }}</td>
                             <td>
                                 <button class="btn btn-outline-primary">
-                                <i class="pi pi-pencil"></i>
-                            </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>325325</td>
-                            <td>Kapita Selekta</td>
-                            <td>2</td>
-                            <td>4</td>
-                            <td>
-                                <button class="btn btn-outline-primary">
-                                <i class="pi pi-pencil"></i>
-                            </button>
+                                    <i class="pi pi-pencil"></i>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
