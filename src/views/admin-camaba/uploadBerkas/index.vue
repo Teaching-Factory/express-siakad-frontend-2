@@ -32,7 +32,7 @@ const sistemKuliah = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('sistem-kuliah');
+        const response = await get('pemberkasan-camaba/get-pemberkasan-camaba-aktif');
         console.log(response.data.data);
         sistemKuliahs.value = response.data.data;
         Swal.close();
@@ -91,7 +91,6 @@ onBeforeMount(() => {
                         <li>Tipe File yang dibolehkan PDF, JPG, PNG, GIF</li>
                         <li>Maksimal ukuran setiap file adalah 5 MB</li>
                         <li>Dapat menambahkan dokumen tambahan pada form dibawahnya</li>
-                        
                     </ol>
                 </div>
             </div>
@@ -121,31 +120,31 @@ onBeforeMount(() => {
                         {{ slotProps.index + 1 }}
                     </template>
                 </Column>
-                <Column filterField="kode_sk" header="Nama Berkas" style="min-width: 15rem">
+                <Column filterField="nama_berkas" header="Nama Berkas" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.kode_sk }}</span>
+                            <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.nama_berkas }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_sk" header="Deskripsi" style="min-width: 20rem">
+                <Column filterField="keterangan_singkat" header="Deskripsi" style="min-width: 20rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                            <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.keterangan_singkat }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_sk" header="Wajib" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                            <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.wajib ? 'Ya' : 'Tidak ' }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_sk" header="File Berkas" style="min-width: 18rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                            <span>{{ data.file_berkas ?? '-' }}</span>
                         </div>
                     </template>
                 </Column>
@@ -163,13 +162,13 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                
+
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
                             <label class="btn btn-outline-primary">
                                 <i class="pi pi-upload"></i>
-                                <input type="file" class="form-control d-none" id="profileImage" @change="previewImage" accept=".png,.jpg,.jpeg">
+                                <input type="file" class="form-control d-none" id="profileImage" @change="previewImage" accept=".png,.jpg,.jpeg" />
                             </label>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
                                 <i class="pi pi-trash"></i>
@@ -255,7 +254,7 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                
+
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
@@ -269,7 +268,6 @@ onBeforeMount(() => {
                     </template>
                 </Column>
             </DataTable>
-        
         </div>
     </div>
 </template>
