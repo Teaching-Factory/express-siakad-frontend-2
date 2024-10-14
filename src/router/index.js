@@ -775,6 +775,12 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan-mahasiswa/kuesionerPenilaianDosen/index.vue'),
                     // meta: { requiredPermissions: ['kuesioner-penilaian-dosen'] }
                 },
+                {
+                    path: '/kuesioner-penilaian-dosen/:id_kelas_kuliah/kuesioner',
+                    name: 'kuesioner-penilaian-dosen-kuesioner',
+                    component: () => import('../views/perkuliahan-mahasiswa/kuesionerPenilaianDosen/formKuesioner.vue'),
+                    // meta: { requiredPermissions: ['kuesioner-penilaian-dosen'] }
+                },
 
                 //laporan
                 {

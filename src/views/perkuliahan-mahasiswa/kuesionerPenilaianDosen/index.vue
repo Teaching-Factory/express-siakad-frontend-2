@@ -88,9 +88,9 @@ onMounted(() => {
                             <td>{{ krsMahasiswa.KelasKuliah.nama_kelas_kuliah }}</td>
                             <td>{{ krsMahasiswa.KelasKuliah.Dosen.nama_dosen }}</td>
                             <td>
-                                <button class="btn btn-outline-primary">
-                                    <i class="pi pi-pencil"></i>
-                                </button>
+                                <router-link :to="`/kuesioner-penilaian-dosen/${krsMahasiswa.id_kelas}/kuesioner`" class="btn btn-outline-primary">
+                                    <i class="pi pi-eye"></i>
+                                </router-link>
                             </td>
                         </tr>
                     </tbody>
