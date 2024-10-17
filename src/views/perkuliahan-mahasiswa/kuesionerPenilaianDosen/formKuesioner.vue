@@ -1,33 +1,32 @@
 <script setup>
 import Swal from 'sweetalert2';
 import { onMounted, ref } from 'vue';
-import { get, getData } from '../../../utiils/request';
+import { get, getData, postData } from '../../../utiils/request';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const periodes = ref([]);
-const selectedPeriode = ref('');
 const kelasKuliahs = ref([]);
 const aspekPenilaian = ref([]);
 const skalaPenilaian = ref([]);
 const dataMahasiswa = ref([]);
-const total = ref([]);
+const id_aspek_penilaian_dosen = ref('');
+const id_skala_penilaian_dosen = ref('');
 
 const getMahasiswa = async () => {
     Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
     const response = await getData('mahasiswa/get-mahasiswa-active');
     const krs = response.data.data;
     dataMahasiswa.value = krs;
     console.log('response', krs);
-    Swal.close()
+    Swal.close();
 };
 
 const getKuisioner = async (id_kelas_kuliah) => {
@@ -41,16 +40,53 @@ const getKuisioner = async (id_kelas_kuliah) => {
             }
         });
         const response = await getData(`kuesioner/kelas-kuliah/${id_kelas_kuliah}/get`);
-        const data = response.data; // Adjust based on actual response
-        
-        aspekPenilaian.value = data.dataAspekPenilaian;
+        const data = response.data;
+
+        if (data.dataAspekPenilaian && data.dataAspekPenilaian.length > 0) {
+            aspekPenilaian.value = data.dataAspekPenilaian;
+        } else {
+            console.error('Data Aspek Penilaian kosong');
+        }
+
         skalaPenilaian.value = data.dataSkalaPenilaian;
-        console.log('aspek', aspekPenilaian.value);
-        console.log('skala', skalaPenilaian.value);
     } catch (error) {
         console.error('Gagal mengambil data Kelas Kuliah:', error);
     } finally {
         Swal.close();
+    }
+};
+
+const submitKuisioner = async () => {
+    try {
+        const kuesioner_answers = aspekPenilaian.value.map((kuisioner, index) => {
+            const selectedSkala = document.querySelector(`input[name='row${index}']:checked`);
+
+            return {
+                id_aspek_penilaian_dosen: kuisioner.id,
+                id_skala_penilaian_dosen: selectedSkala ? selectedSkala.value : null
+            };
+        });
+
+        const validAnswers = kuesioner_answers.filter((item) => item.id_skala_penilaian_dosen !== null);
+
+        if (validAnswers.length === 0) {
+            throw new Error('No valid answers provided');
+        }
+
+        const id_kelas_kuliah = route.params.id_kelas_kuliah || route.query.id_kelas_kuliah;
+        const payload = {
+            kuesioner_answers: validAnswers
+        };
+
+        const response = await postData(`kuesioner/${id_kelas_kuliah}/create-kuesioner-by-mahasiswa-active`, payload);
+
+        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.href = '/kuesioner-penilaian-dosen';
+        });
+    } catch (error) {
+        Swal.close();
+        console.error('Error updating data:', error);
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.message}`, 'error');
     }
 };
 
@@ -73,10 +109,10 @@ onMounted(() => {
                     <h5><i class="pi pi-user me-2"></i>KUESIONER PENILAIAN DOSEN</h5>
                 </div>
                 <div class="col-lg-6 d-flex justify-content-end">
-                    <div   div class="flex justify-content-end gap-2">
-                    <router-link to="/kuesioner-penilaian-dosen" class="btn btn-secondary"> <i class="pi pi-bars me-2"></i> Daftar</router-link>
-                    <button class="btn btn-primary"> <i class="pi pi-check me-2"></i> Simpan</button>
-                    <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Batal</button>
+                    <div div class="flex justify-content-end gap-2">
+                        <router-link to="/kuesioner-penilaian-dosen" class="btn btn-secondary"> <i class="pi pi-bars me-2"></i> Daftar</router-link>
+                        <button @click="submitKuisioner" class="btn btn-primary"><i class="pi pi-check me-2"></i> Simpan</button>
+                        <button class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</button>
                     </div>
                 </div>
             </div>
@@ -117,20 +153,11 @@ onMounted(() => {
                         <tr v-for="(kuisioner, index) in aspekPenilaian" :key="index">
                             <td>{{ index + 1 }}</td>
                             <td>{{ kuisioner.aspek_penilaian }}</td>
-                            <td>{{kuisioner.deskripsi_pendek }}</td>
-                            <td>
-                                <input type="radio" name="row1" value="Tidak Baik"> Tidak Baik
+                            <td>{{ kuisioner.deskripsi_pendek }}</td>
+                            <td v-for="(skala, skalaIndex) in skalaPenilaian" :key="skalaIndex">
+                                {{ skala.keterangan_skala_penilaian }}
+                                <input type="radio" :name="'row' + index" :value="skala.id" />
                             </td>
-                            <td>
-                                <input type="radio" name="row1" value="Cukup Baik"> Cukup Baik
-                            </td>
-                            <td>
-                                <input type="radio" name="row1" value="Baik"> Baik
-                            </td>
-                            <td>
-                                <input type="radio" name="row1" value="Sangat Baik"> Sangat Baik
-                            </td>
-
                         </tr>
                     </tbody>
                 </table>
