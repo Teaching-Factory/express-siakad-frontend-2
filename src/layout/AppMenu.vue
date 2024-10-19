@@ -16,57 +16,57 @@ const model = ref([
     {
         label: 'Admin Camaba',
         items: [
-        { 
-            label: 'Status Pendaftaran', 
-            to: '/status-pendaftaran' 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Biodata Pendaftar', 
-            to: '/biodata-pendaftar', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Upload Foto', 
-            to: '/upload-foto', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Program Studi', 
-            to: '/pilihan-prodi', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Upload Berkas', 
-            to: '/upload-berkas', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Pembayaran Tagihan', 
-            to: '/pembayaran-tagihan', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Finalisasi Data', 
-            to: '/finalisasi-data', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Cetak Kartu Ujian', 
-            to: '/cetak-kartu-ujian', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Jadwal Seleksi Tes', 
-            to: '/jadwal-seleksi-tes', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        },
-        { 
-            label: 'Cetak Form Pendaftaran', 
-            to: '/cetak-form-pendaftaran', 
-            // visible: computed(() => permissions.includes('import-mahasiswa'))
-        }
-    ],
+            {
+                label: 'Status Pendaftaran',
+                to: '/status-pendaftaran'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Biodata Pendaftar',
+                to: '/biodata-pendaftar'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Upload Foto',
+                to: '/upload-foto'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Program Studi',
+                to: '/pilihan-prodi'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Upload Berkas',
+                to: '/upload-berkas'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Pembayaran Tagihan',
+                to: '/pembayaran-tagihan'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Finalisasi Data',
+                to: '/finalisasi-data'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Cetak Kartu Ujian',
+                to: '/cetak-kartu-ujian'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Jadwal Seleksi Tes',
+                to: '/jadwal-seleksi-tes'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            },
+            {
+                label: 'Cetak Form Pendaftaran',
+                to: '/cetak-form-pendaftaran'
+                // visible: computed(() => permissions.includes('import-mahasiswa'))
+            }
+        ]
         // visible: computed(() => permissions.includes('dashboard'))
     },
     {
@@ -114,50 +114,49 @@ const model = ref([
                 items: [
                     {
                         label: 'Pengaturan PMB',
-                        to: '/pengaturan-pmb',
+                        to: '/pengaturan-pmb'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'Jenis Tes',
-                        to: '/jenis-tes',
+                        to: '/jenis-tes'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'Jenis Berkas',
-                        to: '/jenis-berkas',
+                        to: '/jenis-berkas'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'Periode Pendaftaran',
-                        to: '/periode-pendaftaran',
+                        to: '/periode-pendaftaran'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'Tagihan Calon Mahasiswa Baru',
-                        to: '/tagihan-camaba',
+                        to: '/tagihan-camaba'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'Daftar Calon Mahasiswa Baru',
-                        to: '/daftar-camaba',
+                        to: '/daftar-camaba'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'Set NIM Pendaftar Kolektif',
-                        to: '/set-nim-pendaftar-kolektif',
+                        to: '/set-nim-pendaftar-kolektif'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'Export ke Daftar Mahasiswa',
-                        to: '/export-daftar-mahasiswa',
+                        to: '/export-daftar-mahasiswa'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
                     },
                     {
                         label: 'User Guide',
-                        to: '/user-guide',
+                        to: '/user-guide'
                         // visible: computed(() => permissions.includes('import-mahasiswa'))
-                    },
-                    
+                    }
                 ]
             },
             {
@@ -300,31 +299,29 @@ const model = ref([
                 //     return [, 'daftar-dosen-wali', 'manajemen-mahasiswa-wali', 'set-kolektif-dosenwali'].some((permission) => permissions.includes(permission));
                 // }),
                 items: [
-                    
                     {
                         label: 'Import Kelulusan Mahasiswa',
-                        to: '/import-kelulusan-mahasiswa',
+                        to: '/import-kelulusan-mahasiswa'
                         // visible: computed(() => permissions.includes('manajemen-mahasiswa-wali'))
                     },
                     {
                         label: 'Setting Yudisium Mahasiswa',
-                        to: '/setting-yudisium-mahasiswa',
+                        to: '/setting-yudisium-mahasiswa'
                         // visible: computed(() => permissions.includes('manajemen-mahasiswa-wali'))
                     },
                     {
                         label: 'Daftar Mahasiswa Yudisium',
-                        to: '/daftar-mahasiswa-yudisium',
+                        to: '/daftar-mahasiswa-yudisium'
                         // visible: computed(() => permissions.includes('manajemen-mahasiswa-wali'))
                     }
                 ]
             }
-            
         ]
     },
     {
         label: 'Data',
         visible: computed(() => {
-            return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah','jenis-tagihan', 'daftar-tagihan', 'daftar-pembayaran', 'daftar-berita'].some((permission) =>
+            return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah', 'jenis-tagihan', 'daftar-tagihan', 'daftar-pembayaran', 'daftar-berita'].some((permission) =>
                 permissions.includes(permission)
             );
         }),
@@ -389,22 +386,22 @@ const model = ref([
                 items: [
                     {
                         label: 'Aspek Penilaian Dosen',
-                        to: '/aspek-penilaian-dosen',
+                        to: '/aspek-penilaian-dosen'
                         // visible: computed(() => permissions.includes('daftar-tagihan'))
                     },
                     {
                         label: 'Skala Penilaian Dosen',
-                        to: '/skala-penilaian-dosen',
+                        to: '/skala-penilaian-dosen'
                         // visible: computed(() => permissions.includes('daftar-pembayaran'))
                     },
                     {
                         label: 'Hasil Kuesioner Dosen',
-                        to: '/hasil-kuesioner-dosen',
+                        to: '/hasil-kuesioner-dosen'
                         // visible: computed(() => permissions.includes('daftar-pembayaran'))
                     },
                     {
                         label: 'Hasil Kuesioner Per Kelas',
-                        to: '/hasil-kuesioner-perkelas',
+                        to: '/hasil-kuesioner-perkelas'
                         // visible: computed(() => permissions.includes('daftar-pembayaran'))
                     }
                 ]
@@ -412,7 +409,7 @@ const model = ref([
             {
                 label: 'Keuangan',
                 // icon: 'pi pi-fw pi-user',
-                 visible: computed(() => {
+                visible: computed(() => {
                     return ['daftar-tagihan', 'daftar-pembayaran'].some((permission) => permissions.includes(permission));
                 }),
                 items: [
@@ -431,7 +428,7 @@ const model = ref([
             {
                 label: 'Daftar Berita',
                 // icon: 'pi pi-fw pi-user',
-                 visible: computed(() => {
+                visible: computed(() => {
                     return ['daftar-berita'].some((permission) => permissions.includes(permission));
                 }),
                 items: [
@@ -439,6 +436,20 @@ const model = ref([
                         label: 'Membuat Berita',
                         to: '/daftar-berita',
                         visible: computed(() => permissions.includes('daftar-berita'))
+                    }
+                ]
+            },
+            {
+                label: 'Singkronisasi',
+                // icon: 'pi pi-fw pi-user',
+                //  visible: computed(() => {
+                //     return ['daftar-berita'].some((permission) => permissions.includes(permission));
+                // }),
+                items: [
+                    {
+                        label: 'Singkron Data',
+                        to: '/singkron-data'
+                        // visible: computed(() => permissions.includes('daftar-berita'))
                     }
                 ]
             }
@@ -648,7 +659,7 @@ const model = ref([
                     {
                         label: 'Kartu Rencana Studi Online',
                         to: '/perkuliahan-krs-mahasiswa',
-                        visible: computed(() => settingGlobal.open_krs === true && permissions.includes('perkuliahan-krs-mahasiswa')),
+                        visible: computed(() => settingGlobal.open_krs === true && permissions.includes('perkuliahan-krs-mahasiswa'))
                         // visible: computed(() => settingGlobal.includes('open_krs'))
                     },
                     {
@@ -663,7 +674,7 @@ const model = ref([
                     },
                     {
                         label: 'Kuesioner Penilaian Dosen',
-                        to: '/kuesioner-penilaian-dosen',
+                        to: '/kuesioner-penilaian-dosen'
                         // visible: computed(() => permissions.includes('kuesioner-penilaian-dosen'))
                     }
                 ]
@@ -708,7 +719,6 @@ const model = ref([
             }
         ]
     }
-   
 ]);
 </script>
 

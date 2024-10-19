@@ -772,13 +772,13 @@ const router = createRouter({
                 {
                     path: '/kuesioner-penilaian-dosen',
                     name: 'kuesioner-penilaian-dosen',
-                    component: () => import('../views/perkuliahan-mahasiswa/kuesionerPenilaianDosen/index.vue'),
+                    component: () => import('../views/perkuliahan-mahasiswa/kuesionerPenilaianDosen/index.vue')
                     // meta: { requiredPermissions: ['kuesioner-penilaian-dosen'] }
                 },
                 {
                     path: '/kuesioner-penilaian-dosen/:id_kelas_kuliah/kuesioner',
                     name: 'kuesioner-penilaian-dosen-kuesioner',
-                    component: () => import('../views/perkuliahan-mahasiswa/kuesionerPenilaianDosen/formKuesioner.vue'),
+                    component: () => import('../views/perkuliahan-mahasiswa/kuesionerPenilaianDosen/formKuesioner.vue')
                     // meta: { requiredPermissions: ['kuesioner-penilaian-dosen'] }
                 },
 
@@ -913,6 +913,13 @@ const router = createRouter({
                     path: '/cetak-form-pendaftaran',
                     name: 'cetak-form-pendaftaran',
                     component: () => import('../views/admin-camaba/cetakFormPendaftaran/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+
+                {
+                    path: '/singkron-data',
+                    name: 'singkron-data',
+                    component: () => import('../views/referensi/singkronisasi/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 }
             ]
