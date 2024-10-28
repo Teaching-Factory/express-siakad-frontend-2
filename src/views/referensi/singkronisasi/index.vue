@@ -18,6 +18,7 @@ const syncDataDosen = async () => {
                 Swal.showLoading();
             }
         });
+
         // Melakukan permintaan GET untuk mengambil data
         const response = await getData('sync-feeder/list-dosen');
 
@@ -34,10 +35,10 @@ const syncDataDosen = async () => {
         console.log('message', data);
 
         // Menampilkan pesan berhasil setelah menutup loading
-        Swal.close();
         Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
             window.location.href = '/singkron-data'; // Arahkan pengguna setelah sukses
         });
+        Swal.close();
     } catch (error) {
         // Menutup tampilan loading jika terjadi error
         Swal.close();

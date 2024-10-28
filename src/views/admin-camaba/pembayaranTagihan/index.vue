@@ -79,6 +79,14 @@ const uploadBuktiPembayaran = async () => {
     }
 };
 
+const formatTanggal = (tanggal) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(tanggal).toLocaleDateString('id-ID', options);
+};
+
+const formatRupiah = (biaya) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
+};
 onBeforeMount(() => {
     getTagihanCamaba();
 });
@@ -121,9 +129,9 @@ onBeforeMount(() => {
                                             <tr v-for="(tagihan, index) in tagihanCamabas" :key="index">
                                                 <td>{{ tagihan.JenisTagihan?.nama_jenis_tagihan || '-' }}</td>
                                                 <td>{{ tagihan.Semester?.nama_semester || '-' }}</td>
-                                                <td>Rp. {{ tagihan.jumlah_tagihan }}</td>
-                                                <td>{{ tagihan.tanggal_tagihan }}</td>
-                                                <td>{{ tagihan.tanggal_lunas || '-' }}</td>
+                                                <td>{{ formatRupiah(tagihan.jumlah_tagihan) }}</td>
+                                                <td>{{ formatTanggal(tagihan.tanggal_tagihan) }}</td>
+                                                <td>{{ formatTanggal(tagihan.tanggal_lunas || '-') }}</td>
                                                 <td>{{ tagihan.status_tagihan }}</td>
                                                 <td>
                                                     <!-- Show file upload button if there's no bukti -->

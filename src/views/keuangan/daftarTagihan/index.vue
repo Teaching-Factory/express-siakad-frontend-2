@@ -145,6 +145,15 @@ const confirmDelete = (id_tagihan_mahasiswa) => {
         }
     });
 };
+
+const formatTanggal = (tanggal) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(tanggal).toLocaleDateString('id-ID', options);
+};
+
+const formatRupiah = (biaya) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
+};
 </script>
 
 <template>
@@ -258,7 +267,7 @@ const confirmDelete = (id_tagihan_mahasiswa) => {
             </Column>
             <Column filterField="jumlah_tagihan" header="Nominal" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.jumlah_tagihan }}
+                    {{ formatRupiah(data.jumlah_tagihan) }}
                 </template>
             </Column>
             <Column filterField="status_tagihan" header="Status Tagihan" style="min-width: 10rem">

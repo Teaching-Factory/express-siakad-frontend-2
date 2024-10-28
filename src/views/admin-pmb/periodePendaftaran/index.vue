@@ -65,6 +65,15 @@ const confirmDelete = (id) => {
     });
 };
 
+const formatTanggal = (tanggal) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(tanggal).toLocaleDateString('id-ID', options);
+};
+
+const formatRupiah = (biaya) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
+}
+
 onBeforeMount(() => {
     periodePendaftaran();
 });
@@ -109,7 +118,7 @@ onBeforeMount(() => {
                 <Column filterField="tanggal_awal_pendaftaran" header="Periode Dibuka" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.tanggal_awal_pendaftaran }}</span>
+                            <span>{{ formatTanggal(data.tanggal_awal_pendaftaran) }}</span>
                         </div>
                     </template>
                 </Column>
@@ -130,7 +139,7 @@ onBeforeMount(() => {
                 <Column filterField="tanggal_awal_pendaftaran" header="Tanggal Pendaftaran" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.tanggal_awal_pendaftaran }}</span>
+                            <span>{{ formatTanggal(data.tanggal_awal_pendaftaran) }}</span>
                         </div>
                     </template>
                 </Column>

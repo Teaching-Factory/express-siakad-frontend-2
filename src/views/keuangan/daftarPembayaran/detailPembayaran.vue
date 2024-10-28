@@ -123,6 +123,14 @@ onMounted(() => {
         });
     }
 });
+const formatTanggal = (tanggal) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(tanggal).toLocaleDateString('id-ID', options);
+};
+
+const formatRupiah = (biaya) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
+}
 </script>
 
 <template>
@@ -165,7 +173,7 @@ onMounted(() => {
             </Column>
             <Column header="Tanggal Bayar" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.tanggalbayar }}
+                    {{ formatTanggal(data.tanggalbayar) }}
                 </template>
             </Column>
             <Column header="Status Pembayaran" style="min-width: 10rem">

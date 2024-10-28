@@ -29,13 +29,13 @@ const filters = ref({
     status_tagihan: {
         value: null,
         matchMode: FilterMatchMode.EQUALS
-    },
+    }
 });
 
-const tagihanMahasiswa = ref([])
+const tagihanMahasiswa = ref([]);
 
 const fetchTagihanMahasiswa = async () => {
-    try{
+    try {
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
@@ -44,37 +44,52 @@ const fetchTagihanMahasiswa = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('tagihan-mahasiswa/get-tagihan-by-mahasiswa-active')
-        tagihanMahasiswa.value = response.data.data
-        Swal.close()
-    }catch(error){
+        const response = await get('tagihan-mahasiswa/get-tagihan-by-mahasiswa-active');
+        tagihanMahasiswa.value = response.data.data;
+        Swal.close();
+    } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
-}
+};
+
+const formatTanggal = (tanggal) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(tanggal).toLocaleDateString('id-ID', options);
+};
+
+const formatRupiah = (biaya) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
+};
 
 onMounted(() => {
-    fetchTagihanMahasiswa()
-})
+    fetchTagihanMahasiswa();
+});
 </script>
 
 <template>
     <div class="card">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-                    role="tab" aria-controls="home" aria-selected="true">Info Tagihan</button>
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Info Tagihan</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-                    role="tab" aria-controls="profile" aria-selected="false">Info Pembayaran</button>
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Info Pembayaran</button>
             </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="mt-3">
-                    <DataTable v-model:filters="filters" :globalFilterFields="['id_tagihan_mahasiswa', 'JenisTagihan.jenis_tagihan', 'Periode.periode_pelaporan','jumlah_tagihan', 'status_tagihan']" :value="tagihanMahasiswa" :paginator="true" :rows="10" dataKey="id" :rowHover="true"
-                         showGridlines>
+                    <DataTable
+                        v-model:filters="filters"
+                        :globalFilterFields="['id_tagihan_mahasiswa', 'JenisTagihan.jenis_tagihan', 'Periode.periode_pelaporan', 'jumlah_tagihan', 'status_tagihan']"
+                        :value="tagihanMahasiswa"
+                        :paginator="true"
+                        :rows="10"
+                        dataKey="id"
+                        :rowHover="true"
+                        showGridlines
+                    >
                         <template #header>
                             <div class="row">
                                 <div class="col-lg-6 d-flex justify-content-start">
@@ -107,7 +122,7 @@ onMounted(() => {
                         <Column filterField="jumlah_tagihan" header="Jumlah Tagihan" style="min-width: 10rem">
                             <template #body="{ data }">
                                 <div class="flex align-items-center gap-2">
-                                    <span>Rp. {{ data.jumlah_tagihan }}</span>
+                                    <span>{{ formatRupiah(data.jumlah_tagihan) }}</span>
                                 </div>
                             </template>
                         </Column>
@@ -127,7 +142,7 @@ onMounted(() => {
                         </Column>
                     </DataTable>
 
-                    <hr>
+                    <hr />
                     <table>
                         <tbody>
                             <tr>
@@ -147,11 +162,7 @@ onMounted(() => {
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="row mt-3">
                     <div class="col-lg-12">
-                        <div class="alert alert-danger text-center" role="alert">
-                            Anda memiliki piutang sebesar <strong>Rp. 10.000.000</strong> Segera lengkapi sebelum anda
-                            dikeluarkan
-                            dari kampus!!
-                        </div>
+                        <div class="alert alert-danger text-center" role="alert">Anda memiliki piutang sebesar <strong>Rp. 10.000.000</strong> Segera lengkapi sebelum anda dikeluarkan dari kampus!!</div>
                     </div>
                 </div>
             </div>

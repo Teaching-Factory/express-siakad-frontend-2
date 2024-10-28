@@ -14,7 +14,7 @@ const filters = ref({
     nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const message = ref('');
+const dosen = ref([]);
 const dosens = ref([]);
 const tahunAjaran = ref([]);
 const kuisionerDosen = ref([]);
@@ -136,7 +136,7 @@ const getOptionLabel = (option) => {
             <div class="row mt-3 mb-3">
                 <div class="col-lg-12 col-md-6 col-lg-6">
                     <div class="alert alert-secondary text-center" role="alert">
-                        <h5 class="text-dark text-center">- || Semester :</h5>
+                        <h5 class="text-dark text-center">{{ kuisionerDosen.dosen?.nama_dosen }} || Semester :{{ kuisionerDosen.semester?.nama_semester }}</h5>
                     </div>
                 </div>
             </div>

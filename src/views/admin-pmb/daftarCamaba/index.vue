@@ -16,7 +16,7 @@ const first = ref(0);
 const camabas = ref([]);
 const semesters = ref([]);
 const periodePendaftarans = ref([]); // Data untuk dropdown periode pendaftaran
-const selectedSemester = ref('');   // Semester yang dipilih
+const selectedSemester = ref(''); // Semester yang dipilih
 const selectedPeriodePendaftaran = ref(''); // Periode pendaftaran yang dipilih
 const selectedBerkas = ref(''); // Periode pendaftaran yang dipilih
 const selectedTes = ref(''); // Periode pendaftaran yang dipilih
@@ -33,25 +33,21 @@ const getSemester = async () => {
 
 // Ambil data periode pendaftaran berdasarkan semester yang dipilih
 const fetchClasses = async () => {
-    console.log("fungsi class terpangil");
+    console.log('fungsi class terpangil');
     if (selectedSemester.value) {
-    console.log("fungsi class terpangil 2");
+        console.log('fungsi class terpangil 2');
 
         try {
             const response = await get(`periode-pendaftaran/semester/${selectedSemester.value}/get`);
             periodePendaftarans.value = response.data.data; // Isi dropdown dengan data periode
             console.log(periodePendaftarans.value);
-    console.log("fungsi class terpangil 3");
-
+            console.log('fungsi class terpangil 3');
         } catch (error) {
             console.error('Gagal mengambil data periode pendaftaran:', error);
         }
     }
 };
-watch(
-    selectedSemester, 
-    fetchClasses
-);
+watch(selectedSemester, fetchClasses);
 
 // Loading data setelah memilih semester
 const selectedFilter = async () => {
@@ -102,6 +98,11 @@ const onPageChange = (event) => {
 onBeforeMount(() => {
     selectedFilter();
 });
+
+const formatTanggal = (tanggal) => {
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Intl.DateTimeFormat('id-ID', options).format(new Date(tanggal));
+};
 </script>
 
 <template>
@@ -131,7 +132,7 @@ onBeforeMount(() => {
                     <div class="">
                         <label for="exampleFormControlInput1" class="form-label">Kelulusan Berkas</label>
                         <select v-model="selectedBerkas" class="form-select" aria-label="Default select example">
-                             <option value="" selected disabled hidden>All</option>
+                            <option value="" selected disabled hidden>All</option>
                             <option value="true">Lulus</option>
                             <option value="false">Tidak Lulus</option>
                         </select>
@@ -142,9 +143,8 @@ onBeforeMount(() => {
                         <label for="exampleFormControlInput1" class="form-label">Kelulusan Tes</label>
                         <select v-model="selectedTes" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>All</option>
-                            <option value="true" >Lulus</option>
+                            <option value="true">Lulus</option>
                             <option value="false">Tidak Lulus</option>
-                           
                         </select>
                     </div>
                 </div>
@@ -178,7 +178,7 @@ onBeforeMount(() => {
             <template #empty>
                 <div class="text-center">Tidak ada data.</div>
             </template>
-            
+
             <!-- <template #loading>Loading data. Please wait.</template> -->
             <Column header="No" headerStyle="width:3rem">
                 <template #body="slotProps">
@@ -213,40 +213,40 @@ onBeforeMount(() => {
             </Column>
             <Column filterField="tanggal_pendaftaran" header="Tanggal Pendaftaran" style="min-width: 15rem">
                 <template #body="{ data }">
-                    {{ data.tanggal_pendaftaran }}
+                    {{ formatTanggal(data.tanggal_pendaftaran) }}
                 </template>
             </Column>
             <Column filterField="finalisasi" header="Finalisasi" style="min-width: 12rem">
                 <template #body="{ data }">
-                   {{ data.finalisasi ? 'Sudah' : 'Belum' }}
+                    {{ data.finalisasi ? 'Sudah' : 'Belum' }}
                 </template>
             </Column>
             <Column filterField="status_berkas" header="Kelulusan Berkas" style="min-width: 12rem">
                 <template #body="{ data }">
-                   {{ data.status_berkas ? 'Lulus' : 'Tidak Lulus' }}
+                    {{ data.status_berkas ? 'Lulus' : 'Tidak Lulus' }}
                 </template>
             </Column>
             <Column filterField="status_tes" header="Kelulusan Tes" style="min-width: 12rem">
                 <template #body="{ data }">
-                   {{ data.status_tes ? 'Lulus' : 'Tidak Lulus' }}
+                    {{ data.status_tes ? 'Lulus' : 'Tidak Lulus' }}
                 </template>
             </Column>
             <Column filterField="hints" header="Hints" style="min-width: 8rem">
                 <template #body="{ data }">
-                   {{ data.hints }}
+                    {{ data.hints }}
                 </template>
             </Column>
             <Column header="Aksi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2"> 
-                            <i class="pi pi-pencil"></i>
-                        </router-link>
-                        
-                        <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)">
-                            <i class="pi pi-trxash"></i>
-                        </button>
-                    </template>
-                </Column>
+                <template #body="{ data }">
+                    <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2">
+                        <i class="pi pi-pencil"></i>
+                    </router-link>
+
+                    <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)">
+                        <i class="pi pi-trxash"></i>
+                    </button>
+                </template>
+            </Column>
         </DataTable>
     </div>
 </template>

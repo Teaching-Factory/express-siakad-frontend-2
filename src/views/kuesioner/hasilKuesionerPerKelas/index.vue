@@ -3,7 +3,7 @@ import { ref, onBeforeMount } from 'vue';
 import Swal from 'sweetalert2';
 import vSelect from 'vue-select';
 import { FilterMatchMode } from 'primevue/api';
-import { del, get } from '../../../utiils/request';
+import { del, get, getData } from '../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -17,6 +17,7 @@ const filters = ref({
 const message = ref('');
 const dosens = ref([]);
 const tahunAjaran = ref([]);
+const kuisionerKelas = ref([]);
 const dosenWali = ref([]);
 const selectedDosen = ref('');
 const selectedTahunAjaran = ref('');
@@ -37,7 +38,7 @@ const fetchDosen = async () => {
 };
 const fetchTahunAjaran = async () => {
     try {
-        const response = await get('tahun-ajaran');
+        const response = await get('semester/');
         tahunAjaran.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data :', error);
@@ -77,14 +78,17 @@ const filterData = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`dosen-wali/${dosenId}/${tahunAjaranId}/get`);
-        console.log('res', response);
-        const filterDosenWali = response.data.data;
-        console.log('Dosen : ', filterDosenWali);
 
-        dosenWali.value = filterDosenWali;
+        // Gunakan query params sesuai dengan postman request
+        const response = await getData(`hasil-kuesioner-per-kelas/filter-kelas-kuliah/get?id_semester=${tahunAjaranId}&id_dosen=${dosenId}`);
+
+        const hasilKuisionerKelas = response.data.dataKelasKuliah;
+
+        kuisionerKelas.value = hasilKuisionerKelas;
+        console.log('object', hasilKuisionerKelas);
         Swal.close();
     } catch (error) {
+        console.error('Error fetching data:', error);
         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
     }
 };
@@ -151,7 +155,7 @@ const confirmDelete = (id) => {
                         <label for="exampleFormControlInput1" class="form-label">Periode Kuesioner Penilaian Dosen</label>
                         <select v-model="selectedTahunAjaran" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Tahun Ajaran</option>
-                            <option v-for="tahun_ajaran in tahunAjaran" :key="tahun_ajaran.id_tahun_ajaran" :value="tahun_ajaran.id_tahun_ajaran">{{ tahun_ajaran.nama_tahun_ajaran }}</option>
+                            <option v-for="tahun_ajaran in tahunAjaran" :key="tahun_ajaran.id_semester" :value="tahun_ajaran.id_semester">{{ tahun_ajaran.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
@@ -160,26 +164,15 @@ const confirmDelete = (id) => {
                 </div>
             </div>
 
-            <div class="row mt-3 mb-3">
+            <!-- <div class="row mt-3 mb-3">
                 <div class="col-lg-12 col-md-6 col-lg-6">
                     <div class="alert alert-secondary text-center" role="alert">
                         <h5 class="text-dark text-center">{{ dosenWali[0]?.Dosen?.nidn }} - {{ dosenWali[0]?.Dosen?.nama_dosen }} || Tahun Ajaran : {{ dosenWali[0]?.TahunAjaran?.nama_tahun_ajaran }}</h5>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <DataTable
-                v-model:filters="filters"
-                :globalFilterFields="['Mahasiswa.nim', 'Mahasiswa.nama_mahasiswa', 'prodi', 'Mahasiswa.nama_status_mahasiswa', 'Mahasiswa.nama_periode_masuk']"
-                :value="dosenWali"
-                :paginator="true"
-                :rows="10"
-                dataKey="id"
-                :rowHover="true"
-                :first="first"
-                @page="onPageChange"
-                showGridlines
-            >
+            <DataTable v-model:filters="filters" :globalFilterFields="[]" :value="kuisionerKelas" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :first="first" @page="onPageChange" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -203,43 +196,43 @@ const confirmDelete = (id) => {
                 <Column filterField="nim" header="Mata Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.Mahasiswa.nim }}</span>
+                            <span>{{ data.MataKuliah.nama_mata_kuliah }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_mahasiswa" header="Kelas Perkuliahan" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.Mahasiswa.nama_mahasiswa }}</span>
+                            <span>{{ data.nama_kelas_kuliah }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="prodi" header="Ruang" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.Mahasiswa.Prodi.nama_program_studi }}</span>
+                            <span>{{ data.DetailKelasKuliahs?.RuangPerkuliahan?.nama_ruang_perkuliahan || '-' }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_status_mahasiswa" header="Hari" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.Mahasiswa.nama_status_mahasiswa }}</span>
+                            <span>{{ data.DetailKelasKuliahs?.hari || '-' }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_periode_masuk" header="Waktu" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.Mahasiswa.nama_periode_masuk }}</span>
+                            <span>{{ data.DetailKelasKuliahs?.jam_mulai || '-' }} : {{ data.DetailKelasKuliahs?.jam_selesai || '-' }}</span>
                         </div>
                     </template>
                 </Column>
-                
+
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/ruang-perkuliahan/${data.id}/edit`" class="btn btn-outline-primary">
+                            <router-link class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">

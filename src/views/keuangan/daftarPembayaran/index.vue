@@ -43,6 +43,15 @@ const onPageChange = (event) => {
 onBeforeMount(() => {
     fetchPembayaran();
 });
+
+const formatTanggal = (tanggal) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(tanggal).toLocaleDateString('id-ID', options);
+};
+
+const formatRupiah = (biaya) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
+};
 </script>
 
 <template>
@@ -99,9 +108,7 @@ onBeforeMount(() => {
                 </template>
             </Column>
             <Column filterField="periodebayar" header="Periode Bayar" style="min-width: 10rem">
-                <template #body="{ data }">
-                    {{ data.TagihanMahasiswa.tanggal_tagihan }} -{{data.TagihanMahasiswa.deadline_tagihan}}
-                </template>
+                <template #body="{ data }"> {{ formatTanggal(data.TagihanMahasiswa.tanggal_tagihan) }} - {{ formatTanggal(data.TagihanMahasiswa.deadline_tagihan) }} </template>
             </Column>
             <Column filterField="jenis_tagihan" header="Jenis Tagihan" style="min-width: 10rem">
                 <template #body="{ data }">
@@ -110,12 +117,12 @@ onBeforeMount(() => {
             </Column>
             <Column filterField="jumlah_tagihan" header="Nominal" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.TagihanMahasiswa.jumlah_tagihan }}
+                    {{ formatRupiah(data.TagihanMahasiswa.jumlah_tagihan) }}
                 </template>
             </Column>
             <Column filterField="tanggalbayar" header="Tanggal Bayar" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.tanggalbayar }}
+                    {{ formatTanggal(data.tanggalbayar) }}
                 </template>
             </Column>
         </DataTable>
