@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     id_ruang: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_ruang_perkuliahan: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const periodePendaftarans = ref([]);
@@ -72,7 +72,7 @@ const formatTanggal = (tanggal) => {
 
 const formatRupiah = (biaya) => {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
-}
+};
 
 onBeforeMount(() => {
     periodePendaftaran();
@@ -166,7 +166,7 @@ onBeforeMount(() => {
                             <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-warning">
                                 <i class="pi pi-eye"></i>
                             </router-link>
-                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-primary">
+                            <router-link :to="`/periode-pendaftaran-edit/${data.id}`" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">

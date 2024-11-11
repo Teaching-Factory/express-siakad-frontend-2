@@ -35,7 +35,7 @@ const semesterAktif = ref([]);
 const hasPresensi = ref(false);
 
 const fetchSemesterAktif = async () => {
-    const response = await get('setting-global-semester');
+    const response = await get('setting-global-semester/get-setting-global-semester-active');
     semesterAktif.value = response.data.data;
     console.log('res', response.data.data);
 };

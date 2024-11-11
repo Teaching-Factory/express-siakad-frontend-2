@@ -2,6 +2,7 @@
 import { get, getData, postData } from '../../../utiils/request'; // Perbaiki typo di 'utils'
 import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import Swal from 'sweetalert2';
+import { useRoute } from 'vue-router';
 
 const semesters = ref([]);
 const jalurPendaftarans = ref([]);
@@ -13,9 +14,9 @@ const tahapTes = ref([]);
 const selectedJalur = ref('');
 const selectedPeriode = ref('');
 const selectedSistemKuliah = ref('');
-const selectedProdi = ref([]); // array to hold selected prodi
-const selectedBerkas = ref([]); // array to hold selected berkas
-const selectedSumber = ref([]); // array to hold selected sumber
+const selectedProdi = ref([]);
+const selectedBerkas = ref([]);
+const selectedSumber = ref([]);
 const nama_periode_pendaftaran = ref('');
 const tanggal_awal_pendaftaran = ref('');
 const tanggal_akhir_pendaftaran = ref('');
@@ -27,6 +28,8 @@ const jumlah_pilihan_prodi = ref('');
 const deskripsi_singkat = ref('');
 const konten_informasi = ref('');
 const sumber_informasi = ref(false);
+const isEdit = ref(false);
+const route = useRoute();
 const urutan_tes = ref('');
 const tanggal_awal_tes = ref('');
 const tanggal_akhir_tes = ref('');
@@ -157,6 +160,44 @@ const create = async () => {
     }
 };
 
+const getDetailPeriodePendaftaran = async (id) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await get(`periode-pendaftaran/${id}/get`);
+        const data = response.data.data;
+
+        (nama_periode_pendaftaran.value = data.nama_periode_pendaftaran),
+            (selectedPeriode.value = data.id_semester),
+            (selectedJalur.value = data.id_jalur_masuk),
+            (selectedSistemKuliah.value = data.id_sistem_kuliah),
+            (tanggal_awal_pendaftaran.value = data.tanggal_awal_pendaftaran),
+            (tanggal_akhir_pendaftaran.value = data.tanggal_akhir_pendaftaran),
+            (dibuka.value = data.dibuka),
+            (berbayar.value = data.berbayar),
+            (biaya_pendaftaran.value = data.biaya_pendaftaran),
+            (batas_akhir_pembayaran.value = data.batas_akhir_pembayaran),
+            (jumlah_pilihan_prodi.value = data.jumlah_pilihan_prodi),
+            (deskripsi_singkat.value = data.deskripsi_singkat),
+            (konten_informasi.value = data.konten_informasi),
+            (sumber_informasi.value = data.sumber_informasi),
+            //     selectedProdi.value=data.;
+            // selectedBerkas.value;
+            // selectedSumber.value;
+
+            Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data:', error);
+    }
+};
+
 onBeforeMount(() => {
     getTahapTes();
     getSumber();
@@ -167,6 +208,11 @@ onBeforeMount(() => {
     getSistemKuliah();
     getSemester();
     selectAllProdi();
+    const id = route.params.id;
+    if (id) {
+        isEdit.value = true;
+        getDetailPeriodePendaftaran(id);
+    }
 });
 </script>
 
@@ -175,7 +221,7 @@ onBeforeMount(() => {
         <form @submit.prevent="create">
             <div class="row">
                 <div class="col-lg-4">
-                    <h5><i class="pi pi-user me-2"></i> PERIODE PENDAFTARAN</h5>
+                    <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} PERIODE PENDAFTARAN</h5>
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
                     <router-link to="/periode-pendaftaran" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
@@ -187,7 +233,7 @@ onBeforeMount(() => {
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="nama" class="col-sm-3 col-form-label">Nama</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" placeholder="Nama Periode Pendaftaran" id="nama" v-model="nama_periode_pendaftaran" />
+                    <input type="text" class="form-control" placeholder="Nama Periode Pendaftaran" id="nama" v-model="nama_periode_pendaftaran" required />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">

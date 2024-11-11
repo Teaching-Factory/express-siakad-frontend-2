@@ -87,6 +87,12 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
+                    path: '/periode-pendaftaran-edit/:id',
+                    name: 'periode-pendaftaran-edit',
+                    component: () => import('../views/admin-pmb/periodePendaftaran/form.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
                     path: '/tagihan-camaba',
                     name: 'tagihan-camaba',
                     component: () => import('../views/admin-pmb/tagihanCamaba/index.vue')
@@ -935,7 +941,7 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/pendaftaran-pmb'];
+    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');
