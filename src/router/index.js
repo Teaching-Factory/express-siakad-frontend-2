@@ -15,7 +15,7 @@ const router = createRouter({
             component: () => import('../views/guest-camaba/index.vue')
         },
         {
-            path: '/pendaftaran-pmb/cetak-formulir',
+            path: '/pendaftaran-pmb/:id/cetak-formulir',
             name: 'pendaftaran-pmb-cetak-formulir',
             component: () => import('../views/guest-camaba/cetakFormulir.vue')
         },
@@ -935,7 +935,7 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/cetak-formulir'];
+    const publicPages = ['/', '/pendaftaran-pmb'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');
@@ -947,11 +947,12 @@ router.beforeEach((to, from, next) => {
         next({ name: 'NotFound' });
     }
 
+    const cetakFormulirPathRegex = /^\/pendaftaran-pmb\/[^/]+\/cetak-formulir$/;
+
     // Jika pengguna sudah login dan mencoba mengakses halaman pendaftaran-pmb atau cetak-formulir, arahkan ke dashboard
-    if (loggedIn && userIN && (to.path === '/pendaftaran-pmb' || to.path === '/pendaftaran-pmb/cetak-formulir')) {
+    if (loggedIn && userIN && (to.path === '/pendaftaran-pmb' || cetakFormulirPathRegex.test(to.path))) {
         return next('/dashboard');
     }
-
     if (authRequired && !loggedIn && !userIN) {
         return next('/');
     }
