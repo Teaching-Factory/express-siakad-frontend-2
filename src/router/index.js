@@ -494,6 +494,12 @@ const router = createRouter({
                     component: () => import('../views/kuesioner/hasilKuesionerPerKelas/index.vue')
                     // meta: { requiredPermissions: ['data-wilayah'] }
                 },
+                {
+                    path: '/hasil-kuesioner-perkelas-detail',
+                    name: 'hasil-kuesioner-perkelas-detail',
+                    component: () => import('../views/kuesioner/hasilKuesionerPerKelas/detailKuesioner.vue')
+                    // meta: { requiredPermissions: ['data-wilayah'] }
+                },
 
                 //keuangan
 
