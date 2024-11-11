@@ -232,7 +232,7 @@ const confirmDelete = (id) => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link class="btn btn-outline-primary">
+                            <router-link to="/hasil-kuesioner-perkelas-detail" class="btn btn-outline-primary">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
                             <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
