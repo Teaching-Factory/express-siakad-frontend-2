@@ -30,87 +30,68 @@ const selectedStatusPembayaran = ref('');
 const selectedValidasi = ref([]);
 
 const getPeriode = async () => {
-    try {
-        const response = await get('semester/');
-        periodes.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data sistemKuliah:', error);
-    }
+    const response = await get('semester/');
+    periodes.value = response.data.data;
 };
 const getJenisTagihan = async () => {
-    try {
-        const response = await get('periode-pendaftaran/');
-        jenisTagihans.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data sistemKuliah:', error);
-    }
+    const response = await get('periode-pendaftaran/');
+    jenisTagihans.value = response.data.data;
 };
 
 const filterData = async () => {
-    try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
-        const id_periode = selectedPeriode.value;
-        const id_jenis_tagihan = selectedJenisTagihan.value;
-        const status_tagihan = selectedStatusPembayaran.value;
+    const id_periode = selectedPeriode.value;
+    const id_jenis_tagihan = selectedJenisTagihan.value;
+    const status_tagihan = selectedStatusPembayaran.value;
 
-        // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`tagihan-camaba/${id_periode}/${id_jenis_tagihan}/get?status_tagihan=${status_tagihan}`);
+    // Menggunakan axios untuk GET request dengan query parameters
+    const response = await getData(`tagihan-camaba/${id_periode}/${id_jenis_tagihan}/get?status_tagihan=${status_tagihan}`);
 
-        const filterMahasiswa = response.data.data;
-        tagihans.value = filterMahasiswa;
+    const filterMahasiswa = response.data.data;
+    tagihans.value = filterMahasiswa;
 
-        console.log('object :', filterMahasiswa);
-        Swal.close();
-    } catch (error) {
-        console.error('Gagal mengambil data :', error);
-        Swal.fire('Gagal', 'Data tidak ditemukan.', 'warning').then(() => {});
-    }
+    Swal.close();
 };
 
 const updateValidasi = async () => {
-    try {
-        if (selectedValidasi.value.length === 0) {
-            Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
-            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
-        }
-
-        const token = getToken();
-
-        const url = `${API_URL}/tagihan-camaba/validasi-tagihan-camaba-kolektif`;
-
-        // Persiapkan data untuk permintaan PUT
-        const data = {
-            tagihan_camabas: selectedValidasi.value.map((tagihan) => ({
-                id: tagihan.id
-            }))
-        };
-
-        const response = await axios.put(
-            url,
-            data, // Body permintaan
-            {
-                headers: {
-                    Authorization: token,
-                    'Content-Type': 'application/json' // Tambahkan header Content-Type
-                }
-            }
-        );
-
-        Swal.fire('BERHASIL!', 'Pembayaran Berhasil di Validasi.', 'success').then(() => {
-            window.location.href = '/tagihan-camaba';
-        });
-        console.log('Status berhasil diperbarui:', response.data);
-    } catch (error) {
-        console.error('Gagal memperbarui status:', error);
+    if (selectedValidasi.value.length === 0) {
+        Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
+        return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
     }
+
+    const token = getToken();
+
+    const url = `${API_URL}/tagihan-camaba/validasi-tagihan-camaba-kolektif`;
+
+    // Persiapkan data untuk permintaan PUT
+    const data = {
+        tagihan_camabas: selectedValidasi.value.map((tagihan) => ({
+            id: tagihan.id
+        }))
+    };
+
+    const response = await axios.put(
+        url,
+        data, // Body permintaan
+        {
+            headers: {
+                Authorization: token,
+                'Content-Type': 'application/json' // Tambahkan header Content-Type
+            }
+        }
+    );
+
+    Swal.fire('BERHASIL!', 'Pembayaran Berhasil di Validasi.', 'success').then(() => {
+        window.location.href = '/tagihan-camaba';
+    });
 };
 
 const onPageChange = (event) => {

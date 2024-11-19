@@ -3,6 +3,9 @@ import { get, getData, postData } from '../../../utiils/request'; // Perbaiki ty
 import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import Swal from 'sweetalert2';
 import { useRoute } from 'vue-router';
+import axios from 'axios';
+import { API_URL } from '../../../config/config';
+import { getToken } from '../../../utiils/local_storage';
 
 const semesters = ref([]);
 const jalurPendaftarans = ref([]);
@@ -176,7 +179,7 @@ const getDetailPeriodePendaftaran = async (id) => {
 
         // Map tahap tes data
         const tahapTesData = data.tahap_tes_periode_pendaftaran.map((item) => ({
-            urutanTes: item.urutan_tes,
+            urutan_tes: item.urutan_tes,
             nama_tes: item.JenisTe.nama_tes, // Ensure this exists in the response
             tanggal_awal_tes: item.tanggal_awal_tes,
             tanggal_akhir_tes: item.tanggal_akhir_tes
@@ -206,6 +209,72 @@ const getDetailPeriodePendaftaran = async (id) => {
     }
 };
 
+const update = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const tahapTesPayload = tahapTes.value.map((tahap) => ({
+            id_jenis_tes: tahap.id, // Mengambil ID jenis tes
+            urutan_tes: tahap.urutan_tes,
+            tanggal_awal_tes: tahap.tanggal_awal_tes,
+            tanggal_akhir_tes: tahap.tanggal_akhir_tes
+        }));
+
+        const token = getToken();
+        const id = route.params.id; // Use id_kelas_kuliah from detailKelasKuliah
+        const payload = {
+            nama_periode_pendaftaran: nama_periode_pendaftaran.value,
+            id_semester: selectedPeriode.value,
+            id_jalur_masuk: selectedJalur.value,
+            id_sistem_kuliah: selectedSistemKuliah.value,
+            tanggal_awal_pendaftaran: tanggal_awal_pendaftaran.value,
+            tanggal_akhir_pendaftaran: tanggal_akhir_pendaftaran.value,
+            dibuka: dibuka.value,
+            berbayar: berbayar.value,
+            biaya_pendaftaran: biaya_pendaftaran.value,
+            batas_akhir_pembayaran: batas_akhir_pembayaran.value,
+            jumlah_pilihan_prodi: jumlah_pilihan_prodi.value,
+            deskripsi_singkat: deskripsi_singkat.value,
+            konten_informasi: konten_informasi.value,
+            sumber_informasi: sumber_informasi.value,
+            prodi: selectedProdi.value.map((id) => ({ id_prodi: id })), // map selected prodi
+            berkas: selectedBerkas.value.map((id) => ({ id_jenis_berkas: id })), // map selected berkas
+            sumber: selectedSumber.value.map((id) => ({ id_sumber: id })),
+            tahap_tes: tahapTesPayload // menggunakan payload tahap tes
+        };
+
+        const response = await axios.put(`${API_URL}/periode-pendaftaran/${id}/update`, payload, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.href = '/periode-pendaftaran';
+        });
+    } catch (error) {
+        Swal.close();
+        console.error('Error update data:', error.response ? error.response.data : error.message);
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+    }
+};
+
+const submit = async () => {
+    if (isEdit.value) {
+        update();
+    } else {
+        create();
+    }
+};
+
 onBeforeMount(() => {
     getTahapTes();
     getSumber();
@@ -226,7 +295,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <form @submit.prevent="create">
+        <form @submit.prevent="submit">
             <div class="row">
                 <div class="col-lg-4">
                     <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} PERIODE PENDAFTARAN</h5>
