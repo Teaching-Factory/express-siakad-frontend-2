@@ -102,7 +102,7 @@ const getTahapTes = async () => {
 
 // Computed property untuk memeriksa apakah sumber harus ditampilkan
 const showSumber = computed(() => {
-    return sumber_informasi.value === '1'; // Jika "Ya" (1) dipilih, tampilkan sumber
+    return sumber_informasi.value === 'true'; // Jika "Ya" (1) dipilih, tampilkan sumber
 });
 const selectAllProdi = () => {
     selectedProdi.value = prodis.value.map((prodi) => prodi.id_prodi);
@@ -172,27 +172,35 @@ const getDetailPeriodePendaftaran = async (id) => {
         });
 
         const response = await get(`periode-pendaftaran/${id}/get`);
-        const data = response.data.data;
+        const data = response.data;
 
-        (nama_periode_pendaftaran.value = data.nama_periode_pendaftaran),
-            (selectedPeriode.value = data.id_semester),
-            (selectedJalur.value = data.id_jalur_masuk),
-            (selectedSistemKuliah.value = data.id_sistem_kuliah),
-            (tanggal_awal_pendaftaran.value = data.tanggal_awal_pendaftaran),
-            (tanggal_akhir_pendaftaran.value = data.tanggal_akhir_pendaftaran),
-            (dibuka.value = data.dibuka),
-            (berbayar.value = data.berbayar),
-            (biaya_pendaftaran.value = data.biaya_pendaftaran),
-            (batas_akhir_pembayaran.value = data.batas_akhir_pembayaran),
-            (jumlah_pilihan_prodi.value = data.jumlah_pilihan_prodi),
-            (deskripsi_singkat.value = data.deskripsi_singkat),
-            (konten_informasi.value = data.konten_informasi),
-            (sumber_informasi.value = data.sumber_informasi),
-            //     selectedProdi.value=data.;
-            // selectedBerkas.value;
-            // selectedSumber.value;
+        // Map tahap tes data
+        const tahapTesData = data.tahap_tes_periode_pendaftaran.map((item) => ({
+            urutanTes: item.urutan_tes,
+            nama_tes: item.JenisTe.nama_tes, // Ensure this exists in the response
+            tanggal_awal_tes: item.tanggal_awal_tes,
+            tanggal_akhir_tes: item.tanggal_akhir_tes
+        }));
 
-            Swal.close();
+        (nama_periode_pendaftaran.value = data.data.nama_periode_pendaftaran),
+            (selectedPeriode.value = data.data.id_semester),
+            (selectedJalur.value = data.data.id_jalur_masuk),
+            (selectedSistemKuliah.value = data.data.id_sistem_kuliah),
+            (tanggal_awal_pendaftaran.value = data.data.tanggal_awal_pendaftaran),
+            (tanggal_akhir_pendaftaran.value = data.data.tanggal_akhir_pendaftaran),
+            (dibuka.value = data.data.dibuka),
+            (berbayar.value = data.data.berbayar),
+            (biaya_pendaftaran.value = data.data.biaya_pendaftaran),
+            (batas_akhir_pembayaran.value = data.data.batas_akhir_pembayaran),
+            (jumlah_pilihan_prodi.value = data.data.jumlah_pilihan_prodi),
+            (deskripsi_singkat.value = data.data.deskripsi_singkat),
+            (konten_informasi.value = data.data.konten_informasi),
+            (sumber_informasi.value = data.data.sumber_informasi),
+            (selectedProdi.value = data.prodi_periode_pendaftaran.map((item) => item.Prodi.id_prodi)),
+            (selectedBerkas.value = data.berkas_periode_pendaftaran.map((item) => item.JenisBerkas.id)),
+            (selectedSumber.value = data.sumber_periode_pendaftaran.map((item) => item.Sumber.id)),
+            (tahapTes.value = tahapTesData);
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
     }
@@ -283,13 +291,13 @@ onBeforeMount(() => {
                     <input type="checkbox" v-model="dibuka" />
                 </div>
             </div>
+
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Berbayar?</label>
                 <div class="col-md-7">
                     <input type="checkbox" id="berbayarCheckbox" v-model="berbayar" />
                 </div>
             </div>
-
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Biaya Pendaftaran</label>
                 <div class="col-md-7">
@@ -325,8 +333,6 @@ onBeforeMount(() => {
                             {{ prodi.nama_program_studi }}
                         </label>
                     </div>
-
-                    <!-- Tambahkan lebih banyak checkbox sesuai kebutuhan -->
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
@@ -338,7 +344,6 @@ onBeforeMount(() => {
                             {{ berkas.nama_berkas }}
                         </label>
                     </div>
-                    <!-- Tambahkan lebih banyak checkbox sesuai kebutuhan -->
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
@@ -371,7 +376,6 @@ onBeforeMount(() => {
                                     <td><input type="date" class="form-control datepicker" v-model="tahap.tanggal_awal_tes" /></td>
                                     <td><input type="date" class="form-control datepicker" v-model="tahap.tanggal_akhir_tes" /></td>
                                 </tr>
-                                <!-- Duplicate the <tr> for more entries -->
                             </tbody>
                         </table>
                     </div>
@@ -387,14 +391,13 @@ onBeforeMount(() => {
                 <label for="status" class="col-sm-3 col-form-label">Sumber Informasi</label>
                 <div class="col-md-7">
                     <select class="form-select" id="status" v-model="sumber_informasi">
-                        <option value="0">Tidak</option>
-                        <option value="1">Ya</option>
+                        <option value="false">Tidak</option>
+                        <option value="true">Ya</option>
                     </select>
                 </div>
             </div>
 
             <div class="mb-3 row d-flex justify-content-center" v-if="showSumber">
-                <!-- Tampilkan hanya jika showSumber true -->
                 <label class="col-sm-3 col-form-label">Sumber</label>
                 <div class="col-md-7">
                     <div v-for="sumber in sumbers" :key="sumber.id" class="form-check">

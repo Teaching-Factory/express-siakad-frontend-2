@@ -104,7 +104,7 @@ const updateValidasi = async () => {
             }
         );
 
-        Swal.fire('BERHASIL!', 'KRS Berhasil di Validasi.', 'success').then(() => {
+        Swal.fire('BERHASIL!', 'Pembayaran Berhasil di Validasi.', 'success').then(() => {
             window.location.href = '/tagihan-camaba';
         });
         console.log('Status berhasil diperbarui:', response.data);

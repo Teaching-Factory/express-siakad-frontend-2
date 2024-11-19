@@ -4,11 +4,9 @@ import { get, getData } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 
-const sync = ref([]);
+const syncDosen = ref([]);
 
 const syncDataDosen = async () => {
-    // Menampilkan tampilan loading
-
     try {
         Swal.fire({
             title: 'Loading...',
@@ -19,31 +17,245 @@ const syncDataDosen = async () => {
             }
         });
 
-        // Melakukan permintaan GET untuk mengambil data
         const response = await getData('sync-feeder/list-dosen');
 
-        // Cek apakah respon tidak berhasil (misalnya, status selain 2xx)
         if (!response || response.status !== 200) {
-            // Lempar error jika status bukan 200 (berhasil)
             throw new Error();
         }
 
         const data = response.data;
 
-        // Menyimpan data yang diterima
-        sync.value = data;
-        console.log('message', data);
+        syncDosen.value = data;
 
-        // Menampilkan pesan berhasil setelah menutup loading
-        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
-            window.location.href = '/singkron-data'; // Arahkan pengguna setelah sukses
+        Swal.fire('BERHASIL!', 'Data Dosen berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
         });
         Swal.close();
     } catch (error) {
-        // Menutup tampilan loading jika terjadi error
         Swal.close();
 
-        // Menampilkan pesan error yang diterima
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Gagal mengambil data : ' + (error.message || 'Terjadi Kesalahan '),
+            confirmButtonText: 'OK'
+        });
+    }
+};
+
+const syncDataTahunAjaran = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await getData('sync-feeder/tahun-ajaran/');
+
+        if (!response || response.status !== 200) {
+            throw new Error();
+        }
+
+        // const data = response.data;
+
+        // syncDosen.value = data;
+
+        Swal.fire('BERHASIL!', 'Data Tahun Ajaran berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
+        });
+        Swal.close();
+    } catch (error) {
+        Swal.close();
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Gagal mengambil data : ' + (error.message || 'Terjadi Kesalahan '),
+            confirmButtonText: 'OK'
+        });
+    }
+};
+
+const syncDataProdi = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await getData('sync-feeder/prodi/');
+
+        if (!response || response.status !== 200) {
+            throw new Error();
+        }
+
+        // const data = response.data;
+
+        // syncDosen.value = data;
+
+        Swal.fire('BERHASIL!', 'Data Program Studi berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
+        });
+        Swal.close();
+    } catch (error) {
+        Swal.close();
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Gagal mengambil data : ' + (error.message || 'Terjadi Kesalahan '),
+            confirmButtonText: 'OK'
+        });
+    }
+};
+
+const syncDataSubtansi = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await getData('sync-feeder/substansi/');
+
+        if (!response || response.status !== 200) {
+            throw new Error();
+        }
+
+        // const data = response.data;
+
+        // syncDosen.value = data;
+
+        Swal.fire('BERHASIL!', 'Data Subtansi berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
+        });
+        Swal.close();
+    } catch (error) {
+        Swal.close();
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Gagal mengambil data : ' + (error.message || 'Terjadi Kesalahan '),
+            confirmButtonText: 'OK'
+        });
+    }
+};
+
+const syncDataMatakuliah = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await getData('sync-feeder/list-mata-kuliah');
+
+        if (!response || response.status !== 200) {
+            throw new Error();
+        }
+
+        // const data = response.data;
+
+        // syncDosen.value = data;
+
+        Swal.fire('BERHASIL!', 'Data Matakuliah berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
+        });
+        Swal.close();
+    } catch (error) {
+        Swal.close();
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Gagal mengambil data : ' + (error.message || 'Terjadi Kesalahan '),
+            confirmButtonText: 'OK'
+        });
+    }
+};
+
+const syncDataSemester = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await getData('sync-feeder/semester/');
+
+        if (!response || response.status !== 200) {
+            throw new Error();
+        }
+
+        // const data = response.data;
+
+        // syncDosen.value = data;
+
+        Swal.fire('BERHASIL!', 'Data Semester berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
+        });
+        Swal.close();
+    } catch (error) {
+        Swal.close();
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Gagal mengambil data : ' + (error.message || 'Terjadi Kesalahan '),
+            confirmButtonText: 'OK'
+        });
+    }
+};
+
+const syncDataKurikulum = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await getData('sync-feeder/kurikulum/');
+
+        if (!response || response.status !== 200) {
+            throw new Error();
+        }
+
+        // const data = response.data;
+
+        // syncDosen.value = data;
+
+        Swal.fire('BERHASIL!', 'Data Kurikulum berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
+        });
+        Swal.close();
+    } catch (error) {
+        Swal.close();
+
         Swal.fire({
             icon: 'error',
             title: 'Gagal!',
@@ -77,7 +289,67 @@ const syncDataDosen = async () => {
                                     <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
                                 </td> -->
                                 <td>
-                                    <button class="btn btn-outline-warning" @click="syncDataDosen" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                    <button class="btn btn-outline-primary" @click="syncDataDosen" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Tahun Ajaran</td>
+                                <!-- <td>
+                                    <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
+                                </td> -->
+                                <td>
+                                    <button class="btn btn-outline-primary" @click="syncDataTahunAjaran" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Program Studi</td>
+                                <!-- <td>
+                                    <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
+                                </td> -->
+                                <td>
+                                    <button class="btn btn-outline-primary" @click="syncDataProdi" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Subtansi</td>
+                                <!-- <td>
+                                    <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
+                                </td> -->
+                                <td>
+                                    <button class="btn btn-outline-primary" @click="syncDataSubtansi" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Matakuliah</td>
+                                <!-- <td>
+                                    <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
+                                </td> -->
+                                <td>
+                                    <button class="btn btn-outline-primary" @click="syncDataMatakuliah" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Semester</td>
+                                <!-- <td>
+                                    <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
+                                </td> -->
+                                <td>
+                                    <button class="btn btn-outline-primary" @click="syncDataSemester" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Kurikulum</td>
+                                <!-- <td>
+                                    <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
+                                </td> -->
+                                <td>
+                                    <button class="btn btn-outline-primary" @click="syncDataKurikulum" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
                                 </td>
                             </tr>
                         </tbody>

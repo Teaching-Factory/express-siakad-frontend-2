@@ -361,7 +361,7 @@ onMounted(() => {
                                 <div class="mb-3 mt-4 row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Nama Lengkap</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="nama_lengkap" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="nama_lengkap" id="inputPassword" required />
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Jenis Kelamin</label>
                                     <div class="col-sm-4">
@@ -375,7 +375,7 @@ onMounted(() => {
                                 <div class="mb-3 row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Tempat Lahir</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="tempat_lahir" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="tempat_lahir" id="inputPassword" required />
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Agama</label>
                                     <div class="col-sm-4">
@@ -392,7 +392,7 @@ onMounted(() => {
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Nama Ibu Kandung</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="nama_ibu_kandung" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="nama_ibu_kandung" id="inputPassword" required />
                                     </div>
                                 </div>
                                 <hr />
@@ -402,12 +402,12 @@ onMounted(() => {
                                 <div class="mb-3 mt-4 row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">NIK</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="nik" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="nik" id="inputPassword" required />
                                         <span>(No KTP Tanpa Tanda Baca )</span>
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">NISN</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="nisn" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="nisn" id="inputPassword" required />
                                         <span>(No NISN Tanpa Tanda Baca )</span>
                                     </div>
                                 </div>
@@ -419,39 +419,39 @@ onMounted(() => {
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">KWN</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="kewarganegaraan" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="kewarganegaraan" id="inputPassword" required />
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Jalan</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="jalan" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="jalan" id="inputPassword" required />
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Dusun</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="dusun" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="dusun" id="inputPassword" required />
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">RT</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="rt" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="rt" id="inputPassword" required />
                                         <span>(Input harus angka)</span>
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">RW</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="rw" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="rw" id="inputPassword" required />
                                         <span>(Input harus angka)</span>
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Kelurahan</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="kelurahan" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="kelurahan" id="inputPassword" required />
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">KodePos</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="kode_pos" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="kode_pos" id="inputPassword" required />
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -463,11 +463,11 @@ onMounted(() => {
                                 <div class="mb-3 row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="email" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="email" id="inputPassword" required />
                                     </div>
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Telepon</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" v-model="handphone" id="inputPassword" />
+                                        <input type="text" class="form-control" v-model="handphone" id="inputPassword" required />
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
@@ -498,13 +498,13 @@ onMounted(() => {
                                 <p><b>Data Ayah</b></p>
                                 <label for="inputPassword" class="col-sm-4 col-form-label">NIK Ayah</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="nik_ayah" id="inputPassword" />
+                                    <input type="text" class="form-control" v-model="nik_ayah" id="inputPassword" required />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
                                 <label for="inputPassword" class="col-sm-4 col-form-label">Nama Ayah</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="nama_ayah" id="inputPassword" />
+                                    <input type="text" class="form-control" v-model="nama_ayah" id="inputPassword" required />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
@@ -545,13 +545,13 @@ onMounted(() => {
                                 <p><b>Data Ibu</b></p>
                                 <label for="inputPassword" class="col-sm-4 col-form-label">NIK Ibu</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="nik_ibu" id="inputPassword" />
+                                    <input type="text" class="form-control" v-model="nik_ibu" id="inputPassword" required />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
                                 <label for="inputPassword" class="col-sm-4 col-form-label">Nama Ibu</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="nama_ibu_kandung" id="inputPassword" />
+                                    <input type="text" class="form-control" v-model="nama_ibu_kandung" id="inputPassword" required />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
@@ -592,13 +592,13 @@ onMounted(() => {
                                 <p><b>Data Wali</b></p>
                                 <label for="inputPassword" class="col-sm-4 col-form-label">Nama Wali</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="nama_wali" id="inputPassword" />
+                                    <input type="text" class="form-control" v-model="nama_wali" id="inputPassword" required />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
                                 <label for="inputPassword" class="col-sm-4 col-form-label">Tanggal Lahir</label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control" v-model="tanggal_lahir_wali" id="inputPassword" />
+                                    <input type="date" class="form-control" v-model="tanggal_lahir_wali" id="inputPassword" required />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
