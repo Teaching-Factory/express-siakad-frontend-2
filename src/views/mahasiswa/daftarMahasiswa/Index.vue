@@ -31,7 +31,7 @@ const fetchProdi = async () => {
 };
 const fetchAngkatan = async () => {
     try {
-        const response = await get('angkatan');
+        const response = await get('angkatan/');
         angkatans.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data angkatan mahasiswa:', error);

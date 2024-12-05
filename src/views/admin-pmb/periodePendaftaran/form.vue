@@ -3,6 +3,9 @@ import { get, getData, postData } from '../../../utiils/request'; // Perbaiki ty
 import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import Swal from 'sweetalert2';
 import { useRoute } from 'vue-router';
+import axios from 'axios';
+import { API_URL } from '../../../config/config';
+import { getToken } from '../../../utiils/local_storage';
 
 const semesters = ref([]);
 const jalurPendaftarans = ref([]);
@@ -102,7 +105,7 @@ const getTahapTes = async () => {
 
 // Computed property untuk memeriksa apakah sumber harus ditampilkan
 const showSumber = computed(() => {
-    return sumber_informasi.value === '1'; // Jika "Ya" (1) dipilih, tampilkan sumber
+    return sumber_informasi.value === 'true'; // Jika "Ya" (1) dipilih, tampilkan sumber
 });
 const selectAllProdi = () => {
     selectedProdi.value = prodis.value.map((prodi) => prodi.id_prodi);
@@ -172,29 +175,103 @@ const getDetailPeriodePendaftaran = async (id) => {
         });
 
         const response = await get(`periode-pendaftaran/${id}/get`);
-        const data = response.data.data;
+        const data = response.data;
 
-        (nama_periode_pendaftaran.value = data.nama_periode_pendaftaran),
-            (selectedPeriode.value = data.id_semester),
-            (selectedJalur.value = data.id_jalur_masuk),
-            (selectedSistemKuliah.value = data.id_sistem_kuliah),
-            (tanggal_awal_pendaftaran.value = data.tanggal_awal_pendaftaran),
-            (tanggal_akhir_pendaftaran.value = data.tanggal_akhir_pendaftaran),
-            (dibuka.value = data.dibuka),
-            (berbayar.value = data.berbayar),
-            (biaya_pendaftaran.value = data.biaya_pendaftaran),
-            (batas_akhir_pembayaran.value = data.batas_akhir_pembayaran),
-            (jumlah_pilihan_prodi.value = data.jumlah_pilihan_prodi),
-            (deskripsi_singkat.value = data.deskripsi_singkat),
-            (konten_informasi.value = data.konten_informasi),
-            (sumber_informasi.value = data.sumber_informasi),
-            //     selectedProdi.value=data.;
-            // selectedBerkas.value;
-            // selectedSumber.value;
+        // Map tahap tes data
+        const tahapTesData = data.tahap_tes_periode_pendaftaran.map((item) => ({
+            urutan_tes: item.urutan_tes,
+            nama_tes: item.JenisTe.nama_tes, // Ensure this exists in the response
+            tanggal_awal_tes: item.tanggal_awal_tes,
+            tanggal_akhir_tes: item.tanggal_akhir_tes
+        }));
 
-            Swal.close();
+        (nama_periode_pendaftaran.value = data.data.nama_periode_pendaftaran),
+            (selectedPeriode.value = data.data.id_semester),
+            (selectedJalur.value = data.data.id_jalur_masuk),
+            (selectedSistemKuliah.value = data.data.id_sistem_kuliah),
+            (tanggal_awal_pendaftaran.value = data.data.tanggal_awal_pendaftaran),
+            (tanggal_akhir_pendaftaran.value = data.data.tanggal_akhir_pendaftaran),
+            (dibuka.value = data.data.dibuka),
+            (berbayar.value = data.data.berbayar),
+            (biaya_pendaftaran.value = data.data.biaya_pendaftaran),
+            (batas_akhir_pembayaran.value = data.data.batas_akhir_pembayaran),
+            (jumlah_pilihan_prodi.value = data.data.jumlah_pilihan_prodi),
+            (deskripsi_singkat.value = data.data.deskripsi_singkat),
+            (konten_informasi.value = data.data.konten_informasi),
+            (sumber_informasi.value = data.data.sumber_informasi),
+            (selectedProdi.value = data.prodi_periode_pendaftaran.map((item) => item.Prodi.id_prodi)),
+            (selectedBerkas.value = data.berkas_periode_pendaftaran.map((item) => item.JenisBerkas.id)),
+            (selectedSumber.value = data.sumber_periode_pendaftaran.map((item) => item.Sumber.id)),
+            (tahapTes.value = tahapTesData);
+        Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
+    }
+};
+
+const update = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const tahapTesPayload = tahapTes.value.map((tahap) => ({
+            id_jenis_tes: tahap.id, // Mengambil ID jenis tes
+            urutan_tes: tahap.urutan_tes,
+            tanggal_awal_tes: tahap.tanggal_awal_tes,
+            tanggal_akhir_tes: tahap.tanggal_akhir_tes
+        }));
+
+        const token = getToken();
+        const id = route.params.id; // Use id_kelas_kuliah from detailKelasKuliah
+        const payload = {
+            nama_periode_pendaftaran: nama_periode_pendaftaran.value,
+            id_semester: selectedPeriode.value,
+            id_jalur_masuk: selectedJalur.value,
+            id_sistem_kuliah: selectedSistemKuliah.value,
+            tanggal_awal_pendaftaran: tanggal_awal_pendaftaran.value,
+            tanggal_akhir_pendaftaran: tanggal_akhir_pendaftaran.value,
+            dibuka: dibuka.value,
+            berbayar: berbayar.value,
+            biaya_pendaftaran: biaya_pendaftaran.value,
+            batas_akhir_pembayaran: batas_akhir_pembayaran.value,
+            jumlah_pilihan_prodi: jumlah_pilihan_prodi.value,
+            deskripsi_singkat: deskripsi_singkat.value,
+            konten_informasi: konten_informasi.value,
+            sumber_informasi: sumber_informasi.value,
+            prodi: selectedProdi.value.map((id) => ({ id_prodi: id })), // map selected prodi
+            berkas: selectedBerkas.value.map((id) => ({ id_jenis_berkas: id })), // map selected berkas
+            sumber: selectedSumber.value.map((id) => ({ id_sumber: id })),
+            tahap_tes: tahapTesPayload // menggunakan payload tahap tes
+        };
+
+        const response = await axios.put(`${API_URL}/periode-pendaftaran/${id}/update`, payload, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.href = '/periode-pendaftaran';
+        });
+    } catch (error) {
+        Swal.close();
+        console.error('Error update data:', error.response ? error.response.data : error.message);
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+    }
+};
+
+const submit = async () => {
+    if (isEdit.value) {
+        update();
+    } else {
+        create();
     }
 };
 
@@ -218,7 +295,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <form @submit.prevent="create">
+        <form @submit.prevent="submit">
             <div class="row">
                 <div class="col-lg-4">
                     <h5><i class="pi pi-user me-2"></i>{{ isEdit ? 'EDIT' : 'TAMBAH' }} PERIODE PENDAFTARAN</h5>
@@ -283,13 +360,13 @@ onBeforeMount(() => {
                     <input type="checkbox" v-model="dibuka" />
                 </div>
             </div>
+
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Berbayar?</label>
                 <div class="col-md-7">
                     <input type="checkbox" id="berbayarCheckbox" v-model="berbayar" />
                 </div>
             </div>
-
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Biaya Pendaftaran</label>
                 <div class="col-md-7">
@@ -325,8 +402,6 @@ onBeforeMount(() => {
                             {{ prodi.nama_program_studi }}
                         </label>
                     </div>
-
-                    <!-- Tambahkan lebih banyak checkbox sesuai kebutuhan -->
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
@@ -338,7 +413,6 @@ onBeforeMount(() => {
                             {{ berkas.nama_berkas }}
                         </label>
                     </div>
-                    <!-- Tambahkan lebih banyak checkbox sesuai kebutuhan -->
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
@@ -371,7 +445,6 @@ onBeforeMount(() => {
                                     <td><input type="date" class="form-control datepicker" v-model="tahap.tanggal_awal_tes" /></td>
                                     <td><input type="date" class="form-control datepicker" v-model="tahap.tanggal_akhir_tes" /></td>
                                 </tr>
-                                <!-- Duplicate the <tr> for more entries -->
                             </tbody>
                         </table>
                     </div>
@@ -387,14 +460,13 @@ onBeforeMount(() => {
                 <label for="status" class="col-sm-3 col-form-label">Sumber Informasi</label>
                 <div class="col-md-7">
                     <select class="form-select" id="status" v-model="sumber_informasi">
-                        <option value="0">Tidak</option>
-                        <option value="1">Ya</option>
+                        <option value="false">Tidak</option>
+                        <option value="true">Ya</option>
                     </select>
                 </div>
             </div>
 
             <div class="mb-3 row d-flex justify-content-center" v-if="showSumber">
-                <!-- Tampilkan hanya jika showSumber true -->
                 <label class="col-sm-3 col-form-label">Sumber</label>
                 <div class="col-md-7">
                     <div v-for="sumber in sumbers" :key="sumber.id" class="form-check">

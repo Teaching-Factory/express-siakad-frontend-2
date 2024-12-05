@@ -166,10 +166,10 @@ onBeforeMount(() => {
                             <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-warning">
                                 <i class="pi pi-eye"></i>
                             </router-link>
-                            <router-link :to="`/periode-pendaftaran-edit/${data.id}`" class="btn btn-outline-primary">
+                            <router-link :to="`/periode-pendaftaran-edit/${data.id}`" class="btn btn-outline-primary" title="edit">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
+                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger" title="hapus">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>
