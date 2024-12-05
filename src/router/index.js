@@ -20,6 +20,21 @@ const router = createRouter({
             component: () => import('../views/guest-camaba/cetakFormulir.vue')
         },
         {
+            path: '/setup-guest/get-started',
+            name: 'setuo-guest-get-started',
+            component: () => import('../views/setup-guest/index.vue')
+        },
+        {
+            path: '/setup-guest/get-started/register',
+            name: 'setuo-guest-get-started-register',
+            component: () => import('../views/setup-guest/register.vue')
+        },
+        {
+            path: '/setup-guest/get-started/register/settingws',
+            name: 'setuo-guest-get-started-register-settingws',
+            component: () => import('../views/setup-guest/settingWS.vue')
+        },
+        {
             path: '/',
             component: AppLayout,
             meta: { requiresAuth: true },
@@ -947,7 +962,7 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir'];
+    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir', '/setup-guest/get-started','/setup-guest/get-started/register', '/setup-guest/get-started/register/settingws'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');
