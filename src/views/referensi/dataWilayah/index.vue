@@ -24,7 +24,7 @@ const wilayah = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('wilayah'); // Memanggil fungsi get dengan endpoint 'wilayah'
+        const response = await get('wilayah/simply'); // Memanggil fungsi get dengan endpoint 'wilayah'
         console.log(response.data.data);
         wilayahs.value = response.data.data;
         Swal.close();

@@ -1,6 +1,25 @@
 <script setup>
+import Swal from 'sweetalert2';
+import { ref } from 'vue';
+import { postData } from '../../utiils/request';
 
+const urlFeeder = ref('');
+const usernameFeeder = ref('');
+const passwordFeeder = ref('');
+const status = ref(false);
 
+const createWebSister = async () => {
+    // Proses pembuatan user
+    const response = await postData(`setting-ws-feeder/create`, {
+        url_feeder: urlFeeder.value,
+        username_feeder: usernameFeeder.value,
+        password_feeder: passwordFeeder.value,
+        status: status.value
+    });
+    Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
+        window.location.href = '/dashboard';
+    });
+};
 function smoothScroll(id) {
     document.body.click();
     document.querySelector(id).scrollIntoView({
@@ -12,13 +31,15 @@ function smoothScroll(id) {
 <template>
     <div class="bg-light">
         <div id="home" class="container-fluid landing-wrapper overflow-hidden">
-            <div id="hero" class="d-flex flex-column pt-6 px-4 px-lg-5 overflow-hidden vh-100" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%);">
+            <div
+                id="hero"
+                class="d-flex flex-column pt-6 px-4 px-lg-5 overflow-hidden vh-100"
+                style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%)"
+            >
                 <div class="mx-4 mx-md-5 h-100 d-flex align-items-center justify-content-center">
                     <div class="row d-flex align-items-center justify-content-center w-100">
                         <div class="col-lg-7">
-                            <h1 class="display-4 fw-bold text-dark">
-                                <span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik
-                            </h1>
+                            <h1 class="display-4 fw-bold text-dark"><span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik</h1>
                             <p class="fs-4 fw-normal text-muted mt-3">Siap Mendukung Kampus Anda Bertransformasi secara Digital</p>
                         </div>
                         <div class="col-lg-5 mt-5">
@@ -29,44 +50,33 @@ function smoothScroll(id) {
                                             <div class="text-900 text-3xl font-medium mb-3">Setting WS</div>
                                         </div>
 
-                                        <form>
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">ULR  Feeder</label>
-                                            <InputText id="username" type="text" placeholder="Masukkan Username" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                        <form @submit.prevent="createWebSister">
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">ULR Feeder</label>
+                                            <InputText id="username" v-model="urlFeeder" type="text" placeholder="Masukkan Url Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
                                             <label for="username" class="block text-900 text-xl font-medium mb-2">Username Feeder</label>
-                                            <InputText id="username" type="text" placeholder="Masukkan Nama Lengkap" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                            <InputText id="username" type="text" v-model="usernameFeeder" placeholder="Masukkan Username Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
                                             <label for="username" class="block text-900 text-xl font-medium mb-2">Password Feeder</label>
-                                            <InputText id="username" type="text" placeholder="Masukkan Email" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                            <InputText id="username" type="text" v-model="passwordFeeder" placeholder="Masukkan Password Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
                                             <div>
                                                 <label for="statusFeeder" class="block text-900 font-medium text-xl mb-2">Status Feeder</label>
                                                 <div class="flex items-center mb-3">
-                                                <input
-                                                    type="radio"
-                                                    id="active"
-                                                    value="true"
-                                                    class="mr-2"
-                                                />
-                                                <label for="active" class="mr-4">Aktif</label>
+                                                    <input type="radio" v-model="status" id="active" value="true" class="mr-2" />
+                                                    <label for="active" class="mr-4">Aktif</label>
 
-                                                <input
-                                                    type="radio"
-                                                    id="inactive"
-                                                    value="false"
-                                                    class="mr-2"
-                                                />
-                                                <label for="inactive">Nonaktif</label>
+                                                    <!-- <input type="radio" id="inactive" value="false" class="mr-2" />
+                                                    <label for="inactive">Nonaktif</label> -->
                                                 </div>
-                                                
                                             </div>
-                                            <router-link to="/setup-guest/get-started/register/settingws" class="btn btn-primary w-full p-3 text-xl" style="background-color: #343434" type="submit">Simpan</router-link>
+                                            <button class="btn btn-primary w-full p-3 text-xl" style="background-color: #343434" type="submit">Simpan</button>
                                         </form>
-                            </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>

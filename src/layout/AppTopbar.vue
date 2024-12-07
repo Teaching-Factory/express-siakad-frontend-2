@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { API_URL } from '../config/config';
 import { clearPermissions, clearToken, clearUser } from '../service/auth';
-import { getUser } from '../utiils/local_storage';
+import { clearSettingGlobal, getUser } from '../utiils/local_storage';
 import Swal from 'sweetalert2';
 
 const { onMenuToggle } = useLayout();
@@ -43,6 +43,7 @@ const handleLogout = async () => {
             clearToken();
             clearUser();
             clearPermissions();
+            clearSettingGlobal();
             router.push('/');
         }
         Swal.close();
@@ -94,10 +95,9 @@ const isOutsideClicked = (event) => {
     <div class="layout-topbar">
         <router-link to="/" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
-            <div class="text-container text-icon" style="display: flex; flex-direction: column; margin-left: 10px;">
-                <span class="text-white subtitle" style="font-size: 1rem;">Sistem Informasi Akademik</span>
-                <span class="text-white title" style="font-size: 1.1rem; font-weight: bold;">Universitas Bakti Indonesia</span>
-                
+            <div class="text-container text-icon" style="display: flex; flex-direction: column; margin-left: 10px">
+                <span class="text-white subtitle" style="font-size: 1rem">Sistem Informasi Akademik</span>
+                <span class="text-white title" style="font-size: 1.1rem; font-weight: bold">Universitas Bakti Indonesia</span>
             </div>
         </router-link>
 
@@ -124,19 +124,20 @@ const isOutsideClicked = (event) => {
 </template>
 
 <style scoped>
-.user-text, .icon-text {
-  color: white;
+.user-text,
+.icon-text {
+    color: white;
 }
 @media (max-width: 1021px) {
-
-  .user-text, .icon-text {
-    color: black;
-  }
+    .user-text,
+    .icon-text {
+        color: black;
+    }
 }
 
 @media (max-width: 500px) {
-  .text-icon {
-    display: none !important;
-  }
+    .text-icon {
+        display: none !important;
+    }
 }
 </style>

@@ -1,5 +1,31 @@
 <script setup>
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { onMounted } from 'vue';
+import { API_URL } from '../../config/config';
+// import router from '../../router';
 
+const getStartedSetup = async () => {
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    const response = await axios.get(`${API_URL}/setup-guest/get-started`);
+    Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
+        window.location.href = '/setup-guest/get-started/register';
+    });
+
+    console.log('data : ', response);
+    Swal.close();
+};
+
+// onMounted(() => {
+//     getStartedSetup();
+// });
 
 function smoothScroll(id) {
     document.body.click();
@@ -12,24 +38,26 @@ function smoothScroll(id) {
 <template>
     <div class="bg-light">
         <div id="home" class="container-fluid landing-wrapper overflow-hidden">
-            <div id="hero" class="d-flex flex-column pt-6 px-4 px-lg-5 overflow-hidden vh-100" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%);">
+            <div
+                id="hero"
+                class="d-flex flex-column pt-6 px-4 px-lg-5 overflow-hidden vh-100"
+                style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%)"
+            >
                 <div class="mx-4 mx-md-5 h-100 d-flex align-items-center justify-content-center">
                     <div class="row d-flex align-items-center justify-content-center w-100">
                         <div class="col-lg-8">
-                            <h1 class="display-4 fw-bold text-dark">
-                                <span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik
-                            </h1>
+                            <h1 class="display-4 fw-bold text-dark"><span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik</h1>
                             <p class="fs-4 fw-normal text-muted mt-3">Siap Mendukung Kampus Anda Bertransformasi secara Digital</p>
-                            <router-link to="/setup-guest/get-started/register" class="btn btn-primary btn-lg">Get Started</router-link>
+                            <button @click="getStartedSetup" type="submit" class="btn btn-primary btn-lg">Get Started</button>
                         </div>
                         <div class="col-lg-4">
-                            <div class="border-1 p-1" style="border-radius: 10px;">
-                                <img :src="'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'" style="border-radius: 8px;" alt="Deskripsi Gambar" class="img-fluid mb-2" />
+                            <div class="border-1 p-1" style="border-radius: 10px">
+                                <img :src="'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'" style="border-radius: 8px" alt="Deskripsi Gambar" class="img-fluid mb-2" />
                                 <p class="m-0 text-center fw-bold text-muted">Aida Andinar Maulidiana</p>
-                                <p class="m-0 small text-muted text-center">~Kadal Gurun~</p>    
+                                <p class="m-0 small text-muted text-center">~Kadal Gurun~</p>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>

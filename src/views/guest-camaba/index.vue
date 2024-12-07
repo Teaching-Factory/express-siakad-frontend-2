@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 
 const periodePendaftarans = ref([]);
 const berkasPendaftaran = ref([]);
+const userGuide = ref([]);
 const prodis = ref([]);
 const sumbers = ref([]);
 const camabas = ref([]);
@@ -37,6 +38,29 @@ const getPeriodePendaftaran = async () => {
     periodePendaftarans.value = periode;
 
     console.log('data : ', periode);
+};
+
+const getUserGuide = async () => {
+    const response = await axios.get(`${API_URL}/user-guide-pmb-guest/get-aktif`);
+
+    const periode = response.data.data;
+    userGuide.value = periode;
+
+    console.log('data : ', periode);
+};
+
+const downloadFile = () => {
+    if (userGuide.value.file) {
+        const link = document.createElement('a');
+        link.href = userGuide.value.file;
+        link.download = ''; // Nama file akan mengikuti dari URL atau server
+        link.target = '_blank'; // Opsi jika ingin membuka di tab baru
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    } else {
+        console.error('File URL not available');
+    }
 };
 
 const pilihPeriode = async (id) => {
@@ -192,6 +216,7 @@ const formatRupiah = (biaya) => {
 
 onMounted(() => {
     getPeriodePendaftaran();
+    getUserGuide();
     getProdi(id_periode_pendaftaran);
     getSumber(id_periode_pendaftaran);
 });
@@ -212,8 +237,8 @@ onMounted(() => {
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6" style="margin-top: 15px">
                 <div class="flex justify-content-end gap-2">
-                    <router-link class="btn btn-primary"> <i class="pi pi-import me-2"></i> Login PMB</router-link>
-                    <router-link class="btn btn-secondary"> <i class="pi pi-upload me-2"></i> Buku Panduan PMB</router-link>
+                    <router-link to="/" class="btn btn-primary"> <i class="pi pi-import me-2"></i> Login PMB</router-link>
+                    <button v-if="userGuide.file" @click="downloadFile" class="btn btn-secondary"><i class="pi pi-upload me-2"></i> Buku Panduan PMB</button>
                 </div>
             </div>
         </div>

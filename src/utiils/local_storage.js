@@ -6,3 +6,4 @@ export const setPermissions = (permissions) => localStorage.setItem('permissions
 export const getPermissions = () => JSON.parse(localStorage.getItem('permissions') ?? []);
 export const setSettingGlobal = (setting_global_prodi) => localStorage.setItem('setting_global_prodi', JSON.stringify(setting_global_prodi ?? []));
 export const getSettingGlobal = () => JSON.parse(localStorage.getItem('setting_global_prodi') ?? []);
+export const clearSettingGlobal = () => localStorage.removeItem('setting_global_prodi');

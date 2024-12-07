@@ -1,5 +1,52 @@
 <script setup>
+import Swal from 'sweetalert2';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { API_URL } from '../../config/config';
+import { setPermissions, setToken, setUser } from '../../service/auth';
+import { setSettingGlobal } from '../../utiils/local_storage';
+import { post } from '../../utiils/request';
 
+const router = useRouter();
+const nama = ref('');
+const username = ref('');
+const password = ref('');
+const email = ref('');
+
+const createUser = async () => {
+    try {
+        // Proses pembuatan user
+        const res = await post(`setup-guest/create-user-super-admin`, {
+            nama: nama.value,
+            username: username.value,
+            password: password.value,
+            email: email.value
+        });
+
+        if (res.status === 200 && res.data) {
+            const { data } = res;
+            if (data.token) {
+                setToken(data.token); // Menyimpan token ke localStorage
+                setUser(data.user); // Menyimpan data user
+                setPermissions(data.permissions); // Menyimpan permissions
+                setSettingGlobal(data.setting_global_prodi); // Menyimpan setting global
+            } else {
+                throw new Error('Token tidak tersedia dalam response.');
+            }
+
+            // Menampilkan pesan sukses
+            Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
+                // Redirect ke halaman berikutnya
+                router.push('/setup-guest/get-started/register/settingws');
+            });
+        } else {
+            throw new Error('Response API tidak valid.');
+        }
+    } catch (error) {
+        Swal.fire('GAGAL', 'Gagal menambahkan data. Silakan coba lagi.', 'error');
+        console.error('Create user error:', error.message);
+    }
+};
 
 function smoothScroll(id) {
     document.body.click();
@@ -12,51 +59,52 @@ function smoothScroll(id) {
 <template>
     <div class="bg-light">
         <div id="home" class="container-fluid landing-wrapper overflow-hidden">
-            <div id="hero" class="d-flex flex-column pt-6 px-4 px-lg-5 overflow-hidden vh-100" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%);">
+            <div
+                id="hero"
+                class="d-flex flex-column pt-6 px-4 px-lg-5 overflow-hidden vh-100"
+                style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%)"
+            >
                 <div class="mx-4 mx-md-5 h-100 d-flex align-items-center justify-content-center">
                     <div class="row d-flex align-items-center justify-content-center w-100">
                         <div class="col-lg-7">
-                            <h1 class="display-4 fw-bold text-dark">
-                                <span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik
-                            </h1>
+                            <h1 class="display-4 fw-bold text-dark"><span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik</h1>
                             <p class="fs-4 fw-normal text-muted mt-3">Siap Mendukung Kampus Anda Bertransformasi secara Digital</p>
                         </div>
                         <div class="col-lg-5 mt-5">
                             <div class="flex flex-column align-items-center justify-content-center">
                                 <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, #343434 10%, rgba(33, 150, 243, 0) 30%)">
                                     <div class="w-full surface-card py-7 px-5 sm:px-8" style="border-radius: 53px">
-                                <div class="text-center mb-5">
-                                    <div class="text-900 text-3xl font-medium mb-3">Register</div>
-                                </div>
+                                        <div class="text-center mb-5">
+                                            <div class="text-900 text-3xl font-medium mb-3">Register</div>
+                                        </div>
 
-                                <form >
-                                    <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
-                                    <InputText id="username" type="text" placeholder="Masukkan Username" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
-                                    <span  class="text-red-500"></span>
+                                        <form @submit.prevent="createUser">
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
+                                            <InputText id="username" type="text" placeholder="Masukkan Username" v-model="username" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                            <span class="text-red-500"></span>
 
-                                    <label for="username" class="block text-900 text-xl font-medium mb-2">Nama</label>
-                                    <InputText id="username" type="text" placeholder="Masukkan Nama Lengkap" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
-                                    <span  class="text-red-500"></span>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Nama</label>
+                                            <InputText id="username" type="text" placeholder="Masukkan Nama Lengkap" v-model="nama" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                            <span class="text-red-500"></span>
 
-                                    <label for="username" class="block text-900 text-xl font-medium mb-2">Email</label>
-                                    <InputText id="username" type="text" placeholder="Masukkan Email" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
-                                    <span  class="text-red-500"></span>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Email</label>
+                                            <InputText id="username" type="text" placeholder="Masukkan Email" v-model="email" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                            <span class="text-red-500"></span>
 
-                                    <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                                    <Password id="password1" placeholder="Masukkan Password" :feedback="false" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
-                                    <span  class="text-red-500"></span>
+                                            <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
+                                            <Password id="password1" placeholder="Masukkan Password" v-model="password" :feedback="false" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
+                                            <span class="text-red-500"></span>
 
-                                    <router-link to="/setup-guest/get-started/register/settingws" class="btn btn-primary w-full p-3 text-xl" style="background-color: #343434" type="submit">Daftar</router-link>
-                                    <div class="text-center mt-3">
-                                        <router-link to="/setup-guest/get-started" class="text-center">Kembali ke beranda</router-link>
+                                            <button class="btn btn-primary w-full p-3 text-xl" style="background-color: #343434" type="submit">Daftar</button>
+                                            <div class="text-center mt-3">
+                                                <router-link to="/setup-guest/get-started" class="text-center">Kembali ke beranda</router-link>
+                                            </div>
+                                        </form>
                                     </div>
-
-                                </form>
-                            </div>
                                 </div>
                             </div>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>
