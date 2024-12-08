@@ -39,13 +39,26 @@ function smoothScroll(id) {
                 <div class="mx-4 mx-md-5 h-100 d-flex align-items-center justify-content-center">
                     <div class="row d-flex align-items-center justify-content-center w-100">
                         <div class="col-lg-7">
-                            <h1 class="display-4 fw-bold text-dark"><span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik</h1>
-                            <p class="fs-4 fw-normal text-muted mt-3">Siap Mendukung Kampus Anda Bertransformasi secara Digital</p>
+                            <p class="display-6 fw-bold text-dark"><span class="fw-light d-block"></span>Langkah Selanjutnya: Integrasikan Sistem Kampus Anda!</p>
+                            <div class="mt-4 mb-4">
+                                <h5 class="fs-5 text-muted mt-3">Kini saatnya Anda mengatur koneksi Web Service (WS) untuk memastikan SIACLOUD dapat bekerja dengan sempurna sesuai kebutuhan kampus Anda
+                                </h5>
+                                <h5></h5>
+                                <h5 class="fw-bold text-dark">💡 Apa yang Perlu Dilakukan?</h5>
+                                <ul class="fs-5 text-muted mt-3">
+                                    <li>Masukkan informasi API Key dan detail Web Service kampus Anda.</li>
+                                    <li>Pastikan data yang diinput sesuai untuk menjaga integrasi berjalan lancar.</li>
+                                    <li>Hubungkan sistem kampus Anda ke SiacLoad untuk menikmati kemudahan otomatisasi dan pelaporan.</li>
+                                </ul>
+                                <p class="fs-5 mt-4">
+                                    <b>🚀 Setelah selesai, Anda siap menjalankan transformasi kampus digital dengan penuh percaya diri!</b>  
+                                </p>
+                            </div>
                         </div>
                         <div class="col-lg-5 mt-5">
                             <div class="flex flex-column align-items-center justify-content-center">
                                 <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, #343434 10%, rgba(33, 150, 243, 0) 30%)">
-                                    <div class="w-full surface-card py-7 px-5 sm:px-8" style="border-radius: 53px">
+                                    <div class="w-full surface-card py-7 px-5 sm:px-6" style="border-radius: 53px">
                                         <div class="text-center mb-5">
                                             <div class="text-900 text-3xl font-medium mb-3">Setting WS</div>
                                         </div>

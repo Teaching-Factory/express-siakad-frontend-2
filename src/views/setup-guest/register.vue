@@ -67,13 +67,27 @@ function smoothScroll(id) {
                 <div class="mx-4 mx-md-5 h-100 d-flex align-items-center justify-content-center">
                     <div class="row d-flex align-items-center justify-content-center w-100">
                         <div class="col-lg-7">
-                            <h1 class="display-4 fw-bold text-dark"><span class="fw-light d-block">Selamat Datang di</span>Sistem Informasi Akademik</h1>
-                            <p class="fs-4 fw-normal text-muted mt-3">Siap Mendukung Kampus Anda Bertransformasi secara Digital</p>
+                            <p class="display-6 fw-bold text-dark"><span class="fw-light d-block"></span>Transformasi Kampus Anda Dimulai di Sini!</p>
+                            <div class="mt-4 mb-4">
+                                <h5 class="fs-5 text-muted mt-3">Selamat datang di langkah pertama menuju kampus digital modern.
+                                    <br>SIACLOUD adalah mitra terpercaya untuk mewujudkan visi kampus Anda sebagai institusi pendidikan berdaya saing tinggi di era digital.
+                                    <p>Dengan SIACLOUD, Anda siap untuk:</p>
+                                </h5>
+                                <h5></h5>
+                                <ul class="fs-5 text-muted mt-3">
+                                    <p>✨ Meningkatkan efisiensi pengelolaan akademik.</p>
+                                    <p>✨ Memudahkan akses dan layanan bagi mahasiswa dan dosen.</p>
+                                    <p>✨ Memastikan integrasi data yang aman dan akurat.</p>
+                                </ul>
+                                <p class="fs-5 mt-4">
+                                    <b>Daftarkan Kampus Anda Sekarang!!</b>  
+                                </p>
+                            </div>
                         </div>
                         <div class="col-lg-5 mt-5">
                             <div class="flex flex-column align-items-center justify-content-center">
                                 <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, #343434 10%, rgba(33, 150, 243, 0) 30%)">
-                                    <div class="w-full surface-card py-7 px-5 sm:px-8" style="border-radius: 53px">
+                                    <div class="w-full surface-card py-5 px-4 sm:px-6" style="border-radius: 53px">
                                         <div class="text-center mb-5">
                                             <div class="text-900 text-3xl font-medium mb-3">Register</div>
                                         </div>
