@@ -948,6 +948,12 @@ const router = createRouter({
                     name: 'singkron-data',
                     component: () => import('../views/referensi/singkronisasi/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-kelas-kuliah',
+                    name: 'sync-kelas-kuliah',
+                    component: () => import('../views/referensi/singkronisasi/kelas-kuliah/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 }
             ]
         },
@@ -962,7 +968,7 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir', '/setup-guest/get-started','/setup-guest/get-started/register', '/setup-guest/get-started/register/settingws'];
+    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir', '/setup-guest/get-started', '/setup-guest/get-started/register', '/setup-guest/get-started/register/settingws'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');
