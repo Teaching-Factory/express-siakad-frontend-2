@@ -953,6 +953,12 @@ const router = createRouter({
                     name: 'singkron-data',
                     component: () => import('../views/referensi/singkronisasi/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-kelas-kuliah',
+                    name: 'sync-kelas-kuliah',
+                    component: () => import('../views/referensi/singkronisasi/kelas-kuliah/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 }
             ]
         },

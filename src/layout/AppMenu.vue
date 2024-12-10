@@ -467,8 +467,13 @@ const model = ref([
                 // }),
                 items: [
                     {
-                        label: 'Singkron Data',
+                        label: 'Sync Data',
                         to: '/singkron-data'
+                        // visible: computed(() => permissions.includes('daftar-berita'))
+                    },
+                    {
+                        label: 'Sync Kelas Kuliah',
+                        to: '/sync-kelas-kuliah'
                         // visible: computed(() => permissions.includes('daftar-berita'))
                     }
                 ]
