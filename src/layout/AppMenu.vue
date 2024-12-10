@@ -475,7 +475,12 @@ const model = ref([
                         label: 'Sync Kelas Kuliah',
                         to: '/sync-kelas-kuliah'
                         // visible: computed(() => permissions.includes('daftar-berita'))
-                    }
+                    },
+                    {
+                        label: 'Sync Dosen Pengajar Kelas',
+                        to: '/sync-dosen-pengajar'
+                        // visible: computed(() => permissions.includes('daftar-berita'))
+                    },
                 ]
             }
         ]

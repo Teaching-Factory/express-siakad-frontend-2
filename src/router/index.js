@@ -954,6 +954,12 @@ const router = createRouter({
                     name: 'sync-kelas-kuliah',
                     component: () => import('../views/referensi/singkronisasi/kelas-kuliah/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-dosen-pengajar',
+                    name: 'sync-dosen-pengajar',
+                    component: () => import('../views/referensi/singkronisasi/dosen-pengajar/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 }
             ]
         },
