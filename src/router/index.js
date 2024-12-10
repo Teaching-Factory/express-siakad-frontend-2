@@ -35,6 +35,11 @@ const router = createRouter({
             component: () => import('../views/setup-guest/settingWS.vue')
         },
         {
+            path: '/setup-guest/get-started/register/settingws/install',
+            name: 'setuo-guest-get-started-register-settingws-install',
+            component: () => import('../views/setup-guest/install.vue')
+        },
+        {
             path: '/',
             component: AppLayout,
             meta: { requiresAuth: true },
@@ -974,7 +979,7 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir', '/setup-guest/get-started', '/setup-guest/get-started/register', '/setup-guest/get-started/register/settingws'];
+    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir', '/setup-guest/get-started','/setup-guest/get-started/register', '/setup-guest/get-started/register/settingws', '/setup-guest/get-started/register/settingws/install'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');

@@ -30,11 +30,11 @@ function smoothScroll(id) {
 
 <template>
     <div class="bg-light">
-        <div id="home" class="container-fluid landing-wrapper overflow-hidden">
+        <div id="home" class="container-fluid landing-wrapper" style="height: 100vh; overflow-y: auto;">
             <div
                 id="hero"
-                class="d-flex flex-column pt-6 px-4 px-lg-5 overflow-hidden vh-100"
-                style="background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%)"
+                class="d-flex flex-column pt-6 px-4 px-lg-5 "
+                style="min-height: 100vh; background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%)"
             >
                 <div class="mx-4 mx-md-5 h-100 d-flex align-items-center justify-content-center">
                     <div class="row d-flex align-items-center justify-content-center w-100">
