@@ -271,7 +271,7 @@ onMounted(() => {
                                 <div class="col-lg-12 d-flex justify-content-end">
                                     <div class="flex justify-content-end gap-2">
                                         <button @click="updateLaporanPmb" class="btn btn-primary"><i class="pi pi-check me-2"></i> Simpan</button>
-                                        <button class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</button>
+                                        <!-- <button class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</button> -->
                                     </div>
                                 </div>
                                 <p><b>Laporan Rekap Pendaftaran PMB</b></p>
@@ -328,7 +328,7 @@ onMounted(() => {
                                 <div class="col-lg-12 d-flex justify-content-end">
                                     <div class="flex justify-content-end gap-2">
                                         <button @click="updateContact" class="btn btn-primary"><i class="pi pi-check me-2"></i> Simpan</button>
-                                        <button class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</button>
+                                        <!-- <button class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</button> -->
                                     </div>
                                 </div>
                                 <p><b>Contact Person PMB</b></p>
@@ -352,7 +352,7 @@ onMounted(() => {
                                 <div class="col-lg-12 d-flex justify-content-end">
                                     <div div class="flex justify-content-end gap-2">
                                         <button @click="updatePengaturan" class="btn btn-primary"><i class="pi pi-check me-2"></i> Simpan</button>
-                                        <button class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</button>
+                                        <!-- <button class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</button> -->
                                     </div>
                                 </div>
                                 <p><b>Pembayaran PMB</b></p>

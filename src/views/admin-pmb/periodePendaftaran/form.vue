@@ -303,7 +303,7 @@ onBeforeMount(() => {
                 <div class="col-lg-8 d-flex justify-content-end">
                     <router-link to="/periode-pendaftaran" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
                     <button type="submit" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Simpan</button>
-                    <router-link to="/periode-pendaftaran" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</router-link>
+                    <!-- <router-link to="/periode-pendaftaran" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</router-link> -->
                 </div>
             </div>
             <hr />

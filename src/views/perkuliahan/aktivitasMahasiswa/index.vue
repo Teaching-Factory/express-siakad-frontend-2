@@ -204,7 +204,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="/import-aktivitas-mahasiswa" class="btn btn-secondary"><i class="pi pi-download me-2"></i> Import Aktivitas</router-link>
+                                <router-link to="/import-aktivitas-mahasiswa" class="btn btn-success"><i class="pi pi-download me-2"></i> Import Aktivitas</router-link>
                             </div>
                         </div>
                     </div>

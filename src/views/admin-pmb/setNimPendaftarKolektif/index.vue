@@ -168,12 +168,24 @@ onBeforeMount(() => {
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button @click="exportData" class="btn btn-primary btn-block" style="width: 100%">Export Camaba</button>
+                    <button @click="exportData" class="btn btn-success btn-block" style="width: 100%">Export Data Pendaftar</button>
                 </div>
             </div>
         </div>
         <div class="card">
             <form @submit.prevent="create">
+                <div class="row mb-2">
+                <div class="col-3 col-md-6 col-lg-6">
+                    <span>Download Template</span>
+                </div>
+                <div class="col-6 col-md-8 col-lg-8">
+                    <div class="text-info">
+                        <a href="../../../../public/file/template_setnimpendaftar.xlsx" download>
+                            <span>template_setNIMpendaftar.xls</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
                 <div class="row">
                     <div class="col-3 col-md-6 col-lg-6">
                         <span>Import Data</span>

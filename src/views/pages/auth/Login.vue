@@ -104,26 +104,26 @@ onMounted(() => {
 
                     <form @submit.prevent="handleSubmit">
                         <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
-                        <InputText id="username" type="text" placeholder="Input Username" class="w-full md:w-30rem mb-3" style="padding: 1rem" v-model="username" /> <br />
+                        <InputText id="username" type="text" placeholder="Masukkan Username" class="w-full md:w-30rem mb-3" style="padding: 1rem" v-model="username" /> <br />
                         <span v-if="usernameError" class="text-red-500">{{ usernameError }}</span>
 
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                        <Password id="password1" v-model="password" placeholder="Password" :feedback="false" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
+                        <Password id="password1" v-model="password" placeholder="Masukkan Password" :feedback="false" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
                         <span v-if="passwordError" class="text-red-500">{{ passwordError }}</span>
 
-                        <div class="flex align-items-center justify-content-between mb-5 gap-5">
+                        <!-- <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div class="flex align-items-center">
                                 <Checkbox v-model="checked" id="rememberme1" binary class="mr-2"></Checkbox>
                                 <label for="rememberme1">Remember me</label>
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: #343434">Forgot password?</a>
-                        </div>
+                        </div> -->
 
                         <div class="flex align-items-center justify-content-between mb-5 gap-5">
                             <div id="chapta" class="g-recaptcha" data-sitekey="6LfWOU4qAAAAAAvkEGv0-z9QlKMqqC2-GN748h4z"></div>
                         </div>
 
-                        <Button label="Sign In" class="w-full p-3 text-xl" style="background-color: #343434" type="submit"></Button>
+                        <Button label="LOGIN" class="w-full p-3 text-xl" style="background-color: #343434" type="submit"></Button>
                     </form>
                 </div>
             </div>

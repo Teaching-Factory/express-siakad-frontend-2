@@ -249,9 +249,9 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link :to="validasiUrl" class="btn btn-primary"> <i class="pi pi-eye me-2"></i> Tervalidasi</router-link>
+                                <router-link :to="validasiUrl" class="btn btn-secondary"> <i class="pi pi-eye me-2"></i> Tervalidasi</router-link>
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
-                                <button class="btn btn-primary" @click="updateValidasi"> <i class="pi pi-check me-2"></i> Proses Validasi</button>
+                                <button class="btn btn-success" @click="updateValidasi"> <i class="pi pi-check me-2"></i> Proses Validasi</button>
                             </div>
                         </div>
                     </div>

@@ -63,7 +63,7 @@ const filterData = async () => {
 
 const updateValidasi = async () => {
     if (selectedValidasi.value.length === 0) {
-        Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
+        Swal.fire('PERINGATAN!', 'Tidak ada data Tagihan yang dipilih.', 'warning');
         return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
     }
 
