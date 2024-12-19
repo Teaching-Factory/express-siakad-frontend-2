@@ -198,10 +198,8 @@ export default {
                             <tr>
                                 <td colspan="2">
                                     <p class="m-0">Banyuwangi, {{ formatDate(rekapPendaftar?.tanggalPenandatanganan) }}</p>
-                                    <p class="m-0">Rektor</p>
                                     <p style="height: 70px"></p>
-                                    <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold">{{ rekapPendaftar?.dataUnitJabatan?.Dosen?.nama_dosen ?? '-' }}</p>
-                                    <p class="m-0">nidn.{{ rekapPendaftar?.dataUnitJabatan?.Dosen?.nidn ?? '-' }}</p>
+                                    <p>--------------------------------------------</p>
                                 </td>
                             </tr>
                         </tbody>
