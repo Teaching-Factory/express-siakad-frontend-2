@@ -131,7 +131,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="#" class="btn btn-primary"> <i class="pi pi-pencil me-2"></i>Validasi Dokumen</router-link>
+                                <router-link to="#" class="btn btn-primary"> <i class="pi pi-save me-2"></i>Simpan</router-link>
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_sk" header="File Berkas" style="min-width: 18rem">
+                <Column filterField="nama_sk" header="File Berkas" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
                             <button @click="showModal(data.file_berkas)" class="btn btn-outline-primary me-2">
@@ -161,26 +161,32 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                <Column filterField="status_berkas" header="Status Validasi" style="min-width: 10rem">
+                <Column filterField="status_berkas" header="Status Validasi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.status_berkas ? 'Lulus' : 'Tidak Lulus' }}</span>
+                        <div>
+                            <select class="form-select" id="status">
+                                <option value="" disabled selected>Status Validasi</option>
+                                <option value="1">Berkas Valid</option>
+                                <option value="2">Berkas Tidak Valid</option>
+                            </select>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="keterangan_singkat" header="Keterangan Validasi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.keterangan_singkat }}</span>
+                            <!-- <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.keterangan_singkat }}</span> -->
+                            <input type="input-text" placeholder="Masukkan keterangan validasi berkas ini" />
                         </div>
                     </template>
                 </Column>
+                
                 <!-- Modal Component for Viewing Files -->
                 <Modal :show="show" @close="show = false" title="File Pemberkasan">
                     <!-- Check if modalFile exists and is an image by looking at the extension -->
                     <template v-if="modalFile && (modalFile.endsWith('.jpg') || modalFile.endsWith('.png') || modalFile.endsWith('.jpeg') || modalFile.endsWith('.gif'))">
                         <img :src="modalFile" class="img-fluid" alt="File Pemberkasan" />
-                    </template>
+                    </template> 
 
                     <!-- If modalFile exists and is a PDF, show an embedded PDF viewer or a download link -->
                     <template v-else-if="modalFile && modalFile.endsWith('.pdf')">
@@ -270,7 +276,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="#" class="btn btn-primary"> <i class="pi pi-pencil me-2"></i> Ubah Hasil Tes </router-link>
+                                <router-link to="#" class="btn btn-primary"> <i class="pi pi-save me-2"></i> Simpan </router-link>
                             </div>
                         </div>
                     </div>
@@ -286,17 +292,10 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                <Column filterField="kode_sk" header="Jenis Tes" style="min-width: 10rem">
+                <Column filterField="kode_sk" header="Nama Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.kode_sk }}</span>
-                        </div>
-                    </template>
-                </Column>
-                <Column filterField="nama_sk" header="Tanggal Tes" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
                         </div>
                     </template>
                 </Column>
@@ -307,10 +306,18 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_sk" header="Status Kelulusan" style="min-width: 15rem">
+                <Column filterField="nama_sk" header="Tanggal Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>{{ data.nama_sk }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nama_sk" header="Kelulusan Tes" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <!-- <span>{{ data.nama_sk }}</span> -->
+                            <input type="input-text" placeholder="Masukkan nilai tes atau keterangan lain" />
                         </div>
                     </template>
                 </Column>
