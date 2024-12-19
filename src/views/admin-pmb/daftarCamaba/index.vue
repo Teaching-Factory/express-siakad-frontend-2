@@ -239,17 +239,17 @@ const formatTanggal = (tanggal) => {
             </Column>
             <Column header="Aksi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    <router-link :to="`/daftar-camaba-detail`" class="btn btn-outline-secondary me-2 py-1 px-2" title="Detail Camaba">
+                    <router-link :to="`/daftar-camaba-detail/${data.id}`" class="btn btn-outline-secondary me-2 py-1 px-2" title="Detail Camaba">
                         <i class="pi pi-pencil"></i>
                     </router-link>
-                    <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2" title="Cetak Biodata">
+                    <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id}`" class="btn btn-outline-primary me-2 py-1 px-2" title="Cetak Biodata">
                         <i class="pi pi-print"></i>
                     </router-link>
-                    <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-warning me-2 py-1 px-2" title="Cetak Kartu Ujian">
+                    <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id}`" class="btn btn-outline-warning me-2 py-1 px-2" title="Cetak Kartu Ujian">
                         <i class="pi pi-print"></i>
                     </router-link>
 
-                    <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)" title="Hapus">
+                    <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id)" title="Hapus">
                         <i class="pi pi-trash"></i>
                     </button>
                 </template>

@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 import { ref, onBeforeMount } from 'vue';
 import { get, del } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
+import { useRoute } from 'vue-router';
+import Modal from '../../../components/Modal.vue';
 
 const filters = ref({
     global: {
@@ -20,6 +22,11 @@ const filters = ref({
 });
 
 const sistemKuliahs = ref([]);
+const camabas = ref([]);
+const pemberkasanCamaba = ref([]);
+const route = useRoute();
+const show = ref(false);
+const modalFile = ref('');
 const message = ref('');
 
 const sistemKuliah = async () => {
@@ -40,44 +47,61 @@ const sistemKuliah = async () => {
         console.error('Gagal mengambil data sistemKuliah:', error);
     }
 };
-
-const deleteItem = async (id) => {
+const getCamaba = async (id) => {
     try {
-        const response = await del(`sistem-kuliah/${id}/delete`);
-        if (response.status === 200) {
-            message.value = 'Data berhasil dihapus!';
-            // Menghapus item dari array sistemKuliahs yang memiliki id yang sesuai
-            // sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id !== id);
-        } else {
-            message.value = 'Terjadi kesalahan: ' + response.statusText;
-        }
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await get(`camaba/${id}/get`);
+        console.log(response.data.data);
+        camabas.value = response.data.data;
+        Swal.close();
     } catch (error) {
-        message.value = 'Terjadi kesalahan: ' + error.message;
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const getPemberkasanCamaba = async (id) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await get(`pemberkasan-camaba/${id}/get-pemberkasan-camaba`);
+        console.log(response.data.data);
+        pemberkasanCamaba.value = response.data.data;
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
     }
 };
 
-const confirmDelete = (id) => {
-    Swal.fire({
-        title: 'Apa Kamu Yakin?',
-        text: 'Data ini akan dihapus',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Ya, saya yakin!',
-        cancelButtonText: 'Batal',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            deleteItem(id);
-            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
-            sistemKuliahs.value = sistemKuliahs.value.filter((data) => data.id !== id);
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
-        }
-    });
+const showModal = (filePath) => {
+    // Assuming the file path could be an image or a PDF, handle accordingly
+    modalFile.value = filePath;
+    show.value = true;
 };
 
 onBeforeMount(() => {
     sistemKuliah();
+
+    const id = route.params.id || route.query.id;
+    if (id) {
+        getCamaba(id);
+    }
+    if (id) {
+        getPemberkasanCamaba(id);
+    }
 });
 </script>
 
@@ -85,8 +109,8 @@ onBeforeMount(() => {
     <div class="card">
         <div class="row">
             <div class="col-12 text-center">
-                <h3 class="fw-bold">AIDA ANDINAR MAULIDIANA!!</h3>
-                <p>Berikan sebuah status kelulusan calon mahasiswa </p>
+                <h3 class="fw-bold">{{ camabas?.nama_lengkap || '-' }}!!</h3>
+                <p>Berikan sebuah status kelulusan calon mahasiswa</p>
                 <hr />
             </div>
         </div>
@@ -96,7 +120,7 @@ onBeforeMount(() => {
             <div class="col-12 col-md-6 col-lg-12">
                 <h6><b>BERKAS PENDAFTAR</b></h6>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['kode_sk', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['kode_sk', 'nama_sk']" :value="pemberkasanCamaba" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -124,31 +148,55 @@ onBeforeMount(() => {
                 <Column filterField="kode_sk" header="Nama Berkas" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.kode_sk }}</span>
+                            <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.nama_berkas }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_sk" header="File Berkas" style="min-width: 18rem">
                     <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                        <div class="flex gap-2">
+                            <button @click="showModal(data.file_berkas)" class="btn btn-outline-primary me-2">
+                                <i class="pi pi-eye"></i>
+                            </button>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_sk" header="Status Validasi" style="min-width: 10rem">
+                <Column filterField="status_berkas" header="Status Validasi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                            <span>{{ data.status_berkas ? 'Lulus' : 'Tidak Lulus' }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_sk" header="Keterangan Validasi" style="min-width: 10rem">
+                <Column filterField="keterangan_singkat" header="Keterangan Validasi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                            <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.keterangan_singkat }}</span>
                         </div>
                     </template>
                 </Column>
+                <!-- Modal Component for Viewing Files -->
+                <Modal :show="show" @close="show = false" title="File Pemberkasan">
+                    <!-- Check if modalFile exists and is an image by looking at the extension -->
+                    <template v-if="modalFile && (modalFile.endsWith('.jpg') || modalFile.endsWith('.png') || modalFile.endsWith('.jpeg') || modalFile.endsWith('.gif'))">
+                        <img :src="modalFile" class="img-fluid" alt="File Pemberkasan" />
+                    </template>
+
+                    <!-- If modalFile exists and is a PDF, show an embedded PDF viewer or a download link -->
+                    <template v-else-if="modalFile && modalFile.endsWith('.pdf')">
+                        <iframe :src="modalFile" width="100%" height="500px"></iframe>
+                    </template>
+
+                    <!-- If modalFile is not supported or empty, show a placeholder or message -->
+                    <template v-else-if="modalFile">
+                        <a :href="modalFile" target="_blank" class="btn btn-primary">Download File</a>
+                    </template>
+
+                    <!-- If modalFile is empty or null -->
+                    <template v-else>
+                        <p class="text-muted">Tidak ada file yang tersedia untuk ditampilkan.</p>
+                    </template>
+                </Modal>
             </DataTable>
         </div>
 
@@ -211,7 +259,7 @@ onBeforeMount(() => {
                     <h6><b>PENILAIAN TES PENDAFTAR</b></h6>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['kode_sk', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['nama_berkas', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -231,10 +279,10 @@ onBeforeMount(() => {
                 <template #empty>
                     <div class="text-center">Tidak ada data</div>
                 </template>
-                <Column filterField="kode_sk" header="Tahapan Tes" style="min-width: 10rem">
+                <Column filterField="nama_berkas" header="Tahapan Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.kode_sk }}</span>
+                            <span>{{ data.status_berkas }}</span>
                         </div>
                     </template>
                 </Column>
@@ -309,18 +357,18 @@ onBeforeMount(() => {
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Status Finalisasi</label>
                 <div class="col-md-7">
-                    <input type="checkbox" title="Sudah melakukan finalisasi data"/>
+                    <input type="checkbox" title="Sudah melakukan finalisasi data" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Status Akun Pendaftar</label>
                 <div class="col-md-7">
-                    <input type="checkbox" title="Pendaftar bisa login ke portal PMB"/>
+                    <input type="checkbox" title="Pendaftar bisa login ke portal PMB" />
                 </div>
             </div>
             <div class="mb-3 row d-flex">
                 <div class="col-md-3 text-center">
-                <button class="btn btn-success" type="button">Simpan</button>
+                    <button class="btn btn-success" type="button">Simpan</button>
                 </div>
             </div>
         </div>

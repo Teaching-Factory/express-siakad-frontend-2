@@ -125,7 +125,7 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
-                    path: '/daftar-camaba-detail',
+                    path: '/daftar-camaba-detail/:id',
                     name: 'daftar-camaba-detail',
                     component: () => import('../views/admin-pmb/daftarCamaba/detail.vue')
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
@@ -991,7 +991,15 @@ const router = createRouter({
 
 // Navigation Guard untuk memeriksa otentikasi
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/', '/pendaftaran-pmb', '/pendaftaran-pmb/:id/cetak-formulir', '/setup-guest/get-started','/setup-guest/get-started/register', '/setup-guest/get-started/register/settingws', '/setup-guest/get-started/register/settingws/install'];
+    const publicPages = [
+        '/',
+        '/pendaftaran-pmb',
+        '/pendaftaran-pmb/:id/cetak-formulir',
+        '/setup-guest/get-started',
+        '/setup-guest/get-started/register',
+        '/setup-guest/get-started/register/settingws',
+        '/setup-guest/get-started/register/settingws/install'
+    ];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
     const userIN = localStorage.getItem('user-data');
