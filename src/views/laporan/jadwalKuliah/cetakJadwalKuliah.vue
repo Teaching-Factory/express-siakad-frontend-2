@@ -43,6 +43,11 @@ export default {
             const formattedDate = `${day} ${months[month]} ${year}`;
             return formattedDate;
         },
+
+        getLogoUrl() {
+            return `/layout/images/ubi.jpg`;
+        },
+
         handlePrint() {
             window.print();
         },
@@ -54,16 +59,33 @@ export default {
 </script>
 
 <template>
-    <div class="card print border-0" style="width: 21cm; min-height: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif" >
+    <div class="card print border-0" style="height: 21cm; width: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif" >
         <div class="card-body">
-            <div class="heading-section" style="width: 100%;">
+            <!-- <div class="heading-section" style="width: 100%;">
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
-            </div>
+            </div> -->
+            <table class="table table-borderless mt-3 text-center">
+                <tbody>
+                    <tr>
+                        <td width="15%" class="header-logo">
+                            <img :src="getLogoUrl()" alt="logo" width="80%" />
+                        </td>
+                        <td>
+                            <p class="m-2 fw-bold" style="font-size: 20px;"> NAMA PERGURUAN TINGGI</p>
+                            <p class="m-0">Alamat : Kampus terpadu bumi cempokosari no 40 Cluring Banyuwangi</p>
+                            <p class="m-0">Kodepos : 68482, Telepon : (0333) 3912341</p>
+                            <p class="m-0">Website : https://www.ubibanyuwangi.ac.id/ | Email : office@ubibanyuwangi.ac.id | Faximile : (0333) 3912341</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr style="border-color: black;">
+
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
-            <h5 class="text-center mb-3"><b>JADWAL PERKULIAHAN</b></h5>
-            <h5 class="text-center"><b>S1 TEKNIK INFORMATIKA</b></h5>
-            <h5 class="text-center"><b>PERIODE  2023/2024 GENAP SEMESTER 1</b></h5>
+            <h6 class="text-center m-1"><b>JADWAL PERKULIAHAN</b></h6>
+            <h6 class="text-center m-1"><b>S1 TEKNIK INFORMATIKA</b></h6>
+            <h6 class="text-center m-1 mb-5"><b>PERIODE  2023/2024 GENAP SEMESTER 1</b></h6>
             
             <table class="table-bordered" width="100%">
                 <thead class="text-center">

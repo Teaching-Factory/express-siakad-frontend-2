@@ -53,7 +53,10 @@ export default {
 
             const formattedDate = `${day} ${months[month]} ${year}`;
             return formattedDate;
-        }
+        },
+        getLogoUrl() {
+            return `/layout/images/ubi.jpg`;
+        }  
     },
     mounted() {
         this.getDataKrs(this.$route.query)
@@ -67,18 +70,41 @@ export default {
         }
     }
 }
+
+
+// const logoUrl = computed(() => {
+//     return `/public/ubi.png`;
+// });
 </script>
 
 
 <template>
     <div class="card print border-0" style="height: 21cm; width: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif" >
         <div class="card-body">
-            <div class="heading-section" style="width: 100%;">
+            <!-- <div class="heading-section" style="width: 100%;">
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
             </div>
-            <button @click="handlePrint" class="btn-print">Cetak</button>
+            <button @click="handlePrint" class="btn-print">Cetak</button> -->
 
-            <h5 class="text-center mb-5"><b>LAPORAN REKAP PEMBAYARAN PMB</b></h5>
+            <table class="table table-borderless mt-3 text-center">
+                <tbody>
+                    <tr>
+                        <td width="15%" class="header-logo">
+                            <img :src="getLogoUrl()" alt="logo" width="75%" />
+                        </td>
+                        <td>
+                            <p class="m-2 fw-bold" style="font-size: 20px;"> NAMA PERGURUAN TINGGI</p>
+                            <p class="m-0">Alamat : Kampus terpadu bumi cempokosari no 40 Cluring Banyuwangi</p>
+                            <p class="m-0">Kodepos : 68482, Telepon : (0333) 3912341</p>
+                            <p class="m-0">Website : https://www.ubibanyuwangi.ac.id/ | Email : office@ubibanyuwangi.ac.id | Faximile : (0333) 3912341</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr style="border-color: black;">
+
+            <button @click="handlePrint" class="btn-print">Cetak</button>
+            <h5 class="text-center mt-5 mb-5"><b>LAPORAN REKAP PEMBAYARAN PMB</b></h5>
             <table class="table table-borderless mt-3">
                 <tbody>
                     <tr>
@@ -98,7 +124,6 @@ export default {
                     </tr>
                 </tbody>
             </table>
-
             <table class="table table-bordered text-center">
                 <thead class="align-middle">
                     <tr>
