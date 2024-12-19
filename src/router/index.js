@@ -115,13 +115,19 @@ const router = createRouter({
                 {
                     path: '/tagihan-camaba',
                     name: 'tagihan-camaba',
-                    component: () => import('../views/admin-pmb/tagihanCamaba/index.vue')
+                    component: () => import('../views/admin-pmb/daftarCamaba/detail.vue')
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
                     path: '/daftar-camaba',
                     name: 'daftar-camaba',
                     component: () => import('../views/admin-pmb/daftarCamaba/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+                {
+                    path: '/daftar-camaba-detail',
+                    name: 'daftar-camaba-detail',
+                    component: () => import('../views/admin-pmb/daftarCamaba/detail.vue')
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
