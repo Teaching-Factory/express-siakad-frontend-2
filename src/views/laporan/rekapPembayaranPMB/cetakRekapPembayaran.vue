@@ -124,7 +124,7 @@ export default {
                     </tr>
                 </tbody>
             </table>
-            <table class="table table-bordered text-center">
+            <table class="table table-bordered">
                 <thead class="align-middle">
                     <tr>
                         <th rowspan="2">No</th>
@@ -132,18 +132,22 @@ export default {
                         <th rowspan="2">No Pendaftaran</th>
                         <th rowspan="2">Nama Calon Mahasiswa</th>
                         <th rowspan="2">Prodi Diterima</th>
-                        <th rowspan="2">Jenis Pembayaran</th>
                         <th rowspan="2">Jumlah Pembayaran</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(matkul, index) in rekapKrsData" :key="index">
-                        <td>{{ index + 1 }}</td>
-                        <td width="10%">{{ matkul.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
-                        <td>{{ matkul.KelasKuliah.MataKuliah.nama_mata_kuliah }}</td>
-                        <td>{{ matkul.KelasKuliah.Dosen.nama_dosen }}</td>
-                        <td>{{ matkul.KelasKuliah.sks }}</td>
+                    <tr>
+                        <td>1</td>
+                        <td width="10%">10.10.2024</td>
+                        <td>987654434567897654</td>
+                        <td>Aida Andinar</td>
+                        <td>Teknik Informatika</td>
+                        <td>70.000</td>
                     </tr>
+                    <tr >
+                            <td class="text-center" colspan="5">Total </td>
+                            <td>70.000</td>
+                        </tr>
                 </tbody>
             </table>
             <div class="col-lg-12 d-flex justify-content-end">
