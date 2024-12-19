@@ -1,16 +1,16 @@
 <script>
-import { getData } from '../../../utiils/request.js'
-import Swal from "sweetalert2";
+import { getData } from '../../../utiils/request.js';
+import Swal from 'sweetalert2';
 
 export default {
     data() {
         return {
-            krsData: null,
-            getRekapKhsData: null,
+            rekapPendaftar: null,
+            getCamaba: null
         };
     },
     methods: {
-        getDataKrs: async function(req) {
+        getRekapPendaftar: async function (req) {
             try {
                 Swal.fire({
                     title: 'Loading...',
@@ -20,12 +20,13 @@ export default {
                         Swal.showLoading();
                     }
                 });
-                
-                const response = await getData(`rekap-khs-mahasiswa/get-rekap-khs-mahasiswa?jenis_cetak=${req.jenis_cetak}&nim=${req.nim}&id_semester=${req.id_semester}&tanggal_penandatanganan=${req.tanggal_penandatanganan}&format=${req.format}`);
-                this.krsData = response.data;
-                this.getRekapKhsData = response.data.dataRekapKHSMahasiswaMahasiswa;
-                console.log('Response:', response.data)
-                console.log('Response2:', response.data.dataRekapKHSMahasiswaMahasiswa)
+
+                const response = await getData(
+                    `rekap-laporan-pmb/rekap/pendaftar-pmb/get?id_semester=${req.id_semester}&nim=${req.nim}&id_periode_pendaftaran=${req.id_periode_pendaftaran}&id_prodi_diterima=${req.id_prodi_diterima}&tanggal_penandatanganan=${req.tanggal_penandatanganan}&format=${req.format}`
+                );
+                this.rekapPendaftar = response.data;
+                this.getCamaba = response.data.dataCamabas;
+                console.log('Response:', response.data);
             } catch (error) {
                 console.error('Gagal mengirim data:', error);
             }
@@ -40,10 +41,7 @@ export default {
         },
         formatDate(date) {
             if (!date) return '-';
-            const months = [
-                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-            ];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
             const parts = date.split('-');
             const year = parts[0];
@@ -55,23 +53,16 @@ export default {
         }
     },
     mounted() {
-        this.getDataKrs(this.$route.query)
-    },
-    computed: {
-        totalSKS() {
-            return this.rekapKrsData.reduce((total, matkul) => {
-                return total + (Number(matkul.KelasKuliah?.sks) || 0);
-            }, 0);
-        }
+        this.getRekapPendaftar(this.$route.query);
     }
-}
+};
 </script>
 
 <template>
-    <div class="card print border-0" style="width: 21cm; height: 29.7cm; font-family: Arial, Helvetica, sans-serif" >
+    <div class="card print border-0" style="width: 21cm; height: 29.7cm; font-family: Arial, Helvetica, sans-serif">
         <div class="card-body">
-            <div class="heading-section" style="width: 100%;">
-                <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
+            <div class="heading-section" style="width: 100%">
+                <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%" />
             </div>
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
@@ -79,27 +70,19 @@ export default {
             <table class="table table-borderless mt-3">
                 <tbody>
                     <tr>
-                        <td style="width: 50%;">
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 150px;">
-                                    Periode Pendaftaran
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ krsData?.mahasiswa?.nama_mahasiswa }}
+                        <td style="width: 50%">
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 150px">Periode Pendaftaran</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
+                                    {{ rekapPendaftar?.dataPeriodePendaftaran?.nama_periode_pendaftaran }}
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 150px;">
-                                    Semester Pendaftaran
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ krsData?.mahasiswa?.Prodi?.nama_program_studi }}
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 150px">Semester Pendaftaran</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
+                                    {{ rekapPendaftar?.dataPeriodePendaftaran?.Semester?.nama_semester }}
                                 </div>
                             </div>
                         </td>
@@ -107,7 +90,7 @@ export default {
                 </tbody>
             </table>
 
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto">
                 <table class="table table-bordered text-center">
                     <thead class="align-middle">
                         <tr>
@@ -130,20 +113,23 @@ export default {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(nilai, index) in getRekapKhsData" :key="index">
+                        <tr v-for="(camaba, index) in getCamaba" :key="index">
                             <td>{{ index + 1 }}</td>
-                            <td>{{ nilai.nama_mata_kuliah }}</td>
-                            <td>{{ nilai.sks_mata_kuliah }}</td>
-                            <td>{{ nilai.nilai_angka }}</td>
-                            <td>{{ nilai.nilai_huruf }}</td>
-                            <td>{{ nilai.nilai_indeks }}</td>
-                            <td>{{ nilai.sks_x_indeks }}</td>     
-                            <td>{{ nilai.nama_mata_kuliah }}</td>
-                            <td>{{ nilai.sks_mata_kuliah }}</td>
-                            <td>{{ nilai.nilai_angka }}</td>
-                            <td>{{ nilai.nilai_huruf }}</td>
-                            <td>{{ nilai.nilai_indeks }}</td>
-                            <td>{{ nilai.sks_x_indeks }}</td>   
+                            <td>{{ camaba?.nomor_daftar }}</td>
+                            <td>{{ camaba?.nama_lengkap }}</td>
+                            <td>{{ camaba?.BiodataCamaba?.nik }}</td>
+                            <td>{{ camaba?.PeriodePendaftaran?.nama_periode_pendaftaran }}</td>
+                            <td>{{ camaba?.prodiCamaba?.Prodi?.JenjangPendidikan.nama_jenjang_didik || '-' }} - {{ camaba?.prodiCamaba?.Prodi?.nama_program_studi || '-' }}</td>
+                            <td>{{ camaba?.finalisasi ? 'Sudah' : 'Belum' }}</td>
+                            <td>{{ camaba?.status_berkas ? 'Lulus' : 'Tidak Lulus' }}</td>
+                            <td>{{ camaba?.status_tes ? 'Lulus' : 'Tidak Lulus' }}</td>
+                            <td>{{ camaba?.nim }}</td>
+                            <td>{{ camaba?.Prodi?.JenjangPendidikan.nama_jenjang_didik || '-' }} - {{ camaba?.Prodi?.nama_program_studi || '-' }}</td>
+                            <td>{{ camaba?.status_export_mahasiswa ? 'Sudah' : 'Belum' }}</td>
+                            <td>{{ camaba?.Sekolah?.sekolah }}</td>
+                            <td>{{ camaba?.nomor_hp }}</td>
+                            <td>Jalan {{ camaba?.BiodataCamaba?.jalan }}, Dusun {{ camaba?.BiodataCamaba?.dusun }}, RT/RW {{ camaba?.BiodataCamaba?.rt }}/{{ camaba?.BiodataCamaba?.rw }}, Kelurahan/Desa {{ camaba?.BiodataCamaba?.kelurahan }}</td>
+                            <td>{{ camaba?.email }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -151,49 +137,33 @@ export default {
             <table class="table table-borderless mt-3">
                 <tbody>
                     <tr>
-                        <td style="width: 50%;">
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 300px;">
-                                    Jumlah Pendaftar
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ krsData?.mahasiswa?.nama_mahasiswa }}
+                        <td style="width: 50%">
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 300px">Jumlah Pendaftar</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
+                                    {{ rekapPendaftar?.totalDataCamaba }}
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 300px;">
-                                    Jumlah Pendaftar Lulus Berkas
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ krsData?.mahasiswa?.Prodi?.nama_program_studi }}
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 300px">Jumlah Pendaftar Lulus Berkas</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
+                                    {{ rekapPendaftar?.jumlah_pendaftar_lulus_berkas }}
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 300px;">
-                                    Jumlah Pendaftar Lulus Tes
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ krsData?.mahasiswa?.nama_mahasiswa }}
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 300px">Jumlah Pendaftar Lulus Tes</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
+                                    {{ rekapPendaftar?.jumlah_pendaftar_lulus_tes }}
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 300px;">
-                                    Jumlah Pendaftar Sudah Menjadi Mahasiswa
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
-                                    {{ krsData?.mahasiswa?.Prodi?.nama_program_studi }}
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 300px">Jumlah Pendaftar Sudah Menjadi Mahasiswa</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
+                                    {{ rekapPendaftar?.jumlah_pendaftar_sudah_mahasiswa }}
                                 </div>
                             </div>
                         </td>
@@ -202,15 +172,15 @@ export default {
             </table>
             <div class="col-lg-12 d-flex justify-content-end">
                 <div class="flex justify-content-end gap-2">
-                    <table class="table table-borderless" style="width: 100%;">
-                        <tbody class="" style="display: block; text-align: left;">
+                    <table class="table table-borderless" style="width: 100%">
+                        <tbody class="" style="display: block; text-align: left">
                             <tr>
                                 <td colspan="2">
-                                    <p class="m-0">Banyuwangi, {{ formatDate(data?.tanggalPenandatanganan) }}</p>
+                                    <p class="m-0">Banyuwangi, {{ formatDate(rekapPendaftar?.tanggalPenandatanganan) }}</p>
                                     <p class="m-0">Rektor</p>
-                                    <p style="height: 70px;"></p>
-                                    <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ dataNilai?.Dosen?.nama_dosen ?? '-' }}</p>
-                                    <p class="m-0">nidn.{{ dataNilai?.Dosen?.nidn ?? '-' }}</p>
+                                    <p style="height: 70px"></p>
+                                    <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold">{{ rekapPendaftar?.dataUnitJabatan?.Dosen?.nama_dosen ?? '-' }}</p>
+                                    <p class="m-0">nidn.{{ rekapPendaftar?.dataUnitJabatan?.Dosen?.nidn ?? '-' }}</p>
                                 </td>
                             </tr>
                         </tbody>

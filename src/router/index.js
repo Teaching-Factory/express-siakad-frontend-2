@@ -664,6 +664,12 @@ const router = createRouter({
                     component: () => import('../views/laporan/rekapPembayaranPMB/index.vue')
                     // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
                 },
+                {
+                    path: '/cetak-rekap-pembayaran-pmb',
+                    name: 'cetak-rekap-pembayaran-pmb',
+                    component: () => import('../views/laporan/rekapPembayaranPMB/cetakRekapPembayaran.vue')
+                    // meta: { requiredPermissions: ['cetak-daftar-belum-krs'] }
+                },
                 //setting
                 //manajemen
                 {
