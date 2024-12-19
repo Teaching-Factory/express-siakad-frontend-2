@@ -59,7 +59,7 @@ export default {
 </script>
 
 <template>
-    <div class="card print border-0" style="width: 21cm; height: 29.7cm; font-family: Arial, Helvetica, sans-serif">
+    <div class="card print border-0" style="height: 21cm; width: 29.7cm; font-family: Arial, Helvetica, sans-serif">
         <div class="card-body">
             <div class="heading-section" style="width: 100%">
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%" />
@@ -95,19 +95,19 @@ export default {
                     <thead class="align-middle">
                         <tr>
                             <th>No</th>
-                            <th>Nomor Pendaftar</th>
-                            <th>Nama Pendaftar</th>
+                            <th>No. Pendaftar</th>
+                            <th>Nama</th>
                             <th>NIK</th>
                             <th>Periode Pendaftaran</th>
                             <th>Pilihan Prodi 1</th>
                             <th>Sudah Finalisasi</th>
-                            <th>Kelulusan Berkas</th>
-                            <th>Kelulusan Tes</th>
+                            <th>Kel. Berkas</th>
+                            <th>Kel. Tes</th>
                             <th>NIM</th>
                             <th>Prodi Diterima</th>
                             <th>Sudah Menjadi Mahasiswa</th>
                             <th>Asal Sekolah</th>
-                            <th>No. Handphone</th>
+                            <th>No. HP</th>
                             <th>Alamat</th>
                             <th>Email</th>
                         </tr>
