@@ -160,16 +160,13 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-secondary">
+                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-secondary" title="daftar pendaftar">
                                 <i class="pi pi-list"></i>
-                            </router-link>
-                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-warning">
-                                <i class="pi pi-eye"></i>
                             </router-link>
                             <router-link :to="`/periode-pendaftaran-edit/${data.id}`" class="btn btn-outline-primary" title="edit">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger" title="hapus">
+                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger" title="delete">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>

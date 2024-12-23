@@ -56,11 +56,27 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <div class="card print border-0" style="width: 21cm; height: 29.7cm; font-family: Arial, Helvetica, sans-serif">
+    <div class="card print border-0" style="width: 24cm; height: 29.7cm; font-family: Arial, Helvetica, sans-serif">
         <div class="card-body">
-            <div class="heading-section" style="width: 100%">
+            <!-- <div class="heading-section" style="width: 100%">
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%" />
-            </div>
+            </div> -->
+            <table class="table table-borderless mt-3 text-center">
+                <tbody>
+                    <tr>
+                        <td width="15%" class="header-logo">
+                            <img :src="getLogoUrl()" alt="logo" width="100%" />
+                        </td>
+                        <td>
+                            <p class="m-2 fw-bold" style="font-size: 20px;"> NAMA PERGURUAN TINGGI</p>
+                            <p class="m-0">Alamat : Kampus terpadu bumi cempokosari no 40 Cluring Banyuwangi</p>
+                            <p class="m-0">Kodepos : 68482, Telepon : (0333) 3912341</p>
+                            <p class="m-0">Website : https://www.ubibanyuwangi.ac.id/ | Email : office@ubibanyuwangi.ac.id | Faximile : (0333) 3912341</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr style="border-color: black;">
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
             <table class="table table-borderless mt-3">

@@ -108,7 +108,7 @@ const formatTanggal = (tanggal) => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>DAFTAR PENDAFTAR</h5>
+        <h5><i class="pi pi-user me-2"></i>DAFTAR CALON MAHASISWA BARU</h5>
         <div class="card">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
@@ -239,17 +239,16 @@ const formatTanggal = (tanggal) => {
             </Column>
             <Column header="Aksi" style="min-width: 15rem">
                 <template #body="{ data }">
-                    <router-link :to="`/daftar-camaba-detail/${data.id}`" class="btn btn-outline-secondary me-2 py-1 px-2" title="Detail Camaba">
-                        <i class="pi pi-pencil"></i>
+                    <router-link :to="`/daftar-camaba-detail/${data.id}`" class="btn btn-outline-success me-2 py-1 px-2" title="status kelulusan">
+                        <i class="pi pi-check-circle"></i>
                     </router-link>
-                    <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id}`" class="btn btn-outline-primary me-2 py-1 px-2" title="Cetak Biodata">
-                        <i class="pi pi-print"></i>
+                    <router-link to="/biodata-pendaftar-cetak" class="btn btn-outline-primary me-2 py-1 px-2" title="cetak biodata">
+                        <i class="pi pi-file"></i>
                     </router-link>
-                    <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id}`" class="btn btn-outline-warning me-2 py-1 px-2" title="Cetak Kartu Ujian">
-                        <i class="pi pi-print"></i>
+                    <router-link to="/cetak-kartu-ujian" class="btn btn-outline-warning me-2 py-1 px-2" title="cetak kartu ujian">
+                        <i class="pi pi-id-card"></i>
                     </router-link>
-
-                    <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id)" title="Hapus">
+                    <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id)" title="delete">
                         <i class="pi pi-trash"></i>
                     </button>
                 </template>

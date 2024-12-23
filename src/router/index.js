@@ -115,7 +115,7 @@ const router = createRouter({
                 {
                     path: '/tagihan-camaba',
                     name: 'tagihan-camaba',
-                    component: () => import('../views/admin-pmb/daftarCamaba/detail.vue')
+                    component: () => import('../views/admin-pmb/tagihanCamaba/index.vue')
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
