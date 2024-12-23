@@ -5,6 +5,9 @@ import { get, del } from '../../../utiils/request';
 import { FilterMatchMode } from 'primevue/api';
 import { useRoute } from 'vue-router';
 import Modal from '../../../components/Modal.vue';
+import { getToken } from '../../../service/auth';
+import axios from 'axios';
+import { API_URL } from '../../../config/config';
 
 const filters = ref({
     global: {
@@ -21,15 +24,26 @@ const filters = ref({
     }
 });
 
-const sistemKuliahs = ref([]);
+const pembiayaan = ref([]);
 const camabas = ref([]);
 const pemberkasanCamaba = ref([]);
+const tagihanCamaba = ref([]);
+const tahapTes = ref([]);
+const prodiCamaba = ref([]);
 const route = useRoute();
 const show = ref(false);
 const modalFile = ref('');
-const message = ref('');
 
-const sistemKuliah = async () => {
+const message = ref('');
+const selectedStatusBerkas = ref('');
+const selectedPembiayaan = ref('');
+const selectedBerkas = ref('');
+const selectedTes = ref('');
+const selectedProdi = ref('');
+const status_finalisasi = ref(false);
+const status_akun = ref(false);
+
+const getPembiayaan = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -39,9 +53,9 @@ const sistemKuliah = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('sistem-kuliah');
+        const response = await get('pembiayaan/');
         console.log(response.data.data);
-        sistemKuliahs.value = response.data.data;
+        pembiayaan.value = response.data.data;
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data sistemKuliah:', error);
@@ -59,13 +73,43 @@ const getCamaba = async (id) => {
         });
 
         const response = await get(`camaba/${id}/get`);
-        console.log(response.data.data);
-        camabas.value = response.data.data;
+        const data = response.data.data;
+        camabas.value = data;
+
+        console.log('object', data);
+
+        (selectedBerkas.value = data.status_berkas),
+            (selectedTes.value = data.status_tes),
+            (selectedProdi.value = data.id_prodi_diterima),
+            (status_finalisasi.value = data.finalisasi),
+            (status_akun.value = data.status_akun_pendaftar),
+            (selectedPembiayaan.value = data.id_pembiayaan);
+
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
 };
+const getProdiCamaba = async (id) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await get(`prodi-camaba/${id}/get-prodi-camaba`);
+        console.log(response.data.data);
+        prodiCamaba.value = response.data.data;
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
 const getPemberkasanCamaba = async (id) => {
     try {
         Swal.fire({
@@ -78,11 +122,130 @@ const getPemberkasanCamaba = async (id) => {
         });
 
         const response = await get(`pemberkasan-camaba/${id}/get-pemberkasan-camaba`);
-        console.log(response.data.data);
-        pemberkasanCamaba.value = response.data.data;
+        const data = response.data.data;
+        pemberkasanCamaba.value = data;
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data :', error);
+    }
+};
+
+const getTagihanCamaba = async (id) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await get(`tagihan-camaba/${id}/get-tagihan-camaba`);
+        console.log(response.data.data);
+        tagihanCamaba.value = response.data.data;
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const getTahapTes = async (id) => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await get(`tahap-tes-periode-pendaftaran/${id}/get-tahap-tes-periode-pendaftaran-camaba`);
+        console.log(response.data.data);
+        tahapTes.value = response.data.data;
+        Swal.close();
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const updatePemberkasan = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const token = getToken();
+        const id = route.params.id;
+
+        // Buat payload berdasarkan data pemberkasanCamaba
+        const payload = {
+            pemberkasan_camabas: pemberkasanCamaba.value.map((item) => ({
+                id: item.id,
+                status_berkas: item.status_berkas // Ambil status_berkas dari data item
+            }))
+        };
+
+        const response = await axios.put(`${API_URL}/pemberkasan-camaba/${id}/validasi-pemberkasan-camaba`, payload, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.reload();
+        });
+    } catch (error) {
+        Swal.close();
+        console.error('Error update data:', error.response ? error.response.data : error.message);
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+    }
+};
+
+const updateKelulusanCamaba = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const token = getToken();
+        const id = route.params.id;
+
+        // Buat payload berdasarkan data pemberkasanCamaba
+        const payload = {
+            status_berkas: selectedBerkas.value,
+            status_tes: selectedTes.value,
+            id_prodi_diterima: selectedProdi.value,
+            id_pembiayaan: selectedPembiayaan.value,
+            finalisasi: status_finalisasi.value,
+            status_akun_pendaftar: status_akun.value
+        };
+
+        const response = await axios.put(`${API_URL}/camaba/detail-camaba/${id}/update-status-kelulusan-pendaftar`, payload, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.reload();
+        });
+    } catch (error) {
+        Swal.close();
+        console.error('Error update data:', error.response ? error.response.data : error.message);
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
     }
 };
 
@@ -92,8 +255,17 @@ const showModal = (filePath) => {
     show.value = true;
 };
 
+const formatTanggal = (tanggal) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(tanggal).toLocaleDateString('id-ID', options);
+};
+
+const formatRupiah = (biaya) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(biaya);
+};
+
 onBeforeMount(() => {
-    sistemKuliah();
+    getPembiayaan();
 
     const id = route.params.id || route.query.id;
     if (id) {
@@ -101,6 +273,15 @@ onBeforeMount(() => {
     }
     if (id) {
         getPemberkasanCamaba(id);
+    }
+    if (id) {
+        getTagihanCamaba(id);
+    }
+    if (id) {
+        getTahapTes(id);
+    }
+    if (id) {
+        getProdiCamaba(id);
     }
 });
 </script>
@@ -131,7 +312,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="#" class="btn btn-primary"> <i class="pi pi-save me-2"></i>Simpan</router-link>
+                                <button @click="updatePemberkasan" class="btn btn-primary"><i class="pi pi-save me-2"></i>Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -164,29 +345,21 @@ onBeforeMount(() => {
                 <Column filterField="status_berkas" header="Status Validasi" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div>
-                            <select class="form-select" id="status">
+                            <select v-model="data.status_berkas" class="form-select" id="status">
                                 <option value="" disabled selected>Status Validasi</option>
-                                <option value="1">Berkas Valid</option>
-                                <option value="2">Berkas Tidak Valid</option>
+                                <option value="true">Berkas Valid</option>
+                                <option value="false">Berkas Tidak Valid</option>
                             </select>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="keterangan_singkat" header="Keterangan Validasi" style="min-width: 10rem">
-                    <template #body="{ data }">
-                        <div class="flex align-items-center gap-2">
-                            <!-- <span>{{ data.BerkasPeriodePendaftaran.JenisBerkas.keterangan_singkat }}</span> -->
-                            <input type="input-text" placeholder="Masukkan keterangan validasi berkas ini" />
-                        </div>
-                    </template>
-                </Column>
-                
+
                 <!-- Modal Component for Viewing Files -->
                 <Modal :show="show" @close="show = false" title="File Pemberkasan">
                     <!-- Check if modalFile exists and is an image by looking at the extension -->
                     <template v-if="modalFile && (modalFile.endsWith('.jpg') || modalFile.endsWith('.png') || modalFile.endsWith('.jpeg') || modalFile.endsWith('.gif'))">
                         <img :src="modalFile" class="img-fluid" alt="File Pemberkasan" />
-                    </template> 
+                    </template>
 
                     <!-- If modalFile exists and is a PDF, show an embedded PDF viewer or a download link -->
                     <template v-else-if="modalFile && modalFile.endsWith('.pdf')">
@@ -217,7 +390,6 @@ onBeforeMount(() => {
                         <table class="table">
                             <thead class="table-dark">
                                 <tr>
-                                    <th>No.</th>
                                     <th>Jenis Tagihan</th>
                                     <th>Periode Tagihan</th>
                                     <th>Jumlah Tagihan</th>
@@ -228,13 +400,12 @@ onBeforeMount(() => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
+                                    <td>{{ tagihanCamaba.JenisTagihan?.nama_jenis_tagihan }}</td>
+                                    <td>{{ tagihanCamaba.Semester?.nama_semester }}</td>
+                                    <td>{{ formatRupiah(tagihanCamaba.jumlah_tagihan) }}</td>
+                                    <td>{{ formatTanggal(tagihanCamaba.tanggal_tagihan) }}</td>
+                                    <td>{{ formatTanggal(tagihanCamaba.tanggal_lunas) }}</td>
+                                    <td>{{ tagihanCamaba.status_tagihan }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -265,7 +436,7 @@ onBeforeMount(() => {
                     <h6><b>PENILAIAN TES PENDAFTAR</b></h6>
                 </div>
             </div>
-            <DataTable v-model:filters="filters" :globalFilterFields="['nama_berkas', 'nama_sk']" :value="sistemKuliahs" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
+            <DataTable v-model:filters="filters" :globalFilterFields="['nama_berkas', 'nama_sk']" :value="tahapTes" :paginator="true" :rows="10" dataKey="id" :rowHover="true" showGridlines>
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -288,33 +459,33 @@ onBeforeMount(() => {
                 <Column filterField="nama_berkas" header="Tahapan Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.status_berkas }}</span>
+                            <span>{{ data.urutan_tes }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="kode_sk" header="Nama Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.kode_sk }}</span>
+                            <span>{{ data.JenisTe.nama_tes }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_sk" header="Keterangan Tes" style="min-width: 15rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                            <span>{{ data.JenisTe?.keterangan_singkat || '-' }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_sk" header="Tanggal Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.nama_sk }}</span>
+                            <span>{{ formatTanggal(data.tanggal_awal_tes) }} - {{ formatTanggal(data.tanggal_akhir_tes) }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="nama_sk" header="Kelulusan Tes" style="min-width: 15rem">
-                    <template #body="{ data }">
+                    <template #body="{}">
                         <div class="flex align-items-center gap-2">
                             <!-- <span>{{ data.nama_sk }}</span> -->
                             <input type="input-text" placeholder="Masukkan nilai tes atau keterangan lain" />
@@ -334,48 +505,58 @@ onBeforeMount(() => {
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="status" class="col-sm-3 col-form-label">Kelulusan Berkas</label>
                 <div class="col-md-7">
-                    <select class="form-select" id="status">
+                    <select v-model="selectedBerkas" class="form-select" id="status">
                         <option value="" disabled selected>Belum Ditentukan</option>
-                        <option value="1">Lulus</option>
-                        <option value="2">Tidak Lulus</option>
+                        <option value="true">Lulus</option>
+                        <option value="false">Tidak Lulus</option>
                     </select>
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="status" class="col-sm-3 col-form-label">Kelulusan Tes</label>
                 <div class="col-md-7">
-                    <select class="form-select" id="status">
+                    <select v-model="selectedTes" class="form-select" id="status">
                         <option value="" disabled selected>Belum Ditentukan</option>
-                        <option value="1">Lulus</option>
-                        <option value="2">Tidak Lulus</option>
+                        <option value="true">Lulus</option>
+                        <option value="false">Tidak Lulus</option>
                     </select>
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
                 <label for="status" class="col-sm-3 col-form-label">Program Studi Diterima</label>
                 <div class="col-md-7">
-                    <select class="form-select" id="status">
+                    <select v-model="selectedProdi" class="form-select" id="status">
                         <option value="" disabled selected>Pilih Program Studi</option>
-                        <option value="1">Prodi 1</option>
-                        <option value="2">Prodi 2</option>
+                        <option v-for="prodi in prodiCamaba" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.Prodi.JenjangPendidikan.nama_jenjang_didik }} - {{ prodi.Prodi.nama_program_studi }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row d-flex justify-content-center">
+                <label for="status" class="col-sm-3 col-form-label">Jenis Pembiayaan</label>
+                <div class="col-md-7">
+                    <select v-model="selectedPembiayaan" class="form-select" id="status">
+                        <option value="" disabled selected>Pilih Pembiayaan</option>
+                        <option v-for="jenisPembiayaan in pembiayaan" :key="jenisPembiayaan.id_pembiayaan" :value="jenisPembiayaan.id_pembiayaan">
+                            {{ jenisPembiayaan.nama_pembiayaan }}
+                        </option>
                     </select>
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Status Finalisasi</label>
                 <div class="col-md-7">
-                    <input type="checkbox" title="Sudah melakukan finalisasi data" />
+                    <input v-model="status_finalisasi" type="checkbox" title="Sudah melakukan finalisasi data" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
                 <label class="col-sm-3 col-form-label">Status Akun Pendaftar</label>
                 <div class="col-md-7">
-                    <input type="checkbox" title="Pendaftar bisa login ke portal PMB" />
+                    <input v-model="status_akun" type="checkbox" title="Pendaftar bisa login ke portal PMB" />
                 </div>
             </div>
             <div class="mb-3 row d-flex">
                 <div class="col-md-3 text-center">
-                    <button class="btn btn-success" type="button">Simpan</button>
+                    <button @click="updateKelulusanCamaba" class="btn btn-success" type="button">Simpan</button>
                 </div>
             </div>
         </div>
