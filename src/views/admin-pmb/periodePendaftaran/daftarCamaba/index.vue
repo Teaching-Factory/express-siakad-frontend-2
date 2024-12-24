@@ -63,7 +63,7 @@ const formatTanggal = (tanggal) => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>DAFTAR CALON MAHASISWA BARU</h5>
+        <h5><i class="pi pi-user me-2"></i>DAFTAR CALON MAHASISWA BARU || Periode {{ daftarPeriodeCamaba[0]?.PeriodePendaftaran?.nama_periode_pendaftaran }}</h5>
 
         <DataTable
             v-model:filters="filters"

@@ -124,6 +124,7 @@ const getPemberkasanCamaba = async (id) => {
         const response = await get(`pemberkasan-camaba/${id}/get-pemberkasan-camaba`);
         const data = response.data.data;
         pemberkasanCamaba.value = data;
+        console.log('pemberkasan', data);
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data :', error);
