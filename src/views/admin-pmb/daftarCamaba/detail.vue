@@ -161,7 +161,7 @@ const getTahapTes = async (id) => {
             }
         });
 
-        const response = await get(`tahap-tes-periode-pendaftaran/${id}/get-tahap-tes-periode-pendaftaran-camaba`);
+        const response = await get(`tahap-tes-camaba/${id}/get`);
         console.log(response.data.data);
         tahapTes.value = response.data.data;
         Swal.close();
@@ -188,11 +188,50 @@ const updatePemberkasan = async () => {
         const payload = {
             pemberkasan_camabas: pemberkasanCamaba.value.map((item) => ({
                 id: item.id,
-                status_berkas: item.status_berkas // Ambil status_berkas dari data item
+                status_berkas: item.status_berkas,
+                komentar_berkas: item.komentar_berkas // Ambil status_berkas dari data item
             }))
         };
 
         const response = await axios.put(`${API_URL}/pemberkasan-camaba/${id}/validasi-pemberkasan-camaba`, payload, {
+            headers: {
+                Authorization: token
+            }
+        });
+
+        Swal.close();
+        Swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
+            window.location.reload();
+        });
+    } catch (error) {
+        Swal.close();
+        console.error('Error update data:', error.response ? error.response.data : error.message);
+        Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+    }
+};
+
+const updateTesCamaba = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const token = getToken();
+        const id = route.params.id;
+
+        const payload = {
+            tahap_tes_camabas: tahapTes.value.map((item) => ({
+                id: item.id,
+                status: item.status
+            }))
+        };
+
+        const response = await axios.put(`${API_URL}/tahap-tes-camaba/${id}/update`, payload, {
             headers: {
                 Authorization: token
             }
@@ -354,6 +393,14 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
+                <Column filterField="nama_sk" header="Keterangan Berkas" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <!-- <span>{{ data.nama_sk }}</span> -->
+                            <input v-model="data.komentar_berkas" type="input-text" placeholder="Masukkan keterangan pemberkasan " />
+                        </div>
+                    </template>
+                </Column>
 
                 <!-- Modal Component for Viewing Files -->
                 <Modal :show="show" @close="show = false" title="File Pemberkasan">
@@ -448,7 +495,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link to="#" class="btn btn-primary"> <i class="pi pi-save me-2"></i> Simpan </router-link>
+                                <button @click="updateTesCamaba" class="btn btn-primary"><i class="pi pi-save me-2"></i> Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -460,14 +507,14 @@ onBeforeMount(() => {
                 <Column filterField="nama_berkas" header="Tahapan Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.urutan_tes }}</span>
+                            <span>{{ data.TahapTesPeriodePendaftaran.urutan_tes }}</span>
                         </div>
                     </template>
                 </Column>
                 <Column filterField="kode_sk" header="Nama Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ data.JenisTe.nama_tes }}</span>
+                            <span>{{ data.TahapTesPeriodePendaftaran.JenisTe.nama_tes }}</span>
                         </div>
                     </template>
                 </Column>
@@ -481,15 +528,19 @@ onBeforeMount(() => {
                 <Column filterField="nama_sk" header="Tanggal Tes" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <span>{{ formatTanggal(data.tanggal_awal_tes) }} - {{ formatTanggal(data.tanggal_akhir_tes) }}</span>
+                            <span>{{ formatTanggal(data.TahapTesPeriodePendaftaran.tanggal_awal_tes) }} - {{ formatTanggal(data.TahapTesPeriodePendaftaran.tanggal_akhir_tes) }}</span>
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_sk" header="Kelulusan Tes" style="min-width: 15rem">
-                    <template #body="{}">
-                        <div class="flex align-items-center gap-2">
-                            <!-- <span>{{ data.nama_sk }}</span> -->
-                            <input type="input-text" placeholder="Masukkan nilai tes atau keterangan lain" />
+                <Column filterField="status_berkas" header="Kelulusan Tes" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div>
+                            <select v-model="data.status" class="form-select" id="status">
+                                <option value="" disabled selected>Kelulusan Tes</option>
+                                <option value="Lulus">Lulus</option>
+                                <option value="Tidak Lulus">Tidak Lulus</option>
+                                <option value="Menunggu Persetujuan">Menunggu Persetujuan</option>
+                            </select>
                         </div>
                     </template>
                 </Column>

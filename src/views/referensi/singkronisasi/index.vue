@@ -264,6 +264,42 @@ const syncDataKurikulum = async () => {
         });
     }
 };
+const syncSekolah = async () => {
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await getData('sync-feeder/sync-sekolah/');
+
+        if (!response || response.status !== 200) {
+            throw new Error();
+        }
+
+        // const data = response.data;
+
+        // syncDosen.value = data;
+
+        Swal.fire('BERHASIL!', 'Data Sekolah berhasil disingkron.', 'success').then(() => {
+            window.location.href = '/singkron-data';
+        });
+        Swal.close();
+    } catch (error) {
+        Swal.close();
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Gagal mengambil data : ' + (error.message || 'Terjadi Kesalahan '),
+            confirmButtonText: 'OK'
+        });
+    }
+};
 </script>
 
 <template>
@@ -350,6 +386,16 @@ const syncDataKurikulum = async () => {
                                 </td> -->
                                 <td>
                                     <button class="btn btn-outline-primary" @click="syncDataKurikulum" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Sekolah</td>
+                                <!-- <td>
+                                    <button class="btn btn-outline-primary btn-block" style="width: 30%">Get Data</button>
+                                </td> -->
+                                <td>
+                                    <button class="btn btn-outline-primary" @click="syncSekolah" style="width: 30%"><i class="fa fa-sync-alt"></i>Singkronkan</button>
                                 </td>
                             </tr>
                         </tbody>

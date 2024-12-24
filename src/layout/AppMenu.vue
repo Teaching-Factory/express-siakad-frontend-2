@@ -481,6 +481,16 @@ const model = ref([
                         to: '/sync-dosen-pengajar'
                         // visible: computed(() => permissions.includes('daftar-berita'))
                     },
+                    {
+                        label: 'Sync Biodata Mahasiswa',
+                        to: '/sync-biodata-mahasiswa'
+                        // visible: computed(() => permissions.includes('daftar-berita'))
+                    },
+                    {
+                        label: 'Sync Riwayat Pendidikan Mahasiswa',
+                        to: '/sync-riwayat-pendidikan-mahasiswa'
+                        // visible: computed(() => permissions.includes('daftar-berita'))
+                    }
                 ]
             }
         ]
