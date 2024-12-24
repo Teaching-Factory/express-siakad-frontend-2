@@ -1,8 +1,10 @@
 <script setup>
 import { ref, onBeforeMount, watch } from 'vue';
-import { get, getData } from '../../../utiils/request';
+
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
+import { useRoute } from 'vue-router';
+import { getData } from '../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -12,58 +14,12 @@ const filters = ref({
     nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_periode_masuk: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
+
+const route = useRoute();
 const first = ref(0);
-const camabas = ref([]);
-const semesters = ref([]);
-const periodePendaftarans = ref([]); // Data untuk dropdown periode pendaftaran
-const selectedSemester = ref(''); // Semester yang dipilih
-const selectedPeriodePendaftaran = ref(''); // Periode pendaftaran yang dipilih
-const selectedBerkas = ref(''); // Periode pendaftaran yang dipilih
-const selectedTes = ref(''); // Periode pendaftaran yang dipilih
+const daftarPeriodeCamaba = ref([]);
 
-// Ambil data semester
-const getSemester = async () => {
-    try {
-        const response = await get('semester');
-        semesters.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data semester:', error);
-    }
-};
-
-// Ambil data periode pendaftaran berdasarkan semester yang dipilih
-const fetchClasses = async () => {
-    console.log('fungsi class terpangil');
-    if (selectedSemester.value) {
-        console.log('fungsi class terpangil 2');
-
-        try {
-            const response = await get(`periode-pendaftaran/semester/${selectedSemester.value}/get`);
-            periodePendaftarans.value = response.data.data; // Isi dropdown dengan data periode
-            console.log(periodePendaftarans.value);
-            console.log('fungsi class terpangil 3');
-        } catch (error) {
-            console.error('Gagal mengambil data periode pendaftaran:', error);
-        }
-    }
-};
-watch(selectedSemester, fetchClasses);
-
-// Loading data setelah memilih semester
-const selectedFilter = async () => {
-    Swal.fire({
-        title: 'Loading...',
-        html: 'Sedang Memuat Data',
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-    await Promise.all([getSemester(), fetchClasses()]);
-    Swal.close();
-};
-
-const filterData = async () => {
+const getDaftaPeriodeCamaba = async (id) => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -74,18 +30,14 @@ const filterData = async () => {
             }
         });
 
-        const id_periode_pendaftaran = selectedPeriodePendaftaran.value;
-        const status_berkas = selectedBerkas.value;
-        const status_tes = selectedTes.value;
-
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`camaba/get-camaba-by-filter?id_periode_pendaftaran=${id_periode_pendaftaran}&status_berkas=${status_berkas}&status_tes=${status_tes}`);
+        const response = await getData(`camaba/${id}/get-camaba`);
 
-        const filterCamaba = response.data.data;
-        camabas.value = filterCamaba;
+        const data = response.data.data;
+        daftarPeriodeCamaba.value = data;
 
         Swal.close();
-        console.log('object :', filterCamaba);
+        console.log('object :', data);
     } catch (error) {
         console.error('Gagal mengambil data mahasiswa:', error);
         Swal.fire('Gagal', 'Data Mahasiswa tidak ditemukan.', 'warning').then(() => {});
@@ -97,7 +49,10 @@ const onPageChange = (event) => {
 };
 
 onBeforeMount(() => {
-    selectedFilter();
+    const id = route.params.id || route.query.id;
+    if (id) {
+        getDaftaPeriodeCamaba(id);
+    }
 });
 
 const formatTanggal = (tanggal) => {
@@ -109,56 +64,11 @@ const formatTanggal = (tanggal) => {
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>DAFTAR CALON MAHASISWA BARU</h5>
-        <div class="card">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="">
-                        <label for="exampleFormControlInput1" class="form-label">Semester Pendaftaran</label>
-                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Semester</option>
-                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="">
-                        <label for="exampleFormControlInput1" class="form-label">Periode Pendaftaran</label>
-                        <select v-model="selectedPeriodePendaftaran" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Periode</option>
-                            <option v-for="periodePendaftaran in periodePendaftarans" :key="periodePendaftaran.id" :value="periodePendaftaran.id">{{ periodePendaftaran.nama_periode_pendaftaran }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="">
-                        <label for="exampleFormControlInput1" class="form-label">Kelulusan Berkas</label>
-                        <select v-model="selectedBerkas" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
-                            <option value="true">Lulus</option>
-                            <option value="false">Tidak Lulus</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6">
-                    <div class="">
-                        <label for="exampleFormControlInput1" class="form-label">Kelulusan Tes</label>
-                        <select v-model="selectedTes" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
-                            <option value="true">Lulus</option>
-                            <option value="false">Tidak Lulus</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
-                </div>
-            </div>
-        </div>
 
         <DataTable
             v-model:filters="filters"
             :globalFilterFields="['nama_mahasiswa', 'nim', 'nama_status_mahasiswa', 'Prodi.nama_program_studi', 'nama_periode_masuk']"
-            :value="camabas"
+            :value="daftarPeriodeCamaba"
             :paginator="true"
             :rows="10"
             dataKey="id_registrasi_mahasiswa"

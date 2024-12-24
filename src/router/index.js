@@ -113,6 +113,14 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['import-mahasiswa'] }
                 },
                 {
+                    path: '/periode-pendaftaran/:id/daftar-camaba',
+                    name: 'periode-pendaftaran-daftar-camaba',
+                    component: () => import('../views/admin-pmb/periodePendaftaran/daftarCamaba/index.vue')
+                    // meta: { requiredPermissions: ['import-mahasiswa'] }
+                },
+
+                //tagihanCamaba
+                {
                     path: '/tagihan-camaba',
                     name: 'tagihan-camaba',
                     component: () => import('../views/admin-pmb/tagihanCamaba/index.vue')
@@ -976,6 +984,20 @@ const router = createRouter({
                     path: '/sync-dosen-pengajar',
                     name: 'sync-dosen-pengajar',
                     component: () => import('../views/referensi/singkronisasi/dosen-pengajar/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+
+                //cetak
+                {
+                    path: '/biodata-camaba/:id/cetak',
+                    name: 'biodata-camaba-cetak',
+                    component: () => import('../views/admin-pmb/daftarCamaba/cetakBiodata/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/kartu-ujian-camaba/:id/cetak',
+                    name: 'kartu-ujian-camaba-cetak',
+                    component: () => import('../views/admin-pmb/daftarCamaba/cetakKartuUjian/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 }
             ]

@@ -160,7 +160,7 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/periode-pendaftaran-create/${data.id}/edit`" class="btn btn-outline-secondary" title="daftar pendaftar">
+                            <router-link :to="`/periode-pendaftaran/${data.id}/daftar-camaba`" class="btn btn-outline-secondary" title="daftar pendaftar">
                                 <i class="pi pi-list"></i>
                             </router-link>
                             <router-link :to="`/periode-pendaftaran-edit/${data.id}`" class="btn btn-outline-primary" title="edit">
