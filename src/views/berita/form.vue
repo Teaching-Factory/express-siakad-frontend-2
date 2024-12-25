@@ -58,9 +58,9 @@ export default {
                     </div>
                     <div class="col-12 xl:col-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <router-link to="/daftar-berita" class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Daftar</router-link>
-                            <button type="submit" class="btn btn-primary me-2"><i class="pi pi-save mr-2"></i> Simpan</button>
-                            <router-link to="#" class="btn btn-danger"> <i class="pi pi-times mr-2"></i> Batal</router-link>
+                            <router-link to="/daftar-berita" class="btn btn-secondary me-2"> <i class="pi pi-bars mr-2"></i> Kembali</router-link>
+                            <button type="submit" class="btn btn-success me-2"><i class="pi pi-save mr-2"></i> Simpan</button>
+                            <!-- <router-link to="#" class="btn btn-danger"> <i class="pi pi-times mr-2"></i> Batal</router-link> -->
                         </div>
                     </div>
                 </div>

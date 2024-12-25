@@ -235,13 +235,15 @@ function deleteDosen(index) {
                 </div>
                 </div>
                 <hr/>
+
+
             <table v-for="(kelas, index) in kelasjadwal" :key="index" class="table table-center table-hover mb-4">
                 <thead class="table-primary align-middle">
                     <tr>
                         <th colspan="7">{{kelas.mataKuliah.nama_mata_kuliah}} [ {{kelas.mataKuliah.sks_mata_kuliah}} | {{kelas.mataKuliah.kode_mata_kuliah}}]</th>
                         <th class="text-end">
-                            <button class="btn btn-secondary me-2"> 1 Kelas </button>
-                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${kelas.details[0].KelasKuliah.id_semester}`" class="btn btn-success"><i class="pi pi-plus"></i></router-link>
+                            <!-- <button class="btn btn-secondary me-2"> 1 Kelas </button> -->
+                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${kelas.details[0].KelasKuliah.id_semester}`" class="btn btn-success" title="tambah kelas"><i class="pi pi-plus"></i></router-link>
                         </th>
                     </tr>
                 </thead>
@@ -417,8 +419,8 @@ function deleteDosen(index) {
                             </Modal>
                         </td>
                         <td class="text-end">
-                            <router-link :to="`/kelas-jadwal-perkuliahan/update-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}`" class="btn  me-2 btn-warning"> <i class="pi pi-pencil "></i> </router-link>
-                            <button @click="confirmDelete(detail.KelasKuliah.id_kelas_kuliah)" class="btn  me-2 btn-danger"> <i class="pi pi-trash "></i> </button>
+                            <router-link :to="`/kelas-jadwal-perkuliahan/update-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}`" class="btn  me-2 btn-warning" title="edit" > <i class="pi pi-pencil "></i> </router-link>
+                            <button @click="confirmDelete(detail.KelasKuliah.id_kelas_kuliah)" class="btn  me-2 btn-danger" title="delete"> <i class="pi pi-trash "></i> </button>
                             <!-- <router-link to="/kelas-jadwal-perkuliahan/create-pesertakelas" class="btn  me-2" style="background-color: #E87E04;"><i class="pi pi-user-plus "></i> </router-link> -->
                             <!-- <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
                             <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button> -->

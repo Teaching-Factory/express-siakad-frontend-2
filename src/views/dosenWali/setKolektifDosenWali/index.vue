@@ -214,7 +214,7 @@ onMounted(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button @click="createMahasiswaWali(dataDosen[0].id_dosen)" class="btn btn-secondary"><i class="pi pi-check me-2"></i> Simpan</button>
+                                <button @click="createMahasiswaWali(dataDosen[0].id_dosen)" class="btn btn-success"><i class="pi pi-check me-2"></i> Simpan</button>
                             </div>
                         </div>
                     </div>

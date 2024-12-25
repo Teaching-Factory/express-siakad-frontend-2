@@ -215,7 +215,7 @@ onBeforeMount(() => {
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <button @click="generateUserMahasiswa" class="btn btn-secondary"> <i class="pi pi-check me-2"></i> Generate</button> 
+                            <button @click="generateUserMahasiswa" class="btn btn-success"> <i class="pi pi-check me-2"></i> Generate</button> 
                         </div>
                     </div>
                 </div>

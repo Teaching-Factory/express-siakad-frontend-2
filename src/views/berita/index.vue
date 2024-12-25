@@ -133,7 +133,7 @@ onBeforeMount(() => {
                 </Column>
                 <Column header="Aksi" style="min-width: 5rem">
                     <template #body="{ data }">
-                        <button class="btn btn-outline-danger" @click="confirmDelete(data.id)">
+                        <button class="btn btn-outline-danger" @click="confirmDelete(data.id)" title="delete">
                             <i class="pi pi-trash"></i>
                         </button>
                     </template>

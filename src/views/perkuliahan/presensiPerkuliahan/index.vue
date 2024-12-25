@@ -216,7 +216,7 @@ onBeforeMount(() => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{data}">
-                        <router-link :to="`/presensi-perkuliahan/${data.id}/detail`" class="btn btn-outline-primary me-2">
+                        <router-link :to="`/presensi-perkuliahan/${data.id}/detail`" class="btn btn-outline-primary me-2" title="edit">
                             <i class="pi pi-pencil"></i>
                         </router-link>
                     </template>

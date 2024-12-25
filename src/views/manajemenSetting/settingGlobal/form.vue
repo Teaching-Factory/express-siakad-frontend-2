@@ -103,8 +103,8 @@ onMounted(() => {
             </div>
             <div class="col-lg-7 d-flex justify-content-end">
                 <router-link to="/setting-global" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
-                <button @click="update" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Simpan</button>
-                <router-link to="/setting-global" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</router-link>
+                <button @click="update" class="btn btn-success me-2"><i class="pi pi-check me-2"></i> Simpan</button>
+                <!-- <router-link to="/setting-global" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Reset</router-link> -->
             </div>
         </div>
         <hr />

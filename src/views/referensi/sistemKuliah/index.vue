@@ -127,11 +127,11 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary">
+                            <router-link :to="`/sistem-kuliah/edit/${data.id}`" class="btn btn-outline-primary" title="edit">
                                 <i class="pi pi-pencil"></i>
                                 <!-- {{ console.log(data.id) }} -->
                             </router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger">
+                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger" title="delete">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>

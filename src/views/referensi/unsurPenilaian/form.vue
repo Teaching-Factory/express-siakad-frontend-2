@@ -91,8 +91,8 @@ export default {
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
                     <router-link to="/unsur-penilaian" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
-                    <button type="submit" class="btn btn-primary me-2"><i class="pi pi-check me-2"></i> Simpan</button>
-                    <router-link to="/unsur-penilaian" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</router-link>
+                    <button type="submit" class="btn btn-success me-2"><i class="pi pi-check me-2"></i> Simpan</button>
+                    <!-- <router-link to="/unsur-penilaian" class="btn btn-danger"><i class="pi pi-refresh me-2"></i> Batal</router-link> -->
                 </div>
             </div>
             <hr />

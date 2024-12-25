@@ -207,11 +207,11 @@ const confirmDelete = (id) => {
             </Column>
             <Column header="Aksi" style="min-width: 10rem">
                 <template #body="{ data }">
-                    <router-link :to="`/pertemuan-perkuliahan/${data.id}/${getKelasKuliah.id_kelas_kuliah}/update`" class="btn btn-outline-primary me-2 py-1 px-2">
+                    <router-link :to="`/pertemuan-perkuliahan/${data.id}/${getKelasKuliah.id_kelas_kuliah}/update`" class="btn btn-outline-primary me-2 py-1 px-2" title="edit">
                         <i class="pi pi-pencil"></i>
                     </router-link>
 
-                    <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id)">
+                    <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id)" title="delete">
                         <i class="pi pi-trash"></i>
                     </button>
                 </template>

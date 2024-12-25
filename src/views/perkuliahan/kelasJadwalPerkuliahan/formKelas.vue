@@ -330,7 +330,7 @@ onMounted(() => {
                     <h5><i class="pi pi-user me-2"></i>DETAIL KELAS DAN JADWAL MINGGUAN</h5>
                 </div>
                 <div class="col-lg-6 text-end">
-                    <button class="btn btn-secondary" @click="submit"><i class="pi pi-check me-2"></i> Simpan</button>
+                    <button class="btn btn-success" @click="submit"><i class="pi pi-check me-2"></i> Simpan</button>
                 </div>
             </div>
 

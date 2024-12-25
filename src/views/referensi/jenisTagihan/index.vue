@@ -106,10 +106,10 @@ onMounted(() => {
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex gap-2">
-                            <router-link :to=" `/jenis-tagihan/edit/${data.id_jenis_tagihan}` " class="btn btn-outline-primary">
+                            <router-link :to=" `/jenis-tagihan/edit/${data.id_jenis_tagihan}` " class="btn btn-outline-primary" title="edit">
                                 <i class="pi pi-pencil"></i>
                             </router-link>
-                            <button @click="confirmDelete(data.id_jenis_tagihan)" btn="submit" class="btn btn-outline-danger">
+                            <button @click="confirmDelete(data.id_jenis_tagihan)" btn="submit" class="btn btn-outline-danger" title="delete">
                                 <i class="pi pi-trash"></i>
                             </button>
                         </div>

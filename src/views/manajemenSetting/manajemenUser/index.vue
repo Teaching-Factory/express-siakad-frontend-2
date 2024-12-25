@@ -149,8 +149,8 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 8rem">
                     <template #body="{ data }">
                         <div class="actions gap-2">
-                            <router-link :to="`/manajemen-user/${data.id}/update`" class="btn btn-outline-primary"> <i class="pi pi-pencil"></i></router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger"><i class="pi pi-trash"></i></button>
+                            <router-link :to="`/manajemen-user/${data.id}/update`" class="btn btn-outline-primary me-2" title="edit"> <i class="pi pi-pencil"></i></router-link>
+                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger" title="delete"><i class="pi pi-trash"></i></button>
                         </div>
                     </template>
                 </Column>

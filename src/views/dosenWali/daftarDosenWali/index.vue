@@ -60,7 +60,7 @@ onBeforeMount(() => {
         <h5><i class="pi pi-user me-2"></i>DAFTAR DOSEN WALI PERIODE 2022/2023 GENAP</h5>
         <div class="card">
             <div class="row d-flex justify-content-between">
-                <div class="col-lg-5 col-md-6 col-sm-6">
+                <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Tahun Ajaran</label>
                         <select v-model="selectedTahunAjaran" class="form-select" aria-label="Default select example">

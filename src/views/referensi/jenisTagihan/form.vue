@@ -83,11 +83,11 @@ onMounted(() => {
                 </div>
                 <div class="col-lg-8 d-flex justify-content-end">
                     <router-link to="/jenis-tagihan" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
-                    <button type="submit" class="btn btn-primary me-2" :disabled="loading">
+                    <button type="submit" class="btn btn-success me-2" :disabled="loading">
                         <span v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         <span v-else><i class="pi pi-check me-2"></i> {{ formMode === 'create' ? 'Simpan' : 'Update' }}</span>
                     </button>
-                    <button type="reset" class="btn btn-danger" ><i class="pi pi-refresh me-2"></i> Reset</button>
+                    <!-- <button type="reset" class="btn btn-danger" ><i class="pi pi-refresh me-2"></i> Reset</button> -->
                 </div>
             </div>
             <hr />

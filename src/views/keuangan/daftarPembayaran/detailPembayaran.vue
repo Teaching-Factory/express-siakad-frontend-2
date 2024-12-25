@@ -166,7 +166,7 @@ const formatRupiah = (biaya) => {
             </Column>
             <Column header="Bukti Pembayaran" style="min-width: 10rem">
                 <template #body="{ data }">
-                    <button @click="showModal(data.upload_bukti_tf)" class="btn btn-outline-primary me-2">
+                    <button @click="showModal(data.upload_bukti_tf)" class="btn btn-outline-primary me-2" title="detail bukti pembayaran">
                         <i class="pi pi-eye"></i>
                     </button>
                 </template>

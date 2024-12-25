@@ -110,9 +110,9 @@ onBeforeMount(() => {
                 <Column header="Aksi" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="actions gap-2">
-                            <router-link :to="`/setting-hak-akses/${data.id}`" class="btn btn-outline-warning me-2"> <i class="pi pi-shield"></i></router-link>
-                            <router-link :to="`/manajemen-role/${data.id}/update`" class="btn btn-outline-primary me-2"> <i class="pi pi-pencil"></i></router-link>
-                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger"><i class="pi pi-trash"></i></button>
+                            <router-link :to="`/setting-hak-akses/${data.id}`" class="btn btn-outline-warning me-2" title="hak akses user"> <i class="pi pi-shield"></i></router-link>
+                            <router-link :to="`/manajemen-role/${data.id}/update`" class="btn btn-outline-primary me-2" title="edit"> <i class="pi pi-pencil"></i></router-link>
+                            <button @click="confirmDelete(data.id)" class="btn btn-outline-danger" title="delete"><i class="pi pi-trash"></i></button>
                         </div>
                     </template>
                 </Column>

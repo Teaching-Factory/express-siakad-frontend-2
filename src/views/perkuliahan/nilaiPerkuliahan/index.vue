@@ -221,10 +221,10 @@ const deleteItem = (no) => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link :to="`/nilai-perkuliahan/form/${data.id_kelas_kuliah}/${data.id_prodi}`" class="btn btn-outline-primary me-2">
+                        <router-link :to="`/nilai-perkuliahan/form/${data.id_kelas_kuliah}/${data.id_prodi}`" class="btn btn-outline-primary me-2" title="edit">
                             <i class="pi pi-pencil"></i>
                         </router-link>
-                        <button class="btn btn-outline-danger" @click="confirmDelete(data.no)">
+                        <button class="btn btn-outline-danger" title="delete" @click="confirmDelete(data.no)">
                             <i class="pi pi-trash"></i>
                         </button>
                     </template>

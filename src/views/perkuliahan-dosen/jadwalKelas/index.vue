@@ -171,10 +171,10 @@ onBeforeMount(() => {
                 </Column>
                 <Column filterField="aksi" field="aksi" header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link :to="`/nilai-perkuliahan/form/${data.id_kelas_kuliah}/${data.KelasKuliah.id_prodi}`" class="btn btn-primary me-2 border-0" style="background-color: #FFE500;"> 
+                        <router-link :to="`/nilai-perkuliahan/form/${data.id_kelas_kuliah}/${data.KelasKuliah.id_prodi}`" class="btn btn-primary me-2 border-0" style="background-color: #FFE500;" title="penilaian perkuliahan"> 
                             <i style="color: #000;" class="pi pi-file-edit"></i>
                         </router-link>
-                        <router-link :to="`/pertemuan-perkuliahan/${data.id_kelas_kuliah}`" class="btn btn-primary border-0" style="background-color: #000;"> 
+                        <router-link :to="`/pertemuan-perkuliahan/${data.id_kelas_kuliah}`" class="btn btn-primary border-0" style="background-color: #000;" title="pertemuan perkuliahan"> 
                             <i class="pi pi-user-edit"></i>
                         </router-link>
                     </template>
