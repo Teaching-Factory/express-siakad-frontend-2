@@ -1,17 +1,18 @@
 
 <script>
-import { getData } from '../../../utiils/request.js'
-import Swal from "sweetalert2";
+import { getData } from '../../../utiils/request.js';
+import Swal from 'sweetalert2';
 
 export default {
     data() {
         return {
             krsData: null,
-            rekapKrsData: []
+            rekapKrsData: [],
+            kopSurat: []
         };
     },
     methods: {
-        getDataKrs: async function(req) {
+        getDataKrs: async function (req) {
             try {
                 Swal.fire({
                     title: 'Loading...',
@@ -21,12 +22,11 @@ export default {
                         Swal.showLoading();
                     }
                 });
-                
-                
+
                 const response = await getData(`rekap-krs-mahasiswa/get-rekap-krs-mahasiswa?jenis_cetak=${req.jenis_cetak}&nim=${req.nim}&id_semester=${req.id_semester}&tanggal_penandatanganan=${req.tanggal_penandatanganan}&format=${req.format}`);
                 this.krsData = response.data;
                 this.rekapKrsData = response.data.dataRekapKRSByMahasiswa;
-                console.log('Response:', response.data)
+                console.log('Response:', response.data);
             } catch (error) {
                 console.error('Gagal mengirim data:', error);
             }
@@ -41,10 +41,7 @@ export default {
         },
         formatDate(date) {
             if (!date) return '-';
-            const months = [
-                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-            ];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
             const parts = date.split('-');
             const year = parts[0];
@@ -54,15 +51,24 @@ export default {
             const formattedDate = `${day} ${months[month]} ${year}`;
             return formattedDate;
         },
+        getKopSurat: async function (req) {
+            try {
+                const response = await getData(`perguruan-tinggi/get-data-kop-surat`);
+                this.kopSurat = response.data;
+                console.log('KopSurat:', response.data);
+            } catch (error) {
+                console.error('Gagal Mengambil data:', error);
+            }
+        },
         getLogoUrl() {
-            return `/layout/images/ubi.jpg`;
+            return `/public/layout/images/logo.png`;
         }
-
     },
     mounted() {
-        this.getDataKrs(this.$route.query)
+        this.getDataKrs(this.$route.query);
+        this.getKopSurat();
     },
-    
+
     computed: {
         totalSKS() {
             return this.rekapKrsData.reduce((total, matkul) => {
@@ -70,12 +76,12 @@ export default {
             }, 0);
         }
     }
-}
+};
 </script>
 
 
 <template>
-    <div class="card print border-0" style="width: 24cm; min-height: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif" >
+    <div class="card print border-0" style="width: 24cm; min-height: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif">
         <div class="card-body">
             <!-- <div class="heading-section" style="width: 100%;">
                 <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
@@ -84,18 +90,18 @@ export default {
                 <tbody>
                     <tr>
                         <td width="15%" class="header-logo">
-                            <img :src="getLogoUrl()" alt="logo" width="100%" />
+                            <img :src="kopSurat?.data?.foto_profil_pt || getLogoUrl" alt="logo" width="80%" />
                         </td>
                         <td>
-                            <p class="m-2 fw-bold" style="font-size: 20px;"> NAMA PERGURUAN TINGGI</p>
-                            <p class="m-0">Alamat : Kampus terpadu bumi cempokosari no 40 Cluring Banyuwangi</p>
-                            <p class="m-0">Kodepos : 68482, Telepon : (0333) 3912341</p>
-                            <p class="m-0">Website : https://www.ubibanyuwangi.ac.id/ | Email : office@ubibanyuwangi.ac.id | Faximile : (0333) 3912341</p>
+                            <p class="m-2 fw-bold" style="font-size: 20px">{{ kopSurat?.perguruanTinggi?.nama_perguruan_tinggi || 'NAMA PERGURUAN TINGGI' }}</p>
+                            <p class="m-0">Alamat : {{ kopSurat?.data?.jalan || 'ALAMAT PERGURUAN TINGGI' }}</p>
+                            <p class="m-0">Kodepos : {{ kopSurat?.data?.kode_pos || 'KODEPOS PT' }}, Telepon : {{ kopSurat?.data?.telepon || 'TELEPON PT' }}</p>
+                            <p class="m-0">Website : {{ kopSurat?.data?.website || 'WEBSITE PT' }} | Email : {{ kopSurat?.data?.email || 'EMAIL PT' }} | Faximile : {{ kopSurat?.data?.telepon || 'TELEPON PT' }}</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <hr style="border-color: black;">
+            <hr style="border-color: black" />
 
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
@@ -103,61 +109,41 @@ export default {
             <table class="table table-borderless mt-3">
                 <tbody>
                     <tr>
-                        <td style="width: 50%;">
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 110px;">
-                                    Nama
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
+                        <td style="width: 50%">
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 110px">Nama</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
                                     {{ krsData?.mahasiswa.nama_mahasiswa }}
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 110px;">
-                                    Program Studi
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 110px">Program Studi</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
                                     {{ krsData?.mahasiswa.Prodi.nama_program_studi }}
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 110px;">
-                                    Semester
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 110px">Semester</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
                                     {{ krsData?.mahasiswa.Semester.semester }}
                                 </div>
                             </div>
                         </td>
-                        <td style="width: 50%;">
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 110px;">
-                                    NIM
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
+                        <td style="width: 50%">
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 110px">NIM</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
                                     {{ krsData?.mahasiswa.nim }}
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: flex-start;">
-                                <div style="margin-left: 15px;width: 110px;">
-                                    Periode
-                                </div>
-                                <div style="margin-right: 6px;">
-                                    :
-                                </div>
-                                <div style="margin-right: 10px;">
+                            <div style="display: flex; align-items: flex-start">
+                                <div style="margin-left: 15px; width: 110px">Periode</div>
+                                <div style="margin-right: 6px">:</div>
+                                <div style="margin-right: 10px">
                                     {{ krsData?.mahasiswa.Semester.nama_semester }}
                                 </div>
                             </div>
@@ -193,11 +179,7 @@ export default {
                         <td>{{ matkul.KelasKuliah.nama_kelas_kuliah }}</td>
                         <td>{{ matkul.KelasKuliah.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan ?? '-' }}</td>
                         <td>{{ matkul.KelasKuliah.DetailKelasKuliahs[0]?.hari ?? '-' }}</td>
-                        <td>{{ 
-                            matkul.KelasKuliah.DetailKelasKuliahs.length > 0 ? 
-                            `${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_mulai)} - ${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_selesai)}` : 
-                            '-' 
-                        }}</td>
+                        <td>{{ matkul.KelasKuliah.DetailKelasKuliahs.length > 0 ? `${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_mulai)} - ${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_selesai)}` : '-' }}</td>
                     </tr>
                     <tr>
                         <td class="text-center" colspan="4">Jumlah</td>
@@ -221,22 +203,23 @@ export default {
                         <td width="50%">
                             <p class="mb-4"></p>
                             <p class="m-0">Mahasiswa</p>
-                            <p style="height: 70px;"></p>
-                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;"> {{ krsData?.mahasiswa?.nama_mahasiswa ?? '-'}}</p>
-                            <p class="m-0">{{ krsData?.mahasiswa?.nim ?? '-'}}</p>
-                        </td >
+                            <p style="height: 70px"></p>
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold">{{ krsData?.mahasiswa?.nama_mahasiswa ?? '-' }}</p>
+                            <p class="m-0">{{ krsData?.mahasiswa?.nim ?? '-' }}</p>
+                        </td>
                         <td width="50%">
                             <p class="m-0">Banyuwangi, {{ formatDate(krsData?.tanggalPenandatanganan) }}</p>
                             <p class="m-0">Pembimbing Akademik</p>
-                            <p style="height: 70px;"></p>
-                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;"> {{ krsData?.dosen_wali?.Dosen?.nama_dosen ?? '-'}}</p>
-                            <p class="m-0">08976768757</p></td>
-                        </tr>
+                            <p style="height: 70px"></p>
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold">{{ krsData?.dosen_wali?.Dosen?.nama_dosen ?? '-' }}</p>
+                            <p class="m-0">08976768757</p>
+                        </td>
+                    </tr>
                     <tr>
                         <td colspan="2">
                             <p class="m-0">{{ krsData?.unitJabatan?.Jabatan?.nama_jabatan ?? '-' }}</p>
-                            <p style="height: 70px;"></p>
-                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold;">{{ krsData?.unitJabatan?.nama_penandatanganan ?? '-'}}</p>
+                            <p style="height: 70px"></p>
+                            <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold">{{ krsData?.unitJabatan?.nama_penandatanganan ?? '-' }}</p>
                             <p class="m-0">{{ krsData?.unitJabatan?.Dosen?.nip ?? '-' }}</p>
                         </td>
                     </tr>

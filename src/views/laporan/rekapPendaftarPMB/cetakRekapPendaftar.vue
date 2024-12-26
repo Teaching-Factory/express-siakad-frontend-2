@@ -6,7 +6,8 @@ export default {
     data() {
         return {
             rekapPendaftar: null,
-            getCamaba: null
+            getCamaba: null,
+            kopSurat: []
         };
     },
     methods: {
@@ -51,12 +52,22 @@ export default {
             const formattedDate = `${day} ${months[month]} ${year}`;
             return formattedDate;
         },
+        getKopSurat: async function (req) {
+            try {
+                const response = await getData(`perguruan-tinggi/get-data-kop-surat`);
+                this.kopSurat = response.data;
+                console.log('KopSurat:', response.data);
+            } catch (error) {
+                console.error('Gagal Mengambil data:', error);
+            }
+        },
         getLogoUrl() {
-            return `/layout/images/ubi.jpg`;
+            return `/public/layout/images/logo.png`;
         }
     },
     mounted() {
         this.getRekapPendaftar(this.$route.query);
+        this.getKopSurat();
     }
 };
 </script>
@@ -72,18 +83,18 @@ export default {
                 <tbody>
                     <tr>
                         <td width="15%" class="header-logo">
-                            <img :src="getLogoUrl()" alt="logo" width="75%" />
+                            <img :src="kopSurat?.data?.foto_profil_pt || getLogoUrl" alt="logo" width="80%" />
                         </td>
                         <td>
-                            <p class="m-2 fw-bold" style="font-size: 20px;"> NAMA PERGURUAN TINGGI</p>
-                            <p class="m-0">Alamat : Kampus terpadu bumi cempokosari no 40 Cluring Banyuwangi</p>
-                            <p class="m-0">Kodepos : 68482, Telepon : (0333) 3912341</p>
-                            <p class="m-0">Website : https://www.ubibanyuwangi.ac.id/ | Email : office@ubibanyuwangi.ac.id | Faximile : (0333) 3912341</p>
+                            <p class="m-2 fw-bold" style="font-size: 20px">{{ kopSurat?.perguruanTinggi?.nama_perguruan_tinggi || 'NAMA PERGURUAN TINGGI' }}</p>
+                            <p class="m-0">Alamat : {{ kopSurat?.data?.jalan || 'ALAMAT PERGURUAN TINGGI' }}</p>
+                            <p class="m-0">Kodepos : {{ kopSurat?.data?.kode_pos || 'KODEPOS PT' }}, Telepon : {{ kopSurat?.data?.telepon || 'TELEPON PT' }}</p>
+                            <p class="m-0">Website : {{ kopSurat?.data?.website || 'WEBSITE PT' }} | Email : {{ kopSurat?.data?.email || 'EMAIL PT' }} | Faximile : {{ kopSurat?.data?.telepon || 'TELEPON PT' }}</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <hr style="border-color: black;">
+            <hr style="border-color: black" />
 
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
