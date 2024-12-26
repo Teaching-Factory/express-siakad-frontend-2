@@ -14,7 +14,7 @@ import axios from 'axios';
 import { API_URL } from '../../../config/config';
 
 const logoUrl = computed(() => {
-    return `/layout/images/ubi.jpg`;
+    return `/layout/images/logo.png`;
 });
 const usernameError = ref('');
 const passwordError = ref('');
@@ -98,7 +98,8 @@ onMounted(() => {
             <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, #343434 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
                     <div class="text-center mb-5">
-                        <img :src="logoUrl" alt="Image" height="100" class="mb-3" />
+                        <img :src="profilePT?.foto_profil_pt || logoUrl.value" alt="Image" height="100" class="mb-3" />
+
                         <div class="text-900 text-3xl font-medium mb-3">{{ profilePT?.PerguruanTinggi?.nama_perguruan_tinggi || 'Nama Instansi' }}</div>
                     </div>
 

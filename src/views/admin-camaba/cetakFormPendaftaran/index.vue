@@ -8,6 +8,7 @@ const dataBiodataCamabas = ref([]);
 const dataProdiCamabas = ref([]);
 const dataUserCamabas = ref([]);
 const fotoProfile = ref([]);
+const kopSurat = ref([]);
 
 // Fungsi untuk mengkonversi tanggal
 const formatTanggal = (tanggal) => {
@@ -46,12 +47,27 @@ const getFotoProfile = async () => {
         console.error('Gagal mengambil data :', error);
     }
 };
+const getKopSurat = async () => {
+    try {
+        const response = await getData(`perguruan-tinggi/get-data-kop-surat`);
+        kopSurat.value = response.data;
+        console.log('Response:', response.data);
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+
+const getLogoUrl = computed(() => {
+    return `/public/layout/images/logo.png`;
+});
+
 const handlePrint = () => {
     window.print();
 };
 onBeforeMount(() => {
     getkartuUjian();
     getFotoProfile();
+    getKopSurat();
 });
 </script>
 
@@ -65,18 +81,18 @@ onBeforeMount(() => {
                 <tbody>
                     <tr>
                         <td width="15%" class="header-logo">
-                            <img :src="getLogoUrl()" alt="logo" width="100%" />
+                            <img :src="kopSurat?.data?.foto_profil_pt || getLogoUrl" alt="logo" width="80%" />
                         </td>
                         <td>
-                            <p class="m-2 fw-bold" style="font-size: 20px;"> NAMA PERGURUAN TINGGI</p>
-                            <p class="m-0">Alamat : Kampus terpadu bumi cempokosari no 40 Cluring Banyuwangi</p>
-                            <p class="m-0">Kodepos : 68482, Telepon : (0333) 3912341</p>
-                            <p class="m-0">Website : https://www.ubibanyuwangi.ac.id/ | Email : office@ubibanyuwangi.ac.id | Faximile : (0333) 3912341</p>
+                            <p class="m-2 fw-bold" style="font-size: 20px">{{ kopSurat?.perguruanTinggi?.nama_perguruan_tinggi || 'NAMA PERGURUAN TINGGI' }}</p>
+                            <p class="m-0">Alamat : {{ kopSurat?.data?.jalan || 'ALAMAT PERGURUAN TINGGI' }}</p>
+                            <p class="m-0">Kodepos : {{ kopSurat?.data?.kode_pos || 'KODEPOS PT' }}, Telepon : {{ kopSurat?.data?.telepon || 'TELEPON PT' }}</p>
+                            <p class="m-0">Website : {{ kopSurat?.data?.website || 'WEBSITE PT' }} | Email : {{ kopSurat?.data?.email || 'EMAIL PT' }} | Faximile : {{ kopSurat?.data?.telepon || 'TELEPON PT' }}</p>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <hr style="border-color: black;">
+            <hr style="border-color: black" />
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
             <table class="table table-borderless mt-3">
