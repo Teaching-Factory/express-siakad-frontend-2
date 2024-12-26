@@ -66,6 +66,9 @@ export default {
 
             const formattedDate = `${day} ${months[month]} ${year}`;
             return formattedDate;
+        },
+        getLogoUrl() {
+            return `/layout/images/ubi.jpg`;
         }
     },
     mounted() {

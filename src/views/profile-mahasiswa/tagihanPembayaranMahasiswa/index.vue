@@ -68,19 +68,10 @@ onMounted(() => {
 
 <template>
     <div class="card">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Info Tagihan</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Info Pembayaran</button>
-            </li>
-        </ul>
-
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="mt-3">
-                    <DataTable
+        <h5><i class="pi pi-user me-2"></i>DAFTAR TAGIHAN MAHASISWA</h5>
+        <div class="card">
+            <div class="row">
+                <DataTable
                         v-model:filters="filters"
                         :globalFilterFields="['id_tagihan_mahasiswa', 'JenisTagihan.jenis_tagihan', 'Periode.periode_pelaporan', 'jumlah_tagihan', 'status_tagihan']"
                         :value="tagihanMahasiswa"
@@ -157,14 +148,6 @@ onMounted(() => {
                             </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="row mt-3">
-                    <div class="col-lg-12">
-                        <div class="alert alert-danger text-center" role="alert">Anda memiliki piutang sebesar <strong>Rp. 10.000.000</strong> Segera lengkapi sebelum anda dikeluarkan dari kampus!!</div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
