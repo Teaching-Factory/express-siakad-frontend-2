@@ -99,7 +99,7 @@ const generateUserMahasiswa = async () => {
             }
         });
         if (selectedMahasiswa.value.length === 0) {
-            Swal.fire('PERINGATAN!', 'Tidak ada data KRS mahasiswa yang dipilih.', 'warning');
+            Swal.fire('PERINGATAN!', 'Tidak ada data mahasiswa yang dipilih.', 'warning');
             return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
         }
 

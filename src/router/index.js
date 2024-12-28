@@ -265,7 +265,7 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formKelas.vue')
                 },
                 {
-                    path: '/kelas-jadwal-perkuliahan/create-pesertakelas',
+                    path: '/kelas-jadwal-perkuliahan/:id_detail_kelas_kuliah/:id_kelas_kuliah/create-peserta-kelas',
                     name: 'kelas-jadwal-perkuliahan-create-peserta-kelas',
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formPesertaKelas.vue')
                 },
