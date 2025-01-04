@@ -74,13 +74,6 @@ export default {
         this.getDataKrs(this.$route.query);
         this.getKopSurat();
     }
-    // computed: {
-    //     totalSKS() {
-    //         return this.rekapKrsData.reduce((total, matkul) => {
-    //             return total + (Number(matkul.KelasKuliah?.sks) || 0);
-    //         }, 0);
-    //     }
-    // }
 };
 </script>
 
@@ -88,9 +81,6 @@ export default {
 <template>
     <div class="card print border-0" style="width: 24cm; min-height: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif">
         <div class="card-body">
-            <!-- <div class="heading-section" style="width: 100%;">
-                <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%;">
-            </div> -->
             <table class="table table-borderless mt-3 text-center">
                 <tbody>
                     <tr>

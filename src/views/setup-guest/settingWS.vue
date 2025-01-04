@@ -17,7 +17,7 @@ const createWebSister = async () => {
         status: status.value
     });
     Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-        window.location.href = '/dashboard';
+        window.location.href = '/setup-guest/get-started/register/settingws/install';
     });
 };
 function smoothScroll(id) {
@@ -30,10 +30,10 @@ function smoothScroll(id) {
 
 <template>
     <div class="bg-light">
-        <div id="home" class="container-fluid landing-wrapper" style="height: 100vh; overflow-y: auto;">
+        <div id="home" class="container-fluid landing-wrapper" style="height: 100vh; overflow-y: auto">
             <div
                 id="hero"
-                class="d-flex flex-column pt-6 px-4 px-lg-5 "
+                class="d-flex flex-column pt-6 px-4 px-lg-5"
                 style="min-height: 100vh; background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(77.36% 256.97% at 77.36% 57.52%, rgb(238, 239, 175) 0%, rgb(195, 227, 250) 100%)"
             >
                 <div class="mx-4 mx-md-5 h-100 d-flex align-items-center justify-content-center">
@@ -41,8 +41,7 @@ function smoothScroll(id) {
                         <div class="col-lg-7">
                             <p class="display-6 fw-bold text-dark"><span class="fw-light d-block"></span>Langkah Selanjutnya: Integrasikan Sistem Kampus Anda!</p>
                             <div class="mt-4 mb-4">
-                                <h5 class="fs-5 text-muted mt-3">Kini saatnya Anda mengatur koneksi Web Service (WS) untuk memastikan SIACLOUD dapat bekerja dengan sempurna sesuai kebutuhan kampus Anda
-                                </h5>
+                                <h5 class="fs-5 text-muted mt-3">Kini saatnya Anda mengatur koneksi Web Service (WS) untuk memastikan SIACLOUD dapat bekerja dengan sempurna sesuai kebutuhan kampus Anda</h5>
                                 <h5></h5>
                                 <h5 class="fw-bold text-dark">💡 Apa yang Perlu Dilakukan?</h5>
                                 <ul class="fs-5 text-muted mt-3">
@@ -51,7 +50,7 @@ function smoothScroll(id) {
                                     <li>Hubungkan sistem kampus Anda ke SiacLoad untuk menikmati kemudahan otomatisasi dan pelaporan.</li>
                                 </ul>
                                 <p class="fs-5 mt-4">
-                                    <b>🚀 Setelah selesai, Anda siap menjalankan transformasi kampus digital dengan penuh percaya diri!</b>  
+                                    <b>🚀 Setelah selesai, Anda siap menjalankan transformasi kampus digital dengan penuh percaya diri!</b>
                                 </p>
                             </div>
                         </div>

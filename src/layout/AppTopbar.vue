@@ -7,9 +7,11 @@ import { API_URL } from '../config/config';
 import { clearPermissions, clearToken, clearUser } from '../service/auth';
 import { clearSettingGlobal, getUser } from '../utiils/local_storage';
 import Swal from 'sweetalert2';
+import { getData } from '../utiils/request';
 
 const { onMenuToggle } = useLayout();
 const user = ref([]);
+const profilePT = ref([]);
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
@@ -24,8 +26,17 @@ onBeforeUnmount(() => {
 });
 
 const logoUrl = computed(() => {
-    return `/public/ubi.png`;
+    return `/layout/images/logo.png`;
 });
+const getProfilePT = async () => {
+    try {
+        const response = await getData(`perguruan-tinggi-guest/get-pt-active`);
+        profilePT.value = response.data.data;
+        console.log('Response:', response.data);
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
 
 const handleLogout = async () => {
     try {
@@ -51,6 +62,9 @@ const handleLogout = async () => {
         console.log(error);
     }
 };
+onMounted(() => {
+    getProfilePT();
+});
 
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
@@ -94,10 +108,10 @@ const isOutsideClicked = (event) => {
 <template>
     <div class="layout-topbar">
         <router-link to="/" class="layout-topbar-logo">
-            <img :src="logoUrl" alt="logo" />
+            <img :src="profilePT?.foto_profil_pt || logoUrl" alt="logo" />
             <div class="text-container text-icon" style="display: flex; flex-direction: column; margin-left: 10px">
                 <span class="text-white subtitle" style="font-size: 1rem">Sistem Informasi Akademik</span>
-                <span class="text-white title" style="font-size: 1.1rem; font-weight: bold">Universitas Bakti Indonesia</span>
+                <span class="text-white title" style="font-size: 1.1rem; font-weight: bold">{{ profilePT?.PerguruanTinggi?.nama_perguruan_tinggi || 'Nama Instansi' }}</span>
             </div>
         </router-link>
 

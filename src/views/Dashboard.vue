@@ -246,23 +246,54 @@ const chartOptions = ref({
         type: 'line'
     },
     stroke: {
-        width: [0, 4]
+        width: [0, 10]
     },
     title: {
         text: 'IPK PER SEMESTER'
     },
     dataLabels: {
         enabled: true,
-        enabledOnSeries: [2]
+        enabledOnSeries: [0]
     },
     labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
-    colors: ['#F7EA06']
+    colors: ['#0616f7'],
+    plotOptions: {
+        bar: {
+            columnWidth: '50%',
+            distributed: false
+        }
+    },
+    yaxis: {
+        min: 1,
+        max: 4,
+        tickAmount: 3,
+        labels: {
+            formatter: (value) => value.toFixed(0)
+        }
+    },
+    xaxis: {
+        labels: {
+            style: {
+                fontSize: '12px', // Ukuran font label
+                fontWeight: 'bold', // Gaya font
+                colors: ['#333'] // Warna label
+            },
+            offsetY: 5 // Jarak vertikal label dari chart
+        },
+        axisTicks: {
+            show: true // Menampilkan garis kecil di bawah label
+        },
+        axisBorder: {
+            show: true // Menampilkan garis bawah label
+        }
+    }
 });
 
 const getIPSSemester = async () => {
     try {
         const response = await get('mahasiswa/get-ips-mahasiswa-active');
         const ipsSemester = response.data.daftar_ips;
+        console.log('ips : ', ipsSemester);
 
         // Clear existing data (optional, depending on your logic)
         series.value[0].data = [];

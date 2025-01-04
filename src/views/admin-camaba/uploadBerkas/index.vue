@@ -240,7 +240,7 @@ onBeforeMount(() => {
                     </template>
                 </Column>
 
-                <Modal v-if="isUploadModalVisible" :show="isUploadModalVisible" title="Upload Excel" size="md" @close="isUploadModalVisible = false">
+                <Modal v-if="isUploadModalVisible" :show="isUploadModalVisible" title="Upload Berkas" size="md" @close="isUploadModalVisible = false">
                     <form @submit.prevent="uploadBerkas(selectedId)">
                         <div class="mb-3">
                             <label for="file" class="form-label">Upload Berkas Pendaftaran</label>
