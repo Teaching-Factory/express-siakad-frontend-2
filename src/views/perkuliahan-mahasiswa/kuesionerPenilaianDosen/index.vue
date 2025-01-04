@@ -53,14 +53,14 @@ onMounted(() => {
                     <div class="col-lg-2">Jurusan</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.Prodi?.nama_program_studi || '-' }}</div>
                 </div>
-                <hr style="border: 1px solid #000" />
+                <hr style="border-color: black" />
                 <div class="row">
                     <div class="col-lg-2">Nama</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.nama_mahasiswa || '-' }}</div>
                     <div class="col-lg-2">Jenis Kelamin</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{ dataMahasiswa?.jenis_kelamin || '-' }}</div>
                 </div>
-                <hr style="border: 1px solid #000" />
+                <hr style="border-color: black" />
                 <div class="row">
                     <div class="col-lg-2">Status Mahasiswa</div>
                     <div class="col-lg-4"><span class="me-2">:</span>{{ dataMahasiswa?.nama_status_mahasiswa || '-' }}</div>
@@ -88,7 +88,7 @@ onMounted(() => {
                             <td>{{ krsMahasiswa.KelasKuliah.nama_kelas_kuliah }}</td>
                             <td>{{ krsMahasiswa.KelasKuliah.Dosen.nama_dosen }}</td>
                             <td>
-                                <router-link :to="`/kuesioner-penilaian-dosen/${krsMahasiswa.id_kelas}/kuesioner`" class="btn btn-outline-primary">
+                                <router-link :to="`/kuesioner-penilaian-dosen/${krsMahasiswa.id_kelas}/kuesioner`" class="btn btn-outline-primary" title="penilaian kuesioner">
                                     <i class="pi pi-eye"></i>
                                 </router-link>
                             </td>

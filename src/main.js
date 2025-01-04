@@ -111,7 +111,6 @@ import TreeSelect from 'primevue/treeselect';
 import TreeTable from 'primevue/treetable';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
-
 import BlockViewer from '@/components/BlockViewer.vue';
 
 import 'vue-select/dist/vue-select.css';

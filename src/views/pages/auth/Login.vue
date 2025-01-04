@@ -96,7 +96,7 @@ onMounted(() => {
     <div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden">
         <div class="flex flex-column align-items-center justify-content-center">
             <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, #343434 10%, rgba(33, 150, 243, 0) 30%)">
-                <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius: 53px">
+                <div class="w-full surface-card py-6 px-4 sm:px-6" style="border-radius: 53px">
                     <div class="text-center mb-5">
                         <img :src="profilePT?.foto_profil_pt || logoUrl.value" alt="Image" height="100" class="mb-3" />
 

@@ -16,7 +16,6 @@ import cek from '../assets/images/cek.png';
 import mhs from '../assets/images/mhs.png';
 import print from '../assets/images/print.png';
 import point from '../assets/images/point.png';
-import VueApexCharts from 'vue3-apexcharts';
 
 const user = ref([]);
 const semesters = ref([]);
@@ -285,26 +284,24 @@ onMounted(() => {
     fetchPresensiMahasiswa();
     getIPSSemester();
     permissions.value = getPermissions();
+
 });
 watchEffect(() => {
     updateDosenPengampu();
     checkPresensiStatus();
 });
-</script>
 
-<script>
-import VueApexCharts from 'vue3-apexcharts';
-
-export default {
-    components: {
-        apexchart: VueApexCharts
-    }
-};
 </script>
 
 <template>
-    <!-- role super admin dan admin prodi (belum dipermission) -->
-    <!-- <div v-if="permissions.includes('alur-menu-admin')" class="row"> -->
+
+    <!-- <div class="row">
+        <div class="card flex justify-center">
+        <Chart type="doughnut" :data="chartData" :options="chartOption" class="w-full md:w-[30rem]" />
+    </div>
+    </div> -->
+
+    <!-- dashboar admin berisi menu-menu -->
     <div v-if="permissions.includes('dashboard-admin')" class="row">
         <div class="col-md-3 col-sm-3 mb-3">
             <div class="card mb-0 p-3 position-relative">
@@ -413,8 +410,7 @@ export default {
     </div>
 
     <div class="row mt-3">
-        <!-- role mahasiswa dan dosen (belum dipermission) -->
-        <!-- <div v-if="permissions.includes('informasi-dosen-mahasiswa')" class="col-lg-8 col-md-8"> -->
+        <!-- dashboard menu info card pink -->
         <div v-if="permissions.includes('dashboard-info')" class="col-lg-8 col-md-8">
             <div class="d-flex justify-content-between">
                 <div class="d-flex justify-content-start">
@@ -457,7 +453,7 @@ export default {
             </div>
         </div>
 
-        <!-- all role -->
+        <!-- all role card date-->
         <div class="col-lg-4 col-md-4 col-sm-12">
             <div class="card">
                 <div id="cal">
@@ -473,8 +469,11 @@ export default {
             </div>
         </div>
     </div>
+
+    <!-- perkuliahan -->
     <div class="row">
         <div class="row mt-3">
+            <!-- daftar kelas yang dibuka -->
             <div v-if="permissions.includes('daftar-pertemuan-aktif')" class="col-lg-8 col-md-8">
                 <div class="card" style="height: calc(78vh - 200px)">
                     <span><b>KELAS YANG DIBUKA PRESENSI HARI INI</b></span>
@@ -521,6 +520,8 @@ export default {
                     </DataTable>
                 </div>
             </div>
+
+            <!-- dosen untuk membuka presensi perkuliahan -->
             <div v-if="permissions.includes('buka-presensi')" class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card">
                     <span><b>BUKA PRESENSI KELAS</b></span>
@@ -560,6 +561,7 @@ export default {
             </div>
         </div>
 
+        <!-- jadwal perkuliahan mahasiswa -->
         <div v-if="permissions.includes('jadwal-perkuliahan-aktif')" class="col-lg-8 col-md-8">
             <div class="card">
                 <span><b>JADWAL PERKULIAHAN HARI INI</b></span>
@@ -603,6 +605,8 @@ export default {
                 </div>
             </div>
         </div>
+
+        <!-- presensi untuk mahasiswa -->
         <div v-if="permissions.includes('presensi-mahasiswa')" class="col-lg-4 col-md-4 col-sm-12">
             <div class="card">
                 <span class="fw-bold">PRESENSI SEKARANG!</span>
@@ -630,7 +634,7 @@ export default {
         </div>
     </div>
 
-    <!-- role mahasiswa (belum di permission) -->
+    <!-- diagram batang untuk IPK Mahasiswa -->
     <div class="row mt-3">
         <!-- <div v-if="permissions.includes('diagram-ipk-mahasiswa')" class="col-lg-8"> -->
         <div v-if="permissions.includes('dashboard-mahasiswa')" class="col-lg-8">
@@ -641,7 +645,7 @@ export default {
             </div>
         </div>
 
-        <!-- all role -->
+        <!-- all role , berita-->
         <div class="col-lg-4">
             <div class="card">
                 <span><b>INFORMASI TERBARU</b></span>
