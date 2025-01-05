@@ -490,6 +490,16 @@ const model = ref([
                         label: 'Sync Riwayat Pendidikan Mahasiswa',
                         to: '/sync-riwayat-pendidikan-mahasiswa'
                         // visible: computed(() => permissions.includes('daftar-berita'))
+                    },
+                    {
+                        label: 'Sync Peserta kelas',
+                        to: '/sync-peserta-kelas'
+                        // visible: computed(() => permissions.includes('daftar-berita'))
+                    },
+                    {
+                        label: 'Sync Nilai Perkuliahan',
+                        to: '/sync-detail-nilai'
+                        // visible: computed(() => permissions.includes('daftar-berita'))
                     }
                 ]
             }

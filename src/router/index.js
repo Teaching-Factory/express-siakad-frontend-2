@@ -998,6 +998,18 @@ const router = createRouter({
                     component: () => import('../views/referensi/singkronisasi/riwayat-pendidikan-mahasiswa/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
+                {
+                    path: '/sync-peserta-kelas',
+                    name: 'sync-peserta-kelas',
+                    component: () => import('../views/referensi/singkronisasi/peserta-kelas/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-detail-nilai',
+                    name: 'sync-detail-nilai',
+                    component: () => import('../views/referensi/singkronisasi/detail-nilai/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
 
                 //cetak
                 {
