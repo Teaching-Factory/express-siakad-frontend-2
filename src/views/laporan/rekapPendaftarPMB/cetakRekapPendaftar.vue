@@ -73,16 +73,12 @@ export default {
 </script>
 
 <template>
-    <div class="card print border-0" style="height: 21cm; width: 29.7cm; font-family: Arial, Helvetica, sans-serif">
+    <div class="card print border-0" style="height: 25cm; width: 39.7cm; font-family: Arial, Helvetica, sans-serif">
         <div class="card-body">
-            <!-- <div class="heading-section" style="width: 100%">
-                <img src="../../../assets/images/kopSurat.png" alt="" style="width: 100%" />
-            </div> -->
-
             <table class="table table-borderless mt-3 text-center">
                 <tbody>
                     <tr>
-                        <td width="15%" class="header-logo">
+                        <td width="10%" class="header-logo">
                             <img :src="kopSurat?.data?.foto_profil_pt || getLogoUrl" alt="logo" width="80%" />
                         </td>
                         <td>
@@ -122,8 +118,8 @@ export default {
                 </tbody>
             </table>
 
-            <div style="overflow-x: auto">
-                <table class="table table-bordered text-center">
+            <div style="overflow-x: ">
+                <table class="table table-bordered text-center" style="font-size: 12px">
                     <thead class="align-middle">
                         <tr>
                             <th>No</th>

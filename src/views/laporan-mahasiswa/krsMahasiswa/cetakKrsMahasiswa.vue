@@ -65,6 +65,9 @@ export default {
 
             const formattedDate = `${day} ${months[month]} ${year}`;
             return formattedDate;
+        },
+        getLogoUrl() {
+            return `/layout/images/ubi.jpg`;
         }
     },
     mounted() {
@@ -76,7 +79,7 @@ export default {
 
 
 <template>
-    <div class="card print border-0" style="width: 21cm; min-height: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif">
+    <div class="card print border-0" style="width: 24cm; min-height: 29.7cm; height: auto; font-family: Arial, Helvetica, sans-serif">
         <div class="card-body">
             <table class="table table-borderless mt-3 text-center">
                 <tbody>

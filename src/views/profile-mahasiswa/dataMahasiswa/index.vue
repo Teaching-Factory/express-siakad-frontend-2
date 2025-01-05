@@ -126,7 +126,7 @@ onMounted(()=> {
                     <div class="text-center">
                         <h1>{{ profil.dataMahasiswa?.nama_mahasiswa }}</h1>
                         <h5>{{ profil.dataMahasiswa?.nim }} - {{ profil.dataMahasiswa?.Prodi?.nama_program_studi }}</h5>
-                        <button class="btn btn-primary">Dikeluarkan</button>
+                        <!-- <button class="btn btn-primary">Dikeluarkan</button> -->
                     </div>
                 </div>
             </div>

@@ -122,28 +122,28 @@ onBeforeMount(() => {
                     <div class="col-lg-2">Jurusan</div>
                     <div class="col-lg-4"><span class="me-2">:</span>{{dataMahasiswa?.Prodi?.nama_program_studi}}</div>
                 </div>
-                <hr style="border: 1px solid #000" />
+                <hr style="border-color: black" />
                 <div class="row">
                     <div class="col-lg-2">Nama</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{dataMahasiswa?.nama_mahasiswa}}</div>
                     <div class="col-lg-2">Jenis Kelamin</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{dataMahasiswa?.jenis_kelamin}}</div>
                 </div>
-                <hr style="border: 1px solid #000" />
+                <hr style="border-color: black" />
                 <div class="row">
                     <div class="col-lg-2">Status Mahasiswa</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{dataMahasiswa?.nama_status_mahasiswa || 'Belum diSet'}}</div>
                     <div class="col-lg-2">IPS Semester Lalu</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{dataMahasiswa?.ipk || '-'}}</div>
                 </div>
-                <hr style="border: 1px solid #000" />
+                <hr style="border-color: black" />
                 <div class="row">
                     <div class="col-lg-2">Dosen Wali</div>
                     <div class="col-lg-4"><span class="me-2">:</span> {{dataDosenWali?.Dosen?.nama_dosen || 'Belum diSet'}}</div>
                     <!-- <div class="col-lg-2">IPS Semester Lalu</div>
                     <div class="col-lg-4"> <span class="me-2">:</span> -</div> -->
                 </div>
-                <hr style="border: 1px solid #000" />
+                <hr style="border-color: black" />
             </div>
             <table class="table">
                 <thead class="table-dark">

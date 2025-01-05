@@ -104,8 +104,7 @@ const confirmDelete = (id) => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>LIST PERTEMUAN</h5>
-        <hr />
+        <h5><i class="pi pi-user me-2"></i>DAFTAR PERTEMUAN</h5>
         <div class="card" style="border-radius: none !important">
             <div class="row">
                 <div class="col-lg-2">Program Studi</div>
