@@ -209,7 +209,7 @@ onBeforeMount(() => {
                         <label for="exampleFormControlInput1" class="form-label">Pilih Angkatan</label>
                         <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Angkatan</option>
-                            <option v-for="angkatan in angkatans" :key="angkatan.id_angkatan" :value="angkatan.id_angkatan">{{ angkatan.tahun }}</option>
+                            <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
                         </select>
                     </div>
                 </div>

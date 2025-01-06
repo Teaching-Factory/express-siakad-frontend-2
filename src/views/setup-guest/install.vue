@@ -1,6 +1,6 @@
 <script setup>
 import Swal from 'sweetalert2';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import {
     getFeederAgama,
     getFeederAktivitasMahasiswa,
@@ -222,6 +222,9 @@ const Installasi = async () => {
             icon: 'success',
             title: 'Berhasil',
             text: 'Semua data berhasil dimuat!'
+        }).then(() => {
+            // Redirect ke halaman berikutnya
+            window.location.href = '/setup-guest/get-started/register/settingws/install/next'; // Ganti dengan URL halaman tujuan Anda
         });
 
         console.log(results);
@@ -283,6 +286,7 @@ const Installasi = async () => {
             <button @click="Installasi" type="button" class="btn btn-outline-primary btn-lg mt-3">
               🚀 INSTALL SEKARANG
             </button>
+            
           </div>
         </div>
       </div>
