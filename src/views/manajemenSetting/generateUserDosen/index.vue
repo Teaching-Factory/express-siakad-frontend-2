@@ -95,10 +95,9 @@ onBeforeMount(() => {
                     <h6 class="text-dark">Keterangan :</h6>
                     <p class="lh-1 text-small">
                         <ol>
-                            <li>Fitur ini digunakan untuk melakukan generate Username & Password Dosen di Go Feeder.</li>
-                            <li>Default user yang di-generate untuk username : NIDN & password : tanggal lahir dengan format yyyy-mm-dd (tanda '-' dihilangkan). Contoh : 1997-02-03 = 19970203.</li>
-                            <li>Daftar mahasiswa yang sudah terdaftar di Forlap & berstatus AKTIF.</li>
-                            <li>Untuk melihat daftar user klik disini.</li>
+                            <li>Fitur ini digunakan untuk melakukan generate Username & Password Dosen</li>
+                            <li>Default user yang di-generate untuk username menggunakan NIDN (1234567890) dan password menggunakan tanggal lahir (19980203)</li>
+                            <li>Pilih beberapa data Dosen untuk di Generate secara bersamaan.</li>
                         </ol>
                     </p>
                 </div>
@@ -129,7 +128,7 @@ onBeforeMount(() => {
                     </div>
                     <div class="col-lg-6 d-flex justify-content-end">
                         <div class="flex justify-content-end gap-2">
-                            <button @click="generateUserDosen" class="btn btn-success"> <i class="pi pi-check me-2"></i> Generate</button> 
+                            <button @click="generateUserDosen" class="btn btn-warning"> <i class="pi pi-check me-2"></i><b>GENERATE</b></button> 
                         </div>
                     </div>
                 </div>

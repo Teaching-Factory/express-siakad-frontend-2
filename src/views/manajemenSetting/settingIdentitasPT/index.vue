@@ -172,7 +172,7 @@ onMounted(() => {
                     <label for="exampleFormControlInput1" class="form-label">Logo Perguruan Tinggi</label>
                 </div>
                 <div class="col-lg-6">
-                    <input @change="handleFileUpload" type="file" class="form-control" />
+                    <input @change="handleFileUpload" type="file" class="form-control" title="Upload logo disini"/>
                 </div>
             </div>
             <div class="row d-flex justify-content-center mb-3">
