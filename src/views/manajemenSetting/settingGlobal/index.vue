@@ -121,7 +121,7 @@ onMounted(() => {
                 <Column header="Buka KRS" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
-                            <input type="checkbox" :checked="data.open_khs === true" />
+                            <input type="checkbox" :checked="data.open_krs === true" />
                         </div>
                     </template>
                 </Column>
@@ -138,6 +138,11 @@ onMounted(() => {
                 <Column header="Buka Transkrip" style="min-width: 10rem">
                     <template #body="{ data }">
                         <input type="checkbox" :checked="data.open_transcript === true" />
+                    </template>
+                </Column>
+                <Column header="Buka Quisioner" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <input type="checkbox" :checked="data.open_questionnaire === true" />
                     </template>
                 </Column>
             </DataTable>
