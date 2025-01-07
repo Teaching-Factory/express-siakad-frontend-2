@@ -40,6 +40,16 @@ const router = createRouter({
             component: () => import('../views/setup-guest/install.vue')
         },
         {
+            path: '/setup-guest/get-started/register/settingws/install/next',
+            name: 'setuo-guest-get-started-register-settingws-install-next',
+            component: () => import('../views/setup-guest/install2.vue')
+        },
+        {
+            path: '/setup-guest/get-started/register/settingws/install/next/setting-semester',
+            name: 'setuo-guest-get-started-register-settingws-install-next-setting-semester',
+            component: () => import('../views/setup-guest/settingSemester.vue')
+        },
+        {
             path: '/',
             component: AppLayout,
             meta: { requiresAuth: true },
@@ -998,6 +1008,18 @@ const router = createRouter({
                     component: () => import('../views/referensi/singkronisasi/riwayat-pendidikan-mahasiswa/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
+                {
+                    path: '/sync-peserta-kelas',
+                    name: 'sync-peserta-kelas',
+                    component: () => import('../views/referensi/singkronisasi/peserta-kelas/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-detail-nilai',
+                    name: 'sync-detail-nilai',
+                    component: () => import('../views/referensi/singkronisasi/detail-nilai/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
 
                 //cetak
                 {
@@ -1032,7 +1054,9 @@ router.beforeEach((to, from, next) => {
         '/setup-guest/get-started',
         '/setup-guest/get-started/register',
         '/setup-guest/get-started/register/settingws',
-        '/setup-guest/get-started/register/settingws/install'
+        '/setup-guest/get-started/register/settingws/install',
+        '/setup-guest/get-started/register/settingws/install/next',
+        '/setup-guest/get-started/register/settingws/install/next/setting-semester'
     ];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
