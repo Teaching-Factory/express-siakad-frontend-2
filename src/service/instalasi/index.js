@@ -1,4 +1,4 @@
-import { getData } from '../../utiils/request';
+import { get } from '../../utiils/request';
 
 export let isAgama = false;
 export let isNegara = false;
@@ -58,10 +58,12 @@ export let isMahasiswaBimbinganDosen = false;
 export let isUjiMahasiswa = false;
 export let isSekolahSMK = false;
 export let isSekolahSMA = false;
+export let isRencanaEvaluasi = false;
+export let isKomponenEvaluasi = false;
 
 export const getFeederAgama = async () => {
     try {
-        const res = await getData(`api-feeder/get-agama`);
+        const res = await get(`api-feeder/get-agama`);
         isAgama = true;
         return res;
     } catch (err) {
@@ -71,7 +73,7 @@ export const getFeederAgama = async () => {
 
 export const getFeederNegara = async () => {
     try {
-        const res = await getData(`api-feeder/get-negara`);
+        const res = await get(`api-feeder/get-negara`);
         isNegara = true;
         return res;
     } catch (err) {
@@ -81,7 +83,7 @@ export const getFeederNegara = async () => {
 
 export const getFeederWilayah = async () => {
     try {
-        const res = await getData(`api-feeder/get-wilayah`);
+        const res = await get(`api-feeder/get-wilayah`);
         isWilayah = true;
         return res;
     } catch (err) {
@@ -91,7 +93,7 @@ export const getFeederWilayah = async () => {
 
 export const getFeederPerguruanTinggi = async () => {
     try {
-        const res = await getData(`api-feeder/get-all-pt`);
+        const res = await get(`api-feeder/get-all-pt`);
         isPerguruanTinggi = true;
         return res;
     } catch (err) {
@@ -101,7 +103,7 @@ export const getFeederPerguruanTinggi = async () => {
 
 export const getFeederProfilePT = async () => {
     try {
-        const res = await getData(`api-feeder/get-profil-pt`);
+        const res = await get(`api-feeder/get-profil-pt`);
         isProfilePT = true;
         return res;
     } catch (err) {
@@ -111,7 +113,7 @@ export const getFeederProfilePT = async () => {
 
 export const getFeederJalurMasuk = async () => {
     try {
-        const res = await getData(`api-feeder/get-jalur-masuk`);
+        const res = await get(`api-feeder/get-jalur-masuk`);
         isJalurMasuk = true;
         return res;
     } catch (err) {
@@ -121,7 +123,7 @@ export const getFeederJalurMasuk = async () => {
 
 export const getFeederJenisPendaftaran = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenis-pendaftaran`);
+        const res = await get(`api-feeder/get-jenis-pendaftaran`);
         isJenisPendaftaran = true;
         return res;
     } catch (err) {
@@ -131,7 +133,7 @@ export const getFeederJenisPendaftaran = async () => {
 
 export const getFeederJenisTinggal = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenis-tinggal`);
+        const res = await get(`api-feeder/get-jenis-tinggal`);
         isJenisTinggal = true;
         return res;
     } catch (err) {
@@ -141,7 +143,7 @@ export const getFeederJenisTinggal = async () => {
 
 export const getFeederAlatTransportasi = async () => {
     try {
-        const res = await getData(`api-feeder/get-alat-transportasi`);
+        const res = await get(`api-feeder/get-alat-transportasi`);
         isAlatTransportasi = true;
         return res;
     } catch (err) {
@@ -151,7 +153,7 @@ export const getFeederAlatTransportasi = async () => {
 
 export const getFeederStatusMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-status-mahasiswa`);
+        const res = await get(`api-feeder/get-status-mahasiswa`);
         isStatusMahasiswa = true;
         return res;
     } catch (err) {
@@ -161,7 +163,7 @@ export const getFeederStatusMahasiswa = async () => {
 
 export const getFeederKebutuhanKhusus = async () => {
     try {
-        const res = await getData(`api-feeder/get-kebutuhan-khusus`);
+        const res = await get(`api-feeder/get-kebutuhan-khusus`);
         isKebutuhanKhusus = true;
         return res;
     } catch (err) {
@@ -171,7 +173,7 @@ export const getFeederKebutuhanKhusus = async () => {
 
 export const getFeederPenghasilan = async () => {
     try {
-        const res = await getData(`api-feeder/get-penghasilan`);
+        const res = await get(`api-feeder/get-penghasilan`);
         isPenghasilan = true;
         return res;
     } catch (err) {
@@ -181,7 +183,7 @@ export const getFeederPenghasilan = async () => {
 
 export const getFeederJenisSms = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenis-sms`);
+        const res = await get(`api-feeder/get-jenis-sms`);
         isJenisSms = true;
         return res;
     } catch (err) {
@@ -191,7 +193,7 @@ export const getFeederJenisSms = async () => {
 
 export const getFeederLembagaPengangkatan = async () => {
     try {
-        const res = await getData(`api-feeder/get-lembaga-pengangkatan`);
+        const res = await get(`api-feeder/get-lembaga-pengangkatan`);
         isLembagaPengangkatan = true;
         return res;
     } catch (err) {
@@ -201,7 +203,7 @@ export const getFeederLembagaPengangkatan = async () => {
 
 export const getFeederStatusKeaktifanPegawai = async () => {
     try {
-        const res = await getData(`api-feeder/get-status-keaktifan-pegawai`);
+        const res = await get(`api-feeder/get-status-keaktifan-pegawai`);
         isStatusKeaktifanPegawai = true;
         return res;
     } catch (err) {
@@ -211,7 +213,7 @@ export const getFeederStatusKeaktifanPegawai = async () => {
 
 export const getFeederPangkatGolongan = async () => {
     try {
-        const res = await getData(`api-feeder/get-pangkat-golongan`);
+        const res = await get(`api-feeder/get-pangkat-golongan`);
         isPangkatGolongan = true;
         return res;
     } catch (err) {
@@ -221,7 +223,7 @@ export const getFeederPangkatGolongan = async () => {
 
 export const getFeederPekerjaan = async () => {
     try {
-        const res = await getData(`api-feeder/get-pekerjaan`);
+        const res = await get(`api-feeder/get-pekerjaan`);
         isPekerjaan = true;
         return res;
     } catch (err) {
@@ -231,7 +233,7 @@ export const getFeederPekerjaan = async () => {
 
 export const getFeederDosen = async () => {
     try {
-        const res = await getData(`api-feeder/get-dosen`);
+        const res = await get(`api-feeder/get-dosen`);
         isDosen = true;
         return res;
     } catch (err) {
@@ -241,7 +243,7 @@ export const getFeederDosen = async () => {
 
 export const getFeederBiodataDosen = async () => {
     try {
-        const res = await getData(`api-feeder/get-biodata-dosen`);
+        const res = await get(`api-feeder/get-biodata-dosen`);
         isBiodataDosen = true;
         return res;
     } catch (err) {
@@ -251,7 +253,7 @@ export const getFeederBiodataDosen = async () => {
 
 export const getFeederJenjangPendidikan = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenjang-pendidikan`);
+        const res = await get(`api-feeder/get-jenjang-pendidikan`);
         isJenjangPendidikan = true;
         return res;
     } catch (err) {
@@ -261,7 +263,7 @@ export const getFeederJenjangPendidikan = async () => {
 
 export const getFeederProgramStudi = async () => {
     try {
-        const res = await getData(`api-feeder/get-prodi`);
+        const res = await get(`api-feeder/get-prodi`);
         isProgramStudi = true;
         return res;
     } catch (err) {
@@ -271,7 +273,7 @@ export const getFeederProgramStudi = async () => {
 
 export const getFeederPeriode = async () => {
     try {
-        const res = await getData(`api-feeder/get-periode`);
+        const res = await get(`api-feeder/get-periode`);
         isPeriode = true;
         return res;
     } catch (err) {
@@ -280,7 +282,7 @@ export const getFeederPeriode = async () => {
 };
 export const getFeederJenisSubtansi = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenis-substansi`);
+        const res = await get(`api-feeder/get-jenis-substansi`);
         isJenisSubtansi = true;
         return res;
     } catch (err) {
@@ -289,7 +291,7 @@ export const getFeederJenisSubtansi = async () => {
 };
 export const getFeederSubtansi = async () => {
     try {
-        const res = await getData(`api-feeder/get-substansi`);
+        const res = await get(`api-feeder/get-substansi`);
         isSubtansi = true;
         return res;
     } catch (err) {
@@ -298,7 +300,7 @@ export const getFeederSubtansi = async () => {
 };
 export const getFeederSubtansiKuliah = async () => {
     try {
-        const res = await getData(`api-feeder/get-substansi-kuliah`);
+        const res = await get(`api-feeder/get-substansi-kuliah`);
         isSubtansiKuliah = true;
         return res;
     } catch (err) {
@@ -307,7 +309,7 @@ export const getFeederSubtansiKuliah = async () => {
 };
 export const getFeederMataKuliah = async () => {
     try {
-        const res = await getData(`api-feeder/get-mata-kuliah`);
+        const res = await get(`api-feeder/get-mata-kuliah`);
         isMataKuliah = true;
         return res;
     } catch (err) {
@@ -316,7 +318,7 @@ export const getFeederMataKuliah = async () => {
 };
 export const getFeederTahunAjaran = async () => {
     try {
-        const res = await getData(`api-feeder/get-tahun-ajaran`);
+        const res = await get(`api-feeder/get-tahun-ajaran`);
         isTahunAjaran = true;
         return res;
     } catch (err) {
@@ -325,7 +327,7 @@ export const getFeederTahunAjaran = async () => {
 };
 export const getFeederFakultas = async () => {
     try {
-        const res = await getData(`api-feeder/get-fakultas`);
+        const res = await get(`api-feeder/get-fakultas`);
         isFakultas = true;
         return res;
     } catch (err) {
@@ -334,7 +336,7 @@ export const getFeederFakultas = async () => {
 };
 export const getFeederSemester = async () => {
     try {
-        const res = await getData(`api-feeder/get-semester`);
+        const res = await get(`api-feeder/get-semester`);
         isSemester = true;
         return res;
     } catch (err) {
@@ -343,7 +345,7 @@ export const getFeederSemester = async () => {
 };
 export const getFeederKurikulum = async () => {
     try {
-        const res = await getData(`api-feeder/get-kurikulum`);
+        const res = await get(`api-feeder/get-kurikulum`);
         isKurikulum = true;
         return res;
     } catch (err) {
@@ -352,7 +354,7 @@ export const getFeederKurikulum = async () => {
 };
 export const getFeederDetailKurikulum = async () => {
     try {
-        const res = await getData(`api-feeder/get-detail-kurikulum`);
+        const res = await get(`api-feeder/get-detail-kurikulum`);
         isDetailKurikulum = true;
         return res;
     } catch (err) {
@@ -361,7 +363,7 @@ export const getFeederDetailKurikulum = async () => {
 };
 export const getFeederPenugasanDosen = async () => {
     try {
-        const res = await getData(`api-feeder/get-penugasan-dosen`);
+        const res = await get(`api-feeder/get-penugasan-dosen`);
         isPenugasanDosen = true;
         return res;
     } catch (err) {
@@ -370,7 +372,7 @@ export const getFeederPenugasanDosen = async () => {
 };
 export const getFeederMataKuliahKurikulum = async () => {
     try {
-        const res = await getData(`api-feeder/get-matkul-kurikulum`);
+        const res = await get(`api-feeder/get-matkul-kurikulum`);
         isMatakuliahKurikulum = true;
         return res;
     } catch (err) {
@@ -379,7 +381,7 @@ export const getFeederMataKuliahKurikulum = async () => {
 };
 export const getFeederKelasKuliah = async () => {
     try {
-        const res = await getData(`api-feeder/get-kelas-kuliah`);
+        const res = await get(`api-feeder/get-kelas-kuliah`);
         isKelasKuliah = true;
         return res;
     } catch (err) {
@@ -388,7 +390,7 @@ export const getFeederKelasKuliah = async () => {
 };
 export const getFeederDetailKelasKuliah = async () => {
     try {
-        const res = await getData(`api-feeder/get-detail-kelas-kuliah`);
+        const res = await get(`api-feeder/get-detail-kelas-kuliah`);
         isDetailKelasKuliah = true;
         return res;
     } catch (err) {
@@ -397,7 +399,7 @@ export const getFeederDetailKelasKuliah = async () => {
 };
 export const getFeederPerhitunganSKS = async () => {
     try {
-        const res = await getData(`api-feeder/get-perhitungan-sks`);
+        const res = await get(`api-feeder/get-perhitungan-sks`);
         isPerhitunganSKS = true;
         return res;
     } catch (err) {
@@ -406,7 +408,7 @@ export const getFeederPerhitunganSKS = async () => {
 };
 export const getFeederBiodataMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-biodata-mahasiswa`);
+        const res = await get(`api-feeder/get-biodata-mahasiswa`);
         isBiodataMahasiswa = true;
         return res;
     } catch (err) {
@@ -415,7 +417,7 @@ export const getFeederBiodataMahasiswa = async () => {
 };
 export const getFeederMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-mahasiswa`);
+        const res = await get(`api-feeder/get-mahasiswa`);
         isMahasiswa = true;
         return res;
     } catch (err) {
@@ -424,7 +426,7 @@ export const getFeederMahasiswa = async () => {
 };
 export const getFeederJenisKeluar = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenis-keluar`);
+        const res = await get(`api-feeder/get-jenis-keluar`);
         isJenisKeluar = true;
         return res;
     } catch (err) {
@@ -433,7 +435,7 @@ export const getFeederJenisKeluar = async () => {
 };
 export const getFeederPembiayaan = async () => {
     try {
-        const res = await getData(`api-feeder/get-pembiayaan`);
+        const res = await get(`api-feeder/get-pembiayaan`);
         isPembiayaan = true;
         return res;
     } catch (err) {
@@ -442,7 +444,7 @@ export const getFeederPembiayaan = async () => {
 };
 export const getFeederBidangMinat = async () => {
     try {
-        const res = await getData(`api-feeder/get-bidang-minat`);
+        const res = await get(`api-feeder/get-bidang-minat`);
         isBidangMinat = true;
         return res;
     } catch (err) {
@@ -451,7 +453,7 @@ export const getFeederBidangMinat = async () => {
 };
 export const getFeederRiwayatPendidikanMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-riwayat-pendidikan-mahasiswa`);
+        const res = await get(`api-feeder/get-riwayat-pendidikan-mahasiswa`);
         isRiwayatPendidikanMahasiswa = true;
         return res;
     } catch (err) {
@@ -460,7 +462,7 @@ export const getFeederRiwayatPendidikanMahasiswa = async () => {
 };
 export const getFeederSkalaNilaiProdi = async () => {
     try {
-        const res = await getData(`api-feeder/get-skala-nilai-prodi`);
+        const res = await get(`api-feeder/get-skala-nilai-prodi`);
         isSkalaNilaiProdi = true;
         return res;
     } catch (err) {
@@ -469,7 +471,7 @@ export const getFeederSkalaNilaiProdi = async () => {
 };
 export const getFeederPeriodePerkuliahan = async () => {
     try {
-        const res = await getData(`api-feeder/get-periode-perkuliahan`);
+        const res = await get(`api-feeder/get-periode-perkuliahan`);
         isPeriodePerkuliahan = true;
         return res;
     } catch (err) {
@@ -478,7 +480,7 @@ export const getFeederPeriodePerkuliahan = async () => {
 };
 export const getFeederDetailPeriodePerkuliahan = async () => {
     try {
-        const res = await getData(`api-feeder/get-detail-periode-perkuliahan`);
+        const res = await get(`api-feeder/get-detail-periode-perkuliahan`);
         isDetailPeriodePerkuliahan = true;
         return res;
     } catch (err) {
@@ -487,7 +489,7 @@ export const getFeederDetailPeriodePerkuliahan = async () => {
 };
 export const getFeederJenisAktivitasMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenis-aktivitas-mahasiswa`);
+        const res = await get(`api-feeder/get-jenis-aktivitas-mahasiswa`);
         isJenisAktivitasMahasiswa = true;
         return res;
     } catch (err) {
@@ -496,7 +498,7 @@ export const getFeederJenisAktivitasMahasiswa = async () => {
 };
 export const getFeederDataLengkapMahasiswaProdi = async () => {
     try {
-        const res = await getData(`api-feeder/get-data-lengkap-mahasiswa-prodi`);
+        const res = await get(`api-feeder/get-data-lengkap-mahasiswa-prodi`);
         isDataLengkapMahasiswaProdi = true;
         return res;
     } catch (err) {
@@ -505,7 +507,7 @@ export const getFeederDataLengkapMahasiswaProdi = async () => {
 };
 export const getFeederAktivitasMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-aktivitas-mahasiswa`);
+        const res = await get(`api-feeder/get-aktivitas-mahasiswa`);
         isAktivitasMahasiswa = true;
         return res;
     } catch (err) {
@@ -514,7 +516,7 @@ export const getFeederAktivitasMahasiswa = async () => {
 };
 export const getFeederAnggotaAktivitasMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-anggota-aktivitas-mahasiswa`);
+        const res = await get(`api-feeder/get-anggota-aktivitas-mahasiswa`);
         isAnggotaAktivitasMahasiswa = true;
         return res;
     } catch (err) {
@@ -523,7 +525,7 @@ export const getFeederAnggotaAktivitasMahasiswa = async () => {
 };
 export const getFeederKonversiKampusMerdeka = async () => {
     try {
-        const res = await getData(`api-feeder/get-konversi-kampus-merdeka`);
+        const res = await get(`api-feeder/get-konversi-kampus-merdeka`);
         isKonversiKampusMerdeka = true;
         return res;
     } catch (err) {
@@ -532,7 +534,7 @@ export const getFeederKonversiKampusMerdeka = async () => {
 };
 export const getFeederRekapJumlahMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-rekap-jumlah-mahasiswa`);
+        const res = await get(`api-feeder/get-rekap-jumlah-mahasiswa`);
         isRekapJumlahMahasiswa = true;
         return res;
     } catch (err) {
@@ -541,7 +543,7 @@ export const getFeederRekapJumlahMahasiswa = async () => {
 };
 export const getFeederJenisEvaluasi = async () => {
     try {
-        const res = await getData(`api-feeder/get-jenis-evaluasi`);
+        const res = await get(`api-feeder/get-jenis-evaluasi`);
         isJenisEvaluasi = true;
         return res;
     } catch (err) {
@@ -550,7 +552,7 @@ export const getFeederJenisEvaluasi = async () => {
 };
 export const getFeederDosenPengajar = async () => {
     try {
-        const res = await getData(`api-feeder/get-dosen-pengajar-kelas-kuliah`);
+        const res = await get(`api-feeder/get-dosen-pengajar-kelas-kuliah`);
         isDosenPengajar = true;
         return res;
     } catch (err) {
@@ -559,7 +561,7 @@ export const getFeederDosenPengajar = async () => {
 };
 export const getFeederKategoriKegiatan = async () => {
     try {
-        const res = await getData(`api-feeder/get-kategori-kegiatan`);
+        const res = await get(`api-feeder/get-kategori-kegiatan`);
         isKategoriKegiatan = true;
         return res;
     } catch (err) {
@@ -568,7 +570,7 @@ export const getFeederKategoriKegiatan = async () => {
 };
 export const getFeederMahasiswaBimbinganDosen = async () => {
     try {
-        const res = await getData(`api-feeder/get-mahasiswa-bimbingan-dosen`);
+        const res = await get(`api-feeder/get-mahasiswa-bimbingan-dosen`);
         isMahasiswaBimbinganDosen = true;
         return res;
     } catch (err) {
@@ -577,7 +579,7 @@ export const getFeederMahasiswaBimbinganDosen = async () => {
 };
 export const getFeederUjiMahasiswa = async () => {
     try {
-        const res = await getData(`api-feeder/get-uji-mahasiswa`);
+        const res = await get(`api-feeder/get-uji-mahasiswa`);
         isUjiMahasiswa = true;
         return res;
     } catch (err) {
@@ -586,7 +588,7 @@ export const getFeederUjiMahasiswa = async () => {
 };
 export const getFeederSekolahSMK = async () => {
     try {
-        const res = await getData(`api-external/sekolah/smk/get`);
+        const res = await get(`api-external/sekolah/smk/get`);
         isSekolahSMK = true;
         return res;
     } catch (err) {
@@ -595,8 +597,26 @@ export const getFeederSekolahSMK = async () => {
 };
 export const getFeederSekolahSMA = async () => {
     try {
-        const res = await getData(`api-external/sekolah/sma/get`);
+        const res = await get(`api-external/sekolah/sma/get`);
         isSekolahSMA = true;
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+export const getFeederRencanaEvaluasi = async () => {
+    try {
+        const res = await get(`api-feeder/get-rencana-evaluasi`);
+        isRencanaEvaluasi = true;
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+export const getFeederKomponenEvaluasi = async () => {
+    try {
+        const res = await get(`api-feeder/get-komponen-evaluasi-kelas`);
+        isKomponenEvaluasi = true;
         return res;
     } catch (err) {
         throw err;

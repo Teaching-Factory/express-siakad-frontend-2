@@ -636,6 +636,11 @@ const model = ref([
                         label: 'Generate User Dosen',
                         to: '/generate-user-dosen',
                         visible: computed(() => permissions.includes('generate-user-dosen'))
+                    },
+                    {
+                        label: 'Generate User Admin Prodi',
+                        to: '/generate-user-admin-prodi'
+                        // visible: computed(() => permissions.includes('generate-user-dosen'))
                     }
                 ]
             },

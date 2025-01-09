@@ -28,6 +28,7 @@ import {
     getFeederKategoriKegiatan,
     getFeederKebutuhanKhusus,
     getFeederKelasKuliah,
+    getFeederKomponenEvaluasi,
     getFeederKonversiKampusMerdeka,
     getFeederKurikulum,
     getFeederLembagaPengangkatan,
@@ -48,6 +49,7 @@ import {
     getFeederProfilePT,
     getFeederProgramStudi,
     getFeederRekapJumlahMahasiswa,
+    getFeederRencanaEvaluasi,
     getFeederRiwayatPendidikanMahasiswa,
     getFeederSekolahSMA,
     getFeederSekolahSMK,
@@ -86,6 +88,7 @@ import {
     isKategoriKegiatan,
     isKebutuhanKhusus,
     isKelasKuliah,
+    isKomponenEvaluasi,
     isKonversiKampusMerdeka,
     isKurikulum,
     isLembagaPengangkatan,
@@ -106,6 +109,7 @@ import {
     isProfilePT,
     isProgramStudi,
     isRekapJumlahMahasiswa,
+    isRencanaEvaluasi,
     isRiwayatPendidikanMahasiswa,
     isSekolahSMA,
     isSekolahSMK,
@@ -193,7 +197,9 @@ const Installasi = async () => {
             { name: 'Data Mahasiswa Bimbingan', data: getFeederMahasiswaBimbinganDosen, status: () => isMahasiswaBimbinganDosen },
             { name: 'Data Uji Mahasiswa', data: getFeederUjiMahasiswa, status: () => isUjiMahasiswa },
             { name: 'Data Sekolah SMK', data: getFeederSekolahSMK, status: () => isSekolahSMK },
-            { name: 'Data Sekolah SMA', data: getFeederSekolahSMA, status: () => isSekolahSMA }
+            { name: 'Data Sekolah SMA', data: getFeederSekolahSMA, status: () => isSekolahSMA },
+            { name: 'Data Rencana Evaluasi', data: getFeederRencanaEvaluasi, status: () => isRencanaEvaluasi },
+            { name: 'Data Komponen Evaluasi', data: getFeederKomponenEvaluasi, status: () => isKomponenEvaluasi }
         ];
 
         const results = [];

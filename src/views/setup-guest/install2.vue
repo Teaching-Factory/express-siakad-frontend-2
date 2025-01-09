@@ -11,6 +11,7 @@ import {
     getFeederRekapKhsMahasiswa,
     getFeederRekapKrsMahasiswa,
     getFeederRiwayatNilaiMahasiswa,
+    getSeedAdminProdi,
     getSeedContactPerson,
     getSeedDataPelengkap,
     getSeedJabatan,
@@ -22,6 +23,7 @@ import {
     getSeedSistemKuliah,
     getSeedSumber,
     getSeedUserGuide,
+    isAdminProdi,
     isAktivitasKuliahMahasiswa,
     isContactPerson,
     isDataPelengkap,
@@ -57,9 +59,8 @@ const getAngkatan = async () => {
 };
 const isLoading = ref(false);
 
-const Installasi = async () => {
-    const angkatan = selectedAngkatan.value;
-    if (!angkatan) {
+const installasi = async () => {
+    if (!selectedAngkatan.value) {
         Swal.fire({
             icon: 'warning',
             title: 'Pilih Angkatan',
@@ -69,6 +70,7 @@ const Installasi = async () => {
     }
 
     isLoading.value = true;
+    const angkatan = selectedAngkatan.value;
 
     try {
         const fetchFunctions = [
@@ -90,12 +92,13 @@ const Installasi = async () => {
             { name: 'Data Jenis Tagihan', data: getSeedJenisTagihan, status: isJenisTagihan },
             { name: 'Data Setting Global', data: getSeedSettingGlobal, status: isSettingGlobal },
             { name: 'Data Siacloud', data: getSeedSiacloud, status: isSiacloud },
-            { name: 'Data Data Pelengkap', data: getSeedDataPelengkap, status: isDataPelengkap }
+            { name: 'Data Data Pelengkap', data: getSeedDataPelengkap, status: isDataPelengkap },
+            { name: 'Data Admin Prodi', data: getSeedAdminProdi, status: isAdminProdi }
         ];
 
         const results = [];
         for (const fetchFunc of fetchFunctions) {
-            if (fetchFunc.status()) {
+            if (fetchFunc.status.value) {
                 console.log(`${fetchFunc.name} sudah berhasil diambil, melanjutkan ke berikutnya.`);
             } else {
                 const response = await fetchFunc.data();
@@ -164,12 +167,12 @@ onBeforeMount(() => {
                             <label for="angkatan" class="form-label fw-bold text-dark">Pilih Angkatan:</label>
                             <select id="angkatan" class="form-select form-select-lg" v-model="selectedAngkatan">
                                 <option value="" selected disabled hidden>Pilih Angkatan</option>
-                                <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">
+                                <option v-for="angkatan in angkatans" :key="angkatan.tahun" :value="angkatan.tahun">
                                     {{ angkatan.tahun }}
                                 </option>
                             </select>
                         </div>
-                        <button type="button" class="btn btn-outline-primary btn-lg mt-3" @click="Installasi">🚀 INSTALL SEKARANG</button>
+                        <button type="button" class="btn btn-outline-primary btn-lg mt-3" @click="installasi">🚀 INSTALL SEKARANG</button>
                     </div>
                 </div>
             </div>

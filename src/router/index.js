@@ -745,6 +745,12 @@ const router = createRouter({
                     component: () => import('../views/manajemenSetting/generateUserDosen/index.vue'),
                     meta: { requiredPermissions: ['generate-user-dosen'] }
                 },
+                {
+                    path: '/generate-user-admin-prodi',
+                    name: 'generate-user-admin-prodi',
+                    component: () => import('../views/manajemenSetting/generate-admin-prodi/index.vue')
+                    // meta: { requiredPermissions: ['generate-user-dosen'] }
+                },
 
                 //setting global
 
