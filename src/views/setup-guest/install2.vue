@@ -95,7 +95,7 @@ const Installasi = async () => {
 
         const results = [];
         for (const fetchFunc of fetchFunctions) {
-            if (fetchFunc.status.value) {
+            if (fetchFunc.status()) {
                 console.log(`${fetchFunc.name} sudah berhasil diambil, melanjutkan ke berikutnya.`);
             } else {
                 const response = await fetchFunc.data();
