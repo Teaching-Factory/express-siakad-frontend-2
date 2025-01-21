@@ -258,6 +258,14 @@ const router = createRouter({
                 },
 
                 //perkuliahan
+
+
+                {
+                    path: '/mata-kuliah',
+                    name: 'mata-kuliah',
+                    component: () => import('../views/perkuliahan/mataKuliah/index.vue'),
+                    // meta: { requiredPermissions: ['kelas-jadwal-perkuliahan'] }
+                },
                 {
                     path: '/kelas-jadwal-perkuliahan',
                     name: 'kelas-jadwal-perkuliahan',

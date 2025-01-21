@@ -243,6 +243,11 @@ const model = ref([
                 }),
                 items: [
                     {
+                        label: 'Mata Kuliah',
+                        to: '/mata-kuliah',
+                        // visible: computed(() => permissions.includes('kelas-jadwal-perkuliahan'))
+                    },
+                    {
                         label: 'Kelas dan Jadwal',
                         to: '/kelas-jadwal-perkuliahan',
                         visible: computed(() => permissions.includes('kelas-jadwal-perkuliahan'))
