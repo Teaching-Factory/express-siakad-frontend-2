@@ -20,11 +20,10 @@ const getPeriode = async () => {
 };
 
 const getMahasiswa = async () => {
-   
-   const response = await get('mahasiswa/get-mahasiswa-active');
-   const krs = response.data.data;
-   dataMahasiswa.value = krs;
-   console.log(response.data.data);
+    const response = await get('mahasiswa/get-mahasiswa-active');
+    const krs = response.data.data;
+    dataMahasiswa.value = krs;
+    console.log(response.data.data);
 };
 
 const filterData = async () => {
@@ -60,7 +59,7 @@ const filterData = async () => {
 
 onMounted(() => {
     getPeriode();
-    getMahasiswa()
+    getMahasiswa();
 });
 </script>
 
@@ -130,7 +129,7 @@ onMounted(() => {
                             <td>{{ khs?.nilai_angka || '-' }}</td>
                             <td>{{ khs?.nilai_huruf || '-' }}</td>
                             <td>{{ khs?.nilai_indeks || '-' }}</td>
-                            <td>{{ khs?.sks_x_indeks || '-' }}</td>
+                            <td>{{ khs?.sks_x_indeks ? parseFloat(khs?.sks_x_indeks).toFixed(2) : '-' }}</td>
                         </tr>
                         <tr>
                             <td class="text-center" colspan="6">Total (Total SKS Indeks )</td>

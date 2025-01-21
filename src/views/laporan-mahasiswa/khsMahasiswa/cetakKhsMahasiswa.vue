@@ -191,11 +191,11 @@ export default {
                         <tr v-for="(nilai, index) in getRekapKhsData" :key="index">
                             <td>{{ index + 1 }}</td>
                             <td>{{ nilai.nama_mata_kuliah }}</td>
-                            <td>{{ nilai.sks_mata_kuliah }}</td>
+                            <td>{{ nilai?.sks_mata_kuliah ? parseFloat(nilai?.sks_mata_kuliah).toFixed(0) : '-' }}</td>
                             <td>{{ nilai.nilai_angka }}</td>
                             <td>{{ nilai.nilai_huruf }}</td>
                             <td>{{ nilai.nilai_indeks }}</td>
-                            <td>{{ nilai.sks_x_indeks }}</td>
+                            <td>{{ nilai?.sks_x_indeks ? parseFloat(nilai?.sks_x_indeks).toFixed(2) : '-' }}</td>
                         </tr>
                         <tr>
                             <td class="text-center" colspan="6">IPS (Index Prestasi Semester )</td>

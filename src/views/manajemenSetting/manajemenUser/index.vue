@@ -134,7 +134,7 @@ onBeforeMount(() => {
                         </div>
                     </template>
                 </Column>
-                <Column filterField="nama_role" header="nama_role" style="min-width: 5rem">
+                <Column filterField="nama_role" header="Role" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div v-html="data.UserRoles[0].Role.nama_role"></div>
                     </template>
