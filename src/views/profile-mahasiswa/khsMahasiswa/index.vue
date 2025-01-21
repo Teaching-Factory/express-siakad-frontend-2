@@ -96,7 +96,7 @@ onMounted(() => {
                             <td>{{ khs?.nilai_angka || '-' }}</td>
                             <td>{{ khs?.nilai_huruf || '-' }}</td>
                             <td>{{ khs?.nilai_indeks || '-' }}</td>
-                            <td>{{ khs?.sks_x_indeks || '-' }}</td>
+                            <td>{{ khs?.sks_x_indeks ? parseFloat(khs?.sks_x_indeks).toFixed(2) : '-' }}</td>
                         </tr>
                         <tr>
                             <td class="text-center" colspan="6">Total (Total SKS Indeks )</td>

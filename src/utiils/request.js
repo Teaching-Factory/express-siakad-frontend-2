@@ -158,7 +158,6 @@ export const getData = async (url, config = {}) => {
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
-            timer: 1000,
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
