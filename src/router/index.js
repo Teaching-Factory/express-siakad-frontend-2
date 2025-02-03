@@ -259,11 +259,16 @@ const router = createRouter({
 
                 //perkuliahan
 
-
                 {
                     path: '/mata-kuliah',
                     name: 'mata-kuliah',
-                    component: () => import('../views/perkuliahan/mataKuliah/index.vue'),
+                    component: () => import('../views/perkuliahan/mataKuliah/index.vue')
+                    // meta: { requiredPermissions: ['kelas-jadwal-perkuliahan'] }
+                },
+                {
+                    path: '/rencana-evaluasi/:id_matkul/mata-kuliah',
+                    name: 'rencana-evaluasi-mata-kuliah',
+                    component: () => import('../views/perkuliahan/mataKuliah/edit.vue')
                     // meta: { requiredPermissions: ['kelas-jadwal-perkuliahan'] }
                 },
                 {

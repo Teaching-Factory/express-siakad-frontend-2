@@ -2,35 +2,35 @@
 import { defineProps, defineEmits, computed } from 'vue';
 
 const props = defineProps({
-  show: {
-    type: Boolean,
-    required: true,
-  },
-  title: {
-    type: String,
-    default: 'Modal Title',
-  },
-  size: {
-    type: String,
-    default: 'lg', // Default to large
-    validator: (value) => ['sm', 'md', 'lg', 'xl'].includes(value),
-  },
+    show: {
+        type: Boolean,
+        required: true
+    },
+    title: {
+        type: String,
+        default: 'Modal Title'
+    },
+    size: {
+        type: String,
+        default: 'xl', // Default to large
+        validator: (value) => ['sm', 'md', 'lg', 'xl'].includes(value)
+    }
 });
 
 const emit = defineEmits(['close']);
 
 const closeModal = () => {
-  emit('close');
+    emit('close');
 };
 
 const modalSizeClass = computed(() => {
-  return `modal-${props.size}`;
+    return `modal-${props.size}`;
 });
 </script>
 
 <template>
     <div class="modal fade" :class="{ show: show, 'bounce-in': show }" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-        <div :class="['modal-dialog', modalSizeClass,  'modal-dialog-centered']" role="document">
+        <div :class="['modal-dialog', modalSizeClass, 'modal-dialog-centered']" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ title }}</h5>
@@ -48,7 +48,6 @@ const modalSizeClass = computed(() => {
     display: block;
     background-color: rgba(51, 51, 51, 0.5);
 }
-
 
 @keyframes bounce-in {
     0% {

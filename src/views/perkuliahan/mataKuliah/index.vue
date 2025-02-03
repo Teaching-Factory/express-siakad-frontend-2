@@ -1,115 +1,22 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { get, postData } from '../../../utiils/request';
-import vSelect from 'vue-select';
-import swal from 'sweetalert2';
-import axios from 'axios';
-import { getToken } from '../../../service/auth';
-import { API_URL } from '../../../config/config';
+import { ref, onBeforeMount } from 'vue';
+import { FilterMatchMode } from 'primevue/api';
+import { get, getData } from '../../../utiils/request';
 import Swal from 'sweetalert2';
 
-// Vue.component('v-select', vSelect);
-const matkul = ref([]);
-const ruangKuliah = ref([]);
-const route = useRoute();
-// const selectedRuang = ref('');
-const selectedDosen = ref('');
-const dosens = ref([]);
-const detailKelasKuliah = ref([]);
-const nama_kelas_kuliah = ref('');
-const kapasitas_peserta_kelas = ref('');
-const hari = ref('');
-const id_ruang_perkuliahan = ref('');
-const id_dosen = computed(() => (selectedDosen.value ? selectedDosen.value.id : ''));
-const jam_mulai = ref('');
-const jam_selesai = ref('');
-const lingkup = ref('');
-const mode_kuliah = ref('');
-const tanggal_mulai_efektif = ref('');
-const tanggal_akhir_efektif = ref('');
-const isEdit = ref(false);
-
-const errors = ref({
-    nama_kelas_kuliah: '',
-    kapasitas_peserta_kelas: '',
-    hari: '',
-    id_ruang_perkuliahan: '',
-    id_dosen: '',
-    jam_mulai: '',
-    jam_selesai: '',
-    lingkup: '',
-    mode_kuliah: '',
-    tanggal_mulai_efektif: '',
-    tanggal_akhir_efektif: ''
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    kode_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    sks_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const validateNamaKelas = () => {
-    if (!nama_kelas_kuliah.value) {
-        errors.value.nama_kelas_kuliah = 'Nama Kelas Wajib Diisi.';
-    } else {
-        errors.value.nama_kelas_kuliah = '';
-    }
-};
-const validateKapasitasPeserta = () => {
-    if (!kapasitas_peserta_kelas.value) {
-        errors.value.kapasitas_peserta_kelas = 'Kapasitas Peserta Kelas Wajib Diisi.';
-    } else {
-        errors.value.kapasitas_peserta_kelas = '';
-    }
-};
-const validateHari = () => {
-    if (!hari.value) {
-        errors.value.hari = 'Hari Wajib Diisi.';
-    } else {
-        errors.value.hari = '';
-    }
-};
-const validateRuangPerkuliahan = () => {
-    if (!id_ruang_perkuliahan.value) {
-        errors.value.id_ruang_perkuliahan = 'Ruang Perkuliahan Wajib Diisi.';
-    } else {
-        errors.value.id_ruang_perkuliahan = '';
-    }
-};
-const validateDosen = () => {
-    if (!id_dosen.value) {
-        errors.value.id_dosen = 'Dosen Wajib Diisi.';
-    } else {
-        errors.value.id_dosen = '';
-    }
-};
-const validateJamMulai = () => {
-    if (!jam_mulai.value) {
-        errors.value.jam_mulai = 'Jam Mulai  Wajib Diisi.';
-    } else {
-        errors.value.jam_mulai = '';
-    }
-};
-const validateJamSelesai = () => {
-    if (!jam_selesai.value) {
-        errors.value.jam_selesai = 'Jam Selesai Wajib Diisi.';
-    } else {
-        errors.value.jam_selesai = '';
-    }
-};
+const mataKuliahs = ref([]);
+const prodis = ref([]);
+const selectedProdi = ref('');
 
-const validateTanggalMulai = () => {
-    if (!tanggal_mulai_efektif.value) {
-        errors.value.tanggal_mulai_efektif = 'Tanggal Mulai Efektif Wajib Diisi.';
-    } else {
-        errors.value.tanggal_mulai_efektif = '';
-    }
-};
-const validateTanggalSelesai = () => {
-    if (!tanggal_akhir_efektif.value) {
-        errors.value.tanggal_akhir_efektif = 'Tanggal Selesai Efektif Wajib Diisi.';
-    } else {
-        errors.value.tanggal_akhir_efektif = '';
-    }
-};
-
-const fetchMataKuliah = async (id_matkul) => {
+const getProdi = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -119,39 +26,17 @@ const fetchMataKuliah = async (id_matkul) => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`mata-kuliah/${id_matkul}/get`);
-        matkul.value = response.data.data;
+        const response = await get(`prodi/`);
+        prodis.value = response.data.data;
         Swal.close();
     } catch (error) {
-        console.error('Gagal mengambil data:', error);
-        // Berikan pesan error kepada pengguna jika diperlukan
-        // Misalnya: Notify.error('Gagal mengambil data mata kuliah.');
+        console.error('Gagal mengambil data :', error);
     }
 };
 
-const fetchRuangPerkuliahan = async () => {
+const getMataKuliah = async () => {
     try {
-        const response = await get('ruang-perkuliahan');
-        ruangKuliah.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data:', error);
-    }
-};
-const fetchDosen = async () => {
-    try {
-        const response = await get('dosen');
-        // Format respons dari API ke format yang sesuai dengan v-select
-        dosens.value = response.data.data.map((dosen) => ({
-            id: dosen.id_dosen, // Properti 'id' atau 'value' sesuai dengan library v-select
-            nama_dosen: dosen.nama_dosen // Properti 'label' untuk menampilkan nama dosen
-        }));
-    } catch (error) {
-        console.error('Gagal mengambil data dosen:', error);
-    }
-};
-
-const create = async () => {
-    try {
+        const id_prodi = selectedProdi.value;
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
@@ -160,236 +45,106 @@ const create = async () => {
                 Swal.showLoading();
             }
         });
-        validateDosen();
-        validateHari();
-        validateJamMulai();
-        validateJamSelesai();
-        validateKapasitasPeserta();
-        validateNamaKelas();
-        validateRuangPerkuliahan();
-        validateTanggalMulai();
-        validateTanggalSelesai();
-
-        const token = getToken();
-        const id_prodi = matkul.value.id_prodi; // Asumsikan id_prodi diambil dari data matkul yang sudah difetch
-        const id_semester = route.params.id_semester;
-        const id_matkul = route.params.id_matkul;
-
-        const payload = {
-            nama_kelas_kuliah: nama_kelas_kuliah.value,
-            kapasitas_peserta_kelas: kapasitas_peserta_kelas.value,
-            hari: hari.value,
-            id_ruang_perkuliahan: id_ruang_perkuliahan.value,
-            id_dosen: id_dosen.value,
-            jam_mulai: jam_mulai.value,
-            jam_selesai: jam_selesai.value,
-            lingkup: lingkup.value,
-            mode_kuliah: mode_kuliah.value,
-            tanggal_mulai_efektif: tanggal_mulai_efektif.value,
-            tanggal_akhir_efektif: tanggal_akhir_efektif.value // Perbaikan disini
-        };
-
-        console.log('Payload:', payload); // Log payload for debugging
-
-        const response = await axios.post(`${API_URL}/kelas-kuliah/${id_prodi}/${id_semester}/${id_matkul}/create`, payload, {
-            headers: {
-                Authorization: token
-            }
-        });
-
-        const data = response.data;
-        Swal.close();
-        swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-            window.location.href = '/kelas-jadwal-perkuliahan';
-        });
-    } catch (error) {
-        swal.fire('GAGAL', `Gagal Menambahkan data: ${error.response ? error.response.data.message : error.message}`, 'error');
-        console.error('Error:', error.response.data); // Log error response for debugging
-    }
-};
-
-// Update function
-const update = async () => {
-    try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        validateDosen();
-        validateHari();
-        validateJamMulai();
-        validateJamSelesai();
-        validateKapasitasPeserta();
-        validateNamaKelas();
-        validateRuangPerkuliahan();
-        validateTanggalMulai();
-        validateTanggalSelesai();
-        const token = getToken();
-        const id_kelas_kuliah = route.params.id_kelas_kuliah; // Use id_kelas_kuliah from detailKelasKuliah
-
-        const payload = {
-            nama_kelas_kuliah: nama_kelas_kuliah.value,
-            kapasitas_peserta_kelas: kapasitas_peserta_kelas.value,
-            hari: hari.value,
-            id_ruang_perkuliahan: id_ruang_perkuliahan.value,
-            id_dosen: id_dosen.value,
-            jam_mulai: jam_mulai.value,
-            jam_selesai: jam_selesai.value,
-            lingkup: lingkup.value,
-            mode_kuliah: mode_kuliah.value,
-            tanggal_mulai_efektif: tanggal_mulai_efektif.value,
-            tanggal_akhir_efektif: tanggal_akhir_efektif.value
-        };
-
-        const response = await axios.put(`${API_URL}/kelas-kuliah/${id_kelas_kuliah}/update`, payload, {
-            headers: {
-                Authorization: token
-            }
-        });
-
-        Swal.close();
-        swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
-            window.location.href = '/kelas-jadwal-perkuliahan';
-        });
-    } catch (error) {
-        Swal.close();
-        console.error('Error updating data:', error.response ? error.response.data : error.message);
-        swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
-    }
-};
-
-const getDetailKelasKuliah = async (id_detail_kelas_kuliah) => {
-    try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        const response = await get(`detail-kelas-kuliah/${id_detail_kelas_kuliah}/get`);
-        const data = response.data.data;
-
-        nama_kelas_kuliah.value = data.KelasKuliah.nama_kelas_kuliah;
-        kapasitas_peserta_kelas.value = data.kapasitas;
-        hari.value = data.hari.toLowerCase();
-        id_ruang_perkuliahan.value = data.id_ruang_perkuliahan;
-        jam_mulai.value = data.jam_mulai;
-        jam_selesai.value = data.jam_selesai;
-        lingkup.value = data.lingkup;
-        mode_kuliah.value = data.mode_kuliah;
-        tanggal_mulai_efektif.value = data.tanggal_mulai_efektif;
-        tanggal_akhir_efektif.value = data.tanggal_akhir_efektif;
-
-        selectedDosen.value = dosens.value.find((dosen) => dosen.id_dosen === data.id_dosen) || null;
-        detailKelasKuliah.value = data; // Store detail data for use in update
-
+        const response = await getData(`mata-kuliah/prodi/${id_prodi}/get`);
+        console.log(response.data.data);
+        mataKuliahs.value = response.data.data;
         Swal.close();
     } catch (error) {
-        console.error('Gagal mengambil data:', error);
+        console.error('Gagal mengambil data :', error);
     }
 };
 
-const submit = async () => {
-    if (isEdit.value) {
-        update();
-    } else {
-        create();
-    }
-};
-
-onMounted(() => {
-    const id_matkul = route.params.id_matkul;
-    const id_detail_kelas_kuliah = route.params.id_detail_kelas_kuliah;
-
-    fetchMataKuliah(id_matkul);
-    fetchRuangPerkuliahan();
-    fetchMataKuliah(id_matkul);
-    fetchRuangPerkuliahan();
-    fetchDosen();
-
-    if (id_detail_kelas_kuliah) {
-        isEdit.value = true;
-        getDetailKelasKuliah(id_detail_kelas_kuliah);
-    }
+onBeforeMount(() => {
+    getProdi();
 });
 </script>
 
 <template>
     <div class="card">
-        <div class="card-body">
-            <div class="row mb-2">
-                <div class="col-lg-6">
-                    <h5><i class="pi pi-user me-2"></i>MATA KULIAH</h5>
-                </div>
-                <div class="col-lg-6 text-end">
-                    <button class="btn btn-success" @click="submit"><i class="pi pi-check me-2"></i> Simpan</button>
-                </div>
-            </div>
-            <hr>
-            <div class="mb-3 row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <label for="exampleFormControlInput1" class="form-label">Kode Mata Kuliah</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Program Studi Pengampu</label>
-                    <select name="" class="form-select" @blur="validateHari" v-model="hari" id="hari">
-                        <option value="1">S1 Kesehatan Masyarakat</option>
-                        <option value="2">S1 Teknologi Informasi</option>
-                        <option value="3">S1 Bahasa Indonesia</option>
-                    </select>
-                    <label for="exampleFormControlInput1" class="form-label" placeholder="Dasar Ilmu Kesmas">Kelompok Mata Kuliah</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <label for="exampleFormControlInput1" class="form-label">Nama Mata Kuliah</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Jenis Mata Kuliah</label>
-                    <select name="" class="form-select" @blur="validateHari" v-model="hari" id="hari">
-                        <option value="1">Wajib</option>
-                        <option value="2">Peminatan</option>
-                    </select>
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <label for="exampleFormControlInput1" class="form-label">Bobot Mata Kuliah</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Bobot Praktikum</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Bobot Simulasi</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Tanggal Mulai Efektif</label>
-                    <input type="date" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <label for="exampleFormControlInput1" class="form-label">Bobot Tatap Muka</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Bobot Praktik Lapangan</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Metode Pembelajaran</label>
-                    <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    <label for="exampleFormControlInput1" class="form-label">Tanggal Akhir Efektif</label>
-                    <input type="date" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
-                    
-                </div>
-            </div>
-        </div>
-
-        <hr style="margin: 0" />
-                <div class="row">
-                    <div class="d-flex col-12 justify-content-center">
-                        <p><strong>Jadwal Mingguan</strong></p>
+        <h5><i class="pi pi-user me-2"></i>DAFTAR MATA KULIAH</h5>
+        <div class="card" style="padding: 0rem 1rem 0rem 1rem"></div>
+        <div class="card">
+            <div class="row">
+                <div class="col-lg-10 col-md-12 col-sm-12">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
+                        </select>
                     </div>
                 </div>
-                <hr style="margin-top: -5px" />
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button @click="getMataKuliah" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                </div>
+            </div>
+            <hr />
+            <DataTable
+                v-model:filters="filters"
+                :globalFilterFields="['kode_mata_kuliah', 'nama_mata_kuliah', 'sks_mata_kuliah', 'Prodi.nama_program_studi']"
+                :value="mataKuliahs"
+                :paginator="true"
+                :rows="10"
+                dataKey="id"
+                :rowHover="true"
+                showGridlines
+            >
+                <template #header>
+                    <div class="row">
+                        <div class="col-lg-6 d-flex justify-content-start">
+                            <IconField iconPosition="left">
+                                <InputIcon class="pi pi-search" />
+                                <InputText placeholder="Cari disini" v-model="filters['global'].value" style="width: 100%" />
+                            </IconField>
+                        </div>
+                    </div>
+                </template>
+
+                <template #empty>
+                    <div class="text-center">Tidak ada data.</div>
+                </template>
+                <Column filterField="kode_mata_kuliah" header="Kode Mata Kuliah" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.kode_mata_kuliah }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nama_mata_kuliah" header="Nama Mata Kuliah" style="min-width: 10rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.nama_mata_kuliah }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="sks_mata_kuliah" header="SKS" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.sks_mata_kuliah }}</span>
+                        </div></template
+                    >
+                </Column>
+                <Column filterField="nama_program_studi" header="Program_studi" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>{{ data.Prodi.nama_program_studi }}</span>
+                        </div>
+                    </template>
+                </Column>
+                <Column header="Detail" style="min-width: 15rem">
+                    <template #body="{ data }">
+                        <div class="actions gap-2">
+                            <router-link :to="`/rencana-evaluasi/${data.id_matkul}/mata-kuliah`" class="btn btn-outline-primary"> <i class="pi pi-eye"></i> Rencana Evaluasi</router-link>
+                        </div>
+                    </template>
+                </Column>
+            </DataTable>
+        </div>
     </div>
 </template>
+
+<style scoped>
+.card-theme {
+    background-color: rgba(154, 160, 172, 0.5);
+}
+</style>
