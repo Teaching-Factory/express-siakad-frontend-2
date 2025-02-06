@@ -419,9 +419,10 @@ function deleteDosen(index) {
                             </Modal>
                         </td>
                         <td class="text-end">
+                            <router-link :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/komponen-evaluasi`" class="btn  me-2 btn-primary" title="Komponen Evaluasi" > <i class="pi pi-box "></i> </router-link>
                             <router-link :to="`/kelas-jadwal-perkuliahan/update-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}`" class="btn  me-2 btn-warning" title="edit" > <i class="pi pi-pencil "></i> </router-link>
                             <button @click="confirmDelete(detail.KelasKuliah.id_kelas_kuliah)" class="btn  me-2 btn-danger" title="delete"> <i class="pi pi-trash "></i> </button>
-                            <router-link :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}${detail?.id_kelas_kuliah}/create-peserta-kelas`" class="btn  me-2" style="background-color: #E87E04;" title="Tambah Peserta"><i class="pi pi-user-plus "></i> </router-link>
+                            <router-link :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/create-peserta-kelas`" class="btn  me-2" style="background-color: #E87E04;" title="Tambah Peserta"><i class="pi pi-user-plus "></i> </router-link>
                             <!-- <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
                             <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button> -->
                         </td>

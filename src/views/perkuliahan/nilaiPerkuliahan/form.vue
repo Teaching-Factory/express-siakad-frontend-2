@@ -8,9 +8,10 @@ import { getToken } from '../../../service/auth';
 import { get, postData } from '../../../utiils/request';
 import Modal from '../../../components/Modal.vue';
 
-const bobotPenilaian = ref([]);
+const komponenEvaluasi = ref([]);
 const getNilai = ref([]);
 const dataMahasiswa = ref([]);
+const templateNilai = ref([]);
 const getKelasKuliah = ref([]);
 const nilaiMahasiswa = ref([]);
 const file = ref(null);
@@ -34,15 +35,52 @@ const fetchKelasKuliah = async (id_kelas_kuliah) => {
     }
 };
 
-const fetchBobotPenilaian = async (id_prodi) => {
-    console.log('Fetching bobot penilaian for id_prodi:', id_prodi);
+const getTemplatePenilaian = async () => {
     try {
-        const response = await get(`bobot-penilaian/prodi/${id_prodi}/get`);
-        bobotPenilaian.value = response.data.data;
-        // Inisialisasi nilai_bobot pada setiap mahasiswa
-        dataMahasiswa.value.forEach((mahasiswa) => {
-            mahasiswa.nilai_bobot = bobotPenilaian.value.map(() => ({ nilai: '' }));
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
+        const id_kelas_kuliah = route.params.id_kelas_kuliah || route.query.id_kelas_kuliah;
+        const token = getToken();
+        // Perform GET request with response type set to blob
+        const response = await axios.get(`${API_URL}/nilai-perkuliahan/export-peserta-kelas/${id_kelas_kuliah}/get`, {
+            responseType: 'blob', // Ensures the response is in binary form
+            headers: {
+                Authorization: token // Replace with the actual token if needed
+            }
+        });
+
+        // Create a URL for the blob
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+
+        // Set the file name (optional, you can customize this)
+        link.setAttribute('download', `Peserta Kelas.xlsx`);
+
+        // Append the link to the body and trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up the URL and remove the link element
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+        Swal.close();
+    } catch (error) {
+        console.error('Error fetching:', error);
+    }
+};
+
+const getKomponenEvaluasi = async (id_kelas_kuliah) => {
+    try {
+        const response = await get(`komponen-evaluasi-kelas/kelas-kuliah/${id_kelas_kuliah}/get`);
+        komponenEvaluasi.value = response.data.data;
+
         console.log('Response data:', response.data.data);
     } catch (error) {
         console.error('Error fetching bobot penilaian:', error);
@@ -54,26 +92,13 @@ const fetchGetNilai = async (id_kelas_kuliah) => {
         const response = await get(`nilai-perkuliahan/${id_kelas_kuliah}/get-peserta-kelas`);
         getNilai.value = response.data.dataKelasKuliah;
 
+        // Map nilaiKomponenEvaluasi ke setiap mahasiswa
         dataMahasiswa.value = response.data.data.map((mahasiswa) => {
-            // Initialize nilai_bobot with empty values
-            const nilai_bobot = bobotPenilaian.value.map((bobot) => ({
-                id_bobot_penilaian: bobot.id_bobot_penilaian,
-                nilai: ''
-            }));
-
-            // Fill nilai_bobot with actual values from detailNilaiPerkuliahanKelas
-            mahasiswa?.detailNilaiPerkuliahanKelas?.NilaiPerkuliahans.forEach((nilaiPerkuliahan) => {
-                const index = bobotPenilaian.value.findIndex((bobot) => bobot.id_unsur_penilaian === nilaiPerkuliahan.id_unsur_penilaian);
-                if (index !== -1) {
-                    nilai_bobot[index].nilai = nilaiPerkuliahan.nilai;
-                }
-            });
-
             return {
                 ...mahasiswa,
-                nilai_bobot,
-                nilai_angka: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_angka || '',
-                nilai_huruf: mahasiswa?.detailNilaiPerkuliahanKelas?.nilai_huruf || ''
+                nilaiKomponenEvaluasi: mahasiswa.nilaiKomponenEvaluasi || [],
+                nilai_angka: mahasiswa.detailNilaiPerkuliahanKelas?.nilai_angka || '',
+                nilai_huruf: mahasiswa.detailNilaiPerkuliahanKelas?.nilai_huruf || ''
             };
         });
 
@@ -100,14 +125,14 @@ const create = async () => {
         const payload = {
             penilaians: dataMahasiswa.value.map((mahasiswa) => ({
                 id_registrasi_mahasiswa: mahasiswa.id_registrasi_mahasiswa,
-                nilai_bobot: mahasiswa.nilai_bobot.map((nilai, index) => {
-                    const bobot = bobotPenilaian.value[index];
+                nilai_komponen_evaluasis: mahasiswa.nilaiKomponenEvaluasi.map((nilai, index) => {
+                    const bobot = komponenEvaluasi.value[index];
                     if (!bobot) {
                         throw new Error(`Bobot Penilaian at index ${index} not found`);
                     }
                     return {
-                        id_bobot: bobot.id_bobot_penilaian,
-                        nilai: nilai.nilai
+                        id_komponen_evaluasi: bobot.id_komponen_evaluasi,
+                        nilai: nilai.nilai_komponen_evaluasi_kelas // Sesuai dengan v-model di template
                     };
                 })
             }))
@@ -167,8 +192,8 @@ const uploadNilai = async (id_kelas_kuliah) => {
         console.log(response);
 
         Swal.close();
-        Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
-            // Tindakan tambahan setelah unggah berhasil jika diperlukan
+        Swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(async () => {
+            await fetchGetNilai(id_kelas_kuliah);
             isUploadModalVisible.value = false;
         });
     } catch (error) {
@@ -179,8 +204,8 @@ const uploadNilai = async (id_kelas_kuliah) => {
 onMounted(() => {
     const id_prodi = route.params.id_prodi || route.query.id_prodi;
     const id_kelas_kuliah = route.params.id_kelas_kuliah || route.query.id_kelas_kuliah;
-    if (id_prodi) {
-        fetchBobotPenilaian(id_prodi);
+    if (id_kelas_kuliah) {
+        getKomponenEvaluasi(id_kelas_kuliah);
     }
     if (id_kelas_kuliah) {
         fetchGetNilai(id_kelas_kuliah);
@@ -209,7 +234,7 @@ onMounted(() => {
             </div>
             <Modal v-if="isUploadModalVisible" :show="isUploadModalVisible" title="Upload Excel" size="md" @close="isUploadModalVisible = false">
                 <form @submit.prevent="uploadNilai(id_kelas_kuliah)">
-                    <p>Silahkan unduh template <a href="../../../../public/file/template_nilai.xlsx" download target="_blank">Disini</a></p>
+                    <p>Silahkan unduh template <button @click="getTemplatePenilaian" class="btn btn-link">Disini</button></p>
                     <div class="mb-3">
                         <label for="file" class="form-label">Upload File Excel</label>
                         <input type="file" class="form-control" id="file" @change="handleFileUpload" />
@@ -257,22 +282,17 @@ onMounted(() => {
                             <th rowspan="3">NIM</th>
                             <th rowspan="3">Nama Mahasiswa</th>
                             <th rowspan="3">Angkatan</th>
-                            <th class="text-center" colspan="4">Nilai</th>
-                            <th rowspan="3">Nilai AKhir</th>
+                            <th class="text-center" colspan="6">Nilai</th>
+                            <th rowspan="3">Nilai Akhir</th>
                             <th rowspan="3">Nilai Huruf</th>
                         </tr>
 
                         <tr>
-                            <th v-for="(penilaian, index) in bobotPenilaian" :key="index">{{ penilaian.UnsurPenilaian.nama_unsur_penilaian }}</th>
+                            <th v-for="(penilaian, index) in komponenEvaluasi" :key="index">{{ penilaian.nama }}</th>
                         </tr>
-                        <!-- <tr>
-                            <th>Presensi</th>
-                            <th>Tugas</th>
-                            <th>Ujian Tengah Semester</th>
-                            <th>Ujian Akhir Semester</th>
-                        </tr> -->
+
                         <tr>
-                            <th v-for="(bobot, index) in bobotPenilaian" :key="index">{{ bobot.bobot_penilaian }}</th>
+                            <th v-for="(komponen, index) in komponenEvaluasi" :key="index">{{ (parseFloat(komponen.bobot_evaluasi || 0) * 100).toFixed(0) }} %</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -281,8 +301,9 @@ onMounted(() => {
                             <td>{{ mahasiswa?.Mahasiswa?.nim }}</td>
                             <td>{{ mahasiswa?.Mahasiswa?.nama_mahasiswa }}</td>
                             <td>{{ mahasiswa?.angkatan }}</td>
-                            <td v-for="(bobot, bIndex) in bobotPenilaian" :key="bIndex">
-                                <input type="number" class="form-control" v-model="mahasiswa.nilai_bobot[bIndex].nilai" />
+
+                            <td v-for="(bobot, bIndex) in komponenEvaluasi" :key="bIndex">
+                                <input type="number" class="form-control" v-model="mahasiswa.nilaiKomponenEvaluasi[bIndex].nilai_komponen_evaluasi_kelas" />
                             </td>
                             <td>
                                 <input type="text" class="form-control" v-model="mahasiswa.nilai_angka" disabled />

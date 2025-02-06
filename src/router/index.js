@@ -293,6 +293,17 @@ const router = createRouter({
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formPesertaKelas.vue')
                 },
                 {
+                    path: '/kelas-jadwal-perkuliahan/:id_detail_kelas_kuliah/:id_kelas_kuliah/komponen-evaluasi',
+                    name: 'kelas-jadwal-perkuliahan-komponen-evaluasi',
+                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/komponen-evaluasi/index.vue')
+                },
+                // {
+                //     path: '/kelas-jadwal-perkuliahan/komponen-evaluasi',
+                //     name: 'kelas-jadwal-perkuliahan-komponen-evaluasi',
+                //     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/komponen-evaluasi/index.vue')
+                // },
+
+                {
                     path: '/nilai-perkuliahan',
                     name: 'nilai-perkuliahan',
                     component: () => import('../views/perkuliahan/nilaiPerkuliahan/index.vue'),
