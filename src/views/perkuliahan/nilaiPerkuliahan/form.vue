@@ -92,11 +92,16 @@ const fetchGetNilai = async (id_kelas_kuliah) => {
         const response = await get(`nilai-perkuliahan/${id_kelas_kuliah}/get-peserta-kelas`);
         getNilai.value = response.data.dataKelasKuliah;
 
-        // Map nilaiKomponenEvaluasi ke setiap mahasiswa
         dataMahasiswa.value = response.data.data.map((mahasiswa) => {
             return {
                 ...mahasiswa,
-                nilaiKomponenEvaluasi: mahasiswa.nilaiKomponenEvaluasi || [],
+                nilaiKomponenEvaluasi: Array.isArray(mahasiswa.nilaiKomponenEvaluasi) && mahasiswa.nilaiKomponenEvaluasi.length
+                    ? mahasiswa.nilaiKomponenEvaluasi.map(n => ({
+                        nilai_komponen_evaluasi_kelas: n.nilai_komponen_evaluasi_kelas ?? 0
+                    }))
+                    : Array.from({ length: komponenEvaluasi.length }, () => ({
+                        nilai_komponen_evaluasi_kelas: 0
+                    })),
                 nilai_angka: mahasiswa.detailNilaiPerkuliahanKelas?.nilai_angka || '',
                 nilai_huruf: mahasiswa.detailNilaiPerkuliahanKelas?.nilai_huruf || ''
             };
@@ -107,6 +112,7 @@ const fetchGetNilai = async (id_kelas_kuliah) => {
         console.error('Error fetching:', error);
     }
 };
+
 
 const create = async () => {
     try {
@@ -303,8 +309,23 @@ onMounted(() => {
                             <td>{{ mahasiswa?.angkatan }}</td>
 
                             <td v-for="(bobot, bIndex) in komponenEvaluasi" :key="bIndex">
-                                <input type="number" class="form-control" v-model="mahasiswa.nilaiKomponenEvaluasi[bIndex].nilai_komponen_evaluasi_kelas" />
+    <!-- Jika nilaiKomponenEvaluasi belum ada (null atau kosong), hanya tampilkan input tanpa v-model -->
+                                <input 
+                                    v-if="!mahasiswa.nilaiKomponenEvaluasi || mahasiswa.nilaiKomponenEvaluasi.length === 0" 
+                                    type="number" 
+                                    class="form-control" 
+                                    :value="0"
+                                />
+
+                                <!-- Jika nilaiKomponenEvaluasi sudah ada, gunakan v-model -->
+                                <input 
+                                    v-else 
+                                    type="number" 
+                                    class="form-control" 
+                                    v-model="mahasiswa.nilaiKomponenEvaluasi[bIndex].nilai_komponen_evaluasi_kelas" 
+                                />
                             </td>
+
                             <td>
                                 <input type="text" class="form-control" v-model="mahasiswa.nilai_angka" disabled />
                             </td>
