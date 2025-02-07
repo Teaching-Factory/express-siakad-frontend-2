@@ -23,6 +23,7 @@ import {
     getSeedSistemKuliah,
     getSeedSumber,
     getSeedUserGuide,
+    getSeedProfilPenilaian,
     isAdminProdi,
     isAktivitasKuliahMahasiswa,
     isContactPerson,
@@ -42,7 +43,8 @@ import {
     isSiacloud,
     isSistemKuliah,
     isSumber,
-    isUserGuide
+    isUserGuide,
+    isProfilPenilaian
 } from '../../service/instalasiByFilter';
 import { getSettingGlobal } from '../../utiils/local_storage';
 
@@ -93,7 +95,8 @@ const installasi = async () => {
             { name: 'Data Setting Global', data: getSeedSettingGlobal, status: isSettingGlobal },
             { name: 'Data Siacloud', data: getSeedSiacloud, status: isSiacloud },
             { name: 'Data Data Pelengkap', data: getSeedDataPelengkap, status: isDataPelengkap },
-            { name: 'Data Admin Prodi', data: getSeedAdminProdi, status: isAdminProdi }
+            { name: 'Data Admin Prodi', data: getSeedAdminProdi, status: isAdminProdi },
+            { name: 'Data Profil Penilaian', data: getSeedProfilPenilaian, status: isProfilPenilaian },
         ];
 
         const results = [];

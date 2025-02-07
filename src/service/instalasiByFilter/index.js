@@ -20,6 +20,7 @@ export let isSistemKuliah = false;
 export let isSiacloud = false;
 export let isDataPelengkap = false;
 export let isAdminProdi = false;
+export let isProfilPenilaian = false;
 
 export const getFeederDetailNilaiPerkuliahan = async (angkatan) => {
     try {
@@ -196,6 +197,15 @@ export const getSeedDataPelengkap = async () => {
 export const getSeedAdminProdi = async () => {
     try {
         const res = await get(`setup-seed/get-seed-admin-prodi`);
+        isAdminProdi = true;
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+export const getSeedProfilPenilaian = async () => {
+    try {
+        const res = await get(`setup-seed/get-seed-profil-penilaian`);
         isAdminProdi = true;
         return res;
     } catch (err) {
