@@ -278,7 +278,7 @@ const formatRupiah = (biaya) => {
             <Column header="Aksi" style="min-width: 10rem">
                 <template #body="{ data }">
                     <div class="flex gap-2">
-                        <router-link :to="`/detail-pembayaran/${data.id_tagihan_mahasiswa}`" class="btn btn-outline-secondary"> <i class="pi pi-eye"></i> </router-link>
+                        <router-link :to="`/detail-pembayaran/${data.id_tagihan_mahasiswa}`" class="btn btn-outline-secondary" title="Detail Pembayaran"> <i class="pi pi-eye"></i> </router-link>
                         <router-link :to="`/daftar-tagihan/${data.id_tagihan_mahasiswa}/update`" class="btn btn-outline-primary" title="edit">
                             <i class="pi pi-pencil"></i>
                             <!-- {{ console.log(data.id) }} -->
