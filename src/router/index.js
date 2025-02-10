@@ -440,6 +440,18 @@ const router = createRouter({
                     component: () => import('../views/referensi/ruangPerkuliahan/form.vue')
                 },
 
+                //profil nilai
+                {
+                    path: '/profil-penilaian',
+                    name: 'profil-penilaian',
+                    component: () => import('../views/referensi/profilNilai/index.vue')
+                },
+                {
+                    path: '/profil-penilaian/:id/edit',
+                    name: 'profil-penilaian-edit',
+                    component: () => import('../views/referensi/profilNilai/form.vue')
+                },
+
                 //unsur perkuliahan
                 {
                     path: '/unsur-penilaian',
@@ -815,6 +827,12 @@ const router = createRouter({
                 {
                     path: '/profile-krs-mahasiswa',
                     name: 'profile-krs-mahasiswa',
+                    component: () => import('../views/profile-mahasiswa/krsMahasiswa/krs.vue'),
+                    meta: { requiredPermissions: ['profile-krs-mahasiswa'] }
+                },
+                {
+                    path: '/profile-krs-mahasiswa/krs',
+                    name: 'profile-krs-mahasiswa-krs',
                     component: () => import('../views/profile-mahasiswa/krsMahasiswa/index.vue'),
                     meta: { requiredPermissions: ['profile-krs-mahasiswa'] }
                 },

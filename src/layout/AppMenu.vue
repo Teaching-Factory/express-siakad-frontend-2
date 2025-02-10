@@ -244,7 +244,7 @@ const model = ref([
                 items: [
                     {
                         label: 'Mata Kuliah',
-                        to: '/mata-kuliah',
+                        to: '/mata-kuliah'
                         // visible: computed(() => permissions.includes('kelas-jadwal-perkuliahan'))
                     },
                     {
@@ -369,6 +369,11 @@ const model = ref([
                         label: 'Ruang Perkuliahan',
                         to: '/ruang-perkuliahan',
                         visible: computed(() => permissions.includes('ruang-perkuliahan'))
+                    },
+                    {
+                        label: 'Profil Penilaian',
+                        to: '/profil-penilaian'
+                        // visible: computed(() => permissions.includes('ruang-perkuliahan'))
                     },
                     {
                         label: 'Unsur Penilaian',
@@ -695,11 +700,11 @@ const model = ref([
                         to: '/profile-krs-mahasiswa',
                         visible: computed(() => permissions.includes('profile-krs-mahasiswa'))
                     },
-                    {
-                        label: 'Aktivitas Kuliah Mahasiswa',
-                        to: '/profile-akm-mahasiswa',
-                        visible: computed(() => permissions.includes('profile-akm-mahasiswa'))
-                    },
+                    // {
+                    //     label: 'Aktivitas Kuliah Mahasiswa',
+                    //     to: '/profile-akm-mahasiswa',
+                    //     visible: computed(() => permissions.includes('profile-akm-mahasiswa'))
+                    // },
                     {
                         label: 'Kartu Hasil Studi',
                         to: '/profile-khs-mahasiswa',

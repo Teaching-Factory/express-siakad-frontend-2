@@ -19,6 +19,12 @@ const filters = ref({
 const viewKRS = ref([]);
 const selectedKHS = ref([]);
 const message = ref('');
+const semesterAktif = ref([]);
+
+const fetchSemesterAktif = async () => {
+    const response = await get('setting-global-semester');
+    semesterAktif.value = response.data.data;
+};
 
 const fetchKRS = async () => {
     Swal.fire({
@@ -82,16 +88,15 @@ const createKrs = async () => {
     }
 };
 
-
-
 onBeforeMount(() => {
     fetchKRS();
+    fetchSemesterAktif();
 });
 </script>
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>KRS MAHASISWA - 2023/2024 GANJIL</h5>
+        <h5><i class="pi pi-user me-2"></i>KRS MAHASISWA - PERIODE {{ semesterAktif[0]?.SemesterAktif?.nama_semester }}</h5>
 
         <div class="card">
             <p>Pembimbing Akademik : -</p>

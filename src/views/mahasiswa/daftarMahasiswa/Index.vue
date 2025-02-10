@@ -17,6 +17,7 @@ const first = ref(0);
 const mahasiswas = ref([]);
 const angkatans = ref([]);
 const prodis = ref([]);
+const adminProdi = ref({});
 const selectedProdi = ref('');
 const selectedAngkatan = ref('');
 // const loading1 = ref(true);
@@ -37,10 +38,20 @@ const fetchAngkatan = async () => {
         console.error('Gagal mengambil data angkatan mahasiswa:', error);
     }
 };
+const getAdminProdi = async () => {
+    try {
+        const response = await get('user/checking-admin-prodi-user');
+        adminProdi.value = response.data; // Menyimpan data respons API
+        selectedProdi.value = adminProdi.id_prodi_of_admin; // Memilih program studi secara default
+        console.log('admin', response.data); // Cek hasil respons
+    } catch (error) {
+        console.error('Gagal mengambil data angkatan mahasiswa:', error);
+    }
+};
 
 const selectedFilter = async () => {
     // loading1.value = true;
-    await Promise.all([fetchProdi(), fetchAngkatan()]);
+    await Promise.all([fetchProdi(), fetchAngkatan(), getAdminProdi()]);
     // loading1.value = false;
 };
 
@@ -93,11 +104,25 @@ onBeforeMount(() => {
         <div class="card">
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div class="mb-3">
+                    <div class="mb-3" v-if="adminProdi.id_prodi_of_admin">
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
+                        <!-- Dropdown disabled setelah data diterima -->
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <!-- Menampilkan data program studi yang diambil dari API -->
+                            <option :value="adminProdi.id_prodi_of_admin" :key="adminProdi.id_prodi_of_admin">
+                                {{ adminProdi.nama_prodi }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Dropdown untuk prodis jika adminProdi kosong -->
+                    <div class="mb-3" v-else>
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
                         <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Program Studi</option>
-                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">
+                                {{ prodi.nama_program_studi }}
+                            </option>
                         </select>
                     </div>
                 </div>
