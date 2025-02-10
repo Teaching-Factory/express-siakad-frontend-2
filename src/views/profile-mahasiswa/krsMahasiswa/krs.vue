@@ -91,6 +91,7 @@ onMounted(() => {
                             <th>No</th>
                             <th>Kode Mata Kuliah</th>
                             <th>Nama Mata Kuliah</th>
+                            <th>SKS Kuliah</th>
                             <th>Kelas</th>
                             <th>Dosen Pengajar</th>
                         </tr>
@@ -100,6 +101,7 @@ onMounted(() => {
                             <td>{{ index + 1 }}</td>
                             <td>{{ krsMahasiswa.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
                             <td>{{ krsMahasiswa.KelasKuliah.MataKuliah.nama_mata_kuliah }}</td>
+                            <td>{{ krsMahasiswa.KelasKuliah.MataKuliah.sks_mata_kuliah }}</td>
                             <td>{{ krsMahasiswa.KelasKuliah.nama_kelas_kuliah }}</td>
                             <td>{{ krsMahasiswa.KelasKuliah.Dosen.nama_dosen }}</td>
                         </tr>
