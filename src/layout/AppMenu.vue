@@ -88,6 +88,7 @@ const model = ref([
                 'perhitungan-transkrip',
                 'set-aktif-akm',
                 'belum-set-sk',
+                'matakuliah',
                 'kelas-jadwal-perkuliahan',
                 'nilai-perkuliahan',
                 'presensi-perkuliahan',
@@ -239,13 +240,13 @@ const model = ref([
                 label: 'Perkuliahan',
                 // icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
-                    return ['kelas-jadwal-perkuliahan', 'jadwal-kelas-perkuliahan-dosen', 'nilai-perkuliahan', 'presensi-perkuliahan', 'aktivitas-mahasiswa', 'kelas-aktif'].some((permission) => permissions.includes(permission));
+                    return ['matakuliah', 'kelas-jadwal-perkuliahan', 'jadwal-kelas-perkuliahan-dosen', 'nilai-perkuliahan', 'presensi-perkuliahan', 'aktivitas-mahasiswa', 'kelas-aktif'].some((permission) => permissions.includes(permission));
                 }),
                 items: [
                     {
                         label: 'Mata Kuliah',
-                        to: '/mata-kuliah'
-                        // visible: computed(() => permissions.includes('kelas-jadwal-perkuliahan'))
+                        to: '/mata-kuliah',
+                        visible: computed(() => permissions.includes('matakuliah'))
                     },
                     {
                         label: 'Kelas dan Jadwal',
@@ -335,6 +336,7 @@ const model = ref([
             return [
                 'sistem-kuliah',
                 'ruang-perkuliahan',
+                'profil-penilaian',
                 'unsur-penilaian',
                 'bobot-penilaian',
                 'daftar-jabatan',
@@ -347,7 +349,16 @@ const model = ref([
                 'kuisioner-aspek-penilaian',
                 'kuisioner-skala-penilaian',
                 'kuisioner-hasil-kuisioner-dosen',
-                'kuisioner-hasil-kuisioner-kelas'
+                'kuisioner-hasil-kuisioner-kelas',
+                'sync-data',
+                'sync-rencana-evaluasi',
+                'sync-kelas-kuliah',
+                'sync-komponen-evaluasi',
+                'sync-dosen-pengajar',
+                'sync-biodata-mahasiswa',
+                'sync-riwayat-pendidikan-mahasiswa',
+                'sync-peserta-kelas',
+                'sync-nilai-perkuliahan'
             ].some((permission) => permissions.includes(permission));
         }),
         items: [
@@ -355,7 +366,7 @@ const model = ref([
                 label: 'Referensi',
                 // icon: 'pi pi-fw pi-user',
                 visible: computed(() => {
-                    return ['sistem-kuliah', 'ruang-perkuliahan', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah', 'daftar-tagihan', 'jenis-tagihan', 'daftar-pembayaran'].some((permission) =>
+                    return ['sistem-kuliah', 'ruang-perkuliahan', 'profil-penlaian', 'unsur-penilaian', 'bobot-penilaian', 'daftar-jabatan', 'unit-jabatan', 'data-wilayah', 'daftar-tagihan', 'jenis-tagihan', 'daftar-pembayaran'].some((permission) =>
                         permissions.includes(permission)
                     );
                 }),
@@ -372,8 +383,8 @@ const model = ref([
                     },
                     {
                         label: 'Profil Penilaian',
-                        to: '/profil-penilaian'
-                        // visible: computed(() => permissions.includes('ruang-perkuliahan'))
+                        to: '/profil-penilaian',
+                        visible: computed(() => permissions.includes('profil-penilaian'))
                     },
                     {
                         label: 'Unsur Penilaian',
@@ -472,44 +483,64 @@ const model = ref([
             {
                 label: 'Singkronisasi',
                 // icon: 'pi pi-fw pi-user',
-                //  visible: computed(() => {
-                //     return ['daftar-berita'].some((permission) => permissions.includes(permission));
-                // }),
+                visible: computed(() => {
+                    return [
+                        'sync-data',
+                        'sync-rencana-evaluasi',
+                        'sync-kelas-kuliah',
+                        'sync-komponen-evaluasi',
+                        'sync-dosen-pengajar',
+                        'sync-biodata-mahasiswa',
+                        'sync-riwayat-pendidikan-mahasiswa',
+                        'sync-peserta-kelas',
+                        'sync-nilai-perkuliahan'
+                    ].some((permission) => permissions.includes(permission));
+                }),
                 items: [
                     {
                         label: 'Sync Data',
-                        to: '/singkron-data'
-                        // visible: computed(() => permissions.includes('daftar-berita'))
+                        to: '/singkron-data',
+                        visible: computed(() => permissions.includes('sync-data'))
+                    },
+                    {
+                        label: 'Sync Rencana Evaluasi',
+                        to: '/singkron-rencana-evaluasi',
+                        visible: computed(() => permissions.includes('sync-rencana-evaluasi'))
                     },
                     {
                         label: 'Sync Kelas Kuliah',
-                        to: '/sync-kelas-kuliah'
-                        // visible: computed(() => permissions.includes('daftar-berita'))
+                        to: '/sync-kelas-kuliah',
+                        visible: computed(() => permissions.includes('sync-kelas-kuliah'))
+                    },
+                    {
+                        label: 'Sync Komponen Evaluasi',
+                        to: '/singkron-komponen-evaluasi',
+                        visible: computed(() => permissions.includes('sync-komponen-evaluasi'))
                     },
                     {
                         label: 'Sync Dosen Pengajar Kelas',
-                        to: '/sync-dosen-pengajar'
-                        // visible: computed(() => permissions.includes('daftar-berita'))
+                        to: '/sync-dosen-pengajar',
+                        visible: computed(() => permissions.includes('sync-dosen-pengajar'))
                     },
                     {
                         label: 'Sync Biodata Mahasiswa',
-                        to: '/sync-biodata-mahasiswa'
-                        // visible: computed(() => permissions.includes('daftar-berita'))
+                        to: '/sync-biodata-mahasiswa',
+                        visible: computed(() => permissions.includes('sync-biodata-mahasiswa'))
                     },
                     {
                         label: 'Sync Riwayat Pendidikan Mahasiswa',
-                        to: '/sync-riwayat-pendidikan-mahasiswa'
-                        // visible: computed(() => permissions.includes('daftar-berita'))
+                        to: '/sync-riwayat-pendidikan-mahasiswa',
+                        visible: computed(() => permissions.includes('sync-riwayat-pendidikan-mahasiswa'))
                     },
                     {
                         label: 'Sync Peserta kelas',
-                        to: '/sync-peserta-kelas'
-                        // visible: computed(() => permissions.includes('daftar-berita'))
+                        to: '/sync-peserta-kelas',
+                        visible: computed(() => permissions.includes('sync-peserta-kelas'))
                     },
                     {
                         label: 'Sync Nilai Perkuliahan',
-                        to: '/sync-detail-nilai'
-                        // visible: computed(() => permissions.includes('daftar-berita'))
+                        to: '/sync-detail-nilai',
+                        visible: computed(() => permissions.includes('sync-nilai-perkuliahan'))
                     }
                 ]
             }
