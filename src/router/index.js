@@ -1033,6 +1033,18 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/singkron-rencana-evaluasi',
+                    name: 'singkron-rencana-evaluasi',
+                    component: () => import('../views/referensi/singkronisasi/rencana-evaluasi/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/singkron-komponen-evaluasi',
+                    name: 'singkron-komponen-evaluasi',
+                    component: () => import('../views/referensi/singkronisasi/komponen-evaluasi/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
                     path: '/sync-kelas-kuliah',
                     name: 'sync-kelas-kuliah',
                     component: () => import('../views/referensi/singkronisasi/kelas-kuliah/index.vue')
