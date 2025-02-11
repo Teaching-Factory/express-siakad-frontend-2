@@ -47,12 +47,12 @@ function smoothScroll(id) {
                     <div class="row d-flex align-items-center justify-content-center w-100">
                         <div class="col-lg-7">
                             <h2 class="display-4 fw-bold text-dark"><span class="fw-light d-block"></span>Sistem Informasi Akademik</h2>
-                            <p class="fs-5 fw-normal text-muted mt-3"> <b>SIACLOAD</b> hadir untuk memudahkan manajemen akademik kampus Anda dengan teknologi terkini yang up-to-date mengikuti regulasi pemerintah. 
+                            <p class="fs-5 fw-normal text-muted mt-3"> <b>SIACLOUD</b> hadir untuk memudahkan manajemen akademik kampus Anda dengan teknologi terkini yang up-to-date mengikuti regulasi pemerintah. 
                                 Nikmati pelaporan data yang <b>otomatis, akurat, dan aman,</b> langsung ke <b>Kemendikbud-Ristek</b>, tanpa pusing!
                                 <br><b>SIACLOUD</b> cocok untuk Semua Jenis Perguruan Tinggi Dari kampus kecil hingga besar dan membantu Anda berkembang lebih pesat!
                             </p>
                             <div class="mt-5 mb-4">
-                                <h5 class="fw-bold text-dark">✨ Kenapa Memilih SIACLOAD?</h5>
+                                <h5 class="fw-bold text-dark">✨ Kenapa Memilih SIACLOUD?</h5>
                                 <ul class="fs-5 text-muted mt-3">
                                     <li><b>Integrasi Lengkap:</b> Terhubung dengan e-learning dan pembayaran online.</li>
                                     <li><b>Fleksibilitas Tanpa Batas:</b> Role user yang dapat disesuaikan untuk kebutuhan setiap kampus.</li>
@@ -67,11 +67,7 @@ function smoothScroll(id) {
                             <button @click="getStartedSetup" type="submit" class="btn btn-primary btn-lg">Get Started</button>
                         </div>
                         <div class="col-lg-5">
-                            <div class="border-1 p-1" style="border-radius: 10px">
-                                <img :src="'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg'" style="border-radius: 8px" alt="Deskripsi Gambar" class="img-fluid mb-2" />
-                                <p class="m-0 text-center fw-bold text-muted">Aida Andinar Maulidiana</p>
-                                <p class="m-0 small text-muted text-center">~Kadal Gurun~</p>
-                            </div>
+                            <img :src="'/layout/images/apps.png'" style="border-radius: 8px" alt="Deskripsi Gambar" class="img-fluid mb-2" />
                         </div>
                     </div>
                 </div>

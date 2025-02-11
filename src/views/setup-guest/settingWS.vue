@@ -47,7 +47,7 @@ function smoothScroll(id) {
                                 <ul class="fs-5 text-muted mt-3">
                                     <li>Masukkan informasi API Key dan detail Web Service kampus Anda.</li>
                                     <li>Pastikan data yang diinput sesuai untuk menjaga integrasi berjalan lancar.</li>
-                                    <li>Hubungkan sistem kampus Anda ke SiacLoad untuk menikmati kemudahan otomatisasi dan pelaporan.</li>
+                                    <li>Hubungkan sistem kampus Anda ke SIACLOUD untuk menikmati kemudahan otomatisasi dan pelaporan.</li>
                                 </ul>
                                 <p class="fs-5 mt-4">
                                     <b>🚀 Setelah selesai, Anda siap menjalankan transformasi kampus digital dengan penuh percaya diri!</b>
