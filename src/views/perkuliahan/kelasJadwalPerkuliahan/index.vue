@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, watch } from 'vue';
 import Modal from '../../../components/Modal.vue';
 import { del, get } from '../../../utiils/request';
 import Swal from 'sweetalert2';
@@ -9,7 +9,11 @@ const showModal1 = ref(false);
 const showModal2 = ref(false);
 const prodis = ref([]);
 const semesters = ref([]);
+const kurikulums = ref([]);
+const kurikulumProdi = ref([]);
 const selectedProdi = ref('');
+const selectedPeriode = ref('');
+const selectedKurikulum = ref('');
 const selectedSemester = ref('');
 const kelasjadwal = ref([]);
 const dosenpengajar = ref([]);
@@ -24,14 +28,19 @@ const getAdminProdi = async () => {
         const response = await get('user/checking-admin-prodi-user');
         adminProdi.value = response.data.data; // Menyimpan data respons API
 
-        // Jika data yang diterima adalah satu objek, ubah menjadi array
-        prodis.value = Array.isArray(adminProdi.value) ? adminProdi.value : [adminProdi.value];
+        if (adminProdi.value) {
+            // Jika user adalah admin prodi, hanya masukkan prodi mereka
+            prodis.value = Array.isArray(adminProdi.value) ? adminProdi.value : [adminProdi.value];
+            selectedProdi.value = adminProdi.value?.id_prodi || null;
+        } else {
+            // Jika user bukan admin prodi, ambil semua prodi
+            await getProdi(); // Pastikan fungsi fetchProdi sudah ada
+        }
 
-        selectedProdi.value = adminProdi.value?.id_prodi || null; // Memilih program studi secara default
         console.log('admin', response.data); // Cek hasil respons
     } catch (error) {
-        console.error('Gagal mengambil data angkatan mahasiswa:', error);
-        prodis.value = []; // Jika gagal, pastikan prodis kosong
+        console.error('Gagal mengambil data admin prodi:', error);
+        prodis.value = []; // Pastikan prodi kosong jika terjadi error
     }
 };
 
@@ -45,10 +54,29 @@ const fetchProdi = async () => {
 };
 const fetchSemester = async () => {
     try {
+        const response = await get('kurikulum/');
+        kurikulums.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const getKurikulum = async () => {
+    try {
         const response = await get('semester');
         semesters.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data :', error);
+    }
+};
+
+const getKurikulumProdi = async () => {
+    if (selectedProdi.value) {
+        try {
+            const response = await get(`kurikulum/prodi/${selectedProdi.value}/get`);
+            kurikulumProdi.value = response.data.data;
+        } catch (error) {
+            console.error('Gagal mengambil data kelas:', error);
+        }
     }
 };
 
@@ -62,15 +90,19 @@ const selectedFilter = async () => {
             Swal.showLoading();
         }
     });
-    await Promise.all([fetchProdi(), fetchSemester(), getAdminProdi()]);
+    await Promise.all([fetchProdi(), fetchSemester(), getAdminProdi(), getKurikulum(), getKurikulumProdi()]);
     Swal.close();
 };
 
+watch(selectedProdi, getKurikulumProdi);
+
 const filterData = async () => {
     const prodiId = selectedProdi.value;
-    const semesterId = selectedSemester.value;
+    const periodeID = selectedPeriode.value;
+    const kurikulumID = selectedKurikulum.value;
+    const semester = selectedSemester.value;
 
-    if (!prodiId || !semesterId) {
+    if (!prodiId || !periodeID || !kurikulumID) {
         // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
         return;
@@ -85,7 +117,7 @@ const filterData = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`detail-kelas-kuliah/filter/${prodiId}/${semesterId}/get`);
+        const response = await get(`detail-kelas-kuliah/filtering/${prodiId}/${periodeID}/${kurikulumID}/${semester}/get`);
         const filterKelasJadwal = response.data.data;
 
         console.log('response :', filterKelasJadwal);
@@ -230,17 +262,16 @@ function deleteDosen(index) {
             </div>
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-sm-6">
-                    <div v-if="adminProdi && prodis.length > 0" class="mb-3">
+                    <div v-if="adminProdi" class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
-                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example" :disabled="true">
-                            <option value="" selected disabled hidden>Pilih Program Studi</option>
-                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">
-                                {{ adminProdi.Prodi.nama_program_studi }}
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example" disabled>
+                            <option :value="adminProdi.id_prodi">
+                                {{ adminProdi.Prodi?.nama_program_studi || 'Program Studi Tidak Ditemukan' }}
                             </option>
                         </select>
                     </div>
 
-                    <!-- Dropdown untuk prodis jika adminProdi kosong -->
+                    <!-- Jika user bukan admin prodi, tampilkan semua prodi -->
                     <div v-else class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
                         <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
@@ -253,10 +284,38 @@ function deleteDosen(index) {
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
+                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Periode</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <!-- Dropdown untuk prodis jika adminProdi kosong -->
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Kurikulum</label>
+                        <select v-model="selectedKurikulum" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Kurikulum</option>
+                            <option v-for="kurikulum in kurikulumProdi" :key="kurikulum.id_kurikulum" :value="kurikulum.id_kurikulum">
+                                {{ kurikulum.nama_kurikulum }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Semester</label>
                         <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Semester</option>
-                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
+                            <option value="" selected disabled hidden>Pilih Periode</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
                         </select>
                     </div>
                 </div>
@@ -273,7 +332,7 @@ function deleteDosen(index) {
                         <th colspan="7">{{kelas.mataKuliah.nama_mata_kuliah}} [ {{kelas.mataKuliah.sks_mata_kuliah}} | {{kelas.mataKuliah.kode_mata_kuliah}}]</th>
                         <th class="text-end">
                             <!-- <button class="btn btn-secondary me-2"> 1 Kelas </button> -->
-                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${kelas.details[0].KelasKuliah.id_semester}`" class="btn btn-success" title="tambah kelas"><i class="pi pi-plus"></i></router-link>
+                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.mataKuliah.id_matkul}/${selectedPeriode}`" class="btn btn-success" title="tambah kelas"><i class="pi pi-plus"></i></router-link>
                         </th>
                     </tr>
                 </thead>

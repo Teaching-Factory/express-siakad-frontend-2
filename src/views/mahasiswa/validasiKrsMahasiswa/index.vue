@@ -222,17 +222,16 @@ onBeforeMount(() => {
                         </p>
                     </div>
                     <div class="col-lg-5 col-md-6 col-sm-6">
-                        <div v-if="adminProdi && prodis.length > 0" class="mb-3">
+                        <div v-if="adminProdi" class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
-                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example" :disabled="true">
-                            <option value="" selected disabled hidden>Pilih Program Studi</option>
-                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">
-                                {{ adminProdi.Prodi.nama_program_studi }}
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example" disabled>
+                            <option :value="adminProdi.id_prodi">
+                                {{ adminProdi.Prodi?.nama_program_studi || 'Program Studi Tidak Ditemukan' }}
                             </option>
                         </select>
                     </div>
 
-                    <!-- Dropdown untuk prodis jika adminProdi kosong -->
+                    <!-- Jika user bukan admin prodi, tampilkan semua prodi -->
                     <div v-else class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
                         <select v-model="selectedProdi" class="form-select" aria-label="Default select example">

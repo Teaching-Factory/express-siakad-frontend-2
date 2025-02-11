@@ -143,7 +143,7 @@ const createPesertaKelas = async () => {
         const id_angkatan = selectedAngkatan.value;
 
         const token = getToken();
-        const url = `${API_URL}/peserta-kelas-kuliah/${id_kelas_kuliah}/${id_angkatan}/create`;
+        const url = `${API_URL}/peserta-kelas-kuliah/krs-mahasiswa/${id_kelas_kuliah}/${id_angkatan}/create`;
         const batchSize = 100; //
 
         const mahasiswas = selectedMahasiswa.value.map((mahasiswa) => ({
