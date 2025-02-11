@@ -47,7 +47,7 @@ function smoothScroll(id) {
                                 <ul class="fs-5 text-muted mt-3">
                                     <li>Masukkan informasi API Key dan detail Web Service kampus Anda.</li>
                                     <li>Pastikan data yang diinput sesuai untuk menjaga integrasi berjalan lancar.</li>
-                                    <li>Hubungkan sistem kampus Anda ke SiacLoad untuk menikmati kemudahan otomatisasi dan pelaporan.</li>
+                                    <li>Hubungkan sistem kampus Anda ke SIACLOUD untuk menikmati kemudahan otomatisasi dan pelaporan.</li>
                                 </ul>
                                 <p class="fs-5 mt-4">
                                     <b>🚀 Setelah selesai, Anda siap menjalankan transformasi kampus digital dengan penuh percaya diri!</b>
@@ -63,8 +63,8 @@ function smoothScroll(id) {
                                         </div>
 
                                         <form @submit.prevent="createWebSister">
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">ULR Feeder</label>
-                                            <InputText id="username" v-model="urlFeeder" type="text" placeholder="Masukkan Url Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">URL Feeder</label>
+                                            <InputText id="username" v-model="urlFeeder" type="text" placeholder="Masukkan URL Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
                                             <label for="username" class="block text-900 text-xl font-medium mb-2">Username Feeder</label>
                                             <InputText id="username" type="text" v-model="usernameFeeder" placeholder="Masukkan Username Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
