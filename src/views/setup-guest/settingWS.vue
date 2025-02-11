@@ -63,8 +63,8 @@ function smoothScroll(id) {
                                         </div>
 
                                         <form @submit.prevent="createWebSister">
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">ULR Feeder</label>
-                                            <InputText id="username" v-model="urlFeeder" type="text" placeholder="Masukkan Url Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">URL Feeder</label>
+                                            <InputText id="username" v-model="urlFeeder" type="text" placeholder="Masukkan URL Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
                                             <label for="username" class="block text-900 text-xl font-medium mb-2">Username Feeder</label>
                                             <InputText id="username" type="text" v-model="usernameFeeder" placeholder="Masukkan Username Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
