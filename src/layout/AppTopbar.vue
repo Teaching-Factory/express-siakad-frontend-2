@@ -15,6 +15,12 @@ const profilePT = ref([]);
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
+const semesterAktif = ref([]);
+
+const getSemesterAktif = async () => {
+    const response = await getData('setting-global-semester/get-setting-global-semester-active');
+    semesterAktif.value = response.data.data;
+};
 
 onMounted(() => {
     bindOutsideClickListener();
@@ -64,6 +70,7 @@ const handleLogout = async () => {
 };
 onMounted(() => {
     getProfilePT();
+    getSemesterAktif();
 });
 
 const onTopBarMenuButton = () => {
@@ -123,10 +130,14 @@ const isOutsideClicked = (event) => {
             <i class="pi pi-ellipsis-v text-white"></i>
         </button>
 
-        <div class="layout-topbar-menu" :class="topbarMenuClasses">
+        <div class="mt-2 ml-5 d-none d-md-block">
+            <h5 class="text-white text-icon">Semester Aktif {{ semesterAktif?.SemesterAktif?.nama_semester || '-' }}</h5>
+        </div>
+
+        <div class="layout-topbar-menu d-flex align-items-center gap-3" :class="topbarMenuClasses">
             <div class="dropdown">
                 <button class="dropdown-toggle border-0" style="background: none" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="pi pi-user icon-text me-3 fs-4"></i>
+                    <i class="pi pi-user icon-text me-2 fs-4"></i>
                     <span class="user-text">Hi, {{ user ? user : 'Guest' }}</span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

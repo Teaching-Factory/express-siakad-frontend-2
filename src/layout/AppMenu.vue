@@ -81,6 +81,7 @@ const model = ref([
                 'import-mahasiswa',
                 'daftar-mahasiswa',
                 'set-status-mahasiswa',
+                'set-status-admin-prodi',
                 'set-sistem-kuliah-mahasiswa',
                 'validasi-krs-mahasiswa',
                 'import-aktivitas-mahasiswa',
@@ -174,6 +175,7 @@ const model = ref([
                         'import-mahasiswa',
                         'daftar-mahasiswa',
                         'set-status-mahasiswa',
+                        'set-status-admin-prodi',
                         'set-sistem-kuliah-mahasiswa',
                         'validasi-krs-mahasiswa',
                         'import-aktivitas-mahasiswa',
@@ -198,6 +200,11 @@ const model = ref([
                         label: 'Set Status Mahasiswa',
                         to: '/set-status-mahasiswa',
                         visible: computed(() => permissions.includes('set-status-mahasiswa'))
+                    },
+                    {
+                        label: 'Set Status Mahasiswa',
+                        to: '/set-status-admin-prodi',
+                        visible: computed(() => permissions.includes('set-status-admin-prodi'))
                     },
                     {
                         label: 'Set Sistem Kuliah Mahasiswa',

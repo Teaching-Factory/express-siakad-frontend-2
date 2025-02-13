@@ -183,8 +183,14 @@ const router = createRouter({
                 {
                     path: '/set-status-mahasiswa',
                     name: 'setstatusmahasiswa',
-                    component: () => import('../views/mahasiswa/statusMahasiswa/index.vue'),
-                    meta: { requiredPermissions: ['set-status-mahasiswa'] }
+                    component: () => import('../views/mahasiswa/statusMahasiswa/index.vue')
+                    // meta: { requiredPermissions: ['set-status-mahasiswa'] }
+                },
+                {
+                    path: '/set-status-admin-prodi',
+                    name: 'set-status-admin-prodi',
+                    component: () => import('../views/mahasiswa/statusMahasiswa/adminProdi/index.vue')
+                    // meta: { requiredPermissions: ['set-status-admin-prodi'] }
                 },
                 {
                     path: '/status-mahasiswa/:id_prodi',
