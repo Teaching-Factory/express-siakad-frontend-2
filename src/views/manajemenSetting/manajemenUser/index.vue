@@ -6,6 +6,8 @@ import { del, get } from '../../../utiils/request';
 
 const users = ref([]);
 const message = ref('');
+const selectedRole = ref('');
+const roles = ref([]);
 const first = ref(0);
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -14,7 +16,23 @@ const filters = ref({
     username: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
-const user = async () => {
+const getRole = async () => {
+    try {
+        const response = await get('role/');
+        roles.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+    }
+};
+const getUser = async () => {
+    const id = selectedRole.value;
+
+    if (!id) {
+        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+        Swal.fire('Gagal', 'Data User tidak ditemukan.', 'warning').then(() => {});
+        return;
+    }
+
     try {
         Swal.fire({
             title: 'Loading...',
@@ -24,13 +42,14 @@ const user = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get('user');
-        users.value = response.data.data;
+        const response = await get(`user/role/${id}/get`);
+        const data = response.data.data;
+
+        users.value = data;
+
         Swal.close();
     } catch (error) {
-        console.error('Gagal mengambil data Unit Jabatan:', error);
-
-        user.value = [];
+        Swal.fire('Gagal', 'Data User tidak ditemukan.', 'warning').then(() => {});
     }
 };
 
@@ -72,7 +91,7 @@ const onPageChange = (event) => {
 };
 
 onBeforeMount(() => {
-    user();
+    getRole();
 });
 </script>
 
@@ -80,6 +99,20 @@ onBeforeMount(() => {
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>MANAJEMEN USER</h5>
         <div class="card">
+            <div class="row">
+                <div class="col-lg-10 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Role</label>
+                        <select v-model="selectedRole" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Role</option>
+                            <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.nama_role }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button @click="getUser" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                </div>
+            </div>
             <DataTable :value="users" :paginator="true" :rows="10" dataKey="id" :rowHover="true" :first="first" @page="onPageChange" v-model:filters="filters" :globalFilterFields="['nama', 'email', 'username']" showGridlines>
                 <template #header>
                     <div class="row">

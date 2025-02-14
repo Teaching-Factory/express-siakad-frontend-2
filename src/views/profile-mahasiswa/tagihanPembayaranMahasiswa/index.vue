@@ -18,7 +18,7 @@ const filters = ref({
         value: null,
         matchMode: FilterMatchMode.EQUALS
     },
-    periode_pelaporan: {
+    nama_semester: {
         value: null,
         matchMode: FilterMatchMode.EQUALS
     },
@@ -73,7 +73,7 @@ onMounted(() => {
             <div class="row">
                 <DataTable
                     v-model:filters="filters"
-                    :globalFilterFields="['id_tagihan_mahasiswa', 'JenisTagihan.jenis_tagihan', 'Periode.periode_pelaporan', 'jumlah_tagihan', 'status_tagihan']"
+                    :globalFilterFields="['id_tagihan_mahasiswa', 'JenisTagihan.jenis_tagihan', 'Semester.nama_semester', 'jumlah_tagihan', 'status_tagihan']"
                     :value="tagihanMahasiswa"
                     :paginator="true"
                     :rows="10"
@@ -105,9 +105,9 @@ onMounted(() => {
                             {{ data.JenisTagihan.nama_jenis_tagihan }}
                         </template>
                     </Column>
-                    <Column filterField="periode_pelaporan" header="Periode Tagihan" style="min-width: 10rem">
+                    <Column filterField="nama_semester" header="Periode Tagihan" style="min-width: 10rem">
                         <template #body="{ data }">
-                            {{ data.Periode.periode_pelaporan }}
+                            {{ data.Semester.nama_semester }}
                         </template>
                     </Column>
                     <Column filterField="jumlah_tagihan" header="Jumlah Tagihan" style="min-width: 10rem">

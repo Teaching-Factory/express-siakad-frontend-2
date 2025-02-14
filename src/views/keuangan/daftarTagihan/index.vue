@@ -11,13 +11,13 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
-    periode_pelaporan: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_semester: { value: null, matchMode: FilterMatchMode.EQUALS },
     jumlah_tagihan: { value: null, matchMode: FilterMatchMode.EQUALS },
     status_tagihan: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const tagihans = ref([]);
-const periodes = ref([]);
+const semesters = ref([]);
 const prodis = ref([]);
 const jenisTagihans = ref([]);
 const statusPembayarans = ref([]);
@@ -28,10 +28,10 @@ const selectedPeriode = ref('');
 const selectedJenisTagihan = ref('');
 const selectedStatusPembayaran = ref('');
 
-const getPeriode = async () => {
+const getSemester = async () => {
     try {
-        const response = await get('periode');
-        periodes.value = response.data.data;
+        const response = await get('semester');
+        semesters.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data sistemKuliah:', error);
     }
@@ -63,13 +63,13 @@ const filterData = async () => {
             }
         });
 
-        const id_periode = selectedPeriode.value;
+        const id_semester = selectedPeriode.value;
         const id_prodi = selectedProdi.value;
         const id_jenis_tagihan = selectedJenisTagihan.value;
         const status_tagihan = selectedStatusPembayaran.value;
 
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`tagihan-mahasiswa/get-tagihan-mahasiswa-by-filter?id_periode=${id_periode}&id_prodi=${id_prodi}&id_jenis_tagihan=${id_jenis_tagihan}&status_tagihan=${status_tagihan}`);
+        const response = await getData(`tagihan-mahasiswa/get-tagihan-mahasiswa-by-filter?id_semester=${id_semester}&id_prodi=${id_prodi}&id_jenis_tagihan=${id_jenis_tagihan}&status_tagihan=${status_tagihan}`);
 
         const filterMahasiswa = response.data.data;
         tagihans.value = filterMahasiswa;
@@ -106,7 +106,7 @@ const onPageChange = (event) => {
 
 onBeforeMount(() => {
     // fetchTagihan();
-    getPeriode();
+    getSemester();
     getProdi();
     getJenisTagihan();
 });
@@ -166,7 +166,7 @@ const formatRupiah = (biaya) => {
                         <label for="exampleFormControlInput1" class="form-label">Periode Tagihan</label>
                         <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Pilih Periode</option>
-                            <option v-for="periode in periodes" :key="periode.id_periode" :value="periode.id_periode">{{ periode.periode_pelaporan }}</option>
+                            <option v-for="periode in semesters" :key="periode.id_semester" :value="periode.id_semester">{{ periode.nama_semester }}</option>
                         </select>
                     </div>
                 </div>
@@ -206,7 +206,7 @@ const formatRupiah = (biaya) => {
         </div>
         <DataTable
             v-model:filters="filters"
-            :globalFilterFields="['Mahasiswa.nim', 'Mahasiswa.nama_mahasiswa', 'Periode.periode_pelaporan', 'jumlah_tagihan', 'jenis-tagihan']"
+            :globalFilterFields="['Mahasiswa.nim', 'Mahasiswa.nama_mahasiswa', 'Semester.nama_semester', 'jumlah_tagihan', 'jenis-tagihan']"
             :value="tagihans"
             :paginator="true"
             :rows="10"
@@ -260,9 +260,9 @@ const formatRupiah = (biaya) => {
                     <div v-html="data.JenisTagihan.nama_jenis_tagihan"></div>
                 </template>
             </Column>
-            <Column filterField="periode_pelaporan" header="Periode" style="min-width: 10rem">
+            <Column filterField="nama_semester" header="Periode" style="min-width: 10rem">
                 <template #body="{ data }">
-                    {{ data.Periode.periode_pelaporan }}
+                    {{ data.Semester.nama_semester }}
                 </template>
             </Column>
             <Column filterField="jumlah_tagihan" header="Nominal" style="min-width: 10rem">

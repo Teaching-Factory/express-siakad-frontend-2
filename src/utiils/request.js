@@ -26,16 +26,7 @@ export const get = async (url, props = {}) => {
         const data = response.data;
         return { status: response.status, data };
     } catch (err) {
-        if (err.response) {
-            console.error(`Request failed with status ${err.response.status}:`, err.response.data);
-            throw new Error(`Request failed with status ${err.response.status}: ${err.response.data}`);
-        } else if (err.request) {
-            console.error('No response received:', err.request);
-            throw new Error('No response received from server.');
-        } else {
-            console.error('Error setting up request:', err.message);
-            throw new Error(`Error setting up request: ${err.message}`);
-        }
+        throw err;
     }
 };
 
@@ -81,7 +72,7 @@ export const del = async (url, props = {}) => {
         const res = await axios.delete(`${API_URL}/${url}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `${token}`
+                Authorization: `${token}`
             },
             mode: 'cors'
         });
@@ -91,7 +82,6 @@ export const del = async (url, props = {}) => {
         throw err;
     }
 };
-
 
 export const post = async (url, body, config = {}) => {
     try {
@@ -117,34 +107,29 @@ export const post = async (url, body, config = {}) => {
     }
 };
 
-
-
 export const createData = async (url, body) => {
     try {
         const token = getToken();
         if (!token) {
             throw new Error('No token found');
         }
-        
+
         const res = await fetch(`${API_URL}/${url}`, {
             method: 'POST',
             headers: {
-                "Content-Type": "aplication/json",
-                "Authorization": `${token}`,
+                'Content-Type': 'aplication/json',
+                Authorization: `${token}`
             },
             body: body,
             mode: 'cors'
         });
-        const resData = await res.json()
-        Swal.close()
-        return { status: res.status, data: resData}
+        const resData = await res.json();
+        Swal.close();
+        return { status: res.status, data: resData };
     } catch (err) {
-        throw err
-    }   
-}
-
-
-
+        throw err;
+    }
+};
 
 // Services New
 
@@ -167,20 +152,19 @@ export const getData = async (url, config = {}) => {
         const res = await fetch(`${API_URL}/${url}`, {
             method: 'get',
             headers: {
-                "accept" : "aplication/json",
-                "Authorization": `${token}`,
+                accept: 'aplication/json',
+                Authorization: `${token}`,
                 ...config?.headers
             },
             mode: 'cors'
         });
-        Swal.close()
-        var data = await res.json()
-        return { status: res.status, data: data}
+        Swal.close();
+        var data = await res.json();
+        return { status: res.status, data: data };
     } catch (err) {
-        throw err
-    }   
-}
-
+        throw err;
+    }
+};
 
 export const postData = async (url, body, props = {}) => {
     try {
@@ -214,18 +198,17 @@ export const postData = async (url, body, props = {}) => {
     }
 };
 
-
 export const delData = async (url) => {
     try {
         const token = getToken();
-        const res = await fetch(`${API_URL}/${url}`,{
-            method: 'DELETE',            
+        const res = await fetch(`${API_URL}/${url}`, {
+            method: 'DELETE',
             headers: {
-                'Accept': 'aplication/json',
-                'Authorization': `${token}`
+                Accept: 'aplication/json',
+                Authorization: `${token}`
             }
         });
-        
+
         if (!res.ok) {
             throw new Error('Network response was not oke');
         }
@@ -234,6 +217,6 @@ export const delData = async (url) => {
         Swal.close();
         return { status: res.status, data: responseData };
     } catch (error) {
-        throw error
+        throw error;
     }
-}
+};

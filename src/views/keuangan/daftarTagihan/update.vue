@@ -9,7 +9,7 @@ import { API_URL } from '../../../config/config';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const periodes = ref([]);
+const semesters = ref([]);
 const prodis = ref([]);
 const angkatans = ref([]);
 const mahasiswas = ref([]);
@@ -22,7 +22,7 @@ const jumlah_tagihan = ref('');
 const tanggal_tagihan = ref('');
 const deadline_tagihan = ref('');
 const status_tagihan = ref('');
-const id_periode = ref('');
+const id_semester = ref('');
 const id_jenis_tagihan = ref('');
 const isEdit = ref(false);
 const errors = ref({
@@ -30,15 +30,15 @@ const errors = ref({
     tanggal_tagihan: '',
     deadline_tagihan: '',
     status_tagihan: '',
-    id_periode: '',
+    id_semester: '',
     id_registrasi_mahasiswa: '',
     id_jenis_tagihan: ''
 });
 
-const fetchPeriode = async () => {
+const getSemester = async () => {
     try {
-        const response = await get('periode');
-        periodes.value = response.data.data;
+        const response = await get('semester');
+        semesters.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data :', error);
     }
@@ -122,10 +122,10 @@ const validateStatusTagihan = () => {
 };
 
 const validatePeriode = () => {
-    if (!id_periode.value) {
-        errors.value.id_periode = 'Periode Wajib Diisi.';
+    if (!id_semester.value) {
+        errors.value.id_semester = 'Periode Wajib Diisi.';
     } else {
-        errors.value.id_periode = '';
+        errors.value.id_semester = '';
     }
 };
 
@@ -171,7 +171,7 @@ const update = async () => {
             jumlah_tagihan: jumlah_tagihan.value,
             tanggal_tagihan: tanggal_tagihan.value,
             deadline_tagihan: deadline_tagihan.value,
-            id_periode: id_periode.value,
+            id_semester: id_semester.value,
             id_jenis_tagihan: id_jenis_tagihan.value,
             status_tagihan: status_tagihan.value
         };
@@ -209,7 +209,7 @@ const getTagihanMahasiswa = async (id_tagihan_mahasiswa) => {
         jumlah_tagihan.value = data.jumlah_tagihan;
         tanggal_tagihan.value = data.tanggal_tagihan;
         deadline_tagihan.value = data.deadline_tagihan;
-        id_periode.value = data.id_periode;
+        id_semester.value = data.id_semester;
         id_jenis_tagihan.value = data.id_jenis_tagihan;
         status_tagihan.value = data.status_tagihan;
         // selectedMahasiswa.value = data.mahasiswas.map((mahasiswa) => ({
@@ -227,7 +227,7 @@ const getTagihanMahasiswa = async (id_tagihan_mahasiswa) => {
 };
 
 onMounted(() => {
-    fetchPeriode();
+    getSemester();
     fetchAngkatan();
     fetchProdi();
     fetchJenisTagihan();
@@ -260,9 +260,9 @@ onMounted(() => {
                         <label for="exampleFormControlInput1" class="form-label">Periode Tagihan</label>
                     </div>
                     <div class="col-lg-4">
-                        <select v-model="id_periode" @blur="validatePeriode" class="form-select" aria-label="Default select example">
+                        <select v-model="id_semester" @blur="validatePeriode" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>--Pilih Periode--</option>
-                            <option v-for="periode in periodes" :key="periode.id_periode" :value="periode.id_periode">{{ periode.periode_pelaporan }}</option>
+                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
                         </select>
                     </div>
                     <div class="col-lg-2">
