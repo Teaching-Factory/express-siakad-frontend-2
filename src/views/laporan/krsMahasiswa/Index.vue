@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
-import { getData } from '../../../utiils/request.js'
-import Swal from "sweetalert2";
+import { getData } from '../../../utiils/request.js';
+import Swal from 'sweetalert2';
 
 const angkatans = ref([]);
 const prodis = ref([]);
@@ -57,41 +57,48 @@ const filterData = async () => {
     const jenis_cetak = selectedJenisCetak.value;
     console.log('ini jenis cetak', jenis_cetak);
     let requestBody = {};
-    
+
     if (jenis_cetak === 'Mahasiswa') {
-        const nim = nimMahasiswa.value;
-        const formatExp = format.value;
         requestBody = {
             jenis_cetak: jenis_cetak,
-            nim: nim,
+            nim: nimMahasiswa.value,
             id_semester: selectedSemester.value,
             tanggal_penandatanganan: tanggalPenandatanganan.value,
-            format: formatExp
+            format: format.value
         };
+
+        // Jika 'Mahasiswa', arahkan ke cetak-krs-angkatan
+        try {
+            Swal.close();
+            router.push({
+                name: 'cetak-krs-mahasiswa',
+                query: requestBody
+            });
+        } catch (error) {
+            console.error('Gagal mengirim data:', error);
+        }
     } else if (jenis_cetak === 'Angkatan') {
-        const id_prodi = selectedProdi.value;
-        const id_angkatan = selectedAngkatan.value;
         requestBody = {
             jenis_cetak: jenis_cetak,
-            id_prodi: id_prodi,
-            id_angkatan: id_angkatan,
+            id_prodi: selectedProdi.value,
+            id_angkatan: selectedAngkatan.value,
             id_semester: selectedSemester.value,
             tanggal_penandatanganan: tanggalPenandatanganan.value
         };
+
+        // Jika 'Angkatan', arahkan ke cetak-krs-mahasiswa
+        try {
+            Swal.close();
+            router.push({
+                name: 'cetak-krs-mahasiswa-angkatan',
+                query: requestBody
+            });
+        } catch (error) {
+            console.error('Gagal mengirim data:', error);
+        }
     } else {
         console.error('Invalid jenis_cetak:', jenis_cetak);
-        return;
-    }
-
-    console.log('req', requestBody);
-    try {
         Swal.close();
-        router.push({
-            name: 'cetak-krs-mahasiswa',
-            query: requestBody
-        });
-    } catch (error) {
-        console.error('Gagal mengirim data:', error);
     }
 };
 
@@ -100,7 +107,6 @@ onMounted(() => {
     fetchAngkatan();
     fetchSemester();
 });
-
 </script>
 
 
@@ -115,24 +121,24 @@ onMounted(() => {
                 </div>
                 <div class="col-lg-6">
                     <select class="form-select" v-model="selectedJenisCetak" aria-label="Default select example">
-                        <option value="" selected disabled hidden>-- Pilih Cetak  --</option>
+                        <option value="" selected disabled hidden>-- Pilih Cetak --</option>
                         <option value="Mahasiswa">Mahasiswa</option>
                         <option value="Angkatan">Angkatan</option>
                     </select>
                 </div>
             </div>
-            
+
             <div v-if="selectedJenisCetak === 'Mahasiswa'">
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
                         <label for="nimMahasiswa" class="form-label">NIM Mahasiswa</label>
                     </div>
                     <div class="col-lg-6">
-                        <input v-model="nimMahasiswa" type="text" class="form-control" id="nimMahasiswa" placeholder="Ketikkan NIM Mahasiswa disini">
+                        <input v-model="nimMahasiswa" type="text" class="form-control" id="nimMahasiswa" placeholder="Ketikkan NIM Mahasiswa disini" />
                     </div>
                 </div>
             </div>
-            
+
             <div v-if="selectedJenisCetak === 'Angkatan'">
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
@@ -146,7 +152,7 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            
+
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="selectedSemester" class="form-label">Periode</label>
@@ -166,12 +172,12 @@ onMounted(() => {
                     </div>
                     <div class="col-lg-6">
                         <select v-model="format" class="form-select" aria-label="Default select example">
-                            <option value="HTML">HTML</option>
-                            <option value="Excel">Excel</option>
+                            <option value="PDF">PDF</option>
+                            <!-- <option value="Excel">Excel</option> -->
                         </select>
                     </div>
                 </div>
-            </div>    
+            </div>
 
             <div v-if="selectedJenisCetak === 'Angkatan'">
                 <div class="row d-flex justify-content-center mb-3">
@@ -191,10 +197,10 @@ onMounted(() => {
                     <label for="tanggalPenandatanganan" class="form-label">Tanggal Penandatanganan</label>
                 </div>
                 <div class="col-lg-6">
-                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" id="tanggalPenandatanganan">
+                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" id="tanggalPenandatanganan" />
                 </div>
             </div>
-            <div class="row ">
+            <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <button @click="filterData" class="btn btn-primary">Tampilkan</button>
                 </div>

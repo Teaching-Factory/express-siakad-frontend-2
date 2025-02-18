@@ -645,6 +645,11 @@ const router = createRouter({
                     component: () => import('../views/laporan/krsMahasiswa/cetakKRS.vue')
                 },
                 {
+                    path: '/cetak-krs-mahasiswa-angkatan',
+                    name: 'cetak-krs-mahasiswa-angkatan',
+                    component: () => import('../views/laporan/krsMahasiswa/cetakKRSbyAngkatan.vue')
+                },
+                {
                     path: '/khs-mahasiswa',
                     name: 'khs-mahasiswa',
                     component: () => import('../views/laporan/khsMahasiswa/index.vue'),
