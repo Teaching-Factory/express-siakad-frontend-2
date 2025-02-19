@@ -2,10 +2,11 @@
 import Swal from 'sweetalert2';
 import { onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { get } from '../../../utiils/request';
+import { del, get } from '../../../utiils/request';
 
 const route = useRoute();
 const selectedPeriode = ref('');
+const message = ref('');
 const details = ref([]);
 
 const detailKrs = async (id_registrasi_mahasiswa) => {
@@ -36,6 +37,39 @@ const detailKrs = async (id_registrasi_mahasiswa) => {
         // Berikan pesan error kepada pengguna jika diperlukan
         // Misalnya: Notify.error('Gagal mengambil data mata kuliah.');
     }
+};
+
+const deleteItem = async (id_krs) => {
+    try {
+        const response = await del(`krs-mahasiswa/${id_krs}/delete`);
+        if (response.status === 200) {
+            message.value = 'Data berhasil dihapus!';
+        } else {
+            message.value = 'Terjadi kesalahan: ' + response.statusText;
+        }
+    } catch (error) {
+        message.value = 'Terjadi kesalahan: ' + error.message;
+    }
+};
+
+const confirmDelete = (id_krs) => {
+    Swal.fire({
+        title: 'Apa Kamu Yakin?',
+        text: 'Data ini akan dihapus',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, saya yakin!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(id_krs);
+            Swal.fire('BERHASIL!', 'Data berhasil dihapus.', 'success');
+            details.value = details.value.filter((data) => data.id_krs !== id_krs);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire('BATAL', 'Data Anda Tidak Jadi Dihapus', 'error');
+        }
+    });
 };
 
 onMounted(() => {
@@ -127,9 +161,11 @@ onMounted(() => {
                             <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_mulai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_selesai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.sks }}</td>
-                            <td> <button class="btn btn-outline-danger">
-                                <i class="pi pi-trash"></i>
-                            </button></td>
+                            <td>
+                                <button @click="confirmDelete(krs.id_krs)" class="btn btn-outline-danger" title="Hapus Krs">
+                                    <i class="pi pi-trash"></i>
+                                </button>
+                            </td>
                         </tr>
 
                         <tr>

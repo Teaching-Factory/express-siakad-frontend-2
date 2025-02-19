@@ -66,7 +66,7 @@ const update = async () => {
                 id_semester_aktif: id_semester_aktif.value,
                 id_semester_krs: id_semester_krs.value,
                 id_semester_nilai: id_semester_nilai.value,
-                batas_sks_krs: id_semester_aktif.value,
+                batas_sks_krs: batas_sks_krs.value,
                 wilayah_penandatanganan: wilayah_penandatanganan.value,
                 label_dosen_wali: label_dosen_wali.value
             },

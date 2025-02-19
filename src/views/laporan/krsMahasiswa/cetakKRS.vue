@@ -212,7 +212,7 @@ export default {
                             <p class="m-0">Pembimbing Akademik</p>
                             <p style="height: 70px"></p>
                             <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold">{{ krsData?.dosen_wali?.Dosen?.nama_dosen ?? '-' }}</p>
-                            <p class="m-0">08976768757</p>
+                            <p class="m-0">-</p>
                         </td>
                     </tr>
                     <tr>
