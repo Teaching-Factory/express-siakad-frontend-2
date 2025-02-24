@@ -303,11 +303,11 @@ const router = createRouter({
                     name: 'kelas-jadwal-perkuliahan-komponen-evaluasi',
                     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/komponen-evaluasi/index.vue')
                 },
-                // {
-                //     path: '/kelas-jadwal-perkuliahan/komponen-evaluasi',
-                //     name: 'kelas-jadwal-perkuliahan-komponen-evaluasi',
-                //     component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/komponen-evaluasi/index.vue')
-                // },
+                {
+                    path: '/kelas-jadwal-perkuliahan/:id_detail_kelas_kuliah/:id_kelas_kuliah/dosen-pengajar',
+                    name: 'kelas-jadwal-perkuliahan-dosen-pengajar',
+                    component: () => import('../views/perkuliahan/kelasJadwalPerkuliahan/formDosen.vue')
+                },
 
                 {
                     path: '/nilai-perkuliahan',

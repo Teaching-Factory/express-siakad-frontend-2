@@ -266,7 +266,7 @@ onMounted(() => {
                 <hr style="margin-top: -5px" />
 
                 <div class="mb-3 row">
-                    <label for="inputPassword" class="col-sm-3 col-form-label">Pertemuan ke-</label>
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Pertemuan ke- <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
                         <select name="" class="form-select" id="pertemuan" v-model="pertemuan" @blur="validatePertemuan">
                             <option value="" selected disabled hidden>Pilih Pertemuan</option>
@@ -290,11 +290,11 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="tanggal" class="col-sm-3 col-form-label">tanggal</label>
+                    <label for="tanggal" class="col-sm-3 col-form-label">Tanggal <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
                         <input type="date" class="form-control" id="tanggal" v-model="tanggal_pertemuan" @blur="validateTanggal" />
                     </div>
-                    <label for="inputPassword" class="col-sm-3 col-form-label">Ruang</label>
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Ruang <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
                         <select v-model="id_ruang_perkuliahan" @blur="validateRuangPerkuliahan" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>Ruang</option>
@@ -303,18 +303,18 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="mb-3 mt-4 row">
-                    <label for="inputPassword" class="col-sm-3 col-form-label">Jam Mulai</label>
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Jam Mulai <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
                         <input type="time" class="form-control" id="waktu_mulai" v-model="waktu_mulai" @blur="validateWaktuMulai" />
                     </div>
-                    <label for="inputPassword" class="col-sm-3 col-form-label">Jam Selesai</label>
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Jam Selesai <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
                         <input type="time" class="form-control" id="waktu_selesai" v-model="waktu_selesai" @blur="validateWaktuSelesai" />
                     </div>
                 </div>
                 <div class="mb-3 mt-4 row">
                     <div class="col-lg-3">
-                        <label for="exampleFormControlInput1" class="form-label">Materi</label>
+                        <label for="exampleFormControlInput1" class="form-label">Materi <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-9">
                         <textarea name="" id="materi" v-model="materi" class="form-control" rows="10"></textarea>

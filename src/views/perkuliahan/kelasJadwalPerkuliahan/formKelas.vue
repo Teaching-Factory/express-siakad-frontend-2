@@ -354,19 +354,19 @@ onMounted(() => {
                 </div>
                 <hr style="margin-top: -5px" />
                 <div class="mb-3 mt-4 row">
-                    <label for="input" class="col-sm-3 col-form-label">Kelas</label>
+                    <label for="input" class="col-sm-3 col-form-label">Kelas <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <input type="text" @blur="validateNamaKelas" class="form-control" id="nama_kelas_kuliah" v-model="nama_kelas_kuliah" />
+                        <input type="text" @blur="validateNamaKelas" class="form-control" id="nama_kelas_kuliah" v-model="nama_kelas_kuliah" required />
                     </div>
-                    <label for="input" class="col-sm-3 col-form-label">Kapasitas Peserta Kelas</label>
+                    <label for="input" class="col-sm-3 col-form-label">Kapasitas Peserta Kelas <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" />
+                        <input type="text" @blur="validateKapasitasPeserta" class="form-control" id="kapasitas_peserta_kelas" v-model="kapasitas_peserta_kelas" required />
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="input" class="col-sm-3 col-form-label">Hari</label>
+                    <label for="input" class="col-sm-3 col-form-label">Hari <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <select name="" class="form-select" @blur="validateHari" v-model="hari" id="hari">
+                        <select name="" class="form-select" @blur="validateHari" v-model="hari" id="hari" required>
                             <option value="" selected disabled hidden>Hari</option>
                             <option value="senin">Senin</option>
                             <option value="selasa">Selasa</option>
@@ -376,37 +376,37 @@ onMounted(() => {
                             <option value="sabtu">Sabtu</option>
                         </select>
                     </div>
-                    <label for="input" class="col-sm-3 col-form-label">Ruang</label>
+                    <label for="input" class="col-sm-3 col-form-label">Ruang <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <select v-model="id_ruang_perkuliahan" @blur="validateRuangPerkuliahan" class="form-select" aria-label="Default select example">
+                        <select v-model="id_ruang_perkuliahan" @blur="validateRuangPerkuliahan" class="form-select" aria-label="Default select example" required>
                             <option value="" selected disabled hidden>Ruang</option>
                             <option v-for="ruang in ruangKuliah" :key="ruang.id" :value="ruang.id">{{ ruang.nama_ruang_perkuliahan }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="input" class="col-sm-3 col-form-label">Jam Mulai</label>
+                    <label for="input" class="col-sm-3 col-form-label">Jam Mulai <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <input type="time" class="form-control" @blur="validateJamMulai" v-model="jam_mulai" id="jam_mulai" />
+                        <input type="time" class="form-control" @blur="validateJamMulai" v-model="jam_mulai" id="jam_mulai" required />
                     </div>
-                    <label for="input" class="col-sm-3 col-form-label">Jam Selesai</label>
+                    <label for="input" class="col-sm-3 col-form-label">Jam Selesai <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <input type="time" class="form-control" @blur="validateJamSelesai" v-model="jam_selesai" id="jam_selesai" />
+                        <input type="time" class="form-control" @blur="validateJamSelesai" v-model="jam_selesai" id="jam_selesai" required />
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="input" class="col-sm-3 col-form-label">Lingkup</label>
+                    <label for="input" class="col-sm-3 col-form-label">Lingkup <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <select name="" class="form-select" v-model="lingkup" id="lingkup">
+                        <select name="" class="form-select" v-model="lingkup" id="lingkup" required>
                             <option value="" selected disabled hidden>Lingkup</option>
                             <option value="1">Internal</option>
                             <option value="2">Eksternal</option>
                             <option value="3">Campuran</option>
                         </select>
                     </div>
-                    <label for="inputPassword" class="col-sm-3 col-form-label">Mode Kuliah</label>
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Mode Kuliah <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <select name="" class="form-select" v-model="mode_kuliah" id="mode_kuliah">
+                        <select name="" class="form-select" v-model="mode_kuliah" id="mode_kuliah" required>
                             <option value="" selected disabled hidden>Mode Kuliah</option>
                             <option value="O">Online</option>
                             <option value="F">Offline</option>
@@ -415,19 +415,19 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="input" class="col-sm-3 col-form-label">Tanggal Mulai Efektif</label>
+                    <label for="input" class="col-sm-3 col-form-label">Tanggal Mulai Efektif <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <input type="date" class="form-control" @blur="validateTanggalMulai" v-model="tanggal_mulai_efektif" id="tanggal_mulai_efektif" />
+                        <input type="date" class="form-control" @blur="validateTanggalMulai" v-model="tanggal_mulai_efektif" id="tanggal_mulai_efektif" required />
                     </div>
-                    <label for="input" class="col-sm-3 col-form-label">Tanggal Akhir Efektif</label>
+                    <label for="input" class="col-sm-3 col-form-label">Tanggal Akhir Efektif <span class="text-danger">*</span></label>
                     <div class="col-sm-3">
-                        <input type="date" class="form-control" @blur="validateTanggalSelesai" v-model="tanggal_akhir_efektif" id="tanggal_akhir_efektif" />
+                        <input type="date" class="form-control" @blur="validateTanggalSelesai" v-model="tanggal_akhir_efektif" id="tanggal_akhir_efektif" required />
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="input" class="col-sm-3 col-form-label">Dosen</label>
+                    <label for="input" class="col-sm-3 col-form-label">Dosen <span class="text-danger">*</span></label>
                     <div class="col-sm-9">
-                        <v-select v-model="selectedDosen" :options="dosens" @blur="validateDosen" label="nama_dosen" placeholder="Pilih dosen"></v-select>
+                        <v-select v-model="selectedDosen" :options="dosens" @blur="validateDosen" label="nama_dosen" placeholder="Pilih dosen" required></v-select>
                     </div>
                 </div>
             </div>

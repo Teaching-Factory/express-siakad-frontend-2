@@ -354,18 +354,18 @@ function deleteDosen(index) {
                             <i class="pi pi-users">0/{{ detail.kapasitas || '0' }}</i>
                         </td>
                         <td>
-                            <button class="btn me-2" @click="showDosenPengajar(detail.KelasKuliah.id_kelas_kuliah)"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </button>
+                            <router-link class="btn me-2" :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/dosen-pengajar`"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </router-link>
                             <span>{{detail.KelasKuliah?.Dosen?.nama_dosen || '-'}}</span>
                             
                             <!-- modal 2 -->
-                            <Modal
+                        <!-- <Modal
                             v-if="showModal2"
                             :show="showModal2"
                             title="DOSEN PENGAJAR KELAS KULIAH"
                             @close="showModal2 = false"
                             >
                             <div class="card" style="border-radius: none !important">
-                                    <!-- <div v-if="dosenpengajar"> -->
+                                   
                                         <div class="row">
                                         <div class="col-lg-2">Program Studi</div>
                                         <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar?.Prodi?.nama_program_studi || '-' }}</div>
@@ -379,12 +379,7 @@ function deleteDosen(index) {
                                         <div class="col-lg-2">Kelas</div>
                                         <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar.KelasKuliah?.nama_kelas_kuliah || '-' }}</div>
                                         </div>
-                                        <!-- <pre>{{ dosenpengajar.id_prodi }}</pre> -->
-                                    <!-- </div> -->
-                                    <!-- <div v-else>
-                                        <p>Data tidak ditemukan</p>
-                                    </div> -->
-
+                                       
                                 <hr style="margin: 0;">
 
                                 <div class="row mt-4">
@@ -440,7 +435,7 @@ function deleteDosen(index) {
                                     </div>
                                 </div>
                             </div>
-                        </Modal>
+                        </Modal> -->
 
                         </td>
                         <td class="text-end">

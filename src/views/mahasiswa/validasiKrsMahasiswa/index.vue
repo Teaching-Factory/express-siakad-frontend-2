@@ -324,9 +324,9 @@ onBeforeMount(() => {
                             <i class="pi pi-pencil"></i>
                         </router-link>
                         
-                        <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)" title="Hapus">
+                        <!-- <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)" title="Hapus">
                             <i class="pi pi-trash"></i>
-                        </button>
+                        </button> -->
                     </template>
                 </Column>
             </DataTable>

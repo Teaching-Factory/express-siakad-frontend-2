@@ -211,7 +211,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card" style="border-radius: none !important">
-        <h5><i class="pi pi-user me-2"></i>SET KOLEKTIF MAHASISWA PESERTA KELAS</h5>
+        <h5><i class="pi pi-user me-2"></i>SET KOMPONEN EVALUASI</h5>
         <div class="card">
             <div class="row">
                 <div class="col-lg-2">Program Studi</div>

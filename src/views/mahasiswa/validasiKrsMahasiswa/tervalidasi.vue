@@ -1,8 +1,11 @@
 <script setup>
+import axios from 'axios';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { API_URL } from '../../../config/config';
+import { getToken } from '../../../service/auth';
 import { get } from '../../../utiils/request';
 
 const first = ref(0);
@@ -36,6 +39,33 @@ const fetchKrsTervalidasi = async () => {
     } catch (error) {
         console.error('Gagal mengambil data:', error);
         Swal.close();
+    }
+};
+
+const batalkanValidasi = async (id_registrasi_mahasiswa) => {
+    try {
+        const token = getToken();
+        const prodiId = route.params.id_prodi;
+        const semesterId = route.params.id_semester;
+
+        const url = `${API_URL}/krs-mahasiswa/${prodiId}/${semesterId}/${id_registrasi_mahasiswa}/batalkan-validasi-krs`;
+
+        const response = await axios.put(
+            url,
+            {}, // Body permintaan
+            {
+                headers: {
+                    Authorization: token
+                }
+            }
+        );
+
+        Swal.fire('BERHASIL!', 'KRS Berhasil di Batalkan.', 'success').then(() => {
+            window.location.reload();
+        });
+        console.log('Status berhasil diperbarui:', response.data);
+    } catch (error) {
+        console.error('Gagal memperbarui status:', error);
     }
 };
 
@@ -115,11 +145,11 @@ onMounted(() => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2">
+                        <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2" title="Detai Krs">
                             <i class="pi pi-pencil"></i>
                         </router-link>
-                        <button class="btn btn-outline-danger py-1 px-2" @click="confirmDelete(data.id_registrasi_mahasiswa)">
-                            <i class="pi pi-trash"></i>
+                        <button @click="batalkanValidasi(data.id_registrasi_mahasiswa)" class="btn btn-outline-danger py-1 px-2" title="Batalkan Krs">
+                            <i class="pi pi-times"></i>
                         </button>
                     </template>
                 </Column>
