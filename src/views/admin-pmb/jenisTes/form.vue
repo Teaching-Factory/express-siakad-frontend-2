@@ -99,13 +99,13 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaTes" class="col-sm-3 col-form-label">Nama Tes</label>
+                <label for="namaTes" class="col-sm-3 col-form-label">Nama Tes <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Nama Jenis Tes" id="nama_tes" v-model="nama_tes" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="keteranganSingkat" class="col-sm-3 col-form-label">Keterangan Singkat</label>
+                <label for="keteranganSingkat" class="col-sm-3 col-form-label">Keterangan Singkat <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Keterangan Singkat Jenis Tes" id="keterangan_singkat" v-model="keterangan_singkat" />
                 </div>

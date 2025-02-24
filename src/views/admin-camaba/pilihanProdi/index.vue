@@ -103,14 +103,14 @@ onMounted(() => {
             <hr />
             <div class="row">
                 <div class="col-lg-12 mb-2">
-                    <label for="inputProdi" class="col-sm-4 col-form-label">Pilihan 1</label>
+                    <label for="inputProdi" class="col-sm-4 col-form-label">Pilihan 1 <span class="text-danger">*</span></label>
                     <select v-model="id_prodi_1" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Program Studi</option>
                         <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                     </select>
                 </div>
                 <div class="col-sm-12 mt-2">
-                    <label for="inputProdi" class="col-sm-4 col-form-label">Pilihan 2</label>
+                    <label for="inputProdi" class="col-sm-4 col-form-label">Pilihan 2 <span class="text-danger">*</span></label>
                     <select v-model="id_prodi_2" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Program Studi</option>
                         <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>

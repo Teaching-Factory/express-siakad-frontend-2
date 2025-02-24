@@ -75,7 +75,7 @@ export default {
                     });
                 });
             } catch (error) {
-                Swal.fire('GAGAL',`Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+                Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
             }
         }
     }
@@ -97,13 +97,13 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="idUnsur" class="col-sm-3 col-form-label">ID Unsur</label>
+                <label for="idUnsur" class="col-sm-3 col-form-label">ID Unsur <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="idUnsur" v-model="id_unsur" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaUnsurPenilaian" class="col-sm-3 col-form-label">Nama Unsur Penilaian</label>
+                <label for="namaUnsurPenilaian" class="col-sm-3 col-form-label">Nama Unsur Penilaian <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="namaUnsurPenilaian" v-model="nama_unsur_penilaian" />
                 </div>

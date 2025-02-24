@@ -64,7 +64,7 @@ const create = async () => {
             <hr />
             <div class="row mb-3">
                 <div class="col-2">
-                    <label for="profileImage" class="form-label">File</label>
+                    <label for="profileImage" class="form-label">File <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-10">
                     <input type="file" class="form-control" id="profileImage" @change="handleFileUpload" accept=".pdf" />

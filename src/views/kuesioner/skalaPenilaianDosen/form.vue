@@ -112,13 +112,13 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="poin_skala_penilaian" class="col-sm-3 col-form-label">Poin Skala Penilaian (Angka)</label>
+                <label for="poin_skala_penilaian" class="col-sm-3 col-form-label">Poin Skala Penilaian (Angka) <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Masukkan poin skala penilaian dosen" id="poin_skala_penilaian" v-model="poin_skala_penilaian" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="id_semester" class="col-sm-3 col-form-label">Periode</label>
+                <label for="id_semester" class="col-sm-3 col-form-label">Periode <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select class="form-select" aria-label="Default select example" v-model="id_semester">
                         <option selected disabled hidden>-- Pilih Periode--</option>
@@ -127,7 +127,7 @@ export default {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="keterangan_skala_penilaian" class="col-sm-3 col-form-label">Keterangan Skala Penilaian</label>
+                <label for="keterangan_skala_penilaian" class="col-sm-3 col-form-label">Keterangan Skala Penilaian <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="keterangan skala penilaian dosen" id="keterangan_skala_penilaian" v-model="keterangan_skala_penilaian" />
                 </div>

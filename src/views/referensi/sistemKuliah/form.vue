@@ -78,7 +78,7 @@ export default {
                     });
                 });
             } catch (error) {
-                Swal.fire('GAGAL',`Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+                Swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
             }
         },
         async handleFocus() {
@@ -100,18 +100,17 @@ export default {
                 <div class="col-lg-8 d-flex justify-content-end">
                     <router-link to="/sistem-kuliah" class="btn btn-dark me-2"><i class="pi pi-list me-2"></i> Kembali</router-link>
                     <button type="submit" class="btn btn-success me-2"><i class="pi pi-check me-2"></i> Simpan</button>
-                    
                 </div>
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="kodeSK" class="col-sm-2 col-form-label">Kode</label>
+                <label for="kodeSK" class="col-sm-2 col-form-label">Kode <span class="text-danger">*</span></label>
                 <div class="col-md-8">
                     <input type="text" class="form-control" id="kodeSK" v-model="kode_sk" @focus="handleFocus" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaSK" class="col-sm-2 col-form-label">Nama Sistem Kuliah</label>
+                <label for="namaSK" class="col-sm-2 col-form-label">Nama Sistem Kuliah <span class="text-danger">*</span></label>
                 <div class="col-md-8">
                     <input type="text" class="form-control" id="namaSK" v-model="nama_sk" @focus="handleFocus" />
                 </div>

@@ -169,15 +169,15 @@ onMounted(() => {
 
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Logo Perguruan Tinggi</label>
+                    <label for="exampleFormControlInput1" class="form-label">Logo Perguruan Tinggi <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
-                    <input @change="handleFileUpload" type="file" class="form-control" title="Upload logo disini"/>
+                    <input @change="handleFileUpload" type="file" class="form-control" title="Upload logo disini" />
                 </div>
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Nama Perguruan Tinggi</label>
+                    <label for="exampleFormControlInput1" class="form-label">Nama Perguruan Tinggi <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
                     <input type="text" class="form-control" v-model="nama_perguruan_tinggi" />
@@ -188,7 +188,7 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Telepon</label>
+                    <label for="exampleFormControlInput1" class="form-label">Telepon <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
                     <input type="text" class="form-control" v-model="telepon" />
@@ -196,7 +196,7 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Faximile</label>
+                    <label for="exampleFormControlInput1" class="form-label">Faximile <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
                     <input type="text" class="form-control" v-model="faximile" />
@@ -204,7 +204,7 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Email</label>
+                    <label for="exampleFormControlInput1" class="form-label">Email <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
                     <input type="text" class="form-control" v-model="email" />
@@ -212,7 +212,7 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Website</label>
+                    <label for="exampleFormControlInput1" class="form-label">Website <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
                     <input type="text" class="form-control" v-model="website" />
@@ -221,7 +221,7 @@ onMounted(() => {
 
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Jalan</label>
+                    <label for="exampleFormControlInput1" class="form-label">Jalan <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
                     <input type="text" class="form-control" v-model="jalan" />
@@ -229,7 +229,7 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Kode Pos</label>
+                    <label for="exampleFormControlInput1" class="form-label">Kode Pos <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-6">
                     <input type="text" class="form-control" v-model="kode_pos" />

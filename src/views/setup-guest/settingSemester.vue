@@ -111,21 +111,21 @@ function smoothScroll(id) {
                                         </div>
 
                                         <form @submit.prevent="create">
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Semester Aktif</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Semester Aktif <span class="text-danger">*</span></label>
                                             <select v-model="selectedSemesterAktif" class="form-select w-full md:w-30rem mb-3" style="padding: 1rem" aria-label="Default select example">
                                                 <option value="" selected disabled hidden>Pilih semester</option>
                                                 <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">
                                                     {{ semester.nama_semester }}
                                                 </option>
                                             </select>
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Semester Nilai</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Semester Nilai <span class="text-danger">*</span></label>
                                             <select v-model="selectedSemesterNilai" class="form-select w-full md:w-30rem mb-3" style="padding: 1rem" aria-label="Default select example">
                                                 <option value="" selected disabled hidden>Pilih semester</option>
                                                 <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">
                                                     {{ semester.nama_semester }}
                                                 </option>
                                             </select>
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Semester KRS</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Semester KRS <span class="text-danger">*</span></label>
                                             <select v-model="selectedSemesterKrs" class="form-select w-full md:w-30rem mb-3" style="padding: 1rem" aria-label="Default select example">
                                                 <option value="" selected disabled hidden>Pilih semester</option>
                                                 <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">
@@ -133,17 +133,17 @@ function smoothScroll(id) {
                                                 </option>
                                             </select>
 
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Batas SKS</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Batas SKS <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" v-model="batas_sks_krs" placeholder="Masukkan Batas SKS" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Label Dosen Wali</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Label Dosen Wali <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" v-model="label_dosen_wali" placeholder="Masukkan Label Dosen Wali" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Wilayah Penandatanganan</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Wilayah Penandatanganan <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" v-model="wilayah_penandatanganan" placeholder="Masukkan Wilayah Penandatanganan" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
                                             <div>
-                                                <label for="statusFeeder" class="block text-900 font-medium text-xl mb-2">Status</label>
+                                                <label for="statusFeeder" class="block text-900 font-medium text-xl mb-2">Status <span class="text-danger">*</span></label>
                                                 <div class="flex items-center mb-3">
                                                     <input type="radio" v-model="status" id="active" value="true" class="mr-2" />
                                                     <label for="active" class="mr-4">Aktif</label>

@@ -120,7 +120,7 @@ const update = async () => {
             });
         });
     } catch (error) {
-        swal.fire('GAGAL',`Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
+        swal.fire('GAGAL', `Gagal memperbarui data: ${error.response ? error.response.data.message : error.message}`, 'error');
     }
 };
 
@@ -163,7 +163,7 @@ onMounted(async () => {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Program Studi</label>
+                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Program Studi <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="id_prodi" @blur="validateProdi" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Program Studi</option>
@@ -172,7 +172,7 @@ onMounted(async () => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Unsur Penilaian</label>
+                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Unsur Penilaian <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="id_unsur_penilaian" @blur="validateUnsur" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Unsur Penilaian</option>
@@ -181,7 +181,7 @@ onMounted(async () => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="bobotPenilaian" class="col-sm-3 col-form-label">Bobot Penilaian</label>
+                <label for="bobotPenilaian" class="col-sm-3 col-form-label">Bobot Penilaian <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" @blur="validateBobot" id="bobotPenilaian" v-model="bobot_penilaian" />
                 </div>

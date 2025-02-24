@@ -93,19 +93,19 @@ function smoothScroll(id) {
                                         </div>
 
                                         <form @submit.prevent="createUser">
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Username</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Username <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" placeholder="Masukkan Username" v-model="username" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
                                             <span class="text-red-500"></span>
 
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Nama</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Nama <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" placeholder="Masukkan Nama Lengkap" v-model="nama" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
                                             <span class="text-red-500"></span>
 
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Email</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Email <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" placeholder="Masukkan Email" v-model="email" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
                                             <span class="text-red-500"></span>
 
-                                            <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
+                                            <label for="password1" class="block text-900 font-medium text-xl mb-2">Password <span class="text-danger">*</span></label>
                                             <Password id="password1" placeholder="Masukkan Password" v-model="password" :feedback="false" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
                                             <span class="text-red-500"></span>
 

@@ -62,7 +62,7 @@ onBeforeMount(() => {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Jabatan</label>
+                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Jabatan <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="id_jabatan" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Jabatan</option>
@@ -71,7 +71,7 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Nama Penandatanganan</label>
+                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Nama Penandatanganan <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="id_dosen" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Nama Penandatanganan</option>

@@ -396,13 +396,13 @@ onMounted(() => {
                                     </div>
                                     <div class="row d-flex mb-3">
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">Nama Lengkap</label>
+                                            <label for="exampleFormControlInput1" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-4">
                                             <input type="text" class="form-control" v-model="nama_lengkap" />
                                         </div>
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">Jenis Kelamin</label>
+                                            <label for="exampleFormControlInput1" class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-4">
                                             <select class="form-select" aria-label="Default select example" v-model="jenis_kelamin">
@@ -414,13 +414,13 @@ onMounted(() => {
                                     </div>
                                     <div class="row d-flex mb-3">
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">Tempat Lahir</label>
+                                            <label for="exampleFormControlInput1" class="form-label">Tempat Lahir <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-4">
                                             <input type="text" class="form-control" v-model="tempat_lahir" />
                                         </div>
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">No. HP</label>
+                                            <label for="exampleFormControlInput1" class="form-label">No. HP <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-4">
                                             <input type="text" class="form-control" v-model="nomor_hp" />
@@ -428,13 +428,13 @@ onMounted(() => {
                                     </div>
                                     <div class="row d-flex mb-3">
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">Tanggal Lahir</label>
+                                            <label for="exampleFormControlInput1" class="form-label">Tanggal Lahir <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-4">
                                             <input type="date" class="form-control" v-model="tanggal_lahir" />
                                         </div>
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">E-Mail</label>
+                                            <label for="exampleFormControlInput1" class="form-label">E-Mail <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-4">
                                             <input type="text" class="form-control" v-model="email" />
@@ -447,7 +447,7 @@ onMounted(() => {
                                     </div>
                                     <div class="row d-flex mb-3">
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">Pilihan 1</label>
+                                            <label for="exampleFormControlInput1" class="form-label">Pilihan 1 <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-10">
                                             <select v-model="id_prodi_1" class="form-select" aria-label="Default select example">
@@ -458,7 +458,7 @@ onMounted(() => {
                                     </div>
                                     <div class="row d-flex mb-3">
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">Pilihan 2</label>
+                                            <label for="exampleFormControlInput1" class="form-label">Pilihan 2 <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-10">
                                             <select v-model="id_prodi_2" class="form-select" aria-label="Default select example">
@@ -474,7 +474,7 @@ onMounted(() => {
                                     </div>
                                     <div class="row d-flex mb-3">
                                         <div class="col-lg-2">
-                                            <label for="exampleFormControlInput1" class="form-label">Pilih Sumber</label>
+                                            <label for="exampleFormControlInput1" class="form-label">Pilih Sumber <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="col-lg-10">
                                             <div v-if="sumbers.length === 0">Sumber Tidak Tersedia</div>

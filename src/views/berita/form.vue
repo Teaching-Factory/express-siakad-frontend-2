@@ -68,7 +68,7 @@ export default {
 
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
-                        <label for="exampleFormControlInput1" class="form-label">Judul Berita</label>
+                        <label for="exampleFormControlInput1" class="form-label">Judul Berita <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-6">
                         <input type="text" class="form-control" placeholder="masukkan judul berita disini" v-model="judul_berita" />
@@ -76,7 +76,7 @@ export default {
                 </div>
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
-                        <label for="exampleFormControlInput1" class="form-label">Deskripsi Pendek</label>
+                        <label for="exampleFormControlInput1" class="form-label">Deskripsi Pendek <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-6">
                         <input type="text" class="form-control" placeholder="masukkan deskripsi berita disini" v-model="deskripsi_pendek" />
@@ -84,7 +84,7 @@ export default {
                 </div>
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
-                        <label for="exampleFormControlInput1" class="form-label">Kategori Berita</label>
+                        <label for="exampleFormControlInput1" class="form-label">Kategori Berita <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-6">
                         <div class="actions gap-2">
@@ -117,7 +117,7 @@ export default {
                 </div>
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
-                        <label for="exampleFormControlInput1" class="form-label">Konten Berita</label>
+                        <label for="exampleFormControlInput1" class="form-label">Konten Berita <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-6">
                         <textarea name="" id="" v-model="konten_berita" class="form-control" rows="10"></textarea>

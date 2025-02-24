@@ -275,7 +275,7 @@ onMounted(() => {
                                     </div>
                                 </div>
                                 <p><b>Laporan Rekap Pendaftaran PMB</b></p>
-                                <label for="status" class="col-sm-4 col-form-label">Jabatan</label>
+                                <label for="status" class="col-sm-4 col-form-label">Jabatan <span class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <select v-model="selectedJabatan" class="form-select" aria-label="Default select example">
                                         <option value="" selected disabled hidden>Pilih Jabatan</option>
@@ -285,13 +285,13 @@ onMounted(() => {
                             </div>
 
                             <div class="mb-3 mt-2 row">
-                                <label for="namaPenandatangan1" class="col-sm-4 col-form-label">Nama Penandatangan</label>
+                                <label for="namaPenandatangan1" class="col-sm-4 col-form-label">Nama Penandatangan <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="namaPenandatangan1" id="namaPenandatangan1" />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
-                                <label for="nomorIdentitas1" class="col-sm-4 col-form-label">NIDN / NIP</label>
+                                <label for="nomorIdentitas1" class="col-sm-4 col-form-label">NIDN / NIP <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="nomorIdentitas1" id="nomorIdentitas1" />
                                 </div>
@@ -299,7 +299,7 @@ onMounted(() => {
 
                             <div class="mb-3 mt-4 row">
                                 <p><b>Laporan Rekap Pembayaran PMB</b></p>
-                                <label for="status2" class="col-sm-4 col-form-label">Jabatan</label>
+                                <label for="status2" class="col-sm-4 col-form-label">Jabatan <span class="text-danger">*</span></label>
                                 <div class="col-md-8">
                                     <select v-model="selectedJabatan" class="form-select" aria-label="Default select example">
                                         <option value="" selected disabled hidden>Pilih Jabatan</option>
@@ -309,13 +309,13 @@ onMounted(() => {
                             </div>
 
                             <div class="mb-3 mt-2 row">
-                                <label for="namaPenandatangan2" class="col-sm-4 col-form-label">Nama Penandatangan</label>
+                                <label for="namaPenandatangan2" class="col-sm-4 col-form-label">Nama Penandatangan <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="namaPenandatangan2" id="namaPenandatangan2" />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
-                                <label for="nomorIdentitas2" class="col-sm-4 col-form-label">NIDN / NIP</label>
+                                <label for="nomorIdentitas2" class="col-sm-4 col-form-label">NIDN / NIP <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="nomorIdentitas2" id="nomorIdentitas2" />
                                 </div>
@@ -332,14 +332,14 @@ onMounted(() => {
                                     </div>
                                 </div>
                                 <p><b>Contact Person PMB</b></p>
-                                <label for="nama_cp_pmb" class="col-sm-4 col-form-label">Nama Contact Person PMB</label>
+                                <label for="nama_cp_pmb" class="col-sm-4 col-form-label">Nama Contact Person PMB <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="nama_cp_pmb" id="nama_cp_pmb" placeholder="contoh : Andi (Telp : 08123456789)" />
                                 </div>
                             </div>
 
                             <div class="mb-3 mt-2 row">
-                                <label for="no_wa_cp_pmb" class="col-sm-4 col-form-label">Whatsapp Contact Person PMB</label>
+                                <label for="no_wa_cp_pmb" class="col-sm-4 col-form-label">Whatsapp Contact Person PMB <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="no_wa_cp_pmb" id="no_wa_cp_pmb" placeholder="contoh : 628123456789" />
                                 </div>
@@ -356,25 +356,25 @@ onMounted(() => {
                                     </div>
                                 </div>
                                 <p><b>Pembayaran PMB</b></p>
-                                <label for="inputPassword" class="col-sm-4 col-form-label">Aktifkan Upload Bukti Transfer PMB</label>
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Aktifkan Upload Bukti Transfer PMB </label>
                                 <div class="col-sm-8">
                                     <input type="checkbox" v-model="upload_bukti_transfer" />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
-                                <label for="inputPassword" class="col-sm-4 col-form-label">Nama BANK</label>
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Nama BANK <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="nama_bank" id="inputPassword" placeholder="masukkan nama bank" />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
-                                <label for="inputPassword" class="col-sm-4 col-form-label">Nomor Rekening</label>
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Nomor Rekening <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="nomor_rekening" id="inputPassword" placeholder="contoh : 123456789" />
                                 </div>
                             </div>
                             <div class="mb-3 mt-2 row">
-                                <label for="inputPassword" class="col-sm-4 col-form-label">Nama Pemilik Rekening</label>
+                                <label for="inputPassword" class="col-sm-4 col-form-label">Nama Pemilik Rekening <span class="text-danger">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" v-model="nama_pemilik_rekening" id="inputPassword" placeholder="contoh : Andi" />
                                 </div>

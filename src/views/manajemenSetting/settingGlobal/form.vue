@@ -112,7 +112,7 @@ onMounted(() => {
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row d-flex justify-content-start mb-3 mt-4">
                 <div class="col-lg-3">
-                    <label for="exampleFormControlInput1" class="form-label">Semester Berlaku (Aktif)</label>
+                    <label for="exampleFormControlInput1" class="form-label">Semester Berlaku (Aktif)<span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-3">
                     <select v-model="id_semester_aktif" class="form-select" aria-label="Default select example">
@@ -123,7 +123,7 @@ onMounted(() => {
                     </select>
                 </div>
                 <div class="col-lg-3">
-                    <label for="exampleFormControlInput1" class="form-label">Semester KRS</label>
+                    <label for="exampleFormControlInput1" class="form-label">Semester KRS <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-3">
                     <select v-model="id_semester_krs" class="form-select" aria-label="Default select example">
@@ -136,7 +136,7 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-3">
-                    <label for="exampleFormControlInput1" class="form-label">Semester Nilai</label>
+                    <label for="exampleFormControlInput1" class="form-label">Semester Nilai <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-3">
                     <select v-model="id_semester_nilai" class="form-select" aria-label="Default select example">
@@ -147,7 +147,7 @@ onMounted(() => {
                     </select>
                 </div>
                 <div class="col-lg-3">
-                    <label for="exampleFormControlInput1" class="form-label">Batas SKSnya KRS untuk Sarjana dan Diploma</label>
+                    <label for="exampleFormControlInput1" class="form-label">Batas SKSnya KRS untuk Sarjana dan Diploma <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-3">
                     <input type="text" class="form-control" id="input" placeholder="Input Batas SKS" v-model="batas_sks_krs" />
@@ -155,13 +155,13 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-3">
-                    <label for="exampleFormControlInput1" class="form-label">Label Dosen Wali</label>
+                    <label for="exampleFormControlInput1" class="form-label">Label Dosen Wali <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-3">
                     <input type="text" class="form-control" id="inputPassword" placeholder="input" v-model="label_dosen_wali" />
                 </div>
                 <div class="col-lg-3">
-                    <label for="exampleFormControlInput1" class="form-label">Wilayah Penandatanganan Laporan</label>
+                    <label for="exampleFormControlInput1" class="form-label">Wilayah Penandatanganan Laporan <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-3">
                     <input type="text" class="form-control" id="inputPassword" placeholder="Input Wilayah" v-model="wilayah_penandatanganan" />

@@ -63,17 +63,17 @@ function smoothScroll(id) {
                                         </div>
 
                                         <form @submit.prevent="createWebSister">
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">URL Feeder</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">URL Feeder <span class="text-danger">*</span></label>
                                             <InputText id="username" v-model="urlFeeder" type="text" placeholder="Masukkan URL Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Username Feeder</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Username Feeder <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" v-model="usernameFeeder" placeholder="Masukkan Username Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
-                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Password Feeder</label>
+                                            <label for="username" class="block text-900 text-xl font-medium mb-2">Password Feeder <span class="text-danger">*</span></label>
                                             <InputText id="username" type="text" v-model="passwordFeeder" placeholder="Masukkan Password Feeder" class="w-full md:w-30rem mb-3" style="padding: 1rem" /> <br />
 
                                             <div>
-                                                <label for="statusFeeder" class="block text-900 font-medium text-xl mb-2">Status Feeder</label>
+                                                <label for="statusFeeder" class="block text-900 font-medium text-xl mb-2">Status Feeder <span class="text-danger">*</span></label>
                                                 <div class="flex items-center mb-3">
                                                     <input type="radio" v-model="status" id="active" value="true" class="mr-2" />
                                                     <label for="active" class="mr-4">Aktif</label>

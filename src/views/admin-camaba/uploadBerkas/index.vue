@@ -243,7 +243,7 @@ onBeforeMount(() => {
                 <Modal v-if="isUploadModalVisible" :show="isUploadModalVisible" title="Upload Berkas" size="md" @close="isUploadModalVisible = false">
                     <form @submit.prevent="uploadBerkas(selectedId)">
                         <div class="mb-3">
-                            <label for="file" class="form-label">Upload Berkas Pendaftaran</label>
+                            <label for="file" class="form-label">Upload Berkas Pendaftaran <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="file" @change="handleFileUpload" />
                         </div>
                         <button type="submit" class="btn btn-primary">Upload</button>

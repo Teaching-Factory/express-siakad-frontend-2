@@ -217,7 +217,7 @@ onMounted(() => {
                 <hr />
                 <div class="row d-flex justify-content-center mb-3 mt-4">
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Periode Tagihan</label>
+                        <label for="exampleFormControlInput1" class="form-label">Periode Tagihan <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <select v-model="id_semester" @blur="validatePeriode" class="form-select" aria-label="Default select example">
@@ -226,7 +226,7 @@ onMounted(() => {
                         </select>
                     </div>
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Jumlah Tagihan </label>
+                        <label for="exampleFormControlInput1" class="form-label">Jumlah Tagihan <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <input type="text" class="form-control" placeholder="Masukkan nominal disini" v-model="jumlah_tagihan" @blur="validateJumlahTagihan" />
@@ -234,7 +234,7 @@ onMounted(() => {
                 </div>
                 <div class="row d-flex justify-content-end mb-3">
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Prodi </label>
+                        <label for="exampleFormControlInput1" class="form-label">Prodi <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
@@ -243,7 +243,7 @@ onMounted(() => {
                         </select>
                     </div>
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Jenis Tagihan </label>
+                        <label for="exampleFormControlInput1" class="form-label">Jenis Tagihan <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <select v-model="id_jenis_tagihan" @blur="validateJenisTagihan" class="form-select" aria-label="Default select example">
@@ -254,7 +254,7 @@ onMounted(() => {
                 </div>
                 <div class="row d-flex justify-content-end mb-3">
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Angkatan </label>
+                        <label for="exampleFormControlInput1" class="form-label">Angkatan <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <select v-model="selectedAngkatan" class="form-select" aria-label="Default select example">
@@ -263,7 +263,7 @@ onMounted(() => {
                         </select>
                     </div>
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Tanggal Tagihan</label>
+                        <label for="exampleFormControlInput1" class="form-label">Tanggal Tagihan <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <input type="date" class="form-control" v-model="tanggal_tagihan" @blur="validateTanggalTagihan" />
@@ -271,13 +271,13 @@ onMounted(() => {
                 </div>
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">NIM</label>
+                        <label for="exampleFormControlInput1" class="form-label">NIM <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <v-select multiple v-model="selectedMahasiswa" :options="mahasiswas" @blur="validateMahasiswa" label="label" placeholder="Ketikan Nim / Nama Mahasiswa"></v-select>
                     </div>
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Deadline Tagihan</label>
+                        <label for="exampleFormControlInput1" class="form-label">Deadline Tagihan <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <input type="date" class="form-control" v-model="deadline_tagihan" @blur="validateDeadlineTagihan" />
@@ -285,7 +285,7 @@ onMounted(() => {
                 </div>
                 <div class="row d-flex justify-content-start mb-3">
                     <div class="col-lg-2">
-                        <label for="exampleFormControlInput1" class="form-label">Status Pembayaran </label>
+                        <label for="exampleFormControlInput1" class="form-label">Status Pembayaran <span class="text-danger">*</span></label>
                     </div>
                     <div class="col-lg-4">
                         <select class="form-select" v-model="status_tagihan" @blur="validateStatusTagihan" aria-label="Default select example">

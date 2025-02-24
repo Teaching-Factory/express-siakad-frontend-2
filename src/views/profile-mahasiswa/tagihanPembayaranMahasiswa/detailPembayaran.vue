@@ -83,7 +83,7 @@ export default {
                 </div>
                 <div class="row">
                     <div class="col-3 col-md-6 col-lg-6">
-                        <span>Upload Bukti Pembayaran</span>
+                        <span>Upload Bukti Pembayaran <span class="text-danger">*</span></span>
                     </div>
                     <div class="col-6 col-md-6 col-lg-6">
                         <div class="input-group mb-3">

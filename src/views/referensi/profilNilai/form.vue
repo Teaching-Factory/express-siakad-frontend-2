@@ -87,25 +87,25 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="nilai_min" class="col-sm-3 col-form-label">Nilai Minimum</label>
+                <label for="nilai_min" class="col-sm-3 col-form-label">Nilai Minimum <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="nilai_min" v-model="nilai_min" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="nilai_max" class="col-sm-3 col-form-label">Nilai Maximum</label>
+                <label for="nilai_max" class="col-sm-3 col-form-label">Nilai Maximum <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="nilai_max" v-model="nilai_max" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="nilai_indeks" class="col-sm-3 col-form-label">Nilai Indeks</label>
+                <label for="nilai_indeks" class="col-sm-3 col-form-label">Nilai Indeks <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="nilai_indeks" v-model="nilai_indeks" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="nilai_huruf" class="col-sm-3 col-form-label">Nilai Huruf</label>
+                <label for="nilai_huruf" class="col-sm-3 col-form-label">Nilai Huruf <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="nilai_huruf" v-model="nilai_huruf" />
                 </div>

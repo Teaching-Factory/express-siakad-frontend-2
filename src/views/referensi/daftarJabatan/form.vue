@@ -95,7 +95,7 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaJabatan" class="col-sm-3 col-form-label">Nama Jabatan</label>
+                <label for="namaJabatan" class="col-sm-3 col-form-label">Nama Jabatan <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="namaJabatan" v-model="nama_jabatan" />
                 </div>

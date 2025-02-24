@@ -86,7 +86,7 @@ export default {
                 <hr />
                 <div class="row mb-3">
                     <div class="col-12">
-                        <label for="profileImage" class="form-label">Gambar</label>
+                        <label for="profileImage" class="form-label">Gambar <span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="profileImage" @change="handleFileUpload" accept=".png,.jpg,.jpeg" />
                         <small class="text-danger d-block mt-1"> * File yang dapat diupload adalah .png, .jpg, dan .jpeg; dengan ukuran maksimal file sebesar 1MB. </small>
                     </div>

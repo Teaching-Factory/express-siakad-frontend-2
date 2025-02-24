@@ -308,13 +308,13 @@ onBeforeMount(() => {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                <label for="nama" class="col-sm-3 col-form-label">Nama <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Nama Periode Pendaftaran" id="nama" v-model="nama_periode_pendaftaran" required />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="status" class="col-sm-3 col-form-label">Periode</label>
+                <label for="status" class="col-sm-3 col-form-label">Periode <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Periode</option>
@@ -325,16 +325,16 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="status" class="col-sm-3 col-form-label">Jalur Pendaftaran</label>
+                <label for="status" class="col-sm-3 col-form-label">Jalur Pendaftaran <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="selectedJalur" class="form-select" aria-label="Default select example">
-                        <option value="" selected disabled hidden>Pilih Periode</option>
+                        <option value="" selected disabled hidden>Pilih Jalur Pendaftaran</option>
                         <option v-for="jalurMasuk in jalurPendaftarans" :key="jalurMasuk.id_jalur_masuk" :value="jalurMasuk.id_jalur_masuk">{{ jalurMasuk.nama_jalur_masuk }}</option>
                     </select>
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="status" class="col-sm-3 col-form-label">Sistem Kuliah</label>
+                <label for="status" class="col-sm-3 col-form-label">Sistem Kuliah <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="selectedSistemKuliah" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Sistem Kuliah</option>
@@ -343,13 +343,13 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Tanggal Awal Pendaftaran</label>
+                <label class="col-sm-3 col-form-label">Tanggal Awal Pendaftaran <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="date" class="form-control" v-model="tanggal_awal_pendaftaran" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Tanggal Akhir Pendaftaran</label>
+                <label class="col-sm-3 col-form-label">Tanggal Akhir Pendaftaran <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="date" class="form-control" v-model="tanggal_akhir_pendaftaran" />
                 </div>
@@ -368,7 +368,7 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Biaya Pendaftaran</label>
+                <label class="col-sm-3 col-form-label">Biaya Pendaftaran <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <div class="input-group">
                         <span class="input-group-text">Rp</span>
@@ -377,13 +377,13 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Tanggal Akhir Pembayaran</label>
+                <label class="col-sm-3 col-form-label">Tanggal Akhir Pembayaran <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="date" class="form-control" v-model="batas_akhir_pembayaran" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="status" class="col-sm-3 col-form-label">Jumlah Pilihan Prodi</label>
+                <label for="status" class="col-sm-3 col-form-label">Jumlah Pilihan Prodi <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select class="form-select" id="status" v-model="jumlah_pilihan_prodi">
                         <option value="1">1</option>
@@ -394,7 +394,7 @@ onBeforeMount(() => {
             </div>
 
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Prodi yang dibuka</label>
+                <label class="col-sm-3 col-form-label">Prodi yang dibuka <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <div v-for="prodi in prodis" :key="prodi.id_prodi" class="form-check">
                         <input class="form-check-input" type="checkbox" :id="prodi.nama_program_studi" :value="prodi.id_prodi" v-model="selectedProdi" />
@@ -405,7 +405,7 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Syarat Berkas</label>
+                <label class="col-sm-3 col-form-label">Syarat Berkas<span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <div v-for="berkas in berkass" :key="berkas.id" class="form-check">
                         <input class="form-check-input" type="checkbox" :id="berkas.nama_berkas" :value="berkas.id" v-model="selectedBerkas" />
@@ -416,7 +416,7 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Tahap Tes</label>
+                <label class="col-sm-3 col-form-label">Tahap Tes <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <p><i>*Beri nomor urut tahapan tes. Pilih kosong bila bukan merupakan tahapan tes.</i></p>
                     <div class="table-responsive">
@@ -451,7 +451,7 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="dedskripsi" class="col-sm-3 col-form-label">Deskripsi Singkat</label>
+                <label for="dedskripsi" class="col-sm-3 col-form-label">Deskripsi Singkat <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Contoh : periode pendaftaran ini dikhususkan untuk kelas karyawan" v-model="deskripsi_singkat" />
                 </div>

@@ -35,7 +35,6 @@ export default {
             }
         },
         async submit() {
-            
             if (this.isEdit) {
                 this.update();
             } else {
@@ -121,19 +120,19 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="nomor_urut_aspek" class="col-sm-3 col-form-label">Nomor Urut Aspek</label>
+                <label for="nomor_urut_aspek" class="col-sm-3 col-form-label">Nomor Urut Aspek <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Masukkan nomor urut aspek penilaian dosen" id="namaRuangPerkuliahan" v-model="nomor_urut_aspek" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="aspek_penilaian" class="col-sm-3 col-form-label">Aspek Penilaian</label>
+                <label for="aspek_penilaian" class="col-sm-3 col-form-label">Aspek Penilaian <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="masukkan aspek penilaian dosen" id="namaRuangPerkuliahan" v-model="aspek_penilaian" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="tipe_aspek_penilaian" class="col-sm-3 col-form-label">Tipe Aspek Penilaian</label>
+                <label for="tipe_aspek_penilaian" class="col-sm-3 col-form-label">Tipe Aspek Penilaian <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select class="form-select" aria-label="Default select example" v-model="tipe_aspek_penilaian">
                         <option selected disabled hidden>-- Pilih--</option>
@@ -143,7 +142,7 @@ export default {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="id_semester" class="col-sm-3 col-form-label">Periode</label>
+                <label for="id_semester" class="col-sm-3 col-form-label">Periode <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select class="form-select" aria-label="Default select example" v-model="id_semester">
                         <option selected disabled hidden>-- Pilih Periode--</option>
@@ -152,7 +151,7 @@ export default {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="deskripsi_pendek" class="col-sm-3 col-form-label">Deskripsi Pendek</label>
+                <label for="deskripsi_pendek" class="col-sm-3 col-form-label">Deskripsi Pendek <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Masukkan deskripsi pendek aspek penilaian" id="deskripsi_pendek" v-model="deskripsi_pendek" />
                 </div>

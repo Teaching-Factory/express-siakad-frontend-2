@@ -198,33 +198,33 @@ onMounted(async () => {
             <hr />
 
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                <label for="nama" class="col-sm-3 col-form-label">Nama <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" @blur="validateNama" id="nama" v-model="nama" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="username" class="col-sm-3 col-form-label">Username</label>
+                <label for="username" class="col-sm-3 col-form-label">Username <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" @blur="validateUsername" id="username" v-model="username" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="password" class="col-sm-3 col-form-label">Password</label>
+                <label for="password" class="col-sm-3 col-form-label">Password <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" @blur="validatePassword" id="password" v-model="password" />
                     <!-- <small v-if="isEdit && hints">{{ hints }}</small> -->
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <label for="email" class="col-sm-3 col-form-label">Email <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" @blur="validateEmail" id="email" v-model="email" />
                 </div>
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-3">
-                    <label for="exampleFormControlInput1" class="form-label">Status</label>
+                    <label for="exampleFormControlInput1" class="form-label">Status <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-lg-7">
                     <div class="form-check">
@@ -235,7 +235,7 @@ onMounted(async () => {
             </div>
 
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Role</label>
+                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Role <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="id_role" @blur="validateRole" class="form-select" aria-label="Default select example">
                         <option value="" selected disabled hidden>Pilih Role</option>

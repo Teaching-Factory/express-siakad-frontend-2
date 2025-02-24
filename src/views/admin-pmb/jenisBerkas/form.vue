@@ -110,31 +110,31 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaBerkas" class="col-sm-3 col-form-label">Nama Berkas</label>
+                <label for="namaBerkas" class="col-sm-3 col-form-label">Nama Berkas <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Nama Jenis Berkas" id="namaBerkas" v-model="nama_berkas" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="keteranganSingkat" class="col-sm-3 col-form-label">Keterangan Singkat</label>
+                <label for="keteranganSingkat" class="col-sm-3 col-form-label">Keterangan Singkat <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Keterangan Singkat Jenis Tes" id="keteranganSingkat" v-model="keterangan_singkat" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="jumlah" class="col-sm-3 col-form-label">Jumlah</label>
+                <label for="jumlah" class="col-sm-3 col-form-label">Jumlah <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" placeholder="Jumlah" id="jumlah" v-model="jumlah" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Wajib?</label>
+                <label class="col-sm-3 col-form-label">Wajib? <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="checkbox" class="form-check-input" id="exampleCheckbox" v-model="wajib" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label class="col-sm-3 col-form-label">Upload?</label>
+                <label class="col-sm-3 col-form-label">Upload? <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="checkbox" class="form-check-input" id="exampleCheckbox" v-model="upload" />
                 </div>

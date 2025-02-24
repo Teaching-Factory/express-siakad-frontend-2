@@ -94,19 +94,19 @@ onMounted(() => {
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="inputPassword" class="col-sm-4 col-form-label">URL Feeder</label>
+                            <label for="inputPassword" class="col-sm-4 col-form-label">URL Feeder <span class="text-danger">*</span></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="inputPassword" v-model="url_feeder" />
                             </div>
                         </div>
                         <div class="mb-4 row">
-                            <label for="inputPassword" class="col-sm-4 col-form-label">Username Feeder</label>
+                            <label for="inputPassword" class="col-sm-4 col-form-label">Username Feeder <span class="text-danger">*</span></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="inputPassword" v-model="username_feeder" />
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="inputPassword" class="col-sm-4 col-form-label">Password Feeder</label>
+                            <label for="inputPassword" class="col-sm-4 col-form-label">Password Feeder <span class="text-danger">*</span></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="inputPassword" v-model="password_feeder" />
                             </div>

@@ -101,19 +101,19 @@ export default {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="idRuang" class="col-sm-3 col-form-label">Kode</label>
+                <label for="idRuang" class="col-sm-3 col-form-label">Kode <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="idRuang" v-model="id_ruang" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="namaRuangPerkuliahan" class="col-sm-3 col-form-label">Nama Ruang Perkuliahan</label>
+                <label for="namaRuangPerkuliahan" class="col-sm-3 col-form-label">Nama Ruang Perkuliahan <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="namaRuangPerkuliahan" v-model="nama_ruang_perkuliahan" />
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="lokasi" class="col-sm-3 col-form-label">Lokasi</label>
+                <label for="lokasi" class="col-sm-3 col-form-label">Lokasi <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <input type="text" class="form-control" id="lokasi" v-model="lokasi" />
                 </div>
