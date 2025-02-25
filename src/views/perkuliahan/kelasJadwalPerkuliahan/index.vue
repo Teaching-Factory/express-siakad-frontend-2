@@ -354,7 +354,7 @@ function deleteDosen(index) {
                             <i class="pi pi-users">0/{{ detail.kapasitas || '0' }}</i>
                         </td>
                         <td>
-                            <router-link class="btn me-2" :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/dosen-pengajar`"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Detail </router-link>
+                            <router-link class="btn me-2" :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/dosen-pengajar`"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Dosen Pengampu </router-link>
                             <span>{{detail.KelasKuliah?.Dosen?.nama_dosen || '-'}}</span>
                             
                             <!-- modal 2 -->
