@@ -279,19 +279,21 @@ const getDetailKelasKuliah = async (id_detail_kelas_kuliah) => {
 
         nama_kelas_kuliah.value = data.KelasKuliah.nama_kelas_kuliah;
         kapasitas_peserta_kelas.value = data.kapasitas;
-        hari.value = data.hari.toLowerCase();
+        hari.value = data.hari;
         id_ruang_perkuliahan.value = data.id_ruang_perkuliahan;
         jam_mulai.value = data.jam_mulai;
         jam_selesai.value = data.jam_selesai;
-        lingkup.value = data.lingkup;
-        mode_kuliah.value = data.mode_kuliah;
+        lingkup.value = data.KelasKuliah.lingkup;
+        mode_kuliah.value = data.KelasKuliah.mode;
         tanggal_mulai_efektif.value = data.tanggal_mulai_efektif;
         tanggal_akhir_efektif.value = data.tanggal_akhir_efektif;
+        id_dosen.value = data.KelasKuliah.id_dosen;
 
-        selectedDosen.value = dosens.value.find((dosen) => dosen.id_dosen === data.id_dosen) || null;
+        selectedDosen.value = dosens.value.find((dosen) => dosen.id === data.KelasKuliah.id_dosen) || null;
         detailKelasKuliah.value = data; // Store detail data for use in update
 
         Swal.close();
+        console.log('object', data);
     } catch (error) {
         console.error('Gagal mengambil data:', error);
     }
@@ -368,12 +370,12 @@ onMounted(() => {
                     <div class="col-sm-3">
                         <select name="" class="form-select" @blur="validateHari" v-model="hari" id="hari" required>
                             <option value="" selected disabled hidden>Hari</option>
-                            <option value="senin">Senin</option>
-                            <option value="selasa">Selasa</option>
-                            <option value="rabu">Rabu</option>
-                            <option value="kamis">Kamis</option>
-                            <option value="jum'at">Jumat</option>
-                            <option value="sabtu">Sabtu</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jum'at">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
                         </select>
                     </div>
                     <label for="input" class="col-sm-3 col-form-label">Ruang <span class="text-danger">*</span></label>
