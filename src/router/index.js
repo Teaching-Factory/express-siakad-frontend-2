@@ -1044,6 +1044,11 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/singkron-data-angkatan',
+                    name: 'singkron-data-angkatan',
+                    component: () => import('../views/referensi/singkronisasi/update-data/index.vue')
+                },
+                {
                     path: '/singkron-rencana-evaluasi',
                     name: 'singkron-rencana-evaluasi',
                     component: () => import('../views/referensi/singkronisasi/rencana-evaluasi/index.vue')

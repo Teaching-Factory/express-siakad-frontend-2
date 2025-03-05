@@ -305,7 +305,12 @@ const syncSekolah = async () => {
 <template>
     <div class="card">
         <h5><i class="pi pi-user me-2"></i>SINGKRONISASI DATA</h5>
-        <div class="row">
+        <div class="col-lg-12 d-flex justify-content-end">
+            <div class="flex justify-content-end gap-2">
+                <router-link to="/singkron-data-angkatan" class="btn btn-primary"> Update Data Angkatan </router-link>
+            </div>
+        </div>
+        <div class="row mt-3">
             <div class="mb-3 row">
                 <div class="col-lg-12 d-flex justify-content-end">
                     <table class="table">

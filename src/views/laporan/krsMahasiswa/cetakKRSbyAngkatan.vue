@@ -8,7 +8,7 @@ export default {
         return {
             krsData: null,
             rekapKrsData: [],
-            rekapSks: [],
+            rekapSks: null,
             kopSurat: []
         };
     },
@@ -74,24 +74,8 @@ export default {
     },
     computed: {
         totalSKS() {
-            // Pastikan rekapKrsData adalah array sebelum menggunakan reduce
-            if (!Array.isArray(this.rekapKrsData)) return 0;
-
-            return this.rekapKrsData.reduce((total, rekap) => {
-                // Pastikan krs_mahasiswas adalah array sebelum reduce
-                if (!Array.isArray(rekap?.krs_mahasiswas)) return total;
-
-                return (
-                    total +
-                    rekap.krs_mahasiswas.reduce((subtotal, matkul) => {
-                        // Mengambil nilai sks, hilangkan spasi dan konversi ke angka
-                        const sks = parseFloat(matkul.KelasKuliah?.sks.trim());
-                        if (!isNaN(sks)) {
-                            return subtotal + sks;
-                        }
-                        return subtotal; // Jika sks tidak valid, lewati
-                    }, 0)
-                );
+            return (this.rekapSks || []).reduce((total, matkul) => {
+                return total + parseFloat(matkul.KelasKuliah?.sks || 0);
             }, 0);
         }
     }
