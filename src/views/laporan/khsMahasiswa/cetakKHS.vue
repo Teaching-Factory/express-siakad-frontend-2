@@ -182,7 +182,7 @@ export default {
                         </tr>
                         <tr>
                             <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif )</td>
-                            <td>12</td>
+                            <td>{{ krsData?.mahasiswa?.ipk || ' 0' }}</td>
                         </tr>
                     </tbody>
                 </table>

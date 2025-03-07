@@ -177,7 +177,7 @@ export default {
                             <td>{{ idx + 1 }}</td>
                             <td width="10%">{{ matkul.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
                             <td>{{ matkul.KelasKuliah.MataKuliah.nama_mata_kuliah }}</td>
-                            <td>{{ matkul.KelasKuliah.Dosen.nama_dosen }}</td>
+                            <td>{{ matkul.KelasKuliah?.Dosen?.nama_dosen ?? '-' }}</td>
                             <td>{{ matkul.KelasKuliah.sks }}</td>
                             <td>{{ matkul.KelasKuliah.nama_kelas_kuliah }}</td>
                             <td>{{ matkul.KelasKuliah.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan ?? '-' }}</td>
