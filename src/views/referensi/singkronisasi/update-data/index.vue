@@ -18,6 +18,7 @@ const selectedAngkatan6 = ref('');
 const selectedAngkatan7 = ref('');
 const selectedAngkatan8 = ref('');
 const selectedAngkatan9 = ref('');
+const selectedAngkatan10 = ref('');
 
 const getAngkatan = async () => {
     try {
@@ -42,6 +43,8 @@ const getDetaillNilaiPerkuliahan = async () => {
         });
     } catch (error) {
         console.error('Gagal mengambil data :', error);
+    } finally {
+        isLoading.value = false;
     }
 };
 const getRiwayatNilaiMahasiswa = async () => {
@@ -58,6 +61,8 @@ const getRiwayatNilaiMahasiswa = async () => {
         });
     } catch (error) {
         console.error('Gagal mengambil data :', error);
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -80,6 +85,8 @@ const getPesertaKelasKuliah = async () => {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+    } finally {
+        isLoading.value = false;
     }
 };
 const getPerkuliahanMahasiswa = async () => {
@@ -102,6 +109,8 @@ const getPerkuliahanMahasiswa = async () => {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -125,6 +134,8 @@ const getDetailPerkuliahanMahasiswa = async () => {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -148,6 +159,8 @@ const getKrsMahasiswa = async () => {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -156,7 +169,7 @@ const getAktivitasKulahMahasiswa = async () => {
     const tahun_angkatan1 = selectedAngkatan7.value;
     const tahun_angkatan2 = selectedAngkatan7.value;
     try {
-        const response = await get(`api-feeder/update-aktivitas-kulah-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
+        const response = await get(`api-feeder/update-aktivitas-kuliah-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Aktivitas Kuliah Mahasiswa telah diperbarui',
@@ -171,6 +184,8 @@ const getAktivitasKulahMahasiswa = async () => {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -194,6 +209,8 @@ const getRekapKhsMahasiswa = async () => {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -217,6 +234,31 @@ const getRekapKrsMahasiswa = async () => {
             icon: 'error',
             confirmButtonText: 'OK'
         });
+    } finally {
+        isLoading.value = false;
+    }
+};
+const getJumlahMahasiswaKelas = async () => {
+    isLoading.value = true;
+    const tahun_angkatan1 = selectedAngkatan10.value;
+    try {
+        const response = await get(`api-feeder/update-jumlah-mahasiswa-kelas?angkatan=${tahun_angkatan1}`);
+        Swal.fire({
+            title: 'Berhasil',
+            text: 'Data Rekap KRS Mahasiswa telah diperbarui',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+        Swal.fire({
+            title: 'Gagal',
+            text: 'Data Rekap KRS Mahasiswa gagal diperbarui',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -422,6 +464,26 @@ onBeforeMount(() => {
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
                     <button @click="getRekapKrsMahasiswa" class="btn btn-primary btn-block" style="width: 100%">Update</button>
+                </div>
+            </div>
+            <hr />
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-12">
+                    <h5 class="text-dark">Kelas Kuliah</h5>
+                </div>
+                <div class="col-lg-10 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Angkatan</label>
+                        <select v-model="selectedAngkatan10" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Angkatan</option>
+                            <option v-for="angkatan in angkatans" :key="angkatan.tahun" :value="angkatan.tahun">{{ angkatan.tahun }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button @click="getJumlahMahasiswaKelas" class="btn btn-primary btn-block" style="width: 100%">Update</button>
                 </div>
             </div>
             <hr />
