@@ -30,7 +30,6 @@ export default {
                 this.krsData = response.data;
                 this.rekapKrsData = response.data.dataRekapKRSByMahasiswa;
                 this.rekapSks = response.data.dataRekapKRSByMahasiswa.krs_mahasiswas;
-                console.log('Response:', response.data);
             } catch (error) {
                 console.error('Gagal mengirim data:', error);
             }
@@ -59,7 +58,6 @@ export default {
             try {
                 const response = await getData(`perguruan-tinggi/get-data-kop-surat`);
                 this.kopSurat = response.data;
-                console.log('KopSurat:', response.data);
             } catch (error) {
                 console.error('Gagal Mengambil data:', error);
             }
@@ -186,7 +184,7 @@ export default {
                         </tr>
                         <tr>
                             <td class="text-center" colspan="4">Jumlah</td>
-                            <td class="text-center" colspan="1">{{ totalSKS }}</td>
+                            <td class="text-center" colspan="1">{{ rekap?.total_sks_krs_mahasiswa }}</td>
                             <td class="text-center" colspan="4"></td>
                         </tr>
                     </tbody>

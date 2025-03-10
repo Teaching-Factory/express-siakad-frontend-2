@@ -1,12 +1,17 @@
 <script setup>
 import swal from 'sweetalert2';
-import { onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, ref } from 'vue';
 import { get, postData } from '../../../utiils/request';
+import vSelect from 'vue-select';
 
 const jabatans = ref([]);
 const id_jabatan = ref('');
-const id_dosen = ref('');
+const selectedDosen = ref('');
+const id_prodi = ref('');
+const nama_penandatanganan = ref('');
+const id_dosen = computed(() => (selectedDosen.value ? selectedDosen.value.id : ''));
 const dosens = ref([]);
+const prodis = ref([]);
 
 const fetchJabatan = async () => {
     try {
@@ -16,21 +21,35 @@ const fetchJabatan = async () => {
         console.error('Gagal mengambil data jabatan:', error);
     }
 };
+const getProdi = async () => {
+    try {
+        const response = await get('prodi/');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal mengambil data jabatan:', error);
+    }
+};
 
 const fetchDosen = async () => {
     try {
         const response = await get('dosen');
-        dosens.value = response.data.data;
+        // Format respons dari API ke format yang sesuai dengan v-select
+        dosens.value = response.data.data.map((dosen) => ({
+            id: dosen.id_dosen, // Properti 'id' atau 'value' sesuai dengan library v-select
+            nama_dosen: dosen.nama_dosen // Properti 'label' untuk menampilkan nama dosen
+        }));
     } catch (error) {
-        console.error('Gagal mengambil data Dosen:', error);
+        console.error('Gagal mengambil data dosen:', error);
     }
 };
 
 const create = async () => {
     try {
         const response = await postData('unit-jabatan/create', {
+            nama_penandatanganan: nama_penandatanganan.value,
             id_jabatan: id_jabatan.value,
-            id_dosen: id_dosen.value
+            id_dosen: id_dosen.value,
+            id_prodi: id_prodi.value
         });
         const data = response.data;
         swal.fire('BERHASIL!', 'Data berhasil ditambahkan.', 'success').then(() => {
@@ -44,6 +63,7 @@ const create = async () => {
 onBeforeMount(() => {
     fetchDosen();
     fetchJabatan();
+    getProdi();
 });
 </script>
 
@@ -62,6 +82,12 @@ onBeforeMount(() => {
             </div>
             <hr />
             <div class="mb-3 row d-flex justify-content-center">
+                <label for="nama_penandatanganan" class="col-sm-3 col-form-label">Nama Penandatanganan <span class="text-danger">*</span></label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" id="nama_penandatanganan" v-model="nama_penandatanganan" />
+                </div>
+            </div>
+            <div class="mb-3 row d-flex justify-content-center">
                 <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Jabatan <span class="text-danger">*</span></label>
                 <div class="col-md-7">
                     <select v-model="id_jabatan" class="form-select" aria-label="Default select example">
@@ -71,11 +97,19 @@ onBeforeMount(() => {
                 </div>
             </div>
             <div class="mb-3 row d-flex justify-content-center">
-                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Nama Penandatanganan <span class="text-danger">*</span></label>
+                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Dosen <span class="text-danger">*</span></label>
                 <div class="col-md-7">
-                    <select v-model="id_dosen" class="form-select" aria-label="Default select example">
-                        <option value="" selected disabled hidden>Pilih Nama Penandatanganan</option>
-                        <option v-for="dosen in dosens" :key="dosen.id_dosen" :value="dosen.id_dosen">{{ dosen.nama_dosen }}</option>
+                    <v-select v-model="selectedDosen" :options="dosens" @blur="validateDosen" label="nama_dosen" placeholder="Pilih dosen" required></v-select>
+                </div>
+            </div>
+            <div class="mb-3 row d-flex justify-content-center">
+                <label for="exampleFormControlInput1" class="col-sm-3 col-form-label">Pilih Program Studi <span class="text-danger">*</span></label>
+                <div class="col-md-7">
+                    <select v-model="id_prodi" class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>Pilih Program Studi</option>
+                        <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">
+                            {{ prodi.nama_program_studi }}
+                        </option>
                     </select>
                 </div>
             </div>

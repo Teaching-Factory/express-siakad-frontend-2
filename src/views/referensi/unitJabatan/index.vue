@@ -25,6 +25,7 @@ const unitJabatan = async () => {
         });
         const response = await get('unit-jabatan');
         unitJabatans.value = response.data.data;
+
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data Unit Jabatan:', error);
