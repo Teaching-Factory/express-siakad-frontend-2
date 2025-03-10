@@ -123,6 +123,10 @@ const getNilaiPerkuliahan = async () => {
 
 const syncNilaiPerkuliahan = async () => {
     try {
+        if (selectedNilai.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data Nilai yang dipilih.', 'warning');
+            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
+        }
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
@@ -131,10 +135,6 @@ const syncNilaiPerkuliahan = async () => {
                 Swal.showLoading();
             }
         });
-        if (selectedNilai.value.length === 0) {
-            Swal.fire('PERINGATAN!', 'Tidak ada data Nilai yang dipilih.', 'warning');
-            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
-        }
 
         const token = getToken();
         console.log('object', token);
@@ -228,7 +228,7 @@ onBeforeMount(() => {
                             <option value="" selected disabled hidden>All</option>
                             <option value="create">Create</option>
                             <option value="update">Update</option>
-                            <option value="delete">Delete</option>
+                            <!-- <option value="delete">Delete</option> -->
                         </select>
                     </div>
                 </div>

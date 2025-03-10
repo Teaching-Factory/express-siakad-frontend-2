@@ -3,37 +3,37 @@ import axios from 'axios';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { onBeforeMount, ref } from 'vue';
-import { API_URL } from '../../../../config/config';
-import { getToken } from '../../../../service/auth';
-import { get, getData } from '../../../../utiils/request';
+import { API_URL } from '../../../../../config/config';
+import { getToken } from '../../../../../service/auth';
+import { getData } from '../../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nama_kelas_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    semester: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    kode_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nomor_urut: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_evaluasi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_jenis_evaluasi: { value: null, matchMode: FilterMatchMode.EQUALS },
+    deskripsi_indonesia: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const first = ref(0);
-const selectedDosen = ref([]);
-const matchingDosenPengajar = ref([]);
-const dosenPengajar = ref([]);
-const semesters = ref([]);
-const selectedSemester = ref('');
+const selectedRencanaEvaluasi = ref([]);
+const matchingRencanaEvaluasi = ref([]);
+const rencanaEvaluasi = ref([]);
+const prodis = ref([]);
+const selectedProdi = ref('');
 const selectedStatus = ref('');
 
-const getSemester = async () => {
+const getProdi = async () => {
     try {
-        const response = await get('semester/');
-        semesters.value = response.data.data;
+        const response = await getData('prodi/');
+        prodis.value = response.data.data;
     } catch (error) {
-        console.error('Gagal mengambil data semester:', error);
+        console.error('Gagal mengambil data :', error);
     }
 };
 
-const matchingDosen = async () => {
+const matchingRencana = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -44,14 +44,14 @@ const matchingDosen = async () => {
             }
         });
 
-        const id_semester = selectedSemester.value;
+        const id_prodi = selectedProdi.value;
 
-        console.log('semester', id_semester);
+        console.log('semester', id_prodi);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`sync-feeder/${id_semester}/matching-dosen-pengajar-kelas-kuliah`);
+        const response = await getData(`sync-feeder/${id_prodi}/matching-rencana-evaluasi`);
 
         const matching = response.data.message;
-        matchingDosenPengajar.value = matching;
+        matchingRencanaEvaluasi.value = matching;
         Swal.fire('BERHASIL!', 'Data berhasil diMatching.', 'success').then(() => {});
         Swal.close();
         console.log('object :', matching);
@@ -61,7 +61,7 @@ const matchingDosen = async () => {
     }
 };
 
-const getDosen = async () => {
+const getRencanaEvaluasi = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -76,52 +76,23 @@ const getDosen = async () => {
 
         console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`dosen-pengajar-kelas-kuliah-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`rencana-evaluasi-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
 
-        const dosen = response.data.data;
-        dosenPengajar.value = dosen;
+        const rencanaEvaluasis = response.data.data;
+        rencanaEvaluasi.value = rencanaEvaluasis;
 
         Swal.close();
-        console.log('object :', dosen);
+        console.log('object :', rencanaEvaluasis);
     } catch (error) {
-        console.error('Gagal mengambil data dosen:', error);
-        Swal.fire('Gagal', 'Data Dosen tidak ditemukan.', 'warning').then(() => {});
+        console.error('Gagal mengambil data Rencana Evaluasi:', error);
+        Swal.fire('Gagal', 'Data tidak ditemukan.', 'warning').then(() => {});
     }
 };
 
-const getDosenAll = async () => {
+const syncRencanaEvaluasi = async () => {
     try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        // const jenis_singkron = selectedStatus.value;
-
-        // console.log('jenis singkron :', jenis_singkron);
-        // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`dosen-pengajar-kelas-kuliah-sync/belum-singkron`);
-
-        const dosen = response.data.data;
-        dosenPengajar.value = dosen;
-
-        Swal.close();
-
-        console.log('object :', dosen);
-    } catch (error) {
-        console.error('Gagal mengambil data Dosen:', error);
-        Swal.fire('Gagal', 'Data Dosen tidak ditemukan.', 'warning').then(() => {});
-    }
-};
-
-const syncDosenPengajar = async () => {
-    try {
-        if (selectedDosen.value.length === 0) {
-            Swal.fire('PERINGATAN!', 'Tidak ada data Dosen yang dipilih.', 'warning');
+        if (selectedRencanaEvaluasi.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data Rencana yang dipilih.', 'warning');
             return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
         }
         Swal.fire({
@@ -135,19 +106,19 @@ const syncDosenPengajar = async () => {
 
         const token = getToken();
         console.log('object', token);
-        const url = `${API_URL}/sync-feeder/sync-dosen-pengajar-kelas-kuliah`;
+        const url = `${API_URL}/sync-feeder/sync-rencana-evaluasi`;
         const batchSize = 100; //
 
-        const dosenPengajarSyncs = selectedDosen.value.map((dosenPengajar) => ({
-            id: dosenPengajar.id
+        const rencanaEvaluasiSyncs = selectedRencanaEvaluasi.value.map((rencanaEvaluasi) => ({
+            id: rencanaEvaluasi.id
         }));
 
-        for (let i = 0; i < dosenPengajarSyncs.length; i += batchSize) {
-            const batch = dosenPengajarSyncs.slice(i, i + batchSize);
+        for (let i = 0; i < rencanaEvaluasiSyncs.length; i += batchSize) {
+            const batch = rencanaEvaluasiSyncs.slice(i, i + batchSize);
 
             // Data body dengan struktur yang sesuai
             const data = {
-                dosen_pengajar_kelas_kuliah_syncs: batch
+                rencana_evaluasi_syncs: batch
             };
 
             const response = await axios.post(
@@ -165,8 +136,8 @@ const syncDosenPengajar = async () => {
         }
 
         Swal.close();
-        Swal.fire('BERHASIL!', 'Sync Dosen Pengajar Berhasil.', 'success').then(() => {
-            window.location.href = '/sync-dosen-pengajar';
+        Swal.fire('BERHASIL!', 'Sync Rencana Evaluasi Berhasil.', 'success').then(() => {
+            window.location.reload();
         });
     } catch (error) {
         console.error('Gagal memperbarui status:', error);
@@ -178,24 +149,23 @@ const onPageChange = (event) => {
 };
 
 onBeforeMount(() => {
-    getDosenAll();
-    getSemester();
+    // getRencanaEvaluasiAll();
+    getProdi();
 });
 </script>
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>Singkronisasi Dosen Pengajar Kelas ke Feeder</h5>
+        <h5><i class="pi pi-user me-2"></i>Penghapusan Data Rencana Evaluasi Feeder ke Siakad</h5>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
                     <h6 class="text-dark">Keterangan :</h6>
                     <p class="lh-1 text-small">
                         <ol>
-                            <li>Fitur ini digunakan untuk melakukan matching data dosen pengajar kelas lokal dengan dosen pengajar kelas Feeder.</li>
-                            <li>Memilih Semester pada kelas yang ingin dicocokkan dengan feeder</li>
-                            <li>Memilih jenis singkron untuk data dosen pengajar kelas </li>
-                            <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
+                            <li>Fitur ini digunakan untuk melakukan matching data Rencana Evaluasi lokal dengan Rencana Evaluasi Feeder.</li>
+                            <li>Memilih Prodi pada data yang ingin dicocokkan dengan feeder</li>
+                            <li>Memilih jenis singkron delete untuk Menghapus data Rencana Evaluasi </li>
                         </ol>
                     </p>
                 </div>
@@ -206,15 +176,15 @@ onBeforeMount(() => {
             <div class="row">
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Pilih Periode</label>
-                        <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Semester</option>
-                            <option v-for="semester in semesters" :key="semester.id_semester" :value="semester.id_semester">{{ semester.nama_semester }}</option>
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Program Studi</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button @click="matchingDosen" class="btn btn-primary btn-block" style="width: 100%">Matching</button>
+                    <button @click="matchingRencana" class="btn btn-primary btn-block" style="width: 100%">Matching</button>
                 </div>
             </div>
             <div class="row">
@@ -223,21 +193,20 @@ onBeforeMount(() => {
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
                         <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>All</option>
-                            <option value="create">Create</option>
-                            <option value="update">Update</option>
+                            <option value="delete">Delete</option>
                             <!-- <option value="delete">Delete</option> -->
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button @click="getDosen" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                    <button @click="getRencanaEvaluasi" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
-            :value="dosenPengajar" v-model:selection="selectedDosen" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
+            :globalFilterFields="['RencanaEvaluasi.MataKuliah.nama_mata_kuliah','RencanaEvaluasi.nomor_urut', 'RencanaEvaluasi.nama_evaluasi', 'RencanaEvaluasi.deskripsi_indonesia', 'RencanaEvaluasi.JenisEvaluasi.nama_jenis_evaluasi']"
+            :value="rencanaEvaluasi" v-model:selection="selectedRencanaEvaluasi" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -248,7 +217,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button @click="syncDosenPengajar" class="btn btn-secondary"><i class="pi pi-spinner me-2"></i> Sync</button>
+                                <button @click="syncRencanaEvaluasi" class="btn btn-secondary"><i class="pi pi-spinner me-2"></i> Sync</button>
                             </div>
                         </div>
                     </div>
@@ -260,33 +229,57 @@ onBeforeMount(() => {
               
                 <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
 
-                <Column filterField="nama_dosen" header="Nama Dosen" style="min-width: 14rem">
+                <Column filterField="nama_mata_kuliah" header="Mata Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DosenPengajarKelasKuliahFeeder[0]?.nama_dosen || '-'
-                                    : data.DosenPengajarKelasKuliah?.PenugasanDosen?.Dosen?.nama_dosen || '-' }}
+                                {{ data.RencanaEvaluasi.MataKuliah.nama_mata_kuliah}}
+                            </span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="nomor_urut" header="No Urut" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>
+                                {{ data.RencanaEvaluasi.nomor_urut}}
                             </span>
                         </div>
                     </template>
                 </Column>
 
-                <Column filterField="nidn" header="NIDN" style="min-width: 10rem">
+                <Column filterField="nama_evaluasi" header="Nama Evaluasi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.DosenPengajarKelasKuliahFeeder[0]?.nidn || '-'
-                            : data.DosenPengajarKelasKuliah?.PenugasanDosen?.Dosen?.nidn || '-' }}
+                          <span>
+                                {{ data?.RencanaEvaluasi?.nama_evaluasi || '-'}}
+                            </span>
                     </template>
                 </Column>
 
-                <Column filterField="nama_kelas_kuliah" header="Nama Kelas" style="min-width: 12rem">
+                <Column filterField="deskripsi_indonesia" header="Deskripsi Indonesia" style="min-width: 12rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DosenPengajarKelasKuliahFeeder[0]?.nama_kelas_kuliah || '-'
-                                    : data.DosenPengajarKelasKuliah?.KelasKuliah?.nama_kelas_kuliah || '-' }}
+                                {{ data?.RencanaEvaluasi?.deskripsi_indonesia || '-'}}
+                            </span>
+                        </div>
+                    </template>
+                </Column>
+
+                <Column filterField="bobot_evaluasi" header="Bobot" style="min-width: 5rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>
+                                {{ parseFloat(data?.RencanaEvaluasi?.bobot_evaluasi).toFixed(0) || '-'}}
+                            </span>
+                        </div>
+                    </template>
+                </Column>
+                <Column filterField="jenis_evaluasi" header="Jenis Evaluasi" style="min-width: 12rem">
+                    <template #body="{ data }">
+                        <div class="flex align-items-center gap-2">
+                            <span>
+                                {{ data?.RencanaEvaluasi?.JenisEvaluasi?.nama_jenis_evaluasi || '-'}}
                             </span>
                         </div>
                     </template>

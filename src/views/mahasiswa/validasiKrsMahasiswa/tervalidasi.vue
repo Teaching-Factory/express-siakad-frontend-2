@@ -135,7 +135,7 @@ onMounted(() => {
                 </Column>
                 <Column filterField="total_sks" header="Jumlah SKS" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.total_sks }}
+                        {{ data.total_sks_mata_kuliah }}
                     </template>
                 </Column>
                 <Column filterField="nama_status_mahasiswa" header="Status Mahasiswa" style="min-width: 10rem">

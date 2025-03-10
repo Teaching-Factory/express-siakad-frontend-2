@@ -120,6 +120,10 @@ const getRencanaEvaluasi = async () => {
 
 const syncRencanaEvaluasi = async () => {
     try {
+        if (selectedRencanaEvaluasi.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data Rencana yang dipilih.', 'warning');
+            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
+        }
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
@@ -128,10 +132,6 @@ const syncRencanaEvaluasi = async () => {
                 Swal.showLoading();
             }
         });
-        if (selectedRencanaEvaluasi.value.length === 0) {
-            Swal.fire('PERINGATAN!', 'Tidak ada data Rencana yang dipilih.', 'warning');
-            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
-        }
 
         const token = getToken();
         console.log('object', token);
@@ -196,6 +196,8 @@ onBeforeMount(() => {
                             <li>Memilih Prodi pada data yang ingin dicocokkan dengan feeder</li>
                             <li>Memilih jenis singkron untuk data Rencana Evaluasi </li>
                             <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
+                            <li>Pengambian data terbaru dari Feeder dan lokal dapat melalui tombol <span> <a  href="/singkron-rencana-evaluasi-get"> Klik Disini !!</a></span></li>
+                            <li>Menghapus data dari Feeder dan lokal dapat melalui tombol <span> <a  href="/singkron-rencana-evaluasi-delete"> Klik Disini !!</a></span></li>
                         </ol>
                     </p>
                 </div>
@@ -225,7 +227,7 @@ onBeforeMount(() => {
                             <option value="" selected disabled hidden>All</option>
                             <option value="create">Create</option>
                             <option value="update">Update</option>
-                            <option value="delete">Delete</option>
+                            <!-- <option value="delete">Delete</option> -->
                         </select>
                     </div>
                 </div>

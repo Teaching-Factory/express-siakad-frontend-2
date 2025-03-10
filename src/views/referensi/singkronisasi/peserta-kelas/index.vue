@@ -120,6 +120,10 @@ const getPesertaKelas = async () => {
 
 const syncPesertaKelas = async () => {
     try {
+        if (selectedPesertaKelas.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data Mahasiswa yang dipilih.', 'warning');
+            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
+        }
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
@@ -128,10 +132,6 @@ const syncPesertaKelas = async () => {
                 Swal.showLoading();
             }
         });
-        if (selectedPesertaKelas.value.length === 0) {
-            Swal.fire('PERINGATAN!', 'Tidak ada data Mahasiswa yang dipilih.', 'warning');
-            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
-        }
 
         const token = getToken();
         console.log('object', token);
@@ -225,7 +225,7 @@ onBeforeMount(() => {
                             <option value="" selected disabled hidden>All</option>
                             <option value="create">Create</option>
                             <option value="update">Update</option>
-                            <option value="delete">Delete</option>
+                            <!-- <option value="delete">Delete</option> -->
                         </select>
                     </div>
                 </div>

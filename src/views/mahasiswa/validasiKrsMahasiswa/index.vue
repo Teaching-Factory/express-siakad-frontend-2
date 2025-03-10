@@ -100,6 +100,7 @@ const filterData = async () => {
         const response = await get(`krs-mahasiswa/${prodiId}/${semesterId}/get-mahasiswa-krs-belum-tervalidasi`);
 
         validasiKRS.value = response.data.data;
+        console.log('data : ', response.data.data);
         Swal.close();
     } catch (error) {
         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
@@ -310,7 +311,7 @@ onBeforeMount(() => {
                 </Column>
                 <Column filterField="total_sks" header="Jumlah SKS" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.total_sks }}
+                        {{ data.total_sks_mata_kuliah }}
                     </template>
                 </Column>
                 <Column filterField="nama_status_mahasiswa" header="Status Mahasiswa" style="min-width: 10rem">

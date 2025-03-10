@@ -120,6 +120,10 @@ const getKomponenEvaluasi = async () => {
 
 const syncKomponenEvaluasi = async () => {
     try {
+        if (selectedKomponenEvaluasi.value.length === 0) {
+            Swal.fire('PERINGATAN!', 'Tidak ada data Komponen yang dipilih.', 'warning');
+            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
+        }
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
@@ -128,10 +132,6 @@ const syncKomponenEvaluasi = async () => {
                 Swal.showLoading();
             }
         });
-        if (selectedKomponenEvaluasi.value.length === 0) {
-            Swal.fire('PERINGATAN!', 'Tidak ada data Komponen yang dipilih.', 'warning');
-            return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
-        }
 
         const token = getToken();
         console.log('object', token);
@@ -193,9 +193,11 @@ onBeforeMount(() => {
                     <p class="lh-1 text-small">
                         <ol>
                             <li>Fitur ini digunakan untuk melakukan matching data Komponen Evaluasi lokal dengan Komponen Evaluasi Feeder.</li>
-                            <li>Memilih Prodi pada data yang ingin dicocokkan dengan feeder</li>
+                            <li>Memilih Semester pada data yang ingin dicocokkan dengan feeder</li>
                             <li>Memilih jenis singkron untuk data Komponen Evaluasi </li>
                             <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
+                            <li>Pengambian data terbaru dari Feeder dan lokal dapat melalui tombol <span> <a  href="/singkron-komponen-evaluasi-get"> Klik Disini !!</a></span></li>
+                            <li>Menghapus data dari Feeder dan lokal dapat melalui tombol <span> <a  href="#"> Klik Disini !!</a></span></li>
                         </ol>
                     </p>
                 </div>
@@ -225,7 +227,7 @@ onBeforeMount(() => {
                             <option value="" selected disabled hidden>All</option>
                             <option value="create">Create</option>
                             <option value="update">Update</option>
-                            <option value="delete">Delete</option>
+                            <!-- <option value="delete">Delete</option> -->
                         </select>
                     </div>
                 </div>

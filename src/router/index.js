@@ -1055,15 +1055,39 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/singkron-rencana-evaluasi-get',
+                    name: 'singkron-rencana-evaluasi-get',
+                    component: () => import('../views/referensi/singkronisasi/rencana-evaluasi/rencana-evaluasi-get/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/singkron-rencana-evaluasi-delete',
+                    name: 'singkron-rencana-evaluasi-delete',
+                    component: () => import('../views/referensi/singkronisasi/rencana-evaluasi/rencana-evaluasi-delete/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
                     path: '/singkron-komponen-evaluasi',
                     name: 'singkron-komponen-evaluasi',
                     component: () => import('../views/referensi/singkronisasi/komponen-evaluasi/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/singkron-komponen-evaluasi-get',
+                    name: 'singkron-komponen-evaluasi-get',
+                    component: () => import('../views/referensi/singkronisasi/komponen-evaluasi/komponen-evaluasi-get/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
                     path: '/sync-kelas-kuliah',
                     name: 'sync-kelas-kuliah',
                     component: () => import('../views/referensi/singkronisasi/kelas-kuliah/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-kelas-kuliah-get',
+                    name: 'sync-kelas-kuliah-get',
+                    component: () => import('../views/referensi/singkronisasi/kelas-kuliah/kelas-kuliah-get/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
