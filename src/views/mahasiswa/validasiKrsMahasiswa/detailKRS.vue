@@ -1,6 +1,6 @@
 <script setup>
 import Swal from 'sweetalert2';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { del, get } from '../../../utiils/request';
 
@@ -72,6 +72,12 @@ const confirmDelete = (id_krs) => {
     });
 };
 
+const totalSKS = computed(() => {
+    return details.value.reduce((total, krs) => {
+        return total + (Number(krs.KelasKuliah?.sks) || 0);
+    }, 0);
+});
+
 onMounted(() => {
     const id_registrasi_mahasiswa = route.params.id_registrasi_mahasiswa;
     detailKrs(id_registrasi_mahasiswa);
@@ -90,20 +96,7 @@ onMounted(() => {
             </div>
 
             <hr />
-            <!-- <div class="row mt-3">
-                <div class="col-lg-10 col-md-6 col-sm-6">
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Periode</label>
-                        <select v-model="selectedPeriode" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Periode</option>
-                            <option v-for="periode in periodes" :key="periode.id_periode" :value="periode.id_periode">{{ periode.periode_pelaporan }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
-                </div>
-            </div> -->
+
             <div class="card" style="border-radius: none !important">
                 <div class="row">
                     <div class="col-lg-2">NIM</div>
@@ -170,7 +163,7 @@ onMounted(() => {
 
                         <tr>
                             <td colspan="8">Total SKS</td>
-                            <td colspan="1">4</td>
+                            <td colspan="1">{{ totalSKS }}</td>
                             <td colspan="1"></td>
                         </tr>
                         <tr>

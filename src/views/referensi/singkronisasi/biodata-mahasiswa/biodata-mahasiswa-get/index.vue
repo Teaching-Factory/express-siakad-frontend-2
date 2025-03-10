@@ -3,9 +3,9 @@ import axios from 'axios';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { onBeforeMount, ref } from 'vue';
-import { API_URL } from '../../../../config/config';
-import { getToken } from '../../../../service/auth';
-import { get, getData } from '../../../../utiils/request';
+import { API_URL } from '../../../../../config/config';
+import { getToken } from '../../../../../service/auth';
+import { getData } from '../../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -26,7 +26,7 @@ const selectedStatus = ref('');
 
 const getSemester = async () => {
     try {
-        const response = await get('semester/');
+        const response = await getData('semester/');
         semesters.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data semester:', error);
@@ -88,35 +88,6 @@ const getBioadata = async () => {
         Swal.fire('Gagal', 'Data tidak ditemukan.', 'warning').then(() => {});
     }
 };
-
-// const getBioadataAll = async () => {
-//     try {
-//         Swal.fire({
-//             title: 'Loading...',
-//             html: 'Sedang Memuat Data',
-//             allowOutsideClick: false,
-//             didOpen: () => {
-//                 Swal.showLoading();
-//             }
-//         });
-
-//         // const jenis_singkron = selectedStatus.value;
-
-//         // console.log('jenis singkron :', jenis_singkron);
-//         // Menggunakan axios untuk GET request dengan query parameters
-//         const response = await getData(`kelas-kuliah-sync/belum-singkron`);
-
-//         const kelas = response.data.data;
-//         biodataMahasiswa.value = kelas;
-
-//         Swal.close();
-
-//         console.log('object :', kelas);
-//     } catch (error) {
-//         console.error('Gagal mengambil data Kelas:', error);
-//         Swal.fire('Gagal', 'Data Kelas tidak ditemukan.', 'warning').then(() => {});
-//     }
-// };
 
 const syncBiodataMahasiswa = async () => {
     try {
@@ -186,7 +157,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>Singkronisasi Biodata Mahasiswa ke Feeder</h5>
+        <h5><i class="pi pi-user me-2"></i>Pengambilan Data Biodata Mahasiswa Feeder ke Siakad</h5>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
@@ -194,12 +165,8 @@ onBeforeMount(() => {
                     <p class="lh-1 text-small">
                         <ol>
                             <li>Fitur ini digunakan untuk melakukan matching data Biodata Mahasiswa lokal dengan Biodata Mahasiswa Feeder.</li>
-                            <li>Memilih Semester pada kelas yang ingin dicocokkan dengan feeder</li>
-                            <li>Memilih jenis singkron untuk data Biodata Mahasiswa </li>
-                            <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
-                            <li>Setelah melakukan singkron Biodata Mahasiswa langsung lakukan singkron untuk riwayat pendidikan mahasiswa <span> <a href="/sync-riwayat-pendidikan-mahasiswa"> Klik Disini !!</a></span></li>
-                            <li>Pengambian data terbaru dari Feeder dan lokal dapat melalui tombol <span> <a  href="/sync-biodata-mahasiswa-get"> Klik Disini !!</a></span></li>
-                            <li>Menghapus data dari Feeder dan lokal dapat melalui tombol <span> <a  href="#"> Klik Disini !!</a></span></li>
+                            <li>Memilih semester pada data yang ingin dicocokkan dengan feeder</li>
+                            <li>Memilih jenis singkron Get untuk Menambahkan data Biodata Mahasiswa Terbaru dari Feeder</li>
                         </ol>
                     </p>
                 </div>
@@ -227,9 +194,7 @@ onBeforeMount(() => {
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
                         <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>All</option>
-                            <option value="create">Create</option>
-                            <option value="update">Update</option>
-                            <!-- <option value="delete">Delete</option> -->
+                            <option value="get">GET</option>
                         </select>
                     </div>
                 </div>

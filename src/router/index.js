@@ -1097,9 +1097,21 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/sync-dosen-pengajar-get',
+                    name: 'sync-dosen-pengajar-get',
+                    component: () => import('../views/referensi/singkronisasi/dosen-pengajar/dosen-pengajar-get/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
                     path: '/sync-biodata-mahasiswa',
                     name: 'sync-biodata-mahasiswa',
                     component: () => import('../views/referensi/singkronisasi/biodata-mahasiswa/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-biodata-mahasiswa-get',
+                    name: 'sync-biodata-mahasiswa-get',
+                    component: () => import('../views/referensi/singkronisasi/biodata-mahasiswa/biodata-mahasiswa-get/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
@@ -1109,15 +1121,33 @@ const router = createRouter({
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/sync-riwayat-pendidikan-mahasiswa-get',
+                    name: 'sync-riwayat-pendidikan-mahasiswa-get',
+                    component: () => import('../views/referensi/singkronisasi/riwayat-pendidikan-mahasiswa/riwayat-pendidikan-mahasiswa-get/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
                     path: '/sync-peserta-kelas',
                     name: 'sync-peserta-kelas',
                     component: () => import('../views/referensi/singkronisasi/peserta-kelas/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
                 {
+                    path: '/sync-peserta-kelas-get',
+                    name: 'sync-peserta-kelas-get',
+                    component: () => import('../views/referensi/singkronisasi/peserta-kelas/peserta-kelas-get/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
                     path: '/sync-detail-nilai',
                     name: 'sync-detail-nilai',
                     component: () => import('../views/referensi/singkronisasi/detail-nilai/index.vue')
+                    // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
+                },
+                {
+                    path: '/sync-detail-nilai-get',
+                    name: 'sync-detail-nilai-get',
+                    component: () => import('../views/referensi/singkronisasi/detail-nilai/detail-nilai-get/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
 

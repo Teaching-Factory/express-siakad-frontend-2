@@ -196,6 +196,8 @@ onBeforeMount(() => {
                             <li>Memilih Semester pada kelas yang ingin dicocokkan dengan feeder</li>
                             <li>Memilih jenis singkron untuk data dosen pengajar kelas </li>
                             <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
+                            <li>Pengambian data terbaru dari Feeder dan lokal dapat melalui tombol <span> <a  href="/sync-dosen-pengajar-get"> Klik Disini !!</a></span></li>
+                            <li>Menghapus data dari Feeder dan lokal dapat melalui tombol <span> <a  href="#"> Klik Disini !!</a></span></li>
                         </ol>
                     </p>
                 </div>

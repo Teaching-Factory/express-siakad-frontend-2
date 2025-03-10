@@ -3,9 +3,9 @@ import axios from 'axios';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { onBeforeMount, ref } from 'vue';
-import { API_URL } from '../../../../config/config';
-import { getToken } from '../../../../service/auth';
-import { get, getData } from '../../../../utiils/request';
+import { API_URL } from '../../../../../config/config';
+import { getToken } from '../../../../../service/auth';
+import { getData } from '../../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -26,7 +26,7 @@ const selectedStatus = ref('');
 
 const getAngkatan = async () => {
     try {
-        const response = await get('angkatan/');
+        const response = await getData('angkatan/');
         angkatans.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data :', error);
@@ -88,35 +88,6 @@ const getPesertaKelas = async () => {
         Swal.fire('Gagal', 'Data tidak ditemukan.', 'warning').then(() => {});
     }
 };
-
-// const getPesertaKelasAll = async () => {
-//     try {
-//         Swal.fire({
-//             title: 'Loading...',
-//             html: 'Sedang Memuat Data',
-//             allowOutsideClick: false,
-//             didOpen: () => {
-//                 Swal.showLoading();
-//             }
-//         });
-
-//         // const jenis_singkron = selectedStatus.value;
-
-//         // console.log('jenis singkron :', jenis_singkron);
-//         // Menggunakan axios untuk GET request dengan query parameters
-//         const response = await getData(`kelas-pengajar-kelas-kuliah-sync/belum-singkron`);
-
-//         const kelas = response.data.data;
-//         pesertaKelas.value = kelas;
-
-//         Swal.close();
-
-//         console.log('object :', kelas);
-//     } catch (error) {
-//         console.error('Gagal mengambil data Dosen:', error);
-//         Swal.fire('Gagal', 'Data Dosen tidak ditemukan.', 'warning').then(() => {});
-//     }
-// };
 
 const syncPesertaKelas = async () => {
     try {
@@ -185,7 +156,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>Singkronisasi Peserta Kelas Kuliah ke Feeder</h5>
+        <h5><i class="pi pi-user me-2"></i>Pengambilan Data Peserta Kelas Kuliah Feeder ke Siakad</h5>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
@@ -193,11 +164,8 @@ onBeforeMount(() => {
                     <p class="lh-1 text-small">
                         <ol>
                             <li>Fitur ini digunakan untuk melakukan matching data peserta kelas kuliah lokal dengan peserta kelas kuliah Feeder.</li>
-                            <li>Memilih Semester pada kelas yang ingin dicocokkan dengan feeder</li>
-                            <li>Memilih jenis singkron untuk data peserta kelas kuliah </li>
-                            <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
-                            <li>Pengambian data terbaru dari Feeder dan lokal dapat melalui tombol <span> <a  href="/sync-peserta-kelas-get"> Klik Disini !!</a></span></li>
-                            <li>Menghapus data dari Feeder dan lokal dapat melalui tombol <span> <a  href="#"> Klik Disini !!</a></span></li>
+                            <li>Memilih semester pada data yang ingin dicocokkan dengan feeder</li>
+                            <li>Memilih jenis singkron Get untuk Menambahkan data Peserta Kelas Terbaru dari Feeder</li>
                         </ol>
                     </p>
                 </div>
@@ -225,9 +193,7 @@ onBeforeMount(() => {
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
                         <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>All</option>
-                            <option value="create">Create</option>
-                            <option value="update">Update</option>
-                            <!-- <option value="delete">Delete</option> -->
+                            <option value="get">GET</option>
                         </select>
                     </div>
                 </div>

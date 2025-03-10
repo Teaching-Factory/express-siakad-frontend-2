@@ -3,9 +3,9 @@ import axios from 'axios';
 import { FilterMatchMode } from 'primevue/api';
 import Swal from 'sweetalert2';
 import { onBeforeMount, ref } from 'vue';
-import { API_URL } from '../../../../config/config';
-import { getToken } from '../../../../service/auth';
-import { get, getData } from '../../../../utiils/request';
+import { API_URL } from '../../../../../config/config';
+import { getToken } from '../../../../../service/auth';
+import { getData } from '../../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -17,23 +17,23 @@ const filters = ref({
 });
 
 const first = ref(0);
-const selectedBioadata = ref([]);
-const matchingBioadataMahasiswa = ref([]);
-const biodataMahasiswa = ref([]);
+const selectedRiwayatPendidikan = ref([]);
+const matchingRiwayat = ref([]);
+const riwayatMahasiswa = ref([]);
 const semesters = ref([]);
 const selectedSemester = ref('');
 const selectedStatus = ref('');
 
 const getSemester = async () => {
     try {
-        const response = await get('semester/');
+        const response = await getData('semester/');
         semesters.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data semester:', error);
     }
 };
 
-const matchingBiodata = async () => {
+const matchingRiwayatPendidikan = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -48,10 +48,10 @@ const matchingBiodata = async () => {
 
         console.log('semester', id_semester);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`sync-feeder/${id_semester}/matching-biodata-mahasiswa`);
+        const response = await getData(`sync-feeder/${id_semester}/matching-riwayat-pendidikan-mahasiswa`);
 
         const matching = response.data.message;
-        matchingBioadataMahasiswa.value = matching;
+        matchingRiwayat.value = matching;
         Swal.fire('BERHASIL!', 'Data berhasil diMatching.', 'success').then(() => {});
         Swal.close();
         console.log('object :', matching);
@@ -61,7 +61,7 @@ const matchingBiodata = async () => {
     }
 };
 
-const getBioadata = async () => {
+const getRiwayat = async () => {
     try {
         Swal.fire({
             title: 'Loading...',
@@ -76,10 +76,10 @@ const getBioadata = async () => {
 
         console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`biodata-mahasiswa-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`riwayat-pendidikan-mahasiswa-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
 
         const data = response.data.data;
-        biodataMahasiswa.value = data;
+        riwayatMahasiswa.value = data;
 
         Swal.close();
         console.log('object :', data);
@@ -89,7 +89,7 @@ const getBioadata = async () => {
     }
 };
 
-// const getBioadataAll = async () => {
+// const getRiwayatAll = async () => {
 //     try {
 //         Swal.fire({
 //             title: 'Loading...',
@@ -107,7 +107,7 @@ const getBioadata = async () => {
 //         const response = await getData(`kelas-kuliah-sync/belum-singkron`);
 
 //         const kelas = response.data.data;
-//         biodataMahasiswa.value = kelas;
+//         riwayatMahasiswa.value = kelas;
 
 //         Swal.close();
 
@@ -118,13 +118,12 @@ const getBioadata = async () => {
 //     }
 // };
 
-const syncBiodataMahasiswa = async () => {
+const syncRiwayatPendidikanMahasiswa = async () => {
     try {
-        if (selectedBioadata.value.length === 0) {
+        if (selectedRiwayatPendidikan.value.length === 0) {
             Swal.fire('PERINGATAN!', 'Tidak ada data yang dipilih.', 'warning');
             return; // Hentikan eksekusi fungsi jika tidak ada data yang dipilih
         }
-
         Swal.fire({
             title: 'Loading...',
             html: 'Sedang Memuat Data',
@@ -136,19 +135,19 @@ const syncBiodataMahasiswa = async () => {
 
         const token = getToken();
         console.log('object', token);
-        const url = `${API_URL}/sync-feeder/sync-biodata-mahasiswa`;
+        const url = `${API_URL}/sync-feeder/sync-riwayat-pendidikan-mahasiswa`;
         const batchSize = 100; //
 
-        const biodataMahasiswaSyncs = selectedBioadata.value.map((biodataMahasiswa) => ({
-            id: biodataMahasiswa.id
+        const riwayatMahasiswaSyncs = selectedRiwayatPendidikan.value.map((riwayatMahasiswa) => ({
+            id: riwayatMahasiswa.id
         }));
 
-        for (let i = 0; i < biodataMahasiswaSyncs.length; i += batchSize) {
-            const batch = biodataMahasiswaSyncs.slice(i, i + batchSize);
+        for (let i = 0; i < riwayatMahasiswaSyncs.length; i += batchSize) {
+            const batch = riwayatMahasiswaSyncs.slice(i, i + batchSize);
 
             // Data body dengan struktur yang sesuai
             const data = {
-                biodata_mahasiswa_syncs: batch
+                riwayat_pendidikan_mahasiswa_syncs: batch
             };
 
             const response = await axios.post(
@@ -166,7 +165,7 @@ const syncBiodataMahasiswa = async () => {
         }
 
         Swal.close();
-        Swal.fire('BERHASIL!', 'Sync Biodata Mahasiswa Berhasil.', 'success').then(() => {
+        Swal.fire('BERHASIL!', 'Sync Riwayat Pendidikan Mahasiswa Berhasil.', 'success').then(() => {
             window.location.reload();
         });
     } catch (error) {
@@ -179,27 +178,23 @@ const onPageChange = (event) => {
 };
 
 onBeforeMount(() => {
-    // getBioadataAll();
+    // getRiwayatAll();
     getSemester();
 });
 </script>
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>Singkronisasi Biodata Mahasiswa ke Feeder</h5>
+        <h5><i class="pi pi-user me-2"></i>Penambahan Data Riwayat Pendidikan Mahasiswa Feeder ke SIakad</h5>
         <div class="card" style="padding: 0rem 1rem 0rem 1rem">
             <div class="row">
                 <div class="col-12 col-md-6 col-lg-12">
                     <h6 class="text-dark">Keterangan :</h6>
                     <p class="lh-1 text-small">
                         <ol>
-                            <li>Fitur ini digunakan untuk melakukan matching data Biodata Mahasiswa lokal dengan Biodata Mahasiswa Feeder.</li>
-                            <li>Memilih Semester pada kelas yang ingin dicocokkan dengan feeder</li>
-                            <li>Memilih jenis singkron untuk data Biodata Mahasiswa </li>
-                            <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
-                            <li>Setelah melakukan singkron Biodata Mahasiswa langsung lakukan singkron untuk riwayat pendidikan mahasiswa <span> <a href="/sync-riwayat-pendidikan-mahasiswa"> Klik Disini !!</a></span></li>
-                            <li>Pengambian data terbaru dari Feeder dan lokal dapat melalui tombol <span> <a  href="/sync-biodata-mahasiswa-get"> Klik Disini !!</a></span></li>
-                            <li>Menghapus data dari Feeder dan lokal dapat melalui tombol <span> <a  href="#"> Klik Disini !!</a></span></li>
+                            <li>Fitur ini digunakan untuk melakukan matching data Riwayat Pendidikan Mahasiswa lokal dengan Riwayat Pendidikan Mahasiswa Feeder.</li>
+                            <li>Memilih semester pada data yang ingin dicocokkan dengan feeder</li>
+                            <li>Memilih jenis singkron Get untuk Menambahkan data Riwayat Pendidikan Mahasiswa Terbaru dari Feeder</li>
                         </ol>
                     </p>
                 </div>
@@ -218,7 +213,7 @@ onBeforeMount(() => {
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button @click="matchingBiodata" class="btn btn-primary btn-block" style="width: 100%">Matching</button>
+                    <button @click="matchingRiwayatPendidikan" class="btn btn-primary btn-block" style="width: 100%">Matching</button>
                 </div>
             </div>
             <div class="row">
@@ -227,21 +222,19 @@ onBeforeMount(() => {
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
                         <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
                             <option value="" selected disabled hidden>All</option>
-                            <option value="create">Create</option>
-                            <option value="update">Update</option>
-                            <!-- <option value="delete">Delete</option> -->
+                            <option value="get">GET</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
-                    <button @click="getBioadata" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
+                    <button @click="getRiwayat" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
             <hr />
 
             <DataTable v-model:filters="filters"
             :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
-            :value="biodataMahasiswa" v-model:selection="selectedBioadata" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
+            :value="riwayatMahasiswa" v-model:selection="selectedRiwayatPendidikan" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
@@ -252,7 +245,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <button @click="syncBiodataMahasiswa" class="btn btn-secondary"><i class="pi pi-spinner  me-2"></i> Sync</button>
+                                <button @click="syncRiwayatPendidikanMahasiswa" class="btn btn-secondary"><i class="pi pi-spinner  me-2"></i> Sync</button>
                             </div>
                         </div>
                     </div>
@@ -269,8 +262,8 @@ onBeforeMount(() => {
                         <div class="flex align-items-center gap-2">
                             <span>
                                 {{ data.jenis_singkron === 'delete'
-                                    ? data.BiodataMahasiswaFeeder[0]?.nim || '-'
-                                    : data.BiodataMahasiswa?.Mahasiswas?.[0].nim|| '-' }}
+                                    ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nim || '-'
+                                    : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.nim|| '-' }}
                             </span>
                         </div>
                     </template>
@@ -281,8 +274,8 @@ onBeforeMount(() => {
                         <div class="flex align-items-center gap-2">
                             <span>
                                 {{ data.jenis_singkron === 'delete'
-                                    ? data.BiodataMahasiswaFeeder[0]?.nama_mahasiswa || '-'
-                                    : data.BiodataMahasiswa?.Mahasiswas?.[0]?.nama_mahasiswa || '-' }}
+                                    ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_mahasiswa || '-'
+                                    : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.nama_mahasiswa || '-' }}
                             </span>
                         </div>
                     </template>
@@ -291,24 +284,24 @@ onBeforeMount(() => {
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.jenis_singkron === 'delete'
-                            ? data.BiodataMahasiswaFeeder[0]?.nama_program_studi || '-'
-                            : data.BiodataMahasiswa?.Mahasiswas?.[0].Prodi?.nama_program_studi || '-' }}
+                            ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_program_studi || '-'
+                            : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.Prodi?.nama_program_studi || '-' }}
                     </template>
                 </Column>
 
                 <Column filterField="nama_periode_masuk" header="Tahun Masuk" style="min-width: 10rem">
                     <template #body="{ data }">
                         {{ data.jenis_singkron === 'delete'
-                            ? data.BiodataMahasiswaFeeder[0]?.nama_periode_masuk || '-'
-                            : data.BiodataMahasiswa?.Mahasiswas?.[0].nama_periode_masuk || '-' }}
+                            ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_periode_masuk || '-'
+                            : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.nama_periode_masuk || '-' }}
                     </template>
                 </Column>
 
-                <Column filterField="email" header="Email" style="min-width: 15rem">
+                <Column filterField="nama_ibu_kandung" header="nama Ibu Kandung" style="min-width: 15rem">
                     <template #body="{ data }">
                         {{ data.jenis_singkron === 'delete'
-                            ? data.BiodataMahasiswaFeeder[0]?.email || '-'
-                            : data.BiodataMahasiswa?.email || '-' }}
+                            ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_ibu_kandung || '-'
+                            : data.RiwayatPendidikanMahasiswa?.nama_ibu_kandung || '-' }}
                     </template>
                 </Column>
 

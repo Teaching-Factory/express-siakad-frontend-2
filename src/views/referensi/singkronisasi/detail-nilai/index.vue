@@ -92,35 +92,6 @@ const getNilaiPerkuliahan = async () => {
     }
 };
 
-// const getNilaiPerkuliahanAll = async () => {
-//     try {
-//         Swal.fire({
-//             title: 'Loading...',
-//             html: 'Sedang Memuat Data',
-//             allowOutsideClick: false,
-//             didOpen: () => {
-//                 Swal.showLoading();
-//             }
-//         });
-
-//         // const jenis_singkron = selectedStatus.value;
-
-//         // console.log('jenis singkron :', jenis_singkron);
-//         // Menggunakan axios untuk GET request dengan query parameters
-//         const response = await getData(`dosen-pengajar-kelas-kuliah-sync/belum-singkron`);
-
-//         const dosen = response.data.data;
-//         nilaiPerkuliahan.value = dosen;
-
-//         Swal.close();
-
-//         console.log('object :', dosen);
-//     } catch (error) {
-//         console.error('Gagal mengambil data Dosen:', error);
-//         Swal.fire('Gagal', 'Data Dosen tidak ditemukan.', 'warning').then(() => {});
-//     }
-// };
-
 const syncNilaiPerkuliahan = async () => {
     try {
         if (selectedNilai.value.length === 0) {
@@ -199,6 +170,8 @@ onBeforeMount(() => {
                             <li>Memilih Semester pada kelas yang ingin dicocokkan dengan feeder</li>
                             <li>Memilih jenis singkron untuk data nilai perkuliahan </li>
                             <li>Memilih data yang hendak disinkron pada Feeder dan menekan tombol sync.</li>
+                            <li>Pengambian data terbaru dari Feeder dan lokal dapat melalui tombol <span> <a  href="/sync-detail-nilai-get"> Klik Disini !!</a></span></li>
+                            <li>Menghapus data dari Feeder dan lokal dapat melalui tombol <span> <a  href="#"> Klik Disini !!</a></span></li>
                         </ol>
                     </p>
                 </div>
