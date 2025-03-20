@@ -148,11 +148,11 @@ onMounted(() => {
                             <td>{{ index + 1 }}</td>
                             <td>{{ krs?.MataKuliah.nama_mata_kuliah || '' }}</td>
                             <td>{{ krs?.KelasKuliah?.nama_kelas_kuliah || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.Dosen?.nama_dosen || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.RuangPerkuliahan?.nama_ruang_perkuliahan || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.hari || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_mulai || '-' }}</td>
-                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs?.jam_selesai || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DosenPengajarKelasKuliahs[0]?.Dosen?.nama_dosen || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.hari || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_mulai || '-' }}</td>
+                            <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_selesai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.sks }}</td>
                             <td>
                                 <button @click="confirmDelete(krs.id_krs)" class="btn btn-outline-danger" title="Hapus Krs">
