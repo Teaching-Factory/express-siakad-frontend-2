@@ -72,11 +72,11 @@ const getDosen = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
+        // const jenis_singkron = selectedStatus.value;
 
-        console.log('jenis singkron :', jenis_singkron);
+        // console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`dosen-pengajar-kelas-kuliah-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`dosen-pengajar-kelas-kuliah-sync/belum-singkron-get`);
 
         const dosen = response.data.data;
         dosenPengajar.value = dosen;
@@ -89,34 +89,34 @@ const getDosen = async () => {
     }
 };
 
-const getDosenAll = async () => {
-    try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
+// const getDosenAll = async () => {
+//     try {
+//         Swal.fire({
+//             title: 'Loading...',
+//             html: 'Sedang Memuat Data',
+//             allowOutsideClick: false,
+//             didOpen: () => {
+//                 Swal.showLoading();
+//             }
+//         });
 
-        // const jenis_singkron = selectedStatus.value;
+//         // const jenis_singkron = selectedStatus.value;
 
-        // console.log('jenis singkron :', jenis_singkron);
-        // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`dosen-pengajar-kelas-kuliah-sync/belum-singkron`);
+//         // console.log('jenis singkron :', jenis_singkron);
+//         // Menggunakan axios untuk GET request dengan query parameters
+//         const response = await getData(`dosen-pengajar-kelas-kuliah-sync/belum-singkron`);
 
-        const dosen = response.data.data;
-        dosenPengajar.value = dosen;
+//         const dosen = response.data.data;
+//         dosenPengajar.value = dosen;
 
-        Swal.close();
+//         Swal.close();
 
-        console.log('object :', dosen);
-    } catch (error) {
-        console.error('Gagal mengambil data Dosen:', error);
-        Swal.fire('Gagal', 'Data Dosen tidak ditemukan.', 'warning').then(() => {});
-    }
-};
+//         console.log('object :', dosen);
+//     } catch (error) {
+//         console.error('Gagal mengambil data Dosen:', error);
+//         Swal.fire('Gagal', 'Data Dosen tidak ditemukan.', 'warning').then(() => {});
+//     }
+// };
 
 const syncDosenPengajar = async () => {
     try {
@@ -166,7 +166,7 @@ const syncDosenPengajar = async () => {
 
         Swal.close();
         Swal.fire('BERHASIL!', 'Sync Dosen Pengajar Berhasil.', 'success').then(() => {
-            window.location.href = '/sync-dosen-pengajar';
+            window.location.reload();
         });
     } catch (error) {
         console.error('Gagal memperbarui status:', error);
@@ -178,7 +178,7 @@ const onPageChange = (event) => {
 };
 
 onBeforeMount(() => {
-    getDosenAll();
+    // getDosenAll();
     getSemester();
 });
 </script>
@@ -220,8 +220,8 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected  hidden>GET</option>
                             <option value="get">GET</option>
                         </select>
                     </div>
@@ -233,7 +233,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
+            :globalFilterFields="[]"
             :value="dosenPengajar" v-model:selection="selectedDosen" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
@@ -261,9 +261,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DosenPengajarKelasKuliahFeeder[0]?.nama_dosen || '-'
-                                    : data.DosenPengajarKelasKuliah?.PenugasanDosen?.Dosen?.nama_dosen || '-' }}
+                                {{ data.DosenPengajarKelasKuliahFeeder[0]?.nama_dosen || '-' }}
                             </span>
                         </div>
                     </template>
@@ -271,9 +269,7 @@ onBeforeMount(() => {
 
                 <Column filterField="nidn" header="NIDN" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.DosenPengajarKelasKuliahFeeder[0]?.nidn || '-'
-                            : data.DosenPengajarKelasKuliah?.PenugasanDosen?.Dosen?.nidn || '-' }}
+                        {{ data.DosenPengajarKelasKuliahFeeder[0]?.nidn || '-'}}
                     </template>
                 </Column>
 
@@ -281,9 +277,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DosenPengajarKelasKuliahFeeder[0]?.nama_kelas_kuliah || '-'
-                                    : data.DosenPengajarKelasKuliah?.KelasKuliah?.nama_kelas_kuliah || '-' }}
+                                {{data.DosenPengajarKelasKuliahFeeder[0]?.nama_kelas_kuliah || '-'}}
                             </span>
                         </div>
                     </template>

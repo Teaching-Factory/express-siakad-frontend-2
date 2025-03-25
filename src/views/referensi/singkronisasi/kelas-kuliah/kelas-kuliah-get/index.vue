@@ -72,11 +72,11 @@ const getKelas = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
+        // const jenis_singkron = selectedStatus.value;
 
-        console.log('jenis singkron :', jenis_singkron);
+        // console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`kelas-kuliah-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`kelas-kuliah-sync/belum-singkron-get`);
 
         const kelas = response.data.data;
         kelasKuliah.value = kelas;
@@ -137,7 +137,7 @@ const syncKelasKuliah = async () => {
 
         Swal.close();
         Swal.fire('BERHASIL!', 'Sync Kelas Kuliah Berhasil.', 'success').then(() => {
-            window.location.href = '/sync-kelas-kuliah';
+            window.location.reload();
         });
     } catch (error) {
         console.error('Gagal memperbarui status:', error);
@@ -190,8 +190,8 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected disabled hidden>GET</option>
                             <option value="get">GET</option>
 
                         </select>
@@ -204,7 +204,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
+            :globalFilterFields="[]"
             :value="kelasKuliah" v-model:selection="selectedKelas" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
@@ -232,9 +232,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.KelasKuliahFeeder[0]?.nama_kelas_kuliah || '-'
-                                    : data.KelasKuliah?.nama_kelas_kuliah || '-' }}
+                                {{data.KelasKuliahFeeder[0]?.nama_kelas_kuliah || '-'}}
                             </span>
                         </div>
                     </template>
@@ -244,9 +242,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.KelasKuliahFeeder[0]?.nama_semester || '-'
-                                    : data.KelasKuliah?.Semester?.nama_semester || '-' }}
+                                {{ data.KelasKuliahFeeder[0]?.nama_semester || '-'}}
                             </span>
                         </div>
                     </template>
@@ -254,25 +250,19 @@ onBeforeMount(() => {
 
                 <Column filterField="kode_mata_kuliah" header="Kode Mata Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.KelasKuliahFeeder[0]?.kode_mata_kuliah || '-'
-                            : data.KelasKuliah?.MataKuliah?.kode_mata_kuliah || '-' }}
+                        {{ data.KelasKuliahFeeder[0]?.kode_mata_kuliah || '-' }}
                     </template>
                 </Column>
 
                 <Column filterField="nama_mata_kuliah" header="Nama Mata Kuliah" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.KelasKuliahFeeder[0]?.nama_mata_kuliah || '-'
-                            : data.KelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}
+                        {{ data.KelasKuliahFeeder[0]?.nama_mata_kuliah || '-'}}
                     </template>
                 </Column>
 
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.KelasKuliahFeeder[0]?.nama_program_studi || '-'
-                            : data.KelasKuliah?.Prodi?.nama_program_studi || '-' }}
+                        {{ data.KelasKuliahFeeder[0]?.nama_program_studi || '-'}}
                     </template>
                 </Column>
 

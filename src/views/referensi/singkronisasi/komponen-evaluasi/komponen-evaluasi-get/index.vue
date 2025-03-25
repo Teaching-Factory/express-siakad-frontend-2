@@ -72,11 +72,11 @@ const getKomponenEvaluasi = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
+        // const jenis_singkron = selectedStatus.value;
 
-        console.log('jenis singkron :', jenis_singkron);
+        // console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`komponen-evaluasi-kelas-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`komponen-evaluasi-kelas-sync/belum-singkron-get`);
 
         const komponenEvaluasis = response.data.data;
         komponenEvaluasi.value = komponenEvaluasis;
@@ -84,7 +84,7 @@ const getKomponenEvaluasi = async () => {
         Swal.close();
         console.log('object :', komponenEvaluasis);
     } catch (error) {
-        console.error('Gagal mengambil data Rencana Evaluasi:', error);
+        console.error('Gagal mengambil data Komponen Evaluasi:', error);
         Swal.fire('Gagal', 'Data tidak ditemukan.', 'warning').then(() => {});
     }
 };
@@ -191,8 +191,8 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected disabled hidden>GET</option>
                             <option value="get">GET</option>
                         </select>
                     </div>
@@ -204,7 +204,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KomponenEvaluasiKela.KelasKuliah.MataKuliah.nama_mata_kuliah','KomponenEvaluasiKela.nomor_urut', 'KomponenEvaluasiKela.nama', 'KomponenEvaluasiKela.deskripsi_indonesia', 'KomponenEvaluasiKela.JenisEvaluasi.nama_jenis_evaluasi']"
+            :globalFilterFields="[]"
             :value="komponenEvaluasi" v-model:selection="selectedKomponenEvaluasi" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
@@ -232,7 +232,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                              {{ data.KomponenEvaluasiKela.KelasKuliah.nama_kelas_kuliah }} - {{ data.KomponenEvaluasiKela.KelasKuliah.MataKuliah.nama_mata_kuliah}}
+                              {{ data.KomponenEvaluasiKelasFeeder[0]?.nama_kelas_kuliah || '-' }}
                             </span>
                         </div>
                     </template>
@@ -241,7 +241,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.KomponenEvaluasiKela.nomor_urut}}
+                                {{ data.KomponenEvaluasiKelasFeeder[0]?.nomor_urut}}
                             </span>
                         </div>
                     </template>
@@ -250,7 +250,7 @@ onBeforeMount(() => {
                 <Column filterField="nama" header="Nama Evaluasi" style="min-width: 10rem">
                     <template #body="{ data }">
                           <span>
-                                {{ data?.KomponenEvaluasiKela?.nama || '-'}}
+                                {{ data?.KomponenEvaluasiKelasFeeder[0]?.nama || '-'}}
                             </span>
                     </template>
                 </Column>
@@ -259,7 +259,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data?.KomponenEvaluasiKela?.nama_inggris || '-'}}
+                                {{ data?.KomponenEvaluasiKelasFeeder[0]?.nama_inggris || '-'}}
                             </span>
                         </div>
                     </template>
@@ -269,7 +269,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ (parseFloat(data?.KomponenEvaluasiKela?.bobot_evaluasi|| 0) * 100).toFixed(0) || '-'}}
+                                {{ (parseFloat(data?.KomponenEvaluasiKelasFeeder[0]?.bobot_evaluasi|| 0) * 100).toFixed(0) || '-'}}
                             </span>
                         </div>
                     </template>
@@ -278,7 +278,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data?.KomponenEvaluasiKela?.JenisEvaluasi?.nama_jenis_evaluasi || '-'}}
+                                {{ data?.KomponenEvaluasiKelasFeeder[0]?.nama_jenis_evaluasi || '-'}}
                             </span>
                         </div>
                     </template>

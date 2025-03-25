@@ -72,11 +72,8 @@ const getPesertaKelas = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
-
-        console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`peserta-kelas-kuliah-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`peserta-kelas-kuliah-sync/belum-singkron-get`);
 
         const kelas = response.data.data;
         pesertaKelas.value = kelas;
@@ -137,7 +134,7 @@ const syncPesertaKelas = async () => {
 
         Swal.close();
         Swal.fire('BERHASIL!', 'Sync Peserta Kelas Berhasil.', 'success').then(() => {
-            window.location.href = '/sync-peserta-kelas';
+            window.location.reload();
         });
     } catch (error) {
         console.error('Gagal memperbarui status:', error);
@@ -191,8 +188,8 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected disabled hidden>GET</option>
                             <option value="get">GET</option>
                         </select>
                     </div>
@@ -232,9 +229,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.PesertaKelasKuliahFeeder[0]?.nim || '-'
-                                    : data.PesertaKelasKuliah?.Mahasiswa?.nim || '-' }}
+                                {{ data.PesertaKelasKuliahaFeeder[0]?.nim || '-'}}
                             </span>
                         </div>
                     </template>
@@ -242,9 +237,7 @@ onBeforeMount(() => {
 
                 <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.PesertaKelasKuliahFeeder[0]?.nama_mahasiswa || '-'
-                            : data.PesertaKelasKuliah?.Mahasiswa?.nama_mahasiswa || '-' }}
+                        {{data.PesertaKelasKuliahaFeeder[0]?.nama_mahasiswa || '-'}}
                     </template>
                 </Column>
 
@@ -252,9 +245,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.PesertaKelasKuliahFeeder[0]?.nama_kelas_kuliah || '-'
-                                    : data.PesertaKelasKuliah?.KelasKuliah?.nama_kelas_kuliah || '-' }}
+                                {{ data.PesertaKelasKuliahaFeeder[0]?.nama_kelas_kuliah || '-'}}
                             </span>
                         </div>
                     </template>
@@ -264,9 +255,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.PesertaKelasKuliahFeeder[0]?.nama_mata_kuliah || '-'
-                                    : data.PesertaKelasKuliah?.KelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}
+                                {{data.PesertaKelasKuliahaFeeder[0]?.nama_mata_kuliah || '-'}}
                             </span>
                         </div>
                     </template>
@@ -275,9 +264,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.PesertaKelasKuliahFeeder[0]?.nama_program_studi || '-'
-                                    : data.PesertaKelasKuliah?.KelasKuliah?.Prodi?.nama_program_studi || '-' }}
+                                {{data.PesertaKelasKuliahaFeeder[0]?.nama_program_studi || '-' }}
                             </span>
                         </div>
                     </template>

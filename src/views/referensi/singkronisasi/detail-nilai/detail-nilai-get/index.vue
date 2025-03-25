@@ -75,11 +75,11 @@ const getNilaiPerkuliahan = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
+        // const jenis_singkron = selectedStatus.value;
 
-        console.log('jenis singkron :', jenis_singkron);
+        // console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`detail-nilai-perkuliahan-kelas-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`detail-nilai-perkuliahan-kelas-sync/belum-singkron-get`);
 
         const nilai = response.data.data;
         nilaiPerkuliahan.value = nilai;
@@ -140,7 +140,7 @@ const syncNilaiPerkuliahan = async () => {
 
         Swal.close();
         Swal.fire('BERHASIL!', 'Sync Nilai Perkuliahan Berhasil.', 'success').then(() => {
-            window.location.href = '/sync-detail-nilai';
+            window.location.reload();
         });
     } catch (error) {
         console.error('Gagal memperbarui status:', error);
@@ -194,8 +194,8 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected disabled hidden>GET</option>
                             <option value="get">GET</option>
                         </select>
                     </div>
@@ -235,9 +235,8 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nim || '-'
-                                    : data.DetailNilaiPerkuliahanKela?.Mahasiswa?.nim || '-' }}
+                                {{ data.DetailNilaiPerkuliahanKelaFeeder[0]?.nim || '-'
+                                    }}
                             </span>
                         </div>
                     </template>
@@ -245,9 +244,8 @@ onBeforeMount(() => {
 
                 <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 14rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_mahasiswa || '-'
-                            : data.DetailNilaiPerkuliahanKela?.Mahasiswa?.nama_mahasiswa || '-' }}
+                        {{ data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_mahasiswa || '-'
+                             }}
                     </template>
                 </Column>
 
@@ -255,9 +253,8 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_kelas_kuliah || '-'
-                                    : data.DetailNilaiPerkuliahanKela?.KelasKuliah?.nama_kelas_kuliah || '-' }}
+                                {{ data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_kelas_kuliah || '-'
+                                    }}
                             </span>
                         </div>
                     </template>
@@ -266,27 +263,25 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_mata_kuliah || '-'
-                                    : data.DetailNilaiPerkuliahanKela?.KelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}
+                                {{ data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_mata_kuliah || '-'
+                                    }}
                             </span>
                         </div>
                     </template>
                 </Column>
                  <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_program_studi || '-'
-                            : data.DetailNilaiPerkuliahanKela?.Mahasiswa?.Prodi?.nama_program_studi || '-' }}
+                        {{ 
+                            data.DetailNilaiPerkuliahanKelaFeeder[0]?.nama_program_studi || '-'
+                            }}
                     </template>
                 </Column>
                 <Column filterField="nilai_angka" header="Nilai Angka" style="min-width: 5rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nilai_angka || '-'
-                                    : data.DetailNilaiPerkuliahanKela?.nilai_angka || '-' }}
+                                {{ data.DetailNilaiPerkuliahanKelaFeeder[0]?.nilai_angka || '-'
+                                    }}
                             </span>
                         </div>
                     </template>
@@ -295,9 +290,8 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nilai_huruf || '-'
-                                    : data.DetailNilaiPerkuliahanKela?.nilai_huruf || '-' }}
+                                {{ data.DetailNilaiPerkuliahanKelaFeeder[0]?.nilai_huruf || '-'
+                                    }}
                             </span>
                         </div>
                     </template>
@@ -306,9 +300,8 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.DetailNilaiPerkuliahanKelaFeeder[0]?.nilai_indeks || '-'
-                                    : data.DetailNilaiPerkuliahanKela?.nilai_indeks || '-' }}
+                                {{ data.DetailNilaiPerkuliahanKelaFeeder[0]?.nilai_indeks || '-'
+                                    }}
                             </span>
                         </div>
                     </template>

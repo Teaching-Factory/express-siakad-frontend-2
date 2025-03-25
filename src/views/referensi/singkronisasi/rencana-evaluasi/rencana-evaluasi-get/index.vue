@@ -72,11 +72,8 @@ const getRencanaEvaluasi = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
-
-        console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`rencana-evaluasi-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`rencana-evaluasi-sync/belum-singkron-get`);
 
         const rencanaEvaluasis = response.data.data;
         rencanaEvaluasi.value = rencanaEvaluasis;
@@ -191,8 +188,8 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
+                        <select  class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected disabled hidden>GET</option>
                             <option value="get">GET</option>
                             <!-- <option value="delete">Delete</option> -->
                         </select>
@@ -205,7 +202,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['RencanaEvaluasi.MataKuliah.nama_mata_kuliah','RencanaEvaluasi.nomor_urut', 'RencanaEvaluasi.nama_evaluasi', 'RencanaEvaluasi.deskripsi_indonesia', 'RencanaEvaluasi.JenisEvaluasi.nama_jenis_evaluasi']"
+            :globalFilterFields="[]"
             :value="rencanaEvaluasi" v-model:selection="selectedRencanaEvaluasi" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
@@ -233,7 +230,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.RencanaEvaluasi.MataKuliah.nama_mata_kuliah}}
+                                {{ data.RencanaEvaluasiFeeder[0]?.nama_mata_kuliah || '-'}}
                             </span>
                         </div>
                     </template>
@@ -242,7 +239,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.RencanaEvaluasi.nomor_urut}}
+                                {{ data.RencanaEvaluasiFeeder[0]?.nomor_urut}}
                             </span>
                         </div>
                     </template>
@@ -251,7 +248,7 @@ onBeforeMount(() => {
                 <Column filterField="nama_evaluasi" header="Nama Evaluasi" style="min-width: 10rem">
                     <template #body="{ data }">
                           <span>
-                                {{ data?.RencanaEvaluasi?.nama_evaluasi || '-'}}
+                                {{ data?.RencanaEvaluasiFeeder[0]?.nama_evaluasi || '-'}}
                             </span>
                     </template>
                 </Column>
@@ -260,7 +257,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data?.RencanaEvaluasi?.deskripsi_indonesia || '-'}}
+                                {{ data?.RencanaEvaluasiFeeder[0]?.deskripsi_indonesia || '-'}}
                             </span>
                         </div>
                     </template>
@@ -270,7 +267,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ parseFloat(data?.RencanaEvaluasi?.bobot_evaluasi).toFixed(0) || '-'}}
+                                {{ parseFloat(data?.RencanaEvaluasiFeeder[0]?.bobot_evaluasi).toFixed(0) || '-'}}
                             </span>
                         </div>
                     </template>
@@ -279,7 +276,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data?.RencanaEvaluasi?.JenisEvaluasi?.nama_jenis_evaluasi || '-'}}
+                                {{ data?.RencanaEvaluasiFeeder[0]?.nama_jenis_evaluasi || '-'}}
                             </span>
                         </div>
                     </template>

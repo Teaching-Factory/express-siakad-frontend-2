@@ -9,11 +9,7 @@ import { getData } from '../../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    nama_kelas_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    semester: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    kode_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nik: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
 
 const first = ref(0);
@@ -72,11 +68,11 @@ const getBioadata = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
+        // const jenis_singkron = selectedStatus.value;
 
-        console.log('jenis singkron :', jenis_singkron);
+        // console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`biodata-mahasiswa-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`biodata-mahasiswa-sync/belum-singkron-get`);
 
         const data = response.data.data;
         biodataMahasiswa.value = data;
@@ -149,6 +145,22 @@ const onPageChange = (event) => {
     first.value = event.first;
 };
 
+const formatTanggal = (tanggal) => {
+    // Pecah string tanggal menjadi array [DD, MM, YYYY]
+    const [day, month, year] = tanggal.split('-');
+
+    // Susun ulang menjadi format yang dikenali oleh new Date()
+    const formattedDate = new Date(`${year}-${month}-${day}`);
+
+    // Cek apakah tanggal valid
+    if (isNaN(formattedDate.getTime())) {
+        return 'Invalid Date';
+    }
+
+    // Format tanggal dengan locale Indonesia
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return formattedDate.toLocaleDateString('id-ID', options);
+};
 onBeforeMount(() => {
     // getBioadataAll();
     getSemester();
@@ -192,10 +204,11 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
-                            <option value="get">GET</option>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected >GET</option>
+                            <option value="get" disabled>GET</option>
                         </select>
+
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
@@ -205,7 +218,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
+            :globalFilterFields="['BiodataMahasiswaFeeder.nik']"
             :value="biodataMahasiswa" v-model:selection="selectedBioadata" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
@@ -229,51 +242,41 @@ onBeforeMount(() => {
               
                 <Column selectionMode="multiple" headerStyle="width: 3em"></Column>
 
-                <Column filterField="nim" header="NIM" style="min-width: 14rem">
+                <Column filterField="nik" header="NIK" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.BiodataMahasiswaFeeder[0]?.nim || '-'
-                                    : data.BiodataMahasiswa?.Mahasiswas?.[0].nim|| '-' }}
+                                {{ data.BiodataMahasiswaFeeder[0]?.nik || '-' }}
                             </span>
                         </div>
                     </template>
                 </Column>
 
-                <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 12rem">
+                <Column filterField="nama_mahasiswa" header="Nama Mahasiswa" style="min-width: 10rem">
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.BiodataMahasiswaFeeder[0]?.nama_mahasiswa || '-'
-                                    : data.BiodataMahasiswa?.Mahasiswas?.[0]?.nama_mahasiswa || '-' }}
+                                {{data.BiodataMahasiswaFeeder[0]?.nama_mahasiswa || '-' }}
                             </span>
                         </div>
                     </template>
                 </Column>
 
-                <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
+                <Column filterField="ttl" header="TTL" style="min-width: 14rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.BiodataMahasiswaFeeder[0]?.nama_program_studi || '-'
-                            : data.BiodataMahasiswa?.Mahasiswas?.[0].Prodi?.nama_program_studi || '-' }}
+                        {{ data.BiodataMahasiswaFeeder[0]?.tempat_lahir|| '-'}}, {{ formatTanggal(data.BiodataMahasiswaFeeder[0]?.tanggal_lahir) }}
                     </template>
                 </Column>
 
-                <Column filterField="nama_periode_masuk" header="Tahun Masuk" style="min-width: 10rem">
+                <Column filterField="nama_periode_masuk" header="Agama" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.BiodataMahasiswaFeeder[0]?.nama_periode_masuk || '-'
-                            : data.BiodataMahasiswa?.Mahasiswas?.[0].nama_periode_masuk || '-' }}
+                        {{ data.BiodataMahasiswaFeeder[0]?.nama_agama || '-'}}
                     </template>
                 </Column>
 
                 <Column filterField="email" header="Email" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.BiodataMahasiswaFeeder[0]?.email || '-'
-                            : data.BiodataMahasiswa?.email || '-' }}
+                        {{ data.BiodataMahasiswaFeeder[0]?.email || '-'}}
                     </template>
                 </Column>
 

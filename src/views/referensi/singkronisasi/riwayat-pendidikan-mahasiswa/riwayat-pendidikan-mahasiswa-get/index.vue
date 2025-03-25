@@ -72,11 +72,8 @@ const getRiwayat = async () => {
             }
         });
 
-        const jenis_singkron = selectedStatus.value;
-
-        console.log('jenis singkron :', jenis_singkron);
         // Menggunakan axios untuk GET request dengan query parameters
-        const response = await getData(`riwayat-pendidikan-mahasiswa-sync/belum-singkron/by-filter?jenis_singkron=${jenis_singkron}`);
+        const response = await getData(`riwayat-pendidikan-mahasiswa-sync/belum-singkron-get`);
 
         const data = response.data.data;
         riwayatMahasiswa.value = data;
@@ -220,8 +217,8 @@ onBeforeMount(() => {
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Jenis Sync</label>
-                        <select v-model="selectedStatus" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>All</option>
+                        <select class="form-select" aria-label="Default select example" disabled>
+                            <option value="" selected disabled hidden>GET</option>
                             <option value="get">GET</option>
                         </select>
                     </div>
@@ -233,7 +230,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
+            :globalFilterFields="[]"
             :value="riwayatMahasiswa" v-model:selection="selectedRiwayatPendidikan" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
@@ -261,9 +258,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nim || '-'
-                                    : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.nim|| '-' }}
+                                {{ data.RiwayatPendidikanMahasiswaFeeder[0]?.nim || '-'}}
                             </span>
                         </div>
                     </template>
@@ -273,9 +268,7 @@ onBeforeMount(() => {
                     <template #body="{ data }">
                         <div class="flex align-items-center gap-2">
                             <span>
-                                {{ data.jenis_singkron === 'delete'
-                                    ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_mahasiswa || '-'
-                                    : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.nama_mahasiswa || '-' }}
+                                {{ data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_mahasiswa || '-' }}
                             </span>
                         </div>
                     </template>
@@ -283,25 +276,19 @@ onBeforeMount(() => {
 
                 <Column filterField="nama_program_studi" header="Program Studi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_program_studi || '-'
-                            : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.Prodi?.nama_program_studi || '-' }}
+                        {{data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_program_studi || '-'}}
                     </template>
                 </Column>
 
                 <Column filterField="nama_periode_masuk" header="Tahun Masuk" style="min-width: 10rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_periode_masuk || '-'
-                            : data.RiwayatPendidikanMahasiswa?.Mahasiswa?.nama_periode_masuk || '-' }}
+                        {{ data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_periode_masuk || '-' }}
                     </template>
                 </Column>
 
                 <Column filterField="nama_ibu_kandung" header="nama Ibu Kandung" style="min-width: 15rem">
                     <template #body="{ data }">
-                        {{ data.jenis_singkron === 'delete'
-                            ? data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_ibu_kandung || '-'
-                            : data.RiwayatPendidikanMahasiswa?.nama_ibu_kandung || '-' }}
+                        {{ data.RiwayatPendidikanMahasiswaFeeder[0]?.nama_ibu_kandung || '-'}}
                     </template>
                 </Column>
 
