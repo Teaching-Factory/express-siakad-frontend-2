@@ -10,6 +10,7 @@ import { get } from '../../../utiils/request';
 
 const first = ref(0);
 const krsTervalidasi = ref([]);
+const prodis = ref([]);
 const route = useRoute();
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -35,6 +36,7 @@ const fetchKrsTervalidasi = async () => {
         });
         const response = await get(`krs-mahasiswa/${id_prodi}/${id_semester}/get-mahasiswa-krs-tervalidasi`);
         krsTervalidasi.value = response.data.data;
+        console.log('object', response.data.data);
         Swal.close();
     } catch (error) {
         console.error('Gagal mengambil data:', error);
@@ -69,6 +71,28 @@ const batalkanValidasi = async (id_registrasi_mahasiswa) => {
     }
 };
 
+const getProdi = async () => {
+    const id_prodi = route.params.id_prodi; // Ambil id_prodi dari URL
+
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`prodi/${id_prodi}/get`);
+        const prodi = response.data.data;
+
+        prodis.value = prodi;
+        Swal.close();
+    } catch (error) {
+        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
+    }
+};
+
 const onPageChange = (event) => {
     first.value = event.first;
 };
@@ -76,12 +100,13 @@ const onPageChange = (event) => {
 // Panggil fetchKrsTervalidasi saat komponen dimuat
 onMounted(() => {
     fetchKrsTervalidasi();
+    getProdi();
 });
 </script>
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>KRS MAHASISWA YANG TERVALIDASI</h5>
+        <h5><i class="pi pi-user me-2"></i>KRS MAHASISWA YANG TERVALIDASI || {{ prodis?.JenjangPendidikan.nama_jenjang_didik }} - {{ prodis?.nama_program_studi }}</h5>
         <div class="card">
             <DataTable
                 v-model:filters="filters"

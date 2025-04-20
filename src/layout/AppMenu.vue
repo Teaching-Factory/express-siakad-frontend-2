@@ -221,11 +221,11 @@ const model = ref([
                         to: '/import-aktivitas-mahasiswa',
                         visible: computed(() => permissions.includes('import-aktivitas-mahasiswa'))
                     },
-                    {
-                        label: 'Data Mahasiswa Belum KRS',
-                        to: '/mahasiswa-belum-krs',
-                        visible: computed(() => permissions.includes('mahasiswa-belum-krs'))
-                    },
+                    // {
+                    //     label: 'Data Mahasiswa Belum KRS',
+                    //     to: '/mahasiswa-belum-krs',
+                    //     visible: computed(() => permissions.includes('mahasiswa-belum-krs'))
+                    // },
                     {
                         label: 'Hitung Transkrip',
                         to: '/perhitungan-transkrip',

@@ -3,6 +3,7 @@ import { ref, onBeforeMount } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { get } from '../../../utiils/request';
 import Swal from 'sweetalert2';
+import { useRoute } from 'vue-router';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -19,62 +20,13 @@ const selectedSemester = ref('');
 const selectedProdi = ref('');
 const semesters = ref([]);
 const prodis = ref([]);
+const route = useRoute();
 
 const adminProdi = ref(null);
-const getAdminProdi = async () => {
-    try {
-        const response = await get('user/checking-admin-prodi-user');
-        adminProdi.value = response.data.data; // Menyimpan data respons API
-
-        if (adminProdi.value) {
-            // Jika user adalah admin prodi, hanya masukkan prodi mereka
-            prodis.value = Array.isArray(adminProdi.value) ? adminProdi.value : [adminProdi.value];
-            selectedProdi.value = adminProdi.value?.id_prodi || null;
-        } else {
-            // Jika user bukan admin prodi, ambil semua prodi
-            await getProdi(); // Pastikan fungsi fetchProdi sudah ada
-        }
-
-        console.log('admin', response.data); // Cek hasil respons
-    } catch (error) {
-        console.error('Gagal mengambil data admin prodi:', error);
-        prodis.value = []; // Pastikan prodi kosong jika terjadi error
-    }
-};
-
-const fetchProdi = async () => {
-    try {
-        const response = await get('prodi');
-        prodis.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data :', error);
-    }
-};
-const fetchSemester = async () => {
-    try {
-        const response = await get('semester');
-        semesters.value = response.data.data;
-    } catch (error) {
-        console.error('Gagal mengambil data :', error);
-    }
-};
-
-const selectedFilter = async () => {
-    await Promise.all([fetchProdi(), fetchSemester(), getAdminProdi()]);
-};
 
 const filterData = async () => {
-    const semesterId = selectedSemester.value;
-    const prodiId = selectedProdi.value;
-
-    console.log('Selected Periode:', semesterId);
-    console.log('Selected Prodi:', prodiId);
-
-    if (!semesterId || !prodiId) {
-        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
-        Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning').then(() => {});
-        return;
-    }
+    const id_prodi = route.params.id_prodi; // Ambil id_prodi dari URL
+    const id_semester = route.params.id_semester; // Ambil id_semester dari URL
 
     try {
         Swal.fire({
@@ -85,10 +37,31 @@ const filterData = async () => {
                 Swal.showLoading();
             }
         });
-        const response = await get(`krs-mahasiswa/${semesterId}/${prodiId}/get-mahasiswa-belum-krs`);
+        const response = await get(`krs-mahasiswa/${id_semester}/${id_prodi}/get-mahasiswa-belum-krs`);
         const filterbelumkrs = response.data.data;
 
         belumKrs.value = filterbelumkrs;
+        Swal.close();
+    } catch (error) {
+        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
+    }
+};
+const getProdi = async () => {
+    const id_prodi = route.params.id_prodi; // Ambil id_prodi dari URL
+
+    try {
+        Swal.fire({
+            title: 'Loading...',
+            html: 'Sedang Memuat Data',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const response = await get(`prodi/${id_prodi}/get`);
+        const prodi = response.data.data;
+
+        prodis.value = prodi;
         Swal.close();
     } catch (error) {
         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
@@ -101,14 +74,15 @@ const onPageChange = (event) => {
 
 onBeforeMount(() => {
     // fetchBelumKrs();
-    selectedFilter();
+    filterData();
+    getProdi();
 });
 </script>
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>MAHASISWA YANG BELUM KRS</h5>
-        <div class="card">
+        <h5><i class="pi pi-user me-2"></i>MAHASISWA YANG BELUM KRS || {{ prodis?.JenjangPendidikan.nama_jenjang_didik }} - {{ prodis?.nama_program_studi }}</h5>
+        <!-- <div class="card">
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-sm-6">
                     <div v-if="adminProdi" class="mb-3">
@@ -120,7 +94,7 @@ onBeforeMount(() => {
                         </select>
                     </div>
 
-                    <!-- Jika user bukan admin prodi, tampilkan semua prodi -->
+              
                     <div v-else class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
                         <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
@@ -144,7 +118,7 @@ onBeforeMount(() => {
                     <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%">Tampilkan</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <DataTable
             v-model:filters="filters"
             :globalFilterFields="['nama_mahasiswa', 'nim', 'Prodi.nama_program_studi', 'dosenwali', 'angkatan ']"

@@ -227,6 +227,13 @@ const router = createRouter({
                     component: () => import('../views/mahasiswa/validasiKrsMahasiswa/tervalidasi.vue'),
                     props: true
                 },
+                {
+                    path: '/validasi-krs-mahasiswa/:id_prodi/:id_semester/mahasiswa-belum-krs',
+                    name: 'validasi-mahasiswa-belum-krs',
+                    component: () => import('../views/mahasiswa/mahasiswaBelumKrs/index.vue'),
+                    props: true
+                    // meta: { requiredPermissions: ['mahasiswa-belum-krs'] }
+                },
 
                 {
                     path: '/import-aktivitas-mahasiswa',

@@ -6,6 +6,7 @@ import { get } from '../../../utiils/request';
 import { getToken } from '../../../service/auth';
 import { API_URL } from '../../../config/config';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -17,12 +18,13 @@ const filters = ref({
 });
 
 const validasiKRS = ref([]);
-const loading1 = ref(false);
+const router = useRouter();
 const selectedValidasi = ref([]);
 const prodis = ref([]);
 const semesters = ref([]);
 const selectedProdi = ref('');
 const selectedSemester = ref('');
+const selectedStatusKRS = ref('');
 const message = ref('');
 const semesterAktif = ref([]);
 
@@ -78,34 +80,73 @@ const selectedFilter = async () => {
     Swal.close();
 };
 
-const filterData = async () => {
+const tampilkanData = async () => {
     const prodiId = selectedProdi.value;
     const semesterId = selectedSemester.value;
 
-    if (!prodiId || !semesterId) {
-        // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
-        Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning').then(() => {});
+    if (!prodiId || !semesterId || !selectedStatusKRS.value) {
+        Swal.fire('GAGAL!', 'Prodi, Semester, dan Status harus dipilih.', 'warning');
         return;
     }
 
-    try {
-        Swal.fire({
-            title: 'Loading...',
-            html: 'Sedang Memuat Data',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-        const response = await get(`krs-mahasiswa/${prodiId}/${semesterId}/get-mahasiswa-krs-belum-tervalidasi`);
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Sedang Memuat Data',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
-        validasiKRS.value = response.data.data;
-        console.log('data : ', response.data.data);
+    try {
+        let response;
+
+        if (selectedStatusKRS.value === 'belum_tervalidasi') {
+            response = await get(`krs-mahasiswa/${prodiId}/${semesterId}/get-mahasiswa-krs-belum-tervalidasi`);
+            validasiKRS.value = response.data.data;
+            console.log('data : ', response.data.data);
+        } else if (selectedStatusKRS.value === 'tervalidasi') {
+            const url = `/validasi-krs-mahasiswa/${prodiId}/${semesterId}/tervalidasi`;
+            window.open(url, '_blank');
+        } else if (selectedStatusKRS.value === 'belum_krs') {
+            const url = `/validasi-krs-mahasiswa/${prodiId}/${semesterId}/mahasiswa-belum-krs`;
+            window.open(url, '_blank');
+        }
+
         Swal.close();
     } catch (error) {
-        Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
+        Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning');
     }
 };
+
+// const filterData = async () => {
+//     const prodiId = selectedProdi.value;
+//     const semesterId = selectedSemester.value;
+
+//     if (!prodiId || !semesterId) {
+//         // console.error('Prodi atau Angkatan Mahasiswa belum dipilih');
+//         Swal.fire('GAGAL!', 'Data tidak ditemukan.', 'warning').then(() => {});
+//         return;
+//     }
+
+//     try {
+//         Swal.fire({
+//             title: 'Loading...',
+//             html: 'Sedang Memuat Data',
+//             allowOutsideClick: false,
+//             didOpen: () => {
+//                 Swal.showLoading();
+//             }
+//         });
+//         const response = await get(`krs-mahasiswa/${prodiId}/${semesterId}/get-mahasiswa-krs-belum-tervalidasi`);
+
+//         validasiKRS.value = response.data.data;
+//         console.log('data : ', response.data.data);
+//         Swal.close();
+//     } catch (error) {
+//         Swal.fire('GAGAL!', 'Data Kelas Kuliah tidak ditemukan.', 'warning').then(() => {});
+//     }
+// };
 
 const updateValidasi = async () => {
     try {
@@ -187,14 +228,23 @@ const confirmDelete = (id_registrasi_mahasiswa) => {
         }
     });
 };
-const validasiUrl = computed(() => {
-    const id_prodi = selectedProdi.value;
-    const id_semester = selectedSemester.value;
-    if (!id_prodi || !id_semester) {
-        return '';
-    }
-    return `/validasi-krs-mahasiswa/${id_prodi}/${id_semester}/tervalidasi`;
-});
+// const validasiUrl = computed(() => {
+//     const id_prodi = selectedProdi.value;
+//     const id_semester = selectedSemester.value;
+//     if (!id_prodi || !id_semester) {
+//         return '';
+//     }
+//     return `/validasi-krs-mahasiswa/${id_prodi}/${id_semester}/tervalidasi`;
+// });
+
+// const validasiUrl_Blm_Krs = computed(() => {
+//     const id_prodi = selectedProdi.value;
+//     const id_semester = selectedSemester.value;
+//     if (!id_prodi || !id_semester) {
+//         return '';
+//     }
+//     return `/validasi-krs-mahasiswa/${id_prodi}/${id_semester}/mahasiswa-belum-krs`;
+// });
 onBeforeMount(() => {
     selectedFilter();
     fetchSemesterAktif();
@@ -222,7 +272,7 @@ onBeforeMount(() => {
                         </ol>
                         </p>
                     </div>
-                    <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="col-lg-4 col-md-6 col-sm-6">
                         <div v-if="adminProdi" class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Pilih Program Studi</label>
                         <select v-model="selectedProdi" class="form-select" aria-label="Default select example" disabled>
@@ -243,7 +293,7 @@ onBeforeMount(() => {
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-6 col-sm-6">
+                <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="mb-3">
                         <label for="exampleFormControlInput1" class="form-label">Semester</label>
                         <select v-model="selectedSemester" class="form-select" aria-label="Default select example">
@@ -252,8 +302,19 @@ onBeforeMount(() => {
                         </select>
                     </div>
                 </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Status</label>
+                        <select v-model="selectedStatusKRS" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Status</option>
+                            <option value="belum_tervalidasi" >Krs Belum Tervalidasi</option>
+                            <option value="tervalidasi" >Krs Tervalidasi</option>
+                            <option value="belum_krs" >Belum Krs</option>      
+                        </select>
+                    </div>
+                </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px;">
-                    <button @click="filterData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
+                    <button @click="tampilkanData" class="btn btn-primary btn-block" style="width: 100%;">Tampilkan</button>
                 </div>
                 <hr/>
                 </div>
@@ -278,7 +339,7 @@ onBeforeMount(() => {
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
                             <div class="flex justify-content-end gap-2">
-                                <router-link :to="validasiUrl" class="btn btn-secondary"> <i class="pi pi-eye me-2"></i> Tervalidasi</router-link>
+                                <!-- <router-link :to="validasiUrl" class="btn btn-secondary"> <i class="pi pi-eye me-2"></i> Tervalidasi</router-link> -->
                                 <!-- <button class="btn btn-danger"> <i class="pi pi-refresh me-2"></i> Sinkronkan</button> -->
                                 <button class="btn btn-success" @click="updateValidasi"> <i class="pi pi-check me-2"></i> Proses Validasi</button>
                             </div>
