@@ -380,6 +380,13 @@ onBeforeMount(() => {
                         {{ data.nama_status_mahasiswa }}
                     </template>
                 </Column>
+                <Column filterField="status" header="Status KRS" style="min-width: 10rem">
+                    <template #body="{  }">
+                        <div class="flex items-center gap-4">
+                            <Badge severity="warning" >Belum Tervalidasi</Badge>
+                        </div>
+                    </template>
+                </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
                         <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2" title="Detail Krs"> 

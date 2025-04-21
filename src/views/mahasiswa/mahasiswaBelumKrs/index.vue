@@ -184,6 +184,13 @@ onBeforeMount(() => {
                     {{ data.nama_periode_masuk }}
                 </template>
             </Column>
+            <Column filterField="status" header="Status" style="min-width: 10rem">
+                <template #body="{}"
+                    ><div class="flex items-center gap-4">
+                        <Badge severity="danger">Belum KRS</Badge>
+                    </div>
+                </template>
+            </Column>
         </DataTable>
     </div>
 </template>
