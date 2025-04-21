@@ -81,7 +81,7 @@ onBeforeMount(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>MAHASISWA YANG BELUM KRS || {{ prodis?.JenjangPendidikan.nama_jenjang_didik }} - {{ prodis?.nama_program_studi }}</h5>
+        <h5><i class="pi pi-user me-2"></i>MAHASISWA YANG BELUM KRS || {{ prodis?.JenjangPendidikan?.nama_jenjang_didik }} - {{ prodis?.nama_program_studi }}</h5>
         <!-- <div class="card">
             <div class="row">
                 <div class="col-lg-5 col-md-6 col-sm-6">

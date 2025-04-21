@@ -106,7 +106,7 @@ onMounted(() => {
 
 <template>
     <div class="card">
-        <h5><i class="pi pi-user me-2"></i>KRS MAHASISWA YANG TERVALIDASI || {{ prodis?.JenjangPendidikan.nama_jenjang_didik }} - {{ prodis?.nama_program_studi }}</h5>
+        <h5><i class="pi pi-user me-2"></i>KRS MAHASISWA YANG TERVALIDASI || {{ prodis?.JenjangPendidikan?.nama_jenjang_didik }} - {{ prodis?.nama_program_studi }}</h5>
         <div class="card">
             <DataTable
                 v-model:filters="filters"
