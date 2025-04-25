@@ -167,18 +167,18 @@ export default {
                 <tbody>
                     <tr v-for="(matkul, index) in rekapKrsData" :key="index">
                         <td>{{ index + 1 }}</td>
-                        <td width="10%">{{ matkul.kode_mata_kuliah }}</td>
-                        <td>{{ matkul.nama_mata_kuliah }}</td>
+                        <td width="10%">{{ matkul.MataKuliah.kode_mata_kuliah }}</td>
+                        <td>{{ matkul?.MataKuliah.nama_mata_kuliah }}</td>
                         <td>{{ matkul?.nama_dosen }}</td>
-                        <td>{{ matkul?.sks_mata_kuliah }}</td>
-                        <td>{{ matkul?.nama_kelas_kuliah }}</td>
+                        <td>{{ matkul?.MataKuliah.sks_mata_kuliah }}</td>
+                        <td>{{ matkul?.MataKuliah.nama_kelas_kuliah }}</td>
                         <td>{{ matkul?.KelasKuliah?.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan ?? '-' }}</td>
                         <td>{{ matkul?.KelasKuliah?.DetailKelasKuliahs[0]?.hari ?? '-' }}</td>
                         <td>{{ matkul?.KelasKuliah?.DetailKelasKuliahs?.length > 0 ? `${formatTime(matkul?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_mulai)} - ${formatTime(matkul?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_selesai)}` : '-' }}</td>
                     </tr>
                     <tr>
                         <td class="text-center" colspan="4">Jumlah</td>
-                        <td class="text-center" colspan="1">{{}}</td>
+                        <td class="text-center" colspan="1">{{ krsData?.total_sks }}</td>
                         <td class="text-center" colspan="4"></td>
                     </tr>
                 </tbody>
@@ -207,7 +207,7 @@ export default {
                             <p class="m-0">Pembimbing Akademik</p>
                             <p style="height: 70px"></p>
                             <p class="m-0" style="text-transform: uppercase; text-decoration: underline; font-weight: bold">{{ krsData?.dosen_wali?.Dosen?.nama_dosen ?? '-' }}</p>
-                            <p class="m-0">08976768757</p>
+                            <p class="m-0">-</p>
                         </td>
                     </tr>
                     <tr>
