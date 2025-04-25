@@ -86,10 +86,12 @@ const filterData = async () => {
 
     try {
         Swal.close();
-        router.push({
+
+        const resolved = router.resolve({
             name: 'cetak-rekap-pendaftar-pmb',
             query: requestBody
         });
+        window.open(resolved.href, '_blank');
     } catch (error) {
         console.error('Gagal mengirim data:', error);
     }

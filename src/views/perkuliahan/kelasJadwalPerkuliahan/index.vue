@@ -332,7 +332,16 @@ function deleteDosen(index) {
                         <th colspan="7">{{kelas.mataKuliah.nama_mata_kuliah}} [ {{kelas.mataKuliah.sks_mata_kuliah}} | {{kelas.mataKuliah.kode_mata_kuliah}}]</th>
                         <th class="text-end">
                             <!-- <button class="btn btn-secondary me-2"> 1 Kelas </button> -->
-                            <router-link :to="`/kelas-jadwal-perkuliahan/create-kelas/${kelas.mataKuliah.id_matkul}/${selectedPeriode}`" class="btn btn-success" title="tambah kelas"><i class="pi pi-plus"></i></router-link>
+                            <a
+                                :href="$router.resolve(`/kelas-jadwal-perkuliahan/create-kelas/${kelas.mataKuliah.id_matkul}/${selectedPeriode}`).href"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn btn-success"
+                                title="Tambah Kelas"
+                                >
+                                <i class="pi pi-plus"></i>
+                                </a>
+
                         </th>
                     </tr>
                 </thead>
@@ -354,88 +363,19 @@ function deleteDosen(index) {
                             <i class="pi pi-users">0/{{ detail.kapasitas || '0' }}</i>
                         </td>
                         <td>
-                            <router-link class="btn me-2" :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/dosen-pengajar`"  style="background-color: #E87E04; color: #fff;"> <i class="pi pi-users me-2"></i> Dosen Pengampu </router-link>
+                            <a
+                                :href="$router.resolve(`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/dosen-pengajar`).href"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn me-2"
+                                style="background-color: #E87E04; color: #fff;"
+                                >
+                                <i class="pi pi-users me-2"></i> Dosen Pengampu
+                            </a>
+
                             <span>{{detail.KelasKuliah?.Dosen?.nama_dosen || '-'}}</span>
                             
-                            <!-- modal 2 -->
-                        <!-- <Modal
-                            v-if="showModal2"
-                            :show="showModal2"
-                            title="DOSEN PENGAJAR KELAS KULIAH"
-                            @close="showModal2 = false"
-                            >
-                            <div class="card" style="border-radius: none !important">
-                                   
-                                        <div class="row">
-                                        <div class="col-lg-2">Program Studi</div>
-                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar?.Prodi?.nama_program_studi || '-' }}</div>
-                                        <div class="col-lg-2">Periode</div>
-                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar?.Semester?.nama_semester || '-' }}</div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                        <div class="col-lg-2">Mata Kuliah</div>
-                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar.KelasKuliah?.MataKuliah?.nama_mata_kuliah || '-' }}</div>
-                                        <div class="col-lg-2">Kelas</div>
-                                        <div class="col-lg-4"><span class="me-2">:</span> {{ dosenpengajar.KelasKuliah?.nama_kelas_kuliah || '-' }}</div>
-                                        </div>
-                                       
-                                <hr style="margin: 0;">
-
-                                <div class="row mt-4">
-                                    <table class="table">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th class="text-center">Nama Dosen Pengajar</th>
-                                                <th class="text-center">Rencana Pertemuan</th>
-                                                <th class="text-center">SKS</th>
-                                                <th class="text-center">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            
-                                                <tr v-if="dosenpengajar">
-                                                    <td v-if="!dosenpengajar.isEditing" class="text-center">{{ dosenpengajar.Dosen?.nama_dosen || "-" }}</td>
-                                                    <td v-else><input type="text" class="form-control" v-model="dosenpengajar.Dosen.nama_dosen"></td>
-
-                                                    <td v-if="!dosenpengajar.isEditing" class="text-center">{{ dosenpengajar?.rencana_minggu_pertemuan || "-"}}</td>
-                                                    <td v-else><input type="text" class="form-control" v-model="dosenpengajar.rencana_minggu_pertemuan"></td>
-
-                                                    <td v-if="!dosenpengajar.isEditing" class="text-center">{{ dosenpengajar.KelasKuliah?.sks || "-"}}</td>
-                                                    <td v-else><input type="text" class="form-control" v-model="dosenpengajar.KelasKuliah.sks"></td>
-                                                    
-                                                    <td class="text-center">
-                                                        <button class="btn btn-outline-secondary me-2" @click="saveDosen(index)" v-if="dosenpengajar.isEditing">
-                                                            Save
-                                                        </button>
-                                                        <button class="btn btn-outline-warning me-2" @click="editDosen(index)" v-else>
-                                                            <i class="pi pi-pencil"></i>
-                                                        </button>
-                                                        <button class="btn btn-outline-danger me-2" @click="deleteDosen(index)">
-                                                            <i class="pi pi-trash"></i>
-                                                        </button>
-                                                        <button class="btn btn-primary me-2" v-if="!dosenpengajar.isEditing">
-                                                            Set Ketua
-                                                        </button>
-                                                    </td>
-                                                </tr>
-    
-                                            <tr v-else>
-                                                <p>Data tidak ditemukan</p>
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <button class="btn btn-secondary" @click="addDosen"><i class="pi pi-plus me-2"></i> Tambah Dosen
-                                            Pengajar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </Modal> -->
+                           
 
                         </td>
                         <td class="text-end">
@@ -503,10 +443,40 @@ function deleteDosen(index) {
                             </Modal>
                         </td>
                         <td class="text-end">
-                            <router-link :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/komponen-evaluasi`" class="btn  me-2 btn-primary" title="Komponen Evaluasi" > <i class="pi pi-box "></i> </router-link>
-                            <router-link :to="`/kelas-jadwal-perkuliahan/update-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}`" class="btn  me-2 btn-warning" title="edit" > <i class="pi pi-pencil "></i> </router-link>
+                            <a
+                                :href="$router.resolve(`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/komponen-evaluasi`).href"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn me-2 btn-primary"
+                                title="Komponen Evaluasi"
+                                >
+                                <i class="pi pi-box"></i>
+                                </a>
+                                <a
+                                :href="$router.resolve(`/kelas-jadwal-perkuliahan/update-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}`).href"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn me-2 btn-warning"
+                                title="Edit"
+                                >
+                                <i class="pi pi-pencil"></i>
+                                </a>
+
+                                <a
+                                :href="$router.resolve(`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/create-peserta-kelas`).href"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn me-2"
+                                style="background-color: #E87E04;"
+                                title="Tambah Peserta"
+                                >
+                                <i class="pi pi-user-plus"></i>
+                                </a>
+
+                            <!-- <router-link :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/komponen-evaluasi`" class="btn  me-2 btn-primary" title="Komponen Evaluasi"  > <i class="pi pi-box "></i> </router-link> -->
+                            <!-- <router-link :to="`/kelas-jadwal-perkuliahan/update-kelas/${kelas.details[0].KelasKuliah.id_matkul}/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}`" class="btn  me-2 btn-warning" title="edit" > <i class="pi pi-pencil "></i> </router-link> -->
                             <button @click="confirmDelete(detail.KelasKuliah.id_kelas_kuliah)" class="btn  me-2 btn-danger" title="delete"> <i class="pi pi-trash "></i> </button>
-                            <router-link :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/create-peserta-kelas`" class="btn  me-2" style="background-color: #E87E04;" title="Tambah Peserta"><i class="pi pi-user-plus "></i> </router-link>
+                            <!-- <router-link :to="`/kelas-jadwal-perkuliahan/${detail?.id_detail_kelas_kuliah}/${detail?.id_kelas_kuliah}/create-peserta-kelas`" class="btn  me-2" style="background-color: #E87E04;" title="Tambah Peserta"><i class="pi pi-user-plus "></i> </router-link> -->
                             <!-- <button class="btn  me-2 btn-primary"> <i class="pi pi-print "></i> </button>
                             <button class="btn  me-2 btn-success"> <i class="pi pi-copy "></i> </button> -->
                         </td>

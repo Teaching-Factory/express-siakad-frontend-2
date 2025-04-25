@@ -190,8 +190,8 @@ export default {
                     <tbody>
                         <tr v-for="(nilai, index) in getRekapKhsData" :key="index">
                             <td>{{ index + 1 }}</td>
-                            <td>{{ nilai.nama_mata_kuliah }}</td>
-                            <td>{{ nilai?.sks_mata_kuliah ? parseFloat(nilai?.sks_mata_kuliah).toFixed(0) : '-' }}</td>
+                            <td>{{ nilai.MataKuliah.nama_mata_kuliah }}</td>
+                            <td>{{ nilai?.MataKuliah.sks_mata_kuliah ? parseFloat(nilai?.MataKuliah.sks_mata_kuliah).toFixed(0) : '-' }}</td>
                             <td>{{ nilai.nilai_angka }}</td>
                             <td>{{ nilai.nilai_huruf }}</td>
                             <td>{{ nilai.nilai_indeks }}</td>

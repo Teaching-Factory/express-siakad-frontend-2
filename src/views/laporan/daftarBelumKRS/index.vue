@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
-import { getData } from '../../../utiils/request.js'
-import Swal from "sweetalert2";
+import { getData } from '../../../utiils/request.js';
+import Swal from 'sweetalert2';
 
 const prodis = ref([]);
 const angkatans = ref([]);
@@ -40,32 +40,33 @@ const filter = () => {
             Swal.showLoading();
         }
     });
-    
+
     const requestBody = {
         id_angkatan: selectedAngkatan.value,
         id_prodi: selectedProdi.value,
         tanggal_penandatanganan: tanggalPenandatanganan.value,
-        format: format.value,
+        format: format.value
     };
 
     console.log('req', requestBody);
 
     try {
         Swal.close();
-        router.push({
+
+        const resolved = router.resolve({
             name: 'cetak-daftar-belum-krs',
             query: requestBody
         });
+        window.open(resolved.href, '_blank');
     } catch (error) {
         console.error('Gagal mengirim data:', error);
     }
-}
+};
 
 onMounted(() => {
     fetchProdi();
     fetchAngkatan();
 });
-
 </script>
 
 <template>
@@ -79,7 +80,7 @@ onMounted(() => {
                 </div>
                 <div class="col-lg-6">
                     <select class="form-select" aria-label="Default select example" v-model="selectedAngkatan">
-                        <option value="" selected disabled hidden>-- Pilih Angkatan  --</option>
+                        <option value="" selected disabled hidden>-- Pilih Angkatan --</option>
                         <option v-for="angkatan in angkatans" :key="angkatan.id" :value="angkatan.id">{{ angkatan.tahun }}</option>
                     </select>
                 </div>
@@ -95,7 +96,7 @@ onMounted(() => {
                     </select>
                 </div>
             </div>
-            
+
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="exampleFormControlInput1" class="form-label">Format</label>
@@ -110,13 +111,13 @@ onMounted(() => {
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label  for="exampleFormControlInput1" class="form-label">Tanggal Penandatanganan</label>
+                    <label for="exampleFormControlInput1" class="form-label">Tanggal Penandatanganan</label>
                 </div>
                 <div class="col-lg-6">
-                    <input v-model="tanggalPenandatanganan" type="date" class="form-control">
+                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" />
                 </div>
             </div>
-            <div class="row ">
+            <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <button @click="filter" class="btn btn-primary">Tampilkan</button>
                 </div>

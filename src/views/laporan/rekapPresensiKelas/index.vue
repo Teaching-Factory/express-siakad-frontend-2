@@ -64,10 +64,11 @@ const filterData = async () => {
 
     try {
         Swal.close();
-        router.push({
+        const resolved = router.resolve({
             name: 'cetak-presensi-kelas',
             query: requestBody
         });
+        window.open(resolved.href, '_blank');
     } catch (error) {
         console.error('Gagal mengirim data:', error);
     }
@@ -83,8 +84,8 @@ onMounted(async () => {
         <div class="card-body">
             <h5><i class="pi pi-user me-2"></i>REKAP PRESENSI KELAS</h5>
             <hr />
-            <hr>
-            
+            <hr />
+
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="exampleFormControlInput1" class="form-label">Periode</label>
@@ -102,9 +103,9 @@ onMounted(async () => {
                 </div>
                 <div class="col-lg-6">
                     <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>-- Pilih Program Studi --</option>
-                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
-                        </select>
+                        <option value="" selected disabled hidden>-- Pilih Program Studi --</option>
+                        <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
+                    </select>
                 </div>
             </div>
             <div class="row d-flex justify-content-center mb-3">
@@ -112,7 +113,7 @@ onMounted(async () => {
                     <label for="exampleFormControlInput1" class="form-label">Kelas / Mata Kuliah</label>
                 </div>
                 <div class="col-lg-6">
-                    <input v-model="selectedKelasKuliah" type="text" class="form-control" id="nama_kelas_kuliah" placeholder="Ketikkan Nama Kelas Kuliah disini">
+                    <input v-model="selectedKelasKuliah" type="text" class="form-control" id="nama_kelas_kuliah" placeholder="Ketikkan Nama Kelas Kuliah disini" />
                 </div>
             </div>
             <div class="row d-flex justify-content-center mb-3">
@@ -121,22 +122,21 @@ onMounted(async () => {
                 </div>
                 <div class="col-lg-6">
                     <select v-model="format" class="form-select" aria-label="Default select example">
-                            <option value="HTML">HTML</option>
-                            <option value="Excel">Excel</option>
-                        </select>
+                        <option value="HTML">HTML</option>
+                        <option value="Excel">Excel</option>
+                    </select>
                 </div>
             </div>
-            
-            
+
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="exampleFormControlInput1" class="form-label">Tanggal Penandatanganan</label>
                 </div>
                 <div class="col-lg-6">
-                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" id="tanggalPenandatanganan">
+                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" id="tanggalPenandatanganan" />
                 </div>
             </div>
-            <div class="row ">
+            <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <button @click="filterData" class="btn btn-primary">Tampilkan</button>
                 </div>

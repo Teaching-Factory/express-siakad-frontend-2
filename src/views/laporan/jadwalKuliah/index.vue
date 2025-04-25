@@ -1,15 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 
-import { getData, get } from '../../../utiils/request.js'
-import Swal from "sweetalert2";
+import { getData, get } from '../../../utiils/request.js';
+import Swal from 'sweetalert2';
 
 const prodis = ref([]);
 const semesters = ref([]);
 const kurikulums = ref([]);
-
 
 const selectedKurikulum = ref('');
 const selectedProdi = ref('');
@@ -46,7 +45,6 @@ const getKurikulum = async () => {
     }
 };
 
-
 const filterData = async () => {
     Swal.fire({
         title: 'Loading...',
@@ -57,33 +55,32 @@ const filterData = async () => {
         }
     });
 
-
     let requestBody = {
         id_prodi: selectedProdi.value,
         id_kurikulum: selectedKurikulum.value,
         id_semester: selectedPeriode.value,
         semester: selectedSemester.value,
-        tanggal_penandatanganan: tanggalPenandatanganan.value,
+        tanggal_penandatanganan: tanggalPenandatanganan.value
     };
-    
+
     try {
         Swal.close();
-        router.push({
+
+        const resolved = router.resolve({
             name: 'cetak-jadwal-kuliah',
             query: requestBody
         });
+        window.open(resolved.href, '_blank');
     } catch (error) {
         console.error('Gagal mengirim data:', error);
     }
 };
-
 
 onMounted(() => {
     fetchProdi();
     getKurikulum();
     fetchSemester();
 });
-
 </script>
 
 <template>
@@ -91,18 +88,18 @@ onMounted(() => {
         <div class="card-body">
             <h5><i class="pi pi-user me-2"></i>LAPORAN JADWAL PERKULIAHAN</h5>
             <hr />
-            <hr>
-            
+            <hr />
+
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="exampleFormControlInput1" class="form-label">Program Studi</label>
                 </div>
                 <div class="col-lg-6">
-                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
-                            <option value="" selected disabled hidden>Pilih Program Studi</option>
-                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
-                        </select>
-                    </div>
+                    <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                        <option value="" selected disabled hidden>Pilih Program Studi</option>
+                        <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
+                    </select>
+                </div>
             </div>
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
@@ -144,16 +141,16 @@ onMounted(() => {
                     </select>
                 </div>
             </div>
-            
+
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="exampleFormControlInput1" class="form-label">Tanggal Penandatanganan</label>
                 </div>
                 <div class="col-lg-6">
-                    <input v-model="tanggalPenandatanganan" type="date" class="form-control">
+                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" />
                 </div>
             </div>
-            <div class="row ">
+            <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <button @click="filterData" class="btn btn-primary">Tampilkan</button>
                 </div>

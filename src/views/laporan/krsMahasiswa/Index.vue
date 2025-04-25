@@ -58,46 +58,43 @@ const filterData = async () => {
     console.log('ini jenis cetak', jenis_cetak);
     let requestBody = {};
 
-    if (jenis_cetak === 'Mahasiswa') {
-        requestBody = {
-            jenis_cetak: jenis_cetak,
-            nim: nimMahasiswa.value,
-            id_semester: selectedSemester.value,
-            tanggal_penandatanganan: tanggalPenandatanganan.value,
-            format: format.value
-        };
+    try {
+        if (jenis_cetak === 'Mahasiswa') {
+            requestBody = {
+                jenis_cetak,
+                nim: nimMahasiswa.value,
+                id_semester: selectedSemester.value,
+                tanggal_penandatanganan: tanggalPenandatanganan.value,
+                format: format.value
+            };
 
-        // Jika 'Mahasiswa', arahkan ke cetak-krs-angkatan
-        try {
             Swal.close();
-            router.push({
+            const resolved = router.resolve({
                 name: 'cetak-krs-mahasiswa',
                 query: requestBody
             });
-        } catch (error) {
-            console.error('Gagal mengirim data:', error);
-        }
-    } else if (jenis_cetak === 'Angkatan') {
-        requestBody = {
-            jenis_cetak: jenis_cetak,
-            id_prodi: selectedProdi.value,
-            id_angkatan: selectedAngkatan.value,
-            id_semester: selectedSemester.value,
-            tanggal_penandatanganan: tanggalPenandatanganan.value
-        };
+            window.open(resolved.href, '_blank');
+        } else if (jenis_cetak === 'Angkatan') {
+            requestBody = {
+                jenis_cetak,
+                id_prodi: selectedProdi.value,
+                id_angkatan: selectedAngkatan.value,
+                id_semester: selectedSemester.value,
+                tanggal_penandatanganan: tanggalPenandatanganan.value
+            };
 
-        // Jika 'Angkatan', arahkan ke cetak-krs-mahasiswa
-        try {
             Swal.close();
-            router.push({
+            const resolved = router.resolve({
                 name: 'cetak-krs-mahasiswa-angkatan',
                 query: requestBody
             });
-        } catch (error) {
-            console.error('Gagal mengirim data:', error);
+            window.open(resolved.href, '_blank');
+        } else {
+            console.error('Invalid jenis_cetak:', jenis_cetak);
+            Swal.close();
         }
-    } else {
-        console.error('Invalid jenis_cetak:', jenis_cetak);
+    } catch (error) {
+        console.error('Gagal mengirim data:', error);
         Swal.close();
     }
 };

@@ -1,10 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 const router = useRouter();
 
-import { getData, get } from '../../../utiils/request.js'
-import Swal from "sweetalert2";
+import { getData, get } from '../../../utiils/request.js';
+import Swal from 'sweetalert2';
 
 const angkatans = ref([]);
 const prodis = ref([]);
@@ -45,7 +45,6 @@ const fetchAngkatan = async () => {
     }
 };
 
-
 const filterData = async () => {
     Swal.fire({
         title: 'Loading...',
@@ -59,7 +58,7 @@ const filterData = async () => {
     const jenis_cetak = selectedJenisCetak.value;
     console.log('ini jenis cetak', jenis_cetak);
     let requestBody = {};
-    
+
     if (jenis_cetak === 'Mahasiswa') {
         const nim = nimMahasiswa.value;
         const formatExp = format.value;
@@ -88,53 +87,56 @@ const filterData = async () => {
     console.log('req', requestBody);
     try {
         Swal.close();
-        router.push({
+        // router.push({
+
+        // });
+
+        const resolved = router.resolve({
             name: 'cetak-khs-mahasiswa',
             query: requestBody
         });
+        window.open(resolved.href, '_blank');
     } catch (error) {
         console.error('Gagal mengirim data:', error);
     }
 };
-
 
 onMounted(() => {
     fetchProdi();
     fetchAngkatan();
     fetchSemester();
 });
-
 </script>
 <template>
     <div class="card">
         <div class="card-body">
             <h5><i class="pi pi-user me-2"></i>KARTU HASIL STUDI (KHS)</h5>
             <hr />
-            <hr>
+            <hr />
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="exampleFormControlInput1" class="form-label">Pilih Cetak KRS</label>
                 </div>
                 <div class="col-lg-6">
                     <select class="form-select" v-model="selectedJenisCetak" aria-label="Default select example">
-                        <option value="" selected disabled hidden>-- Pilih Cetak  --</option>
+                        <option value="" selected disabled hidden>-- Pilih Cetak --</option>
                         <option value="Mahasiswa">Mahasiswa</option>
                         <option value="Angkatan">Angkatan</option>
                     </select>
                 </div>
             </div>
-            
+
             <div v-if="selectedJenisCetak === 'Mahasiswa'">
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
                         <label for="nimMahasiswa" class="form-label">NIM Mahasiswa</label>
                     </div>
                     <div class="col-lg-6">
-                        <input v-model="nimMahasiswa" type="text" class="form-control" id="nimMahasiswa" placeholder="Ketikkan NIM Mahasiswa disini">
+                        <input v-model="nimMahasiswa" type="text" class="form-control" id="nimMahasiswa" placeholder="Ketikkan NIM Mahasiswa disini" />
                     </div>
                 </div>
             </div>
-            
+
             <div v-if="selectedJenisCetak === 'Angkatan'">
                 <div class="row d-flex justify-content-center mb-3">
                     <div class="col-lg-4">
@@ -148,7 +150,7 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            
+
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
                     <label for="selectedSemester" class="form-label">Periode</label>
@@ -173,7 +175,7 @@ onMounted(() => {
                         </select>
                     </div>
                 </div>
-            </div>    
+            </div>
 
             <div v-if="selectedJenisCetak === 'Angkatan'">
                 <div class="row d-flex justify-content-center mb-3">
@@ -193,10 +195,10 @@ onMounted(() => {
                     <label for="tanggalPenandatanganan" class="form-label">Tanggal Penandatanganan</label>
                 </div>
                 <div class="col-lg-6">
-                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" id="tanggalPenandatanganan">
+                    <input v-model="tanggalPenandatanganan" type="date" class="form-control" id="tanggalPenandatanganan" />
                 </div>
             </div>
-            <div class="row ">
+            <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
                     <button @click="filterData" class="btn btn-primary">Tampilkan</button>
                 </div>
