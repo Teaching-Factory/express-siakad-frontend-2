@@ -244,7 +244,7 @@ onBeforeMount(() => {
             <div class="row mt-5">
                 <div class="row mb-2">
                     <div class="col-lg-6">
-                        <h5>Rencana Evaluasi</h5>
+                        <h5>Komponen Evaluasi</h5>
                     </div>
                     <div class="col-lg-6 text-end">
                         <button @click="showModal" class="btn btn-success"><i class="pi pi-pencil me-2"></i> Edit</button>
@@ -277,10 +277,10 @@ onBeforeMount(() => {
                 </div>
             </div>
 
-            <Modal :show="show" @close="show = false" title="RENCANA EVALUASI">
+            <Modal :show="show" @close="show = false" title="KOMPONEN EVALUASI">
                 <div class="row mb-2">
                     <div class="col-lg-8">
-                        <h5>Rencana Evaluasi</h5>
+                        <h5>Komponen Evaluasi</h5>
                     </div>
 
                     <div class="col-lg-4 text-end">
@@ -322,7 +322,7 @@ onBeforeMount(() => {
                                         <input type="text" class="form-control" v-model="evaluasi.JenisEvaluasi.nama_jenis_evaluasi" disabled />
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" v-model="evaluasi.nama_evaluasi" />
+                                        <input type="text" class="form-control" v-model="evaluasi.nama" />
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" v-model="evaluasi.nama_inggris" />

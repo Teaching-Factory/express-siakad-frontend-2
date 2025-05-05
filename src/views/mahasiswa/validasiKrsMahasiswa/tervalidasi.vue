@@ -177,9 +177,9 @@ onMounted(() => {
                 </Column>
                 <Column header="Aksi" style="min-width: 10rem">
                     <template #body="{ data }">
-                        <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2" title="Detai Krs">
+                        <!-- <router-link :to="`/validasi-krs-mahasiswa/detailKRS/${data.id_registrasi_mahasiswa}`" class="btn btn-outline-primary me-2 py-1 px-2" title="Detai Krs">
                             <i class="pi pi-pencil"></i>
-                        </router-link>
+                        </router-link> -->
                         <button @click="batalkanValidasi(data.id_registrasi_mahasiswa)" class="btn btn-outline-danger py-1 px-2" title="Batalkan Krs">
                             <i class="pi pi-times"></i>
                         </button>

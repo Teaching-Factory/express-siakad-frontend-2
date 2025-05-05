@@ -327,16 +327,16 @@ onBeforeMount(() => {
                                     <input type="text" class="form-control" v-model="evaluasi.JenisEvaluasi.nama_jenis_evaluasi" disabled />
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" v-model="evaluasi.nama_evaluasi" />
+                                    <input type="text" class="form-control" v-model="evaluasi.nama_evaluasi" required />
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" v-model="evaluasi.deskripsi_indonesia" />
+                                    <input type="text" class="form-control" v-model="evaluasi.deskripsi_indonesia" required />
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" v-model="evaluasi.deskripsi_inggris" />
+                                    <input type="text" class="form-control" v-model="evaluasi.deskripsi_inggris" required />
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" :value="parseFloat(evaluasi.bobot_evaluasi || 0).toFixed(0)" @input="evaluasi.bobot_evaluasi = parseFloat($event.target.value) || 0" style="width: 80px" />
+                                    <input type="number" class="form-control" :value="parseFloat(evaluasi.bobot_evaluasi || 0).toFixed(0)" @input="handleBobotInput($event, evaluasi)" style="width: 80px" min="0" max="100" />
                                 </td>
                             </tr>
                         </tbody>

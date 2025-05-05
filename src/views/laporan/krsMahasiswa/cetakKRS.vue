@@ -114,21 +114,21 @@ export default {
                                 <div style="margin-left: 15px; width: 110px">Nama</div>
                                 <div style="margin-right: 6px">:</div>
                                 <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa.nama_mahasiswa }}
+                                    {{ krsData?.mahasiswa?.nama_mahasiswa }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start">
                                 <div style="margin-left: 15px; width: 110px">Program Studi</div>
                                 <div style="margin-right: 6px">:</div>
                                 <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa.Prodi.nama_program_studi }}
+                                    {{ krsData?.mahasiswa?.Prodi?.nama_program_studi }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start">
                                 <div style="margin-left: 15px; width: 110px">Semester</div>
                                 <div style="margin-right: 6px">:</div>
                                 <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa.Semester.semester }}
+                                    {{ rekapKrsData[0]?.Semester?.semester }}
                                 </div>
                             </div>
                         </td>
@@ -137,14 +137,14 @@ export default {
                                 <div style="margin-left: 15px; width: 110px">NIM</div>
                                 <div style="margin-right: 6px">:</div>
                                 <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa.nim }}
+                                    {{ krsData?.mahasiswa?.nim }}
                                 </div>
                             </div>
                             <div style="display: flex; align-items: flex-start">
                                 <div style="margin-left: 15px; width: 110px">Periode</div>
                                 <div style="margin-right: 6px">:</div>
                                 <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa.Semester.nama_semester }}
+                                    {{ rekapKrsData[0]?.Semester?.nama_semester }}
                                 </div>
                             </div>
                         </td>
@@ -172,14 +172,14 @@ export default {
                 <tbody>
                     <tr v-for="(matkul, index) in rekapKrsData" :key="index">
                         <td>{{ index + 1 }}</td>
-                        <td width="10%">{{ matkul.KelasKuliah.MataKuliah.kode_mata_kuliah }}</td>
-                        <td>{{ matkul.KelasKuliah.MataKuliah.nama_mata_kuliah }}</td>
-                        <td>{{ matkul.KelasKuliah.Dosen.nama_dosen }}</td>
-                        <td>{{ matkul.KelasKuliah.sks }}</td>
-                        <td>{{ matkul.KelasKuliah.nama_kelas_kuliah }}</td>
-                        <td>{{ matkul.KelasKuliah.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan ?? '-' }}</td>
-                        <td>{{ matkul.KelasKuliah.DetailKelasKuliahs[0]?.hari ?? '-' }}</td>
-                        <td>{{ matkul.KelasKuliah.DetailKelasKuliahs.length > 0 ? `${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_mulai)} - ${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_selesai)}` : '-' }}</td>
+                        <td width="10%">{{ matkul.KelasKuliah?.MataKuliah?.kode_mata_kuliah }}</td>
+                        <td>{{ matkul.KelasKuliah?.MataKuliah.nama_mata_kuliah }}</td>
+                        <td>{{ matkul.KelasKuliah?.Dosen?.nama_dosen }}</td>
+                        <td>{{ matkul.KelasKuliah?.sks }}</td>
+                        <td>{{ matkul.KelasKuliah?.nama_kelas_kuliah }}</td>
+                        <td>{{ matkul.KelasKuliah?.DetailKelasKuliahs[0]?.RuangPerkuliahan?.nama_ruang_perkuliahan ?? '-' }}</td>
+                        <td>{{ matkul.KelasKuliah?.DetailKelasKuliahs[0]?.hari ?? '-' }}</td>
+                        <td>{{ matkul.KelasKuliah?.DetailKelasKuliahs.length > 0 ? `${formatTime(matkul.KelasKuliah?.DetailKelasKuliahs[0]?.jam_mulai)} - ${formatTime(matkul.KelasKuliah.DetailKelasKuliahs[0]?.jam_selesai)}` : '-' }}</td>
                     </tr>
                     <tr>
                         <td class="text-center" colspan="4">Jumlah</td>
