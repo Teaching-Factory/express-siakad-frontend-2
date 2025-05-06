@@ -1157,6 +1157,16 @@ const router = createRouter({
                     component: () => import('../views/referensi/singkronisasi/detail-nilai/detail-nilai-get/index.vue')
                     // meta: { requiredPermissions: ['jadwal-kelas-perkuliahan-dosen'] }
                 },
+                {
+                    path: '/sync-akm',
+                    name: 'sync-akm',
+                    component: () => import('../views/referensi/singkronisasi/akm/index.vue')
+                },
+                {
+                    path: '/sync-akm-get',
+                    name: 'sync-akm-get',
+                    component: () => import('../views/referensi/singkronisasi/akm/akm-get/index.vue')
+                },
 
                 //cetak
                 {

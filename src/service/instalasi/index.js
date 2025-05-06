@@ -60,6 +60,7 @@ export let isSekolahSMK = false;
 export let isSekolahSMA = false;
 export let isRencanaEvaluasi = false;
 export let isKomponenEvaluasi = false;
+export let isMahasiswaLulusDO = false;
 
 export const getFeederAgama = async () => {
     try {
@@ -617,6 +618,16 @@ export const getFeederKomponenEvaluasi = async () => {
     try {
         const res = await get(`api-feeder/get-komponen-evaluasi-kelas`);
         isKomponenEvaluasi = true;
+        return res;
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getFeederMahasiswaLulusDO = async () => {
+    try {
+        const res = await get(`api-feeder/get-mahasiswa-lulus-do`);
+        isMahasiswaLulusDO = true;
         return res;
     } catch (err) {
         throw err;

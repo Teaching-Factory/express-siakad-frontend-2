@@ -8,6 +8,7 @@ import { getToken } from '../../../../service/auth';
 import { get, getData } from '../../../../utiils/request';
 
 const angkatans = ref([]);
+const prodis = ref([]);
 const isLoading = ref(false);
 const selectedAngkatan1 = ref('');
 const selectedAngkatan2 = ref('');
@@ -19,6 +20,7 @@ const selectedAngkatan7 = ref('');
 const selectedAngkatan8 = ref('');
 const selectedAngkatan9 = ref('');
 const selectedAngkatan10 = ref('');
+const selectedProdi = ref('');
 
 const getAngkatan = async () => {
     try {
@@ -26,6 +28,15 @@ const getAngkatan = async () => {
         angkatans.value = response.data.data;
     } catch (error) {
         console.error('Gagal mengambil data angkatan:', error);
+    }
+};
+
+const getProdi = async () => {
+    try {
+        const response = await get('prodi');
+        prodis.value = response.data.data;
+    } catch (error) {
+        console.error('Gagal Mengambil Data Angkatan', error);
     }
 };
 const getDetaillNilaiPerkuliahan = async () => {
@@ -245,7 +256,7 @@ const getJumlahMahasiswaKelas = async () => {
         const response = await get(`api-feeder/update-jumlah-mahasiswa-kelas?angkatan=${tahun_angkatan1}`);
         Swal.fire({
             title: 'Berhasil',
-            text: 'Data Rekap KRS Mahasiswa telah diperbarui',
+            text: 'Data Jumlah Kuota Kealas telah diperbarui',
             icon: 'success',
             confirmButtonText: 'OK'
         });
@@ -253,7 +264,30 @@ const getJumlahMahasiswaKelas = async () => {
         console.error('Gagal mengambil data :', error);
         Swal.fire({
             title: 'Gagal',
-            text: 'Data Rekap KRS Mahasiswa gagal diperbarui',
+            text: 'Data Jumlah Kuota Kelas gagal diperbarui',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+    } finally {
+        isLoading.value = false;
+    }
+};
+const getMahasiswaLulusDO = async () => {
+    isLoading.value = true;
+    const id_prodi = selectedProdi.value;
+    try {
+        const response = await get(`api-feeder/update-mahasiswa-lulus-do/${id_prodi}`);
+        Swal.fire({
+            title: 'Berhasil',
+            text: 'Data Mahasiswa Lulus/DO telah diperbarui',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    } catch (error) {
+        console.error('Gagal mengambil data :', error);
+        Swal.fire({
+            title: 'Gagal',
+            text: 'Data Mahasiswa Lulus/do gagal diperbarui',
             icon: 'error',
             confirmButtonText: 'OK'
         });
@@ -264,6 +298,7 @@ const getJumlahMahasiswaKelas = async () => {
 
 onBeforeMount(() => {
     getAngkatan();
+    getProdi();
 });
 </script>
 
@@ -470,8 +505,8 @@ onBeforeMount(() => {
         </div>
         <div class="card">
             <div class="row">
-                <div class="col-12 col-md-6 col-lg-12">
-                    <h5 class="text-dark">Kelas Kuliah</h5>
+                <div class="col-12 col-md-12 col-lg-12">
+                    <h5 class="text-dark">Jumlah Kuota Kelas</h5><span class="text-danger">(*cukup sekali pakai setelah instalasi)</span>
                 </div>
                 <div class="col-lg-10 col-md-6 col-sm-6">
                     <div class="mb-3">
@@ -484,6 +519,26 @@ onBeforeMount(() => {
                 </div>
                 <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
                     <button @click="getJumlahMahasiswaKelas" class="btn btn-primary btn-block" style="width: 100%">Update</button>
+                </div>
+            </div>
+            <hr />
+        </div>
+        <div class="card">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-12">
+                    <h5 class="text-dark">Mahasiswa Lulus/DO</h5>
+                </div>
+                <div class="col-lg-10 col-md-6 col-sm-6">
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Pilih Angkatan</label>
+                        <select v-model="selectedProdi" class="form-select" aria-label="Default select example">
+                            <option value="" selected disabled hidden>Pilih Angkatan</option>
+                            <option v-for="prodi in prodis" :key="prodi.id_prodi" :value="prodi.id_prodi">{{ prodi.nama_program_studi }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6" style="margin-top: 27px">
+                    <button @click="getMahasiswaLulusDO" class="btn btn-primary btn-block" style="width: 100%">Update</button>
                 </div>
             </div>
             <hr />

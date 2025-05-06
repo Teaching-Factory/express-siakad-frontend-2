@@ -62,6 +62,7 @@ import {
     getFeederTahunAjaran,
     getFeederUjiMahasiswa,
     getFeederWilayah,
+    getFeederMahasiswaLulusDO,
     isAgama,
     isAktivitasMahasiswa,
     isAlatTransportasi,
@@ -121,7 +122,8 @@ import {
     isSubtansiKuliah,
     isTahunAjaran,
     isUjiMahasiswa,
-    isWilayah
+    isWilayah,
+    isMahaiswaLulusDO
 } from '../../service/instalasi';
 
 const isLoading = ref(false);
@@ -199,7 +201,8 @@ const Installasi = async () => {
             { name: 'Data Sekolah SMK', data: getFeederSekolahSMK, status: () => isSekolahSMK },
             { name: 'Data Sekolah SMA', data: getFeederSekolahSMA, status: () => isSekolahSMA },
             { name: 'Data Rencana Evaluasi', data: getFeederRencanaEvaluasi, status: () => isRencanaEvaluasi },
-            { name: 'Data Komponen Evaluasi', data: getFeederKomponenEvaluasi, status: () => isKomponenEvaluasi }
+            { name: 'Data Komponen Evaluasi', data: getFeederKomponenEvaluasi, status: () => isKomponenEvaluasi },
+            { name: 'Data Mahasiswa Lulus/DO', data: getFeederMahasiswaLulusDO, status: () => isMahaiswaLulusDO }
         ];
 
         const results = [];

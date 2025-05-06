@@ -548,6 +548,10 @@ const model = ref([
                         label: 'Sync Nilai Perkuliahan',
                         to: '/sync-detail-nilai',
                         visible: computed(() => permissions.includes('sync-nilai-perkuliahan'))
+                    },
+                    {
+                        label: 'Sync AKM',
+                        to: '/sync-akm'
                     }
                 ]
             }
