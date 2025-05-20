@@ -254,7 +254,7 @@ const update = async () => {
 
         Swal.close();
         swal.fire('BERHASIL!', 'Data berhasil diperbarui.', 'success').then(() => {
-            window.location.href = '/kelas-jadwal-perkuliahan';
+            window.location.reload();
         });
     } catch (error) {
         Swal.close();
@@ -278,7 +278,7 @@ const getDetailKelasKuliah = async (id_detail_kelas_kuliah) => {
         const data = response.data.data;
 
         nama_kelas_kuliah.value = data.KelasKuliah.nama_kelas_kuliah;
-        kapasitas_peserta_kelas.value = data.kapasitas;
+        kapasitas_peserta_kelas.value = data.KelasKuliah.jumlah_mahasiswa;
         hari.value = data.hari;
         id_ruang_perkuliahan.value = data.id_ruang_perkuliahan;
         jam_mulai.value = data.jam_mulai;

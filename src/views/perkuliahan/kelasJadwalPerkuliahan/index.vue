@@ -360,7 +360,7 @@ function deleteDosen(index) {
                             <i class="pi pi-map"> {{ detail.RuangPerkuliahan?.nama_ruang_perkuliahan || '-' }}</i>
                         </td>
                         <td>
-                            <i class="pi pi-users">0/{{ detail.kapasitas || '0' }}</i>
+                            <i class="pi pi-users">{{ detail?.jumlah_peserta_kelas || '0' }}/{{ detail.KelasKuliah?.jumlah_mahasiswa || '0' }}</i>
                         </td>
                         <td>
                             <a
