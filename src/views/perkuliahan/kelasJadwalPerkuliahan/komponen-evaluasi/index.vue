@@ -240,6 +240,13 @@ onBeforeMount(() => {
                 <div class="col-lg-2">Kapasitas Peserta Kelas</div>
                 <div class="col-lg-4"><span class="me-2"> :</span> {{ detailKelas?.kapasitas || '-' }}</div>
             </div>
+            <div class="row mt-4">
+                <h6 class="text-dark" style="font-weight: bold">Keterangan :</h6>
+                <p class="lh-1 text-small">
+                    Sebelum menambahkan Komponen Evaluasi mohon cek terlebih dahulu
+                    <router-link :to="`/rencana-evaluasi/${detailKelas?.KelasKuliah?.id_matkul}/mata-kuliah`" class="btn btn-outline-primary" target="_blank"> <i class="pi pi-eye"></i> Klik Disini</router-link>
+                </p>
+            </div>
 
             <div class="row mt-5">
                 <div class="row mb-2">
