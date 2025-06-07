@@ -140,6 +140,7 @@ onMounted(() => {
                             <th>Waktu Mulai</th>
                             <th>Waktu Selesai</th>
                             <th>SKS</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -154,6 +155,9 @@ onMounted(() => {
                             <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_mulai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.DetailKelasKuliahs[0]?.jam_selesai || '-' }}</td>
                             <td>{{ krs?.KelasKuliah?.sks }}</td>
+                            <td>
+                                <Badge :type="krs?.status_kelas ? 'badge-success' : 'badge-danger'" class="ml-2">{{ krs?.status_kelas ? 'Kelas Sudah Lengkap' : 'Kelas Belum Lengkap' }}</Badge>
+                            </td>
                             <td>
                                 <button @click="confirmDelete(krs.id_krs)" class="btn btn-outline-danger" title="Hapus Krs">
                                     <i class="pi pi-trash"></i>
