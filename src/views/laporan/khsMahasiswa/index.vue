@@ -5,6 +5,7 @@ const router = useRouter();
 
 import { getData, get } from '../../../utiils/request.js';
 import Swal from 'sweetalert2';
+import swal from 'sweetalert';
 
 const angkatans = ref([]);
 const prodis = ref([]);
@@ -58,46 +59,44 @@ const filterData = async () => {
     const jenis_cetak = selectedJenisCetak.value;
     console.log('ini jenis cetak', jenis_cetak);
     let requestBody = {};
-
-    if (jenis_cetak === 'Mahasiswa') {
-        const nim = nimMahasiswa.value;
-        const formatExp = format.value;
-        requestBody = {
-            jenis_cetak: jenis_cetak,
-            nim: nim,
-            id_semester: selectedSemester.value,
-            tanggal_penandatanganan: tanggalPenandatanganan.value,
-            format: formatExp
-        };
-    } else if (jenis_cetak === 'Angkatan') {
-        const id_prodi = selectedProdi.value;
-        const id_angkatan = selectedAngkatan.value;
-        requestBody = {
-            jenis_cetak: jenis_cetak,
-            id_prodi: id_prodi,
-            id_angkatan: id_angkatan,
-            id_semester: selectedSemester.value,
-            tanggal_penandatanganan: tanggalPenandatanganan.value
-        };
-    } else {
-        console.error('Invalid jenis_cetak:', jenis_cetak);
-        return;
-    }
-
-    console.log('req', requestBody);
     try {
-        Swal.close();
-        // router.push({
+        if (jenis_cetak === 'Mahasiswa') {
+            requestBody = {
+                jenis_cetak: jenis_cetak,
+                nim: nimMahasiswa.value,
+                id_semester: selectedSemester.value,
+                tanggal_penandatanganan: tanggalPenandatanganan.value,
+                format: format.value
+            };
+            Swal.close();
 
-        // });
+            const resolved = router.resolve({
+                name: 'cetak-khs-mahasiswa',
+                query: requestBody
+            });
+            window.open(resolved.href, '_blank');
+        } else if (jenis_cetak === 'Angkatan') {
+            requestBody = {
+                jenis_cetak: jenis_cetak,
+                id_prodi: selectedProdi.value,
+                id_angkatan: selectedAngkatan.value,
+                id_semester: selectedSemester.value,
+                tanggal_penandatanganan: tanggalPenandatanganan.value
+            };
 
-        const resolved = router.resolve({
-            name: 'cetak-khs-mahasiswa',
-            query: requestBody
-        });
-        window.open(resolved.href, '_blank');
+            Swal.close();
+            const resolved = router.resolve({
+                name: 'cetak-khs-mahasiswa-angkatan',
+                query: requestBody
+            });
+            window.open(resolved.href, '_blank');
+        } else {
+            console.error('Invalid jenis_cetak:', jenis_cetak);
+            Swal.close();
+        }
     } catch (error) {
-        console.error('Gagal mengirim data:', error);
+        console.log('Gagal Mengirim Data', error);
+        Swal.close();
     }
 };
 
@@ -115,7 +114,7 @@ onMounted(() => {
             <hr />
             <div class="row d-flex justify-content-center mb-3">
                 <div class="col-lg-4">
-                    <label for="exampleFormControlInput1" class="form-label">Pilih Cetak KRS</label>
+                    <label for="exampleFormControlInput1" class="form-label">Pilih Cetak KHS</label>
                 </div>
                 <div class="col-lg-6">
                     <select class="form-select" v-model="selectedJenisCetak" aria-label="Default select example">

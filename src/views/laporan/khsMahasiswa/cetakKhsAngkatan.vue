@@ -22,11 +22,13 @@ export default {
                     }
                 });
 
-                const response = await getData(`rekap-khs-mahasiswa/get-rekap-khs-mahasiswa?jenis_cetak=${req.jenis_cetak}&nim=${req.nim}&id_semester=${req.id_semester}&tanggal_penandatanganan=${req.tanggal_penandatanganan}&format=${req.format}`);
+                const response = await getData(
+                    `rekap-khs-mahasiswa/get-rekap-khs-mahasiswa?jenis_cetak=${req.jenis_cetak}&id_prodi=${req.id_prodi}&id_angkatan=${req.id_angkatan}&id_semester=${req.id_semester}&tanggal_penandatanganan=${req.tanggal_penandatanganan}`
+                );
                 this.krsData = response.data;
-                this.getRekapKhsData = response.data.dataRekapKHSMahasiswaMahasiswa;
+                this.getRekapKhsData = response.data.dataRekapKHSMahasiswaAngkatan;
                 console.log('Response:', response.data);
-                console.log('Response2:', response.data.dataRekapKHSMahasiswaMahasiswa);
+                console.log('Response2:', response.data.dataRekapKHSMahasiswaAngkatan);
             } catch (error) {
                 console.error('Gagal mengirim data:', error);
             }
@@ -104,88 +106,91 @@ export default {
             <button @click="handlePrint" class="btn-print">Cetak</button>
 
             <h5 class="text-center mb-3"><b>KARTU HASIL STUDI (KHS)</b></h5>
-            <table class="table table-borderless mt-3">
-                <tbody>
-                    <tr>
-                        <td style="width: 50%">
-                            <div style="display: flex; align-items: flex-start">
-                                <div style="margin-left: 15px; width: 110px">Nama</div>
-                                <div style="margin-right: 6px">:</div>
-                                <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa?.nama_mahasiswa }}
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: flex-start">
-                                <div style="margin-left: 15px; width: 110px">Program Studi</div>
-                                <div style="margin-right: 6px">:</div>
-                                <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa?.Prodi?.nama_program_studi }}
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: flex-start">
-                                <div style="margin-left: 15px; width: 110px">Semester</div>
-                                <div style="margin-right: 6px">:</div>
-                                <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa?.Semester?.semester }}
-                                </div>
-                            </div>
-                        </td>
-                        <td style="width: 50%">
-                            <div style="display: flex; align-items: flex-start">
-                                <div style="margin-left: 15px; width: 110px">NIM</div>
-                                <div style="margin-right: 6px">:</div>
-                                <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa?.nim }}
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: flex-start">
-                                <div style="margin-left: 15px; width: 110px">Periode</div>
-                                <div style="margin-right: 6px">:</div>
-                                <div style="margin-right: 10px">
-                                    {{ krsData?.mahasiswa?.Semester?.nama_semester }}
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
 
-            <div style="overflow-x: auto">
-                <table class="table table-bordered text-center">
-                    <thead class="align-middle">
-                        <tr>
-                            <th rowspan="2">No</th>
-                            <th rowspan="3">Nama Mata Kuliah</th>
-                            <th rowspan="2">SKS</th>
-                            <th colspan="3">Nilai</th>
-                            <th rowspan="2">SKS*Index</th>
-                        </tr>
-                        <tr>
-                            <th>Angka</th>
-                            <th>Huruf</th>
-                            <th>Index</th>
-                        </tr>
-                    </thead>
+            <div v-for="(rekap, index) in getRekapKhsData" :key="index">
+                <table class="table table-borderless mt-3">
                     <tbody>
-                        <tr v-for="(nilai, index) in getRekapKhsData" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ nilai.MataKuliah.nama_mata_kuliah }}</td>
-                            <td>{{ nilai?.MataKuliah.sks_mata_kuliah ? parseFloat(nilai?.MataKuliah.sks_mata_kuliah).toFixed(0) : '-' }}</td>
-                            <td>{{ nilai.nilai_angka }}</td>
-                            <td>{{ nilai.nilai_huruf }}</td>
-                            <td>{{ nilai.nilai_indeks }}</td>
-                            <td>{{ nilai?.sks_x_indeks ? parseFloat(nilai?.sks_x_indeks).toFixed(2) : '-' }}</td>
-                        </tr>
                         <tr>
-                            <td class="text-center" colspan="6">IPS (Index Prestasi Semester )</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif )</td>
-                            <td>12</td>
+                            <td style="width: 50%">
+                                <div style="display: flex; align-items: flex-start">
+                                    <div style="margin-left: 15px; width: 110px">Nama</div>
+                                    <div style="margin-right: 6px">:</div>
+                                    <div style="margin-right: 10px">
+                                        {{ rekap[0]?.Mahasiswa?.nama_mahasiswa }}
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: flex-start">
+                                    <div style="margin-left: 15px; width: 110px">Program Studi</div>
+                                    <div style="margin-right: 6px">:</div>
+                                    <div style="margin-right: 10px">
+                                        {{ rekap[0]?.Prodi?.nama_program_studi }}
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: flex-start">
+                                    <div style="margin-left: 15px; width: 110px">Semester</div>
+                                    <div style="margin-right: 6px">:</div>
+                                    <div style="margin-right: 10px">
+                                        {{ rekap[0]?.Semester?.semester }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="width: 50%">
+                                <div style="display: flex; align-items: flex-start">
+                                    <div style="margin-left: 15px; width: 110px">NIM</div>
+                                    <div style="margin-right: 6px">:</div>
+                                    <div style="margin-right: 10px">
+                                        {{ rekap[0]?.Mahasiswa?.nim }}
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: flex-start">
+                                    <div style="margin-left: 15px; width: 110px">Periode</div>
+                                    <div style="margin-right: 6px">:</div>
+                                    <div style="margin-right: 10px">
+                                        {{ rekap[0]?.Semester?.nama_semester }}
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div style="overflow-x: auto">
+                    <table class="table table-bordered text-center">
+                        <thead class="align-middle">
+                            <tr>
+                                <th rowspan="2">No</th>
+                                <th rowspan="3">Nama Mata Kuliah</th>
+                                <th rowspan="2">SKS</th>
+                                <th colspan="3">Nilai</th>
+                                <th rowspan="2">SKS*Index</th>
+                            </tr>
+                            <tr>
+                                <th>Angka</th>
+                                <th>Huruf</th>
+                                <th>Index</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(nilai, index) in rekap" :key="index">
+                                <td>{{ index + 1 }}</td>
+                                <td>{{ nilai.MataKuliah.nama_mata_kuliah }}</td>
+                                <td>{{ nilai?.MataKuliah.sks_mata_kuliah ? parseFloat(nilai?.MataKuliah.sks_mata_kuliah).toFixed(0) : '-' }}</td>
+                                <td>{{ nilai.nilai_angka }}</td>
+                                <td>{{ nilai.nilai_huruf }}</td>
+                                <td>{{ nilai.nilai_indeks }}</td>
+                                <td>{{ nilai?.sks_x_indeks ? parseFloat(nilai?.sks_x_indeks).toFixed(2) : '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" colspan="6">IPS (Index Prestasi Semester )</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif )</td>
+                                <td>12</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -30,6 +30,8 @@ export default {
                 this.krsData = response.data;
                 this.rekapKrsData = response.data.dataRekapKRSByMahasiswa;
                 this.rekapSks = response.data.dataRekapKRSByMahasiswa.krs_mahasiswas;
+                console.log('krsData : ', response.data);
+                console.log('rekapKrsData : ', response.data.dataRekapKRSByMahasiswa);
             } catch (error) {
                 console.error('Gagal mengirim data:', error);
             }
@@ -131,7 +133,7 @@ export default {
                                     <div style="margin-left: 15px; width: 110px">Semester</div>
                                     <div style="margin-right: 6px">:</div>
                                     <div style="margin-right: 10px">
-                                        {{ rekap?.krs_mahasiswas[0]?.KelasKuliah?.Semester?.nama_semester || '-' }}
+                                        {{ rekap?.krs_mahasiswas[0]?.KelasKuliah?.Semester?.semester || '-' }}
                                     </div>
                                 </div>
                             </td>

@@ -668,6 +668,11 @@ const router = createRouter({
                     component: () => import('../views/laporan/khsMahasiswa/cetakKHS.vue')
                 },
                 {
+                    path: '/cetak-khs-mahasiswa-angkatan',
+                    name: 'cetak-khs-mahasiswa-angkatan',
+                    component: () => import('../views/laporan/khsMahasiswa/cetakKhsAngkatan.vue')
+                },
+                {
                     path: '/transkrip-mahasiswa',
                     name: 'transkrip-mahasiswa',
                     component: () => import('../views/laporan/transkripMahasiswa/index.vue'),

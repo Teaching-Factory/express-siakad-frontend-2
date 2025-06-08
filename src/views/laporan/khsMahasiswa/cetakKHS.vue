@@ -126,7 +126,7 @@ export default {
                                 <div style="margin-left: 15px; width: 110px">Semester</div>
                                 <div style="margin-right: 6px">:</div>
                                 <div style="margin-right: 10px">
-                                    {{ getRekapKhsData[0]?.Semester?.semester }}
+                                    {{ krsData?.mahasiswa.Semester?.semester }}
                                 </div>
                             </div>
                         </td>
@@ -142,7 +142,7 @@ export default {
                                 <div style="margin-left: 15px; width: 110px">Periode</div>
                                 <div style="margin-right: 6px">:</div>
                                 <div style="margin-right: 10px">
-                                    {{ getRekapKhsData[0]?.mahasiswa?.Semester?.nama_semester }}
+                                    {{ krsData?.mahasiswa?.Semester?.nama_semester }}
                                 </div>
                             </div>
                         </td>
