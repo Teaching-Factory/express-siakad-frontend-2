@@ -116,21 +116,21 @@ export default {
                                     <div style="margin-left: 15px; width: 110px">Nama</div>
                                     <div style="margin-right: 6px">:</div>
                                     <div style="margin-right: 10px">
-                                        {{ rekap[0]?.Mahasiswa?.nama_mahasiswa }}
+                                        {{ rekap?.rekap[0]?.Mahasiswa?.nama_mahasiswa }}
                                     </div>
                                 </div>
                                 <div style="display: flex; align-items: flex-start">
                                     <div style="margin-left: 15px; width: 110px">Program Studi</div>
                                     <div style="margin-right: 6px">:</div>
                                     <div style="margin-right: 10px">
-                                        {{ rekap[0]?.Prodi?.nama_program_studi }}
+                                        {{ rekap?.rekap[0]?.Prodi?.nama_program_studi }}
                                     </div>
                                 </div>
                                 <div style="display: flex; align-items: flex-start">
                                     <div style="margin-left: 15px; width: 110px">Semester</div>
                                     <div style="margin-right: 6px">:</div>
                                     <div style="margin-right: 10px">
-                                        {{ rekap[0]?.Semester?.semester }}
+                                        {{ rekap?.rekap[0]?.Semester?.semester }}
                                     </div>
                                 </div>
                             </td>
@@ -139,14 +139,14 @@ export default {
                                     <div style="margin-left: 15px; width: 110px">NIM</div>
                                     <div style="margin-right: 6px">:</div>
                                     <div style="margin-right: 10px">
-                                        {{ rekap[0]?.Mahasiswa?.nim }}
+                                        {{ rekap?.rekap[0]?.Mahasiswa?.nim }}
                                     </div>
                                 </div>
                                 <div style="display: flex; align-items: flex-start">
                                     <div style="margin-left: 15px; width: 110px">Periode</div>
                                     <div style="margin-right: 6px">:</div>
                                     <div style="margin-right: 10px">
-                                        {{ rekap[0]?.Semester?.nama_semester }}
+                                        {{ rekap?.rekap[0]?.Semester?.nama_semester }}
                                     </div>
                                 </div>
                             </td>
@@ -171,7 +171,7 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(nilai, index) in rekap" :key="index">
+                            <tr v-for="(nilai, index) in rekap.rekap" :key="index">
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ nilai.MataKuliah.nama_mata_kuliah }}</td>
                                 <td>{{ nilai?.MataKuliah.sks_mata_kuliah ? parseFloat(nilai?.MataKuliah.sks_mata_kuliah).toFixed(0) : '-' }}</td>
@@ -182,11 +182,11 @@ export default {
                             </tr>
                             <tr>
                                 <td class="text-center" colspan="6">IPS (Index Prestasi Semester )</td>
-                                <td>0</td>
+                                <td>{{ rekap?.perkuliahanMahasiswa?.ips || '0' }}</td>
                             </tr>
                             <tr>
                                 <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif )</td>
-                                <td>12</td>
+                                <td>{{ rekap?.perkuliahanMahasiswa?.ipk || '0' }}</td>
                             </tr>
                         </tbody>
                     </table>

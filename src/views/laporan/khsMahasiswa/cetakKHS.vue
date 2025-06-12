@@ -178,11 +178,11 @@ export default {
                         </tr>
                         <tr>
                             <td class="text-center" colspan="6">IPS (Index Prestasi Semester )</td>
-                            <td>0</td>
+                            <td>{{ krsData?.perkuliahanMahasiswa?.ips || '0' }}</td>
                         </tr>
                         <tr>
                             <td class="text-center" colspan="6">IPK (Index Prestasi Kumulatif )</td>
-                            <td>{{ krsData?.mahasiswa?.ipk || ' 0' }}</td>
+                            <td>{{ krsData?.perkuliahanMahasiswa?.ipk || ' 0' }}</td>
                         </tr>
                     </tbody>
                 </table>
