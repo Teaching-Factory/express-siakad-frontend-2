@@ -9,9 +9,9 @@ import { get, getData } from '../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    nama_kelas_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    semester: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    angkatan: { value: null, matchMode: FilterMatchMode.EQUALS },
     kode_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS }
 });
@@ -207,7 +207,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
+            :globalFilterFields="['PerkuliahanMahasiswa.Mahasiswa.nim', 'PerkuliahanMahasiswa.Mahasiswa.nama_mahasiswa', 'PerkuliahanMahasiswa.angkatan', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
             :value="AKM" v-model:selection="selectedAKM" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
