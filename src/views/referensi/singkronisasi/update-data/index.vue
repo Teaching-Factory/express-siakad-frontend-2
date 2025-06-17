@@ -45,7 +45,7 @@ const getDetaillNilaiPerkuliahan = async () => {
     const id_angkatan1 = selectedAngkatan1.value;
     const id_angkatan2 = selectedAngkatan1.value;
     try {
-        const response = await get(`api-feeder/update-detail-nilai-perkuliahan-kelas?angkatan=${id_angkatan1}&angkatan=${id_angkatan2}`);
+        const response = await get(`api-feeder-update/update-detail-nilai-perkuliahan-kelas?angkatan=${id_angkatan1}&angkatan=${id_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Nilai Perkuliahan telah diperbarui',
@@ -63,7 +63,7 @@ const getRiwayatNilaiMahasiswa = async () => {
 
     const id_angkatan1 = selectedAngkatan2.value;
     try {
-        const response = await get(`api-feeder/update-riwayat-nilai-mahasiswa?angkatan=${id_angkatan1}`);
+        const response = await get(`api-feeder-update/update-riwayat-nilai-mahasiswa?angkatan=${id_angkatan1}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Nilai Mahasiswa telah diperbarui',
@@ -81,7 +81,7 @@ const getPesertaKelasKuliah = async () => {
     isLoading.value = true;
     const tahun_angkatan = selectedAngkatan3.value;
     try {
-        const response = await get(`api-feeder/update-peserta-kelas-kuliah?angkatan=${tahun_angkatan}`);
+        const response = await get(`api-feeder-update/update-peserta-kelas-kuliah?angkatan=${tahun_angkatan}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Peserta Kelas Kuliah telah diperbarui',
@@ -105,7 +105,7 @@ const getPerkuliahanMahasiswa = async () => {
     const tahun_angkatan1 = selectedAngkatan4.value;
     const tahun_angkatan2 = selectedAngkatan4.value;
     try {
-        const response = await get(`api-feeder/update-perkuliahan-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
+        const response = await get(`api-feeder-update/update-perkuliahan-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Perkuliahan Mahasiswa telah diperbarui',
@@ -130,7 +130,7 @@ const getDetailPerkuliahanMahasiswa = async () => {
     const tahun_angkatan1 = selectedAngkatan5.value;
     const tahun_angkatan2 = selectedAngkatan5.value;
     try {
-        const response = await get(`api-feeder/update-detail-perkuliahan-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
+        const response = await get(`api-feeder-update/update-detail-perkuliahan-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Detail Perkuliahan Mahasiswa telah diperbarui',
@@ -155,7 +155,7 @@ const getKrsMahasiswa = async () => {
     const tahun_angkatan1 = selectedAngkatan6.value;
     const tahun_angkatan2 = selectedAngkatan6.value;
     try {
-        const response = await get(`api-feeder/update-krs-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
+        const response = await get(`api-feeder-update/update-krs-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data KRS Mahasiswa telah diperbarui',
@@ -180,7 +180,7 @@ const getAktivitasKulahMahasiswa = async () => {
     const tahun_angkatan1 = selectedAngkatan7.value;
     const tahun_angkatan2 = selectedAngkatan7.value;
     try {
-        const response = await get(`api-feeder/update-aktivitas-kuliah-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
+        const response = await get(`api-feeder-update/update-aktivitas-kuliah-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Aktivitas Kuliah Mahasiswa telah diperbarui',
@@ -205,7 +205,7 @@ const getRekapKhsMahasiswa = async () => {
     const tahun_angkatan1 = selectedAngkatan8.value;
     const tahun_angkatan2 = selectedAngkatan8.value;
     try {
-        const response = await get(`api-feeder/update-rekap-khs-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
+        const response = await get(`api-feeder-update/update-rekap-khs-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Rekap KHS Mahasiswa telah diperbarui',
@@ -230,7 +230,7 @@ const getRekapKrsMahasiswa = async () => {
     const tahun_angkatan1 = selectedAngkatan9.value;
     const tahun_angkatan2 = selectedAngkatan9.value;
     try {
-        const response = await get(`api-feeder/update-rekap-krs-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
+        const response = await get(`api-feeder-update/update-rekap-krs-mahasiswa?angkatan=${tahun_angkatan1}&angkatan=${tahun_angkatan2}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Rekap KRS Mahasiswa telah diperbarui',
@@ -253,7 +253,7 @@ const getJumlahMahasiswaKelas = async () => {
     isLoading.value = true;
     const tahun_angkatan1 = selectedAngkatan10.value;
     try {
-        const response = await get(`api-feeder/update-jumlah-mahasiswa-kelas?angkatan=${tahun_angkatan1}`);
+        const response = await get(`api-feeder-update/update-jumlah-mahasiswa-kelas?angkatan=${tahun_angkatan1}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Jumlah Kuota Kealas telah diperbarui',
@@ -276,7 +276,7 @@ const getMahasiswaLulusDO = async () => {
     isLoading.value = true;
     const id_prodi = selectedProdi.value;
     try {
-        const response = await get(`api-feeder/update-mahasiswa-lulus-do/${id_prodi}`);
+        const response = await get(`api-feeder-update/update-mahasiswa-lulus-do/${id_prodi}`);
         Swal.fire({
             title: 'Berhasil',
             text: 'Data Mahasiswa Lulus/DO telah diperbarui',
