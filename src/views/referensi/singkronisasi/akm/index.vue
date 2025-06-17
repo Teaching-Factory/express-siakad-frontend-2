@@ -12,8 +12,7 @@ const filters = ref({
     nim: { value: null, matchMode: FilterMatchMode.EQUALS },
     nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
     angkatan: { value: null, matchMode: FilterMatchMode.EQUALS },
-    kode_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS }
+   
 });
 
 const first = ref(0);
@@ -207,7 +206,7 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['PerkuliahanMahasiswa.Mahasiswa.nim', 'PerkuliahanMahasiswa.Mahasiswa.nama_mahasiswa', 'PerkuliahanMahasiswa.angkatan', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
+            :globalFilterFields="['PerkuliahanMahasiswa.Mahasiswa.nim', 'PerkuliahanMahasiswa.Mahasiswa.nama_mahasiswa', 'PerkuliahanMahasiswa.angkatan']"
             :value="AKM" v-model:selection="selectedAKM" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
