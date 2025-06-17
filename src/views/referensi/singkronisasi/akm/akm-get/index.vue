@@ -9,11 +9,9 @@ import { get, getData } from '../../../../../utiils/request';
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    nama_kelas_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    semester: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    kode_mata_kuliah: { value: null, matchMode: FilterMatchMode.EQUALS },
-    nama_program_studi: { value: null, matchMode: FilterMatchMode.EQUALS }
+    nim: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nama_mahasiswa: { value: null, matchMode: FilterMatchMode.EQUALS },
+    angkatan: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 
 const first = ref(0);
@@ -201,14 +199,14 @@ onBeforeMount(() => {
             <hr />
 
             <DataTable v-model:filters="filters"
-            :globalFilterFields="['KelasKuliah.nama_mata_kuliah', 'KelasKuliah.Semester.nama_semester', 'KelasKuliah.MataKuliah.kode_mata_kuliah', 'KelasKuliah.Prodi.nama_program_studi', 'KelasKuliah.MataKuliah.nama_mata_kuliah']"
+            :globalFilterFields="['PerkuliahanMahasiswaFeeder.nim', 'PerkuliahanMahasiswaFeeder.nama_mahasiswa', 'PerkuliahanMahasiswaFeeder.angkatan']"
             :value="AKM" v-model:selection="selectedAKM" :paginator="true" :rows="20" dataKey="id" :rowHover="true" showGridlines :first="first" @page="onPageChange">
                 <template #header>
                     <div class="row">
                         <div class="col-lg-6 d-flex justify-content-start">
                             <IconField iconPosition="left">
                                 <InputIcon class="pi pi-search" />
-                                <InputText placeholder="Cari disini" style="width: 100%" />
+                                <InputText placeholder="Cari disini"  v-model="filters['global'].value" style="width: 100%" />
                             </IconField>
                         </div>
                         <div class="col-lg-6 d-flex justify-content-end">
